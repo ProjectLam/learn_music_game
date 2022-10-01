@@ -13,4 +13,28 @@ offset_bottom = 642.0
 text = "Back
 "
 
+[node name="Label" type="Label" parent="."]
+offset_left = 43.0
+offset_top = 45.0
+offset_right = 83.0
+offset_bottom = 68.0
+text = "Song Select
+"
+
+[node name="ItemList" type="ItemList" parent="."]
+offset_left = 349.0
+offset_top = 73.0
+offset_right = 845.0
+offset_bottom = 514.0
+item_count = 1
+item_0/text = "Song #1"
+
+[node name="SongSelectBtn" type="Button" parent="."]
+offset_left = 841.0
+offset_top = 554.0
+offset_right = 1118.0
+offset_bottom = 632.0
+text = "Play Song"
+
 [connection signal="pressed" from="BackBtn" to="." method="_on_back_btn_pressed"]
+[connection signal="pressed" from="SongSelectBtn" to="." method="_on_song_select_btn_pressed"]

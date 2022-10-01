@@ -13,3 +13,8 @@ func _process(delta):
 
 func _on_back_btn_pressed():
 	get_tree().change_scene_to_file("res://scenes/main.tscn")
+
+
+func _on_song_select_btn_pressed():
+	get_tree().change_scene_to_file("res://scenes/PlaySong.tscn")
+
