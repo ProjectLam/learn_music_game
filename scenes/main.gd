@@ -20,8 +20,8 @@ func _on_qr_code_btn_pressed():
 
 
 func _on_options_btn_pressed():
-	pass # Replace with function body.
+	get_tree().change_scene_to_file("res://scenes/options.tscn")
 
 
 func _on_exit_btn_pressed():
-	pass # Replace with function body.
+	get_tree().quit(0)
