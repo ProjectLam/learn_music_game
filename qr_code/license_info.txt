@@ -1,0 +1,1 @@
+original code for this folder is here - https://github.com/Greaby/godot-qrcode-generator

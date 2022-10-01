@@ -5,6 +5,12 @@
 [node name="QRCode" type="Node2D"]
 script = ExtResource("1_d4378")
 
+[node name="QrCode" type="TextureRect" parent="."]
+offset_left = 59.0
+offset_top = 105.0
+offset_right = 447.0
+offset_bottom = 494.0
+
 [node name="Label" type="Label" parent="."]
 offset_right = 40.0
 offset_bottom = 23.0
@@ -17,5 +23,12 @@ offset_right = 433.0
 offset_bottom = 642.0
 text = "Back
 "
+
+[node name="url_label" type="Label" parent="."]
+offset_left = 66.0
+offset_top = 529.0
+offset_right = 317.0
+offset_bottom = 555.0
+text = "Http_label"
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

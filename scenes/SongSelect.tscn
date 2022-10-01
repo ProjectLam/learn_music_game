@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://ckscvqa0c7ht8"]
+
+[ext_resource type="Script" path="res://scenes/SongSelect.gd" id="1_7luhl"]
+
+[node name="SongSelect" type="Node2D"]
+script = ExtResource("1_7luhl")
+
+[node name="BackBtn" type="Button" parent="."]
+offset_left = 38.0
+offset_top = 576.0
+offset_right = 433.0
+offset_bottom = 642.0
+text = "Back
+"
+
+[connection signal="pressed" from="BackBtn" to="." method="_on_back_btn_pressed"]

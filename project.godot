@@ -8,6 +8,28 @@
 
 config_version=5
 
+_global_script_classes=[{
+"base": "Node",
+"class": &"QrCode",
+"language": &"GDScript",
+"path": "res://qr_code/qr_code.gd"
+}, {
+"base": "Node",
+"class": &"ReedSolomonGenerator",
+"language": &"GDScript",
+"path": "res://qr_code/reed_solomon_generator.gd"
+}, {
+"base": "Node",
+"class": &"Utils",
+"language": &"GDScript",
+"path": "res://qr_code/utils.gd"
+}]
+_global_script_class_icons={
+"QrCode": "",
+"ReedSolomonGenerator": "",
+"Utils": ""
+}
+
 [application]
 
 config/name="Lam-dj"
