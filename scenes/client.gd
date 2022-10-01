@@ -2,6 +2,8 @@ extends Node
 
 # The URL we will connect to.
 @export var websocket_url = "ws://localhost:9080"
+@onready var item_list = get_node(^"ItemList")
+
 
 # Our WebSocketClient instance.
 var _client = WebSocketClient.new()
@@ -16,6 +18,7 @@ func _ready():
 	# Alternatively, you could check get_peer(1).get_available_packets() in a loop.
 	_client.connect(&"data_received", _on_data)
 
+	item_list.add_item("starting for fun")
 	# Initiate connection to the given URL.
 	var err = _client.connect_to_url(websocket_url)
 	if err != OK:
@@ -43,7 +46,10 @@ func _on_data():
 	# Print the received packet, you MUST always use get_peer(1).get_packet
 	# to receive data from server, and not get_packet directly when not
 	# using the MultiplayerAPI.
-	print("Got data from server: ", _client.get_peer(1).get_packet().get_string_from_utf8())
+	var data = _client.get_peer(1).get_packet().get_string_from_utf8()
+	print("Got data from server: ", data)
+	item_list.add_item(data)
+
 
 
 func _process(_delta):

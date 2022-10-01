@@ -4,3 +4,21 @@
 
 [node name="djclient" type="Node2D"]
 script = ExtResource("1_vf6ll")
+
+[node name="Label" type="Label" parent="."]
+offset_left = 355.0
+offset_top = 17.0
+offset_right = 777.0
+offset_bottom = 65.0
+text = "List of Songs
+"
+
+[node name="ItemList" type="ItemList" parent="."]
+offset_left = 354.0
+offset_top = 65.0
+offset_right = 681.0
+offset_bottom = 615.0
+item_count = 3
+item_0/text = "Weee"
+item_1/text = "Bob"
+item_2/text = "OMG"

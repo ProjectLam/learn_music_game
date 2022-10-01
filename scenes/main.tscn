@@ -4,3 +4,13 @@
 
 [node name="main" type="Node2D"]
 script = ExtResource("1_iayte")
+
+[node name="Button" type="Button" parent="."]
+offset_left = 575.0
+offset_top = 56.0
+offset_right = 958.0
+offset_bottom = 163.0
+text = "Weeeeee
+"
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

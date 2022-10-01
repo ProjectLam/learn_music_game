@@ -12,9 +12,13 @@ config_version=5
 
 config/name="Lam-dj"
 run/main_scene="res://scenes/main.tscn"
-config/features=PackedStringArray("4.0", "Mobile")
+config/features=PackedStringArray("4.0")
 config/icon="res://icon.svg"
 run/main_scene.web="res://scenes/djclient.tscn"
+
+[autoload]
+
+WebsocketServer="*res://scenes/websocket_server.gd"
 
 [rendering]
 
