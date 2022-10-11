@@ -7,17 +7,19 @@ func _ready():
 	for item in AudioServer.get_device_list():
 		item_list.add_item(item)
 
-	var device = AudioServer.get_device()
 	for i in range(item_list.get_item_count()):
-		if device == item_list.get_item_text(i):
+		if PlayerVariables.selected_output_device == item_list.get_item_text(i):
 			item_list.select(i)
 			break
 	
 	var mic_list : Array = AudioServer.capture_get_device_list()
 	for i in mic_list:
-		AudioServer.capture_set_device(i)
-		print(AudioServer.capture_get_device())
 		item_list_input.add_item(i)
+
+	for i in range(item_list_input.get_item_count()):
+		if PlayerVariables.selected_input_device == item_list_input.get_item_text(i):
+			item_list_input.select(i)
+			break
 
 func _process(_delta):
 	var speaker_mode_text = "Stereo"
@@ -40,6 +42,8 @@ func _on_set_speaker_pressed():
 	for item in item_list.get_selected_items():
 		var device = item_list.get_item_text(item)
 		AudioServer.set_device(device)
+		PlayerVariables.selected_output_device = device
+		PlayerVariables.save()
 
 
 
@@ -56,6 +60,9 @@ func _on_set_input_pressed():
 	for item in item_list_input.get_selected_items():
 		var device = item_list_input.get_item_text(item)
 		AudioServer.capture_set_device(device)
+		# Not sure if we even need to keep track except to save in config file
+		PlayerVariables.selected_input_device = device
+		PlayerVariables.save()
 
 
 
