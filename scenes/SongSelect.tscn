@@ -5,6 +5,13 @@
 [node name="SongSelect" type="Node2D"]
 script = ExtResource("1_7luhl")
 
+[node name="SelectBtn" type="Button" parent="."]
+offset_left = 735.0
+offset_top = 565.0
+offset_right = 1130.0
+offset_bottom = 631.0
+text = "Select Song"
+
 [node name="BackBtn" type="Button" parent="."]
 offset_left = 38.0
 offset_top = 576.0
@@ -13,4 +20,14 @@ offset_bottom = 642.0
 text = "Back
 "
 
+[node name="ItemList" type="ItemList" parent="."]
+offset_left = 781.0
+offset_top = 6.0
+offset_right = 1124.0
+offset_bottom = 522.0
+item_count = 2
+item_0/text = "Song1"
+item_1/text = "Song2"
+
+[connection signal="pressed" from="SelectBtn" to="." method="_on_select_btn_pressed"]
 [connection signal="pressed" from="BackBtn" to="." method="_on_back_btn_pressed"]
