@@ -23,11 +23,23 @@ _global_script_classes=[{
 "class": &"Utils",
 "language": &"GDScript",
 "path": "res://qr_code/utils.gd"
+}, {
+"base": "Node",
+"class": &"WebSocketClient",
+"language": &"GDScript",
+"path": "res://compat/WebSocketClient.gd"
+}, {
+"base": "Node",
+"class": &"WebSocketServer",
+"language": &"GDScript",
+"path": "res://compat/WebSocketServer.gd"
 }]
 _global_script_class_icons={
 "QrCode": "",
 "ReedSolomonGenerator": "",
-"Utils": ""
+"Utils": "",
+"WebSocketClient": "",
+"WebSocketServer": ""
 }
 
 [application]

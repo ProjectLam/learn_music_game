@@ -59,4 +59,4 @@ func _process(_delta):
 
 
 func _exit_tree():
-	_client.disconnect_from_host()
+	_client.close()

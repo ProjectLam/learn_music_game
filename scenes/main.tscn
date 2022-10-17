@@ -36,11 +36,11 @@ offset_right = 1035.0
 offset_bottom = 581.0
 text = "Exit"
 
-[connection signal="pressed" from="OptionsBtn" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="OptionsBtn" to="." method="_on_options_btn_pressed"]
+[connection signal="pressed" from="OptionsBtn" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="QRCodeBtn" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="QRCodeBtn" to="." method="_on_qr_code_btn_pressed"]
 [connection signal="pressed" from="SongSelectBtn" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="SongSelectBtn" to="." method="_on_song_select_btn_pressed"]
-[connection signal="pressed" from="ExitBtn" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="ExitBtn" to="." method="_on_exit_btn_pressed"]
+[connection signal="pressed" from="ExitBtn" to="." method="_on_button_pressed"]
