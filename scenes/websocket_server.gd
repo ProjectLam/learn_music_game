@@ -1,5 +1,8 @@
 extends Node
 
+#TODO FIX FOR BETA3
+
+
 # The port we will listen to.
 const PORT = 9080
 # Our WebSocketServer instance.
