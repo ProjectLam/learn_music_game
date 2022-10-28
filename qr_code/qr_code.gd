@@ -189,7 +189,7 @@ func generate(input: String, mask_pattern: int) -> Array:
 	
 	_set_info_segments()
 	
-	_split_data_into_blocks()
+	# TODO fix _split_data_into_blocks()
 	
 	_set_error_correction()
 
@@ -373,6 +373,28 @@ func _split_data_into_blocks() -> void:
 	qr_data_list = result
 
 func _set_error_correction() -> void:
+	var block_ecc_len: int = ECC_CODEWORDS_PER_BLOCK[error_correct_level][type_number - 1]
+
+	var j = -1
+	var blocks = []
+	for index in qr_data_list.size():
+		if index % 8 == 0:
+			j += 1
+			blocks.append([])
+		blocks[j].append(qr_data_list[index])
+	
+	var rs = ReedSolomonGenerator.new(block_ecc_len)
+
+	for index in blocks.size():
+		blocks[index] = Utils.convert_to_decimal(blocks[index])
+	
+	blocks = rs.get_remainder(blocks)
+
+	for block in blocks:
+		qr_data_list.append_array(Utils.convert_to_binary(block, 8))
+		
+# TODO fix 		
+func _set_error_correction2() -> void:
 	ecc_data_list = []
 	var block_ecc_len: int = ECC_CODEWORDS_PER_BLOCK[error_correct_level][type_number - 1]
 	var short_block_data_len: int = qr_data_list[0].size()
@@ -634,7 +656,13 @@ func _get_data_zigzag_positions() -> Array:
 	return result
 
 
-func _set_data(zig_zag_positions: Array) -> void:
+func _set_data(zig_zag_positions) -> void:
+		for index in qr_data_list.size():
+				var position = zig_zag_positions[index]
+				modules[position.x][position.y] = qr_data_list[index]
+
+
+func _set_data2(zig_zag_positions: Array) -> void:
 
 	var position_index = 0
 	for index in qr_data_list[qr_data_list.size() - 1].size() / 8:
