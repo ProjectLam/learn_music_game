@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://b1n8ma63lfkxx"
+path="res://.godot/imported/Arlow - How Do You Know [NCS Release].mp3-fd6e204c04b678abb656fc87b8bd2f68.mp3str"
+
+[deps]
+
+source_file="res://Arlow - How Do You Know [NCS Release].mp3"
+dest_files=["res://.godot/imported/Arlow - How Do You Know [NCS Release].mp3-fd6e204c04b678abb656fc87b8bd2f68.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

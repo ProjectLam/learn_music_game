@@ -1,9 +1,17 @@
-[gd_scene load_steps=2 format=3 uid="uid://bd17mh5yqy4j4"]
+[gd_scene load_steps=3 format=3 uid="uid://bd17mh5yqy4j4"]
 
 [ext_resource type="Script" path="res://scenes/options.gd" id="1_6lgmj"]
+[ext_resource type="AudioStream" uid="uid://b1n8ma63lfkxx" path="res://Arlow - How Do You Know [NCS Release].mp3" id="2_1guvh"]
 
 [node name="options" type="Node2D"]
 script = ExtResource("1_6lgmj")
+
+[node name="SetSpeaker" type="Button" parent="."]
+offset_left = 305.0
+offset_top = 265.0
+offset_right = 405.0
+offset_bottom = 297.0
+text = "Set Speaker"
 
 [node name="BackBtn" type="Button" parent="."]
 offset_left = 38.0
@@ -21,4 +29,56 @@ offset_bottom = 65.0
 text = "Options Dialog
 "
 
+[node name="ItemListOutput" type="ItemList" parent="."]
+offset_left = 66.0
+offset_top = 214.0
+offset_right = 255.0
+offset_bottom = 510.0
+
+[node name="ItemListInput" type="ItemList" parent="."]
+offset_left = 464.0
+offset_top = 210.0
+offset_right = 656.0
+offset_bottom = 503.0
+
+[node name="Label2" type="Label" parent="."]
+offset_left = 78.0
+offset_top = 162.0
+offset_right = 216.0
+offset_bottom = 188.0
+text = "Speaker Selection"
+
+[node name="Label3" type="Label" parent="."]
+offset_left = 493.0
+offset_top = 174.0
+offset_right = 533.0
+offset_bottom = 197.0
+text = "Input Selection"
+
+[node name="DeviceInfo" type="Label" parent="."]
+offset_left = 484.0
+offset_top = 514.0
+offset_right = 722.0
+offset_bottom = 610.0
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_1guvh")
+
+[node name="PlayAudio" type="Button" parent="."]
+offset_left = 306.0
+offset_top = 215.0
+offset_right = 403.0
+offset_bottom = 251.0
+text = "PlayAudio"
+
+[node name="SetInput" type="Button" parent="."]
+offset_left = 279.0
+offset_top = 308.0
+offset_right = 447.0
+offset_bottom = 339.0
+text = "Set Recording device"
+
+[connection signal="pressed" from="SetSpeaker" to="." method="_on_set_speaker_pressed"]
 [connection signal="pressed" from="BackBtn" to="." method="_on_back_btn_pressed"]
+[connection signal="pressed" from="PlayAudio" to="." method="_on_play_audio_pressed"]
+[connection signal="pressed" from="SetInput" to="." method="_on_set_input_pressed"]

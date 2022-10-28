@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://cidesbx7k26to"]
+
+[ext_resource type="Script" path="res://scenes/song.gd" id="1_sujkd"]
+[ext_resource type="AudioStream" uid="uid://b1n8ma63lfkxx" path="res://Arlow - How Do You Know [NCS Release].mp3" id="2_kxiup"]
+[ext_resource type="Script" path="res://scenes/visualiser.gd" id="3_xo7g1"]
+
+[node name="song" type="Node2D"]
+script = ExtResource("1_sujkd")
+
+[node name="AudioStreamPlayer2d" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(496, 266)
+stream = ExtResource("2_kxiup")
+autoplay = true
+
+[node name="Node2d" type="Node2D" parent="AudioStreamPlayer2d"]
+position = Vector2(30, 13)
+script = ExtResource("3_xo7g1")
