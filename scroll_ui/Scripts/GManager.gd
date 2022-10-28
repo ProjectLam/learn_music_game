@@ -1,7 +1,7 @@
 extends Control
 @onready var songsFolderPath = "res://TestSongs/"
 @onready var songSArray = []
-@onready var buttonObject ="res://Buttons/SongButton.tscn"
+@onready var buttonObject ="res://scroll_ui/Buttons/SongButton.tscn"
 @onready var buttonsArray = []
 @onready var searchMatches = []
 @onready var vbcBttHolder =$CanvasLayer/HBoxContainer/ScrollContainer/VBC_Buttons

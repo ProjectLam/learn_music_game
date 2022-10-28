@@ -1,14 +1,14 @@
 [gd_scene load_steps=12 format=3 uid="uid://btlm1op6u5758"]
 
-[ext_resource type="Script" path="res://Scripts/GManager.gd" id="1_r0itm"]
-[ext_resource type="Texture2D" uid="uid://cm37yu845tegl" path="res://icon.svg" id="1_tcyj8"]
-[ext_resource type="Shader" path="res://CurvedShader.gdshader" id="2_4q2bj"]
-[ext_resource type="Texture2D" uid="uid://cqo1almnaafjp" path="res://SpiralBack.png" id="2_amsp5"]
-[ext_resource type="Script" path="res://Scripts/ButtonsHeaderBehaviours.gd" id="3_37bfi"]
-[ext_resource type="PackedScene" uid="uid://c8gmek3mgc8si" path="res://Buttons/ByAlbum.tscn" id="3_rosr5"]
-[ext_resource type="PackedScene" uid="uid://c4jmioxmtw0cr" path="res://Buttons/HomeButton.tscn" id="3_umrwv"]
-[ext_resource type="PackedScene" uid="uid://6e32qo4fgnru" path="res://Buttons/ByArtist.tscn" id="4_dqugo"]
-[ext_resource type="PackedScene" uid="uid://ub1uep0ml2jv" path="res://Buttons/ByName.tscn" id="5_tx8kl"]
+[ext_resource type="Script" path="res://scroll_ui/Scripts/GManager.gd" id="1_r0itm"]
+[ext_resource type="Texture2D" uid="uid://cm37yu845tegl" path="res://scroll_ui/icon.svg" id="1_tcyj8"]
+[ext_resource type="Shader" path="res://scroll_ui/CurvedShader.gdshader" id="2_4q2bj"]
+[ext_resource type="Texture2D" uid="uid://cqo1almnaafjp" path="res://scroll_ui/SpiralBack.png" id="2_amsp5"]
+[ext_resource type="Script" path="res://scroll_ui/Scripts/ButtonsHeaderBehaviours.gd" id="3_37bfi"]
+[ext_resource type="PackedScene" uid="uid://c8gmek3mgc8si" path="res://scroll_ui/Buttons/ByAlbum.tscn" id="3_rosr5"]
+[ext_resource type="PackedScene" uid="uid://c4jmioxmtw0cr" path="res://scroll_ui/Buttons/HomeButton.tscn" id="3_umrwv"]
+[ext_resource type="PackedScene" uid="uid://6e32qo4fgnru" path="res://scroll_ui/Buttons/ByArtist.tscn" id="4_dqugo"]
+[ext_resource type="PackedScene" uid="uid://ub1uep0ml2jv" path="res://scroll_ui/Buttons/ByName.tscn" id="5_tx8kl"]
 
 [sub_resource type="Theme" id="Theme_cy3ju"]
 

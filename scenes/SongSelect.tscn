@@ -20,7 +20,6 @@ offset_bottom = 642.0
 text = "Back
 "
 
-
 [node name="ItemList" type="ItemList" parent="."]
 offset_left = 781.0
 offset_top = 6.0
@@ -32,4 +31,3 @@ item_1/text = "Song2"
 
 [connection signal="pressed" from="SelectBtn" to="." method="_on_select_btn_pressed"]
 [connection signal="pressed" from="BackBtn" to="." method="_on_back_btn_pressed"]
-[connection signal="pressed" from="SongSelectBtn" to="." method="_on_song_select_btn_pressed"]

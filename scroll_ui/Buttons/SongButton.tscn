@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://b5nurm76pnhpw"]
 
-[ext_resource type="Script" path="res://Scripts/ButtonsBehaviours/SongButtonBehaviour.gd" id="1_f05a2"]
+[ext_resource type="Script" path="res://scroll_ui/Scripts/ButtonsBehaviours/SongButtonBehaviour.gd" id="1_f05a2"]
 
 [node name="Button_Song" type="Button"]
 clip_contents = true

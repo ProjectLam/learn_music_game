@@ -70,6 +70,5 @@ Testing 123
 "
 
 [node name="Panel" type="Panel" parent="Control"]
-layout_mode = 0
 offset_right = 297.0
 offset_bottom = 651.0
