@@ -1,0 +1,217 @@
+[gd_scene load_steps=12 format=3 uid="uid://btlm1op6u5758"]
+
+[ext_resource type="Script" path="res://Scripts/GManager.gd" id="1_r0itm"]
+[ext_resource type="Texture2D" uid="uid://cm37yu845tegl" path="res://icon.svg" id="1_tcyj8"]
+[ext_resource type="Shader" path="res://CurvedShader.gdshader" id="2_4q2bj"]
+[ext_resource type="Texture2D" uid="uid://cqo1almnaafjp" path="res://SpiralBack.png" id="2_amsp5"]
+[ext_resource type="Script" path="res://Scripts/ButtonsHeaderBehaviours.gd" id="3_37bfi"]
+[ext_resource type="PackedScene" uid="uid://c8gmek3mgc8si" path="res://Buttons/ByAlbum.tscn" id="3_rosr5"]
+[ext_resource type="PackedScene" uid="uid://c4jmioxmtw0cr" path="res://Buttons/HomeButton.tscn" id="3_umrwv"]
+[ext_resource type="PackedScene" uid="uid://6e32qo4fgnru" path="res://Buttons/ByArtist.tscn" id="4_dqugo"]
+[ext_resource type="PackedScene" uid="uid://ub1uep0ml2jv" path="res://Buttons/ByName.tscn" id="5_tx8kl"]
+
+[sub_resource type="Theme" id="Theme_cy3ju"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jcayp"]
+shader = ExtResource("2_4q2bj")
+
+[node name="Song Selection Menu" type="Control"]
+custom_minimum_size = Vector2i(1270, 720)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_r0itm")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+
+[node name="CanvasLaye2" type="CanvasLayer" parent="."]
+follow_viewport_enabled = true
+
+[node name="Backimage" type="TextureRect" parent="CanvasLaye2"]
+offset_left = 1340.0
+offset_right = 2140.0
+offset_bottom = 1085.0
+theme = SubResource("Theme_cy3ju")
+texture = ExtResource("2_amsp5")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+follow_viewport_enabled = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer"]
+custom_minimum_size = Vector2i(1930, 1080)
+anchors_preset = -1
+anchor_right = 0.999
+anchor_bottom = 1.0
+offset_right = 11.9199
+
+[node name="Menu" type="VBoxContainer" parent="CanvasLayer/HBoxContainer"]
+layout_mode = 2
+anchors_preset = -1
+offset_right = 600.0
+offset_bottom = 1080.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 2
+metadata/_edit_group_ = true
+
+[node name="HBC_Top" type="HBoxContainer" parent="CanvasLayer/HBoxContainer/Menu"]
+layout_mode = 2
+offset_right = 600.0
+offset_bottom = 160.0
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.0
+alignment = 1
+
+[node name="TR_Logo" type="TextureRect" parent="CanvasLayer/HBoxContainer/Menu/HBC_Top"]
+custom_minimum_size = Vector2i(160, 160)
+layout_mode = 2
+offset_left = 112.0
+offset_right = 272.0
+offset_bottom = 160.0
+theme = SubResource("Theme_cy3ju")
+texture = ExtResource("1_tcyj8")
+stretch_mode = 4
+
+[node name="Label" type="Label" parent="CanvasLayer/HBoxContainer/Menu/HBC_Top"]
+layout_mode = 2
+offset_left = 276.0
+offset_right = 487.0
+offset_bottom = 160.0
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0.32549, 0.827451, 1)
+theme_override_constants/shadow_offset_y = 5
+theme_override_font_sizes/font_size = 62
+text = "SONGS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBC_Sorter" type="VBoxContainer" parent="CanvasLayer/HBoxContainer/Menu"]
+layout_mode = 2
+offset_top = 164.0
+offset_right = 600.0
+offset_bottom = 1080.0
+size_flags_vertical = 3
+
+[node name="Label_Search_By" type="Label" parent="CanvasLayer/HBoxContainer/Menu/VBC_Sorter"]
+layout_mode = 2
+offset_right = 600.0
+offset_bottom = 70.0
+size_flags_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0.32549, 0.827451, 1)
+theme_override_constants/shadow_offset_y = 5
+theme_override_font_sizes/font_size = 48
+text = "Search by:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBC_ButtonsHeader" type="HBoxContainer" parent="CanvasLayer/HBoxContainer/Menu/VBC_Sorter"]
+layout_mode = 2
+offset_top = 105.0
+offset_right = 600.0
+offset_bottom = 136.0
+size_flags_vertical = 2
+alignment = 1
+script = ExtResource("3_37bfi")
+
+[node name="Button_Album" parent="CanvasLayer/HBoxContainer/Menu/VBC_Sorter/HBC_ButtonsHeader" instance=ExtResource("3_rosr5")]
+layout_mode = 2
+offset_right = 147.0
+offset_bottom = 31.0
+size_flags_vertical = 2
+icon_alignment = 1
+
+[node name="Button_Artist" parent="CanvasLayer/HBoxContainer/Menu/VBC_Sorter/HBC_ButtonsHeader" instance=ExtResource("4_dqugo")]
+layout_mode = 2
+offset_left = 151.0
+offset_right = 298.0
+offset_bottom = 31.0
+size_flags_vertical = 2
+icon_alignment = 1
+
+[node name="Button_Name" parent="CanvasLayer/HBoxContainer/Menu/VBC_Sorter/HBC_ButtonsHeader" instance=ExtResource("5_tx8kl")]
+layout_mode = 2
+offset_left = 302.0
+offset_right = 449.0
+offset_bottom = 31.0
+size_flags_vertical = 2
+icon_alignment = 1
+
+[node name="Button_Home" parent="CanvasLayer/HBoxContainer/Menu/VBC_Sorter/HBC_ButtonsHeader" instance=ExtResource("3_umrwv")]
+layout_mode = 2
+offset_left = 453.0
+offset_right = 600.0
+offset_bottom = 31.0
+size_flags_vertical = 2
+icon_alignment = 1
+
+[node name="SearchBar" type="LineEdit" parent="CanvasLayer/HBoxContainer/Menu/VBC_Sorter"]
+layout_mode = 2
+offset_top = 210.0
+offset_right = 600.0
+offset_bottom = 241.0
+size_flags_vertical = 2
+placeholder_text = "Search by either song name, album or artist"
+
+[node name="TR_AlbumImg" type="TextureRect" parent="CanvasLayer/HBoxContainer/Menu/VBC_Sorter"]
+custom_minimum_size = Vector2i(600, 600)
+layout_mode = 2
+offset_top = 316.0
+offset_right = 600.0
+offset_bottom = 916.0
+size_flags_horizontal = 4
+size_flags_vertical = 3
+texture = ExtResource("1_tcyj8")
+stretch_mode = 4
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/HBoxContainer"]
+custom_minimum_size = Vector2i(600, 320)
+layout_mode = 2
+anchors_preset = -1
+offset_left = 1330.0
+offset_right = 1930.0
+offset_bottom = 1080.0
+
+[node name="VBC_Buttons" type="VBoxContainer" parent="CanvasLayer/HBoxContainer/ScrollContainer"]
+texture_filter = 2
+layout_mode = 2
+offset_bottom = 1080.0
+size_flags_horizontal = 2
+size_flags_vertical = 3
+tooltip_text = "Buttons for the songs"
+theme_override_constants/separation = 5
+alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Mat" type="TextureRect" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_jcayp")
+use_parent_material = true
+anchors_preset = -1
+anchor_left = 0.636688
+anchor_right = 1.00052
+anchor_bottom = 1.0
+offset_left = -1.44006
+offset_right = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+texture = ExtResource("1_tcyj8")
+
+[connection signal="mouse_entered" from="CanvasLayer/HBoxContainer/Menu/VBC_Sorter/HBC_ButtonsHeader/Button_Album" to="CanvasLayer/HBoxContainer/Menu/VBC_Sorter/HBC_ButtonsHeader" method="_on_button_album_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/HBoxContainer/Menu/VBC_Sorter/HBC_ButtonsHeader/Button_Album" to="CanvasLayer/HBoxContainer/Menu/VBC_Sorter/HBC_ButtonsHeader" method="_on_button_album_mouse_exited"]
+[connection signal="mouse_entered" from="CanvasLayer/HBoxContainer/Menu/VBC_Sorter/HBC_ButtonsHeader/Button_Artist" to="CanvasLayer/HBoxContainer/Menu/VBC_Sorter/HBC_ButtonsHeader" method="_on_button_artist_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/HBoxContainer/Menu/VBC_Sorter/HBC_ButtonsHeader/Button_Artist" to="CanvasLayer/HBoxContainer/Menu/VBC_Sorter/HBC_ButtonsHeader" method="_on_button_artist_mouse_exited"]
+[connection signal="button_down" from="CanvasLayer/HBoxContainer/Menu/VBC_Sorter/HBC_ButtonsHeader/Button_Name" to="CanvasLayer/HBoxContainer/Menu/VBC_Sorter/HBC_ButtonsHeader" method="_on_button_name_button_down"]
+[connection signal="mouse_entered" from="CanvasLayer/HBoxContainer/Menu/VBC_Sorter/HBC_ButtonsHeader/Button_Name" to="CanvasLayer/HBoxContainer/Menu/VBC_Sorter/HBC_ButtonsHeader" method="_on_button_name_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/HBoxContainer/Menu/VBC_Sorter/HBC_ButtonsHeader/Button_Name" to="CanvasLayer/HBoxContainer/Menu/VBC_Sorter/HBC_ButtonsHeader" method="_on_button_name_mouse_exited"]
+[connection signal="mouse_entered" from="CanvasLayer/HBoxContainer/Menu/VBC_Sorter/HBC_ButtonsHeader/Button_Home" to="CanvasLayer/HBoxContainer/Menu/VBC_Sorter/HBC_ButtonsHeader" method="_on_button_home_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/HBoxContainer/Menu/VBC_Sorter/HBC_ButtonsHeader/Button_Home" to="CanvasLayer/HBoxContainer/Menu/VBC_Sorter/HBC_ButtonsHeader" method="_on_button_home_mouse_exited"]
+[connection signal="text_changed" from="CanvasLayer/HBoxContainer/Menu/VBC_Sorter/SearchBar" to="." method="_on_search_bar_text_changed"]

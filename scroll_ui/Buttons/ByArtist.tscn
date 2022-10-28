@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://6e32qo4fgnru"]
+
+[node name="Button_Artist" type="Button"]
+clip_contents = true
+custom_minimum_size = Vector2i(30, 30)
+offset_right = 30.0
+offset_bottom = 30.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "ARTIST"
