@@ -8,7 +8,7 @@ enum ERROR_CORRECT_LEVEL {
 	LOW = 0,
 	MEDIUM = 1, 
 	QUARTILE = 2,
-	HIGH = 3, 
+	HIGH = 3
 }
 
 const ERROR_CORRECT_LEVEL_BITS = {
@@ -401,20 +401,20 @@ func _set_error_correction() -> void:
 
 
 func _apply_mask_pattern(mask_pattern: int, positions: Array) -> void:
-	var invert: bool = false
+	var reverse: bool = false
 	
 	for position in positions:
 		match mask_pattern:
-			0:  invert = int(position.x + position.y) % 2 == 0
-			1:  invert = int(position.y) % 2 == 0
-			2:  invert = int(position.x) % 3 == 0
-			3:  invert = int(position.x + position.y) % 3 == 0
-			4:  invert = int(floor(position.x / 3) + floor(position.y / 2)) % 2 == 0
-			5:  invert = int(position.x * position.y) % 2 + int(position.x * position.y) % 3 == 0
-			6:  invert = (int(position.x * position.y) % 2 + int(position.x * position.y) % 3) % 2 == 0
-			7:  invert = (int(position.x + position.y) % 2 + int(position.x * position.y) % 3) % 2 == 0
+			0:  reverse = int(position.x + position.y) % 2 == 0
+			1:  reverse = int(position.y) % 2 == 0
+			2:  reverse = int(position.x) % 3 == 0
+			3:  reverse = int(position.x + position.y) % 3 == 0
+			4:  reverse = int(floor(position.x / 3) + floor(position.y / 2)) % 2 == 0
+			5:  reverse = int(position.x * position.y) % 2 + int(position.x * position.y) % 3 == 0
+			6:  reverse = (int(position.x * position.y) % 2 + int(position.x * position.y) % 3) % 2 == 0
+			7:  reverse = (int(position.x + position.y) % 2 + int(position.x * position.y) % 3) % 2 == 0
 
-		if invert:
+		if reverse:
 			modules[position.x][position.y] = !modules[position.x][position.y]
 
 
@@ -594,10 +594,10 @@ func get_lost_point() -> int:
 
 func _generate_texture_image(data: Array) -> ImageTexture:
 	var image: Image = Image.new()
-	
-	image.create(data.size() + 2, data.size() + 2, false, Image.FORMAT_RGB8)
+
+	image.create(data.size() + 2, data.size() + 2, false, Image.FORMAT_RGBA8)
 	image.fill(Color.WHITE)
-	
+
 	for row in range(data.size()):
 		for col in range(data[row].size()):
 			var color = Color.BLACK if data[row][col] else Color.WHITE
@@ -607,9 +607,8 @@ func _generate_texture_image(data: Array) -> ImageTexture:
 
 			image.set_pixel(row + 1, col + 1, color)
 
-
 	var texture: ImageTexture = ImageTexture.new()
-	return texture.create_from_image(image) #,ImageTexture.FLAG_CONVERT_TO_LINEAR
+	return texture.create_from_image(image)
 
 
 func _get_data_zigzag_positions() -> Array:
