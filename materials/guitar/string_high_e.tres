@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://by2r5k277ccx5"]
+
+[resource]
+resource_name = "string_high_e"
+cull_mode = 2
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.682353, 0, 0.623529, 1)
+roughness = 0.5
+emission_enabled = true
+emission = Color(0.886275, 0, 0.811765, 1)

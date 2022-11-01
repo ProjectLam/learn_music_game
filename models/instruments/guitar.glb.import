@@ -1,0 +1,72 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://b8gkxcwvkl3m5"
+path="res://.godot/imported/guitar.glb-615becb93b68a6b6bb8ba2140702447f.scn"
+
+[deps]
+
+source_file="res://models/instruments/guitar.glb"
+dest_files=["res://.godot/imported/guitar.glb-615becb93b68a6b6bb8ba2140702447f.scn"]
+
+[params]
+
+nodes/root_type="Node3D"
+nodes/root_name="Scene Root"
+nodes/apply_root_scale=true
+nodes/root_scale=1.0
+meshes/ensure_tangents=true
+meshes/generate_lods=true
+meshes/create_shadow_meshes=true
+meshes/light_baking=1
+meshes/lightmap_texel_size=0.2
+skins/use_named_skins=true
+animation/import=true
+animation/fps=30
+import_script/path=""
+_subresources={
+"materials": {
+"fret_dot": {
+"use_external/enabled": true,
+"use_external/path": "res://materials/guitar/fret_dot.tres"
+},
+"fret_dot_outline": {
+"use_external/enabled": true,
+"use_external/path": "res://materials/guitar/fret_dot_outline.tres"
+},
+"frets": {
+"use_external/enabled": true,
+"use_external/path": "res://materials/guitar/frets.tres"
+},
+"nut": {
+"use_external/enabled": true,
+"use_external/path": "res://materials/guitar/nut.tres"
+},
+"string_a": {
+"use_external/enabled": true,
+"use_external/path": "res://materials/guitar/string_a.tres"
+},
+"string_b": {
+"use_external/enabled": true,
+"use_external/path": "res://materials/guitar/string_b.tres"
+},
+"string_d": {
+"use_external/enabled": true,
+"use_external/path": "res://materials/guitar/string_d.tres"
+},
+"string_g": {
+"use_external/enabled": true,
+"use_external/path": "res://materials/guitar/string_g.tres"
+},
+"string_high_e": {
+"use_external/enabled": true,
+"use_external/path": "res://materials/guitar/string_high_e.tres"
+},
+"string_low_e": {
+"use_external/enabled": true,
+"use_external/path": "res://materials/guitar/string_low_e.tres"
+}
+}
+}

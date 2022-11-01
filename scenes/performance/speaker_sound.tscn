@@ -1,0 +1,88 @@
+[gd_scene load_steps=8 format=3 uid="uid://roam832ghj8d"]
+
+[ext_resource type="Script" path="res://scenes/performance/speaker_sound.gd" id="1_0m1he"]
+[ext_resource type="Shader" path="res://scenes/performance/speaker_sound.gdshader" id="1_koi0h"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_umaxm"]
+render_priority = 0
+shader = ExtResource("1_koi0h")
+shader_parameter/color = Color(1, 1, 0.34, 1)
+shader_parameter/radius = 1.0
+shader_parameter/thickness = 0.01
+
+[sub_resource type="QuadMesh" id="QuadMesh_q0dx0"]
+
+[sub_resource type="Animation" id="Animation_mx752"]
+resource_name = "grow"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material_override:shader_parameter/radius")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0.5)]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("..")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_wvuxs"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_42oq1"]
+_data = {
+"RESET": SubResource("Animation_wvuxs"),
+"grow": SubResource("Animation_mx752")
+}
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_0m1he")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+material_override = SubResource("ShaderMaterial_umaxm")
+mesh = SubResource("QuadMesh_q0dx0")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="MeshInstance3D"]
+libraries = {
+"": SubResource("AnimationLibrary_42oq1")
+}
