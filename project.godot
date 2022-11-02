@@ -9,6 +9,21 @@
 config_version=5
 
 _global_script_classes=[{
+"base": "RefCounted",
+"class": &"GutHookScript",
+"language": &"GDScript",
+"path": "res://addons/gut/hook_script.gd"
+}, {
+"base": "RefCounted",
+"class": &"GutStringUtils",
+"language": &"GDScript",
+"path": "res://addons/gut/strutils.gd"
+}, {
+"base": "Node",
+"class": &"GutTest",
+"language": &"GDScript",
+"path": "res://addons/gut/test.gd"
+}, {
 "base": "Node",
 "class": &"QrCode",
 "language": &"GDScript",
@@ -35,6 +50,9 @@ _global_script_classes=[{
 "path": "res://compat/WebSocketServer.gd"
 }]
 _global_script_class_icons={
+"GutHookScript": "",
+"GutStringUtils": "",
+"GutTest": "",
 "QrCode": "",
 "ReedSolomonGenerator": "",
 "Utils": "",
@@ -55,6 +73,11 @@ run/main_scene.web="res://scenes/djclient.tscn"
 WebsocketServer="*res://scenes/websocket_server.gd"
 PlayerVariables="*res://scenes/PlayerVariables.gd"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/gut/plugin.cfg")
+
 [rendering]
 
+renderer/rendering_method="mobile"
 anti_aliasing/quality/msaa_3d=2

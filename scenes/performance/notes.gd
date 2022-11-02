@@ -10,7 +10,7 @@ signal note_ended()
 @export var string_colors: PackedColorArray
 
 # How far back from the world origin notes should be spawned
-@export var spawn_distance: float = 48
+@export var spawn_distance: float = 248
 
 # How far apart the strings are
 @export var string_spacing: float

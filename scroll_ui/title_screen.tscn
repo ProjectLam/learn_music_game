@@ -50,7 +50,6 @@ anchor_bottom = 1.0
 offset_right = 11.9199
 
 [node name="Menu" type="VBoxContainer" parent="CanvasLayer/HBoxContainer"]
-layout_mode = 2
 anchors_preset = -1
 offset_right = 600.0
 offset_bottom = 1080.0
@@ -60,7 +59,6 @@ size_flags_horizontal = 2
 metadata/_edit_group_ = true
 
 [node name="HBC_Top" type="HBoxContainer" parent="CanvasLayer/HBoxContainer/Menu"]
-layout_mode = 2
 offset_right = 600.0
 offset_bottom = 160.0
 size_flags_vertical = 3
@@ -69,7 +67,6 @@ alignment = 1
 
 [node name="TR_Logo" type="TextureRect" parent="CanvasLayer/HBoxContainer/Menu/HBC_Top"]
 custom_minimum_size = Vector2i(160, 160)
-layout_mode = 2
 offset_left = 112.0
 offset_right = 272.0
 offset_bottom = 160.0
@@ -78,7 +75,6 @@ texture = ExtResource("1_tcyj8")
 stretch_mode = 4
 
 [node name="Label" type="Label" parent="CanvasLayer/HBoxContainer/Menu/HBC_Top"]
-layout_mode = 2
 offset_left = 276.0
 offset_right = 487.0
 offset_bottom = 160.0
@@ -92,14 +88,12 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="VBC_Sorter" type="VBoxContainer" parent="CanvasLayer/HBoxContainer/Menu"]
-layout_mode = 2
 offset_top = 164.0
 offset_right = 600.0
 offset_bottom = 1080.0
 size_flags_vertical = 3
 
 [node name="Label_Search_By" type="Label" parent="CanvasLayer/HBoxContainer/Menu/VBC_Sorter"]
-layout_mode = 2
 offset_right = 600.0
 offset_bottom = 70.0
 size_flags_vertical = 2
@@ -112,7 +106,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="HBC_ButtonsHeader" type="HBoxContainer" parent="CanvasLayer/HBoxContainer/Menu/VBC_Sorter"]
-layout_mode = 2
 offset_top = 105.0
 offset_right = 600.0
 offset_bottom = 136.0
@@ -121,14 +114,12 @@ alignment = 1
 script = ExtResource("3_37bfi")
 
 [node name="Button_Album" parent="CanvasLayer/HBoxContainer/Menu/VBC_Sorter/HBC_ButtonsHeader" instance=ExtResource("3_rosr5")]
-layout_mode = 2
 offset_right = 147.0
 offset_bottom = 31.0
 size_flags_vertical = 2
 icon_alignment = 1
 
 [node name="Button_Artist" parent="CanvasLayer/HBoxContainer/Menu/VBC_Sorter/HBC_ButtonsHeader" instance=ExtResource("4_dqugo")]
-layout_mode = 2
 offset_left = 151.0
 offset_right = 298.0
 offset_bottom = 31.0
@@ -136,7 +127,6 @@ size_flags_vertical = 2
 icon_alignment = 1
 
 [node name="Button_Name" parent="CanvasLayer/HBoxContainer/Menu/VBC_Sorter/HBC_ButtonsHeader" instance=ExtResource("5_tx8kl")]
-layout_mode = 2
 offset_left = 302.0
 offset_right = 449.0
 offset_bottom = 31.0
@@ -144,7 +134,6 @@ size_flags_vertical = 2
 icon_alignment = 1
 
 [node name="Button_Home" parent="CanvasLayer/HBoxContainer/Menu/VBC_Sorter/HBC_ButtonsHeader" instance=ExtResource("3_umrwv")]
-layout_mode = 2
 offset_left = 453.0
 offset_right = 600.0
 offset_bottom = 31.0
@@ -152,7 +141,6 @@ size_flags_vertical = 2
 icon_alignment = 1
 
 [node name="SearchBar" type="LineEdit" parent="CanvasLayer/HBoxContainer/Menu/VBC_Sorter"]
-layout_mode = 2
 offset_top = 210.0
 offset_right = 600.0
 offset_bottom = 241.0
@@ -161,7 +149,6 @@ placeholder_text = "Search by either song name, album or artist"
 
 [node name="TR_AlbumImg" type="TextureRect" parent="CanvasLayer/HBoxContainer/Menu/VBC_Sorter"]
 custom_minimum_size = Vector2i(600, 600)
-layout_mode = 2
 offset_top = 316.0
 offset_right = 600.0
 offset_bottom = 916.0
@@ -172,7 +159,6 @@ stretch_mode = 4
 
 [node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/HBoxContainer"]
 custom_minimum_size = Vector2i(600, 320)
-layout_mode = 2
 anchors_preset = -1
 offset_left = 1330.0
 offset_right = 1930.0
@@ -180,7 +166,6 @@ offset_bottom = 1080.0
 
 [node name="VBC_Buttons" type="VBoxContainer" parent="CanvasLayer/HBoxContainer/ScrollContainer"]
 texture_filter = 2
-layout_mode = 2
 offset_bottom = 1080.0
 size_flags_horizontal = 2
 size_flags_vertical = 3
