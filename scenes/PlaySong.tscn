@@ -57,6 +57,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Control"]
+layout_mode = 0
 offset_left = 987.0
 offset_top = 14.0
 offset_right = 1166.0
@@ -70,5 +71,6 @@ Testing 123
 "
 
 [node name="Panel" type="Panel" parent="Control"]
+layout_mode = 0
 offset_right = 297.0
 offset_bottom = 651.0
