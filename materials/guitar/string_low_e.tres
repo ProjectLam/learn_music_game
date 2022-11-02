@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://civmb4ixdivd7"]
+
+[resource]
+resource_name = "string_low_e"
+cull_mode = 2
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.680478, 0, 0, 1)
+roughness = 0.5
+emission_enabled = true
+emission = Color(0.885292, 0, 0, 1)
