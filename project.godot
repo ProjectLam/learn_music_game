@@ -73,6 +73,11 @@ run/main_scene.web="res://scenes/djclient.tscn"
 WebsocketServer="*res://scenes/websocket_server.gd"
 PlayerVariables="*res://scenes/PlayerVariables.gd"
 
+[display]
+
+window/size/viewport_width=1600
+window/size/viewport_height=1000
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/gut/plugin.cfg")
