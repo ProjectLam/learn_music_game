@@ -1,0 +1,18 @@
+[gd_scene load_steps=5 format=3 uid="uid://o3ynhdu3ub4b"]
+
+[ext_resource type="Script" path="res://autoload/instrument_input/instrument_input.gd" id="1_tr0se"]
+[ext_resource type="Script" path="res://autoload/instrument_input/microphone_input.gd" id="2_cci1d"]
+[ext_resource type="Script" path="res://autoload/instrument_input/midi_input.gd" id="3_e7eyk"]
+[ext_resource type="Script" path="res://autoload/instrument_input/computer_keyboard_input.gd" id="3_nascm"]
+
+[node name="InstrumentInput" type="Node"]
+script = ExtResource("1_tr0se")
+
+[node name="MicrophoneInput" type="Node" parent="."]
+script = ExtResource("2_cci1d")
+
+[node name="MidiInput" type="Node" parent="."]
+script = ExtResource("3_e7eyk")
+
+[node name="ComputerKeyboardInput" type="Node" parent="."]
+script = ExtResource("3_nascm")

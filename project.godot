@@ -25,6 +25,11 @@ _global_script_classes=[{
 "path": "res://addons/gut/test.gd"
 }, {
 "base": "Node",
+"class": &"InputInstrument",
+"language": &"GDScript",
+"path": "res://autoload/instrument_input/input_instrument.gd"
+}, {
+"base": "Node",
 "class": &"QrCode",
 "language": &"GDScript",
 "path": "res://qr_code/qr_code.gd"
@@ -53,6 +58,7 @@ _global_script_class_icons={
 "GutHookScript": "",
 "GutStringUtils": "",
 "GutTest": "",
+"InputInstrument": "",
 "QrCode": "",
 "ReedSolomonGenerator": "",
 "Utils": "",
@@ -73,6 +79,7 @@ run/main_scene.web="res://scenes/djclient.tscn"
 WebsocketServer="*res://scenes/websocket_server.gd"
 PlayerVariables="*res://scenes/PlayerVariables.gd"
 NoteFrequency="*res://autoload/note_frequency.gd"
+InstrumentInput="*res://autoload/instrument_input/instrument_input.tscn"
 
 [display]
 
