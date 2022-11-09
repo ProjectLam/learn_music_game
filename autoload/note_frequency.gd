@@ -110,7 +110,7 @@ const G5: float = pow(2.0, 10/12.0) * A5
 const G_SHARP5: float = pow(2.0, 11/12.0) * A5
 const A_FLAT5: float = G_SHARP5
 
-const A6: float = 110.0
+const A6: float = 1760.0
 const A_SHARP6: float = pow(2.0, 1/12.0) * A6
 const B_FLAT6: float = A_SHARP6
 const B6: float = pow(2.0, 2/12.0) * A6
@@ -128,7 +128,7 @@ const G6: float = pow(2.0, 10/12.0) * A6
 const G_SHARP6: float = pow(2.0, 11/12.0) * A6
 const A_FLAT6: float = G_SHARP6
 
-const A7: float = 110.0
+const A7: float = 3520.0
 const A_SHARP7: float = pow(2.0, 1/12.0) * A7
 const B_FLAT7: float = A_SHARP7
 const B7: float = pow(2.0, 2/12.0) * A7
