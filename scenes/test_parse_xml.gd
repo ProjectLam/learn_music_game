@@ -17,6 +17,14 @@ func read_text():
 		return text
 	return ""
 
+#TODO GOALs
+
+#1 Iterate all the memebers of the Song class
+# if they exist, then just read the text into them
+#2 unkown nodes go into a catchall map
+#2b potentially have a way to serialize attributes on these nodes, or maybe punt on this
+#3 have a blacklist of items we want to skip (complex parsibles
+#4 be able to have custom struct parsers for specific nodes
 
 func _ready():
 	errorCode = parser.open("res://song.xml.txt")
