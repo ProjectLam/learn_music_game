@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://cidesbx7k26to"]
+[gd_scene load_steps=4 format=3 uid="uid://fju27ydrh2x8"]
 
 [ext_resource type="Script" path="res://scenes/song.gd" id="1_sujkd"]
 [ext_resource type="AudioStream" uid="uid://b1n8ma63lfkxx" path="res://Arlow - How Do You Know [NCS Release].mp3" id="2_kxiup"]

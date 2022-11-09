@@ -1,8 +1,19 @@
 extends Node2D
 @onready var item_list = get_node(^"ItemList")
+var path = "user://songs/"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	var dir = DirAccess.open(path)
+	dir.list_dir_begin()
+	while true:
+		var songFile = dir.get_next()
+		if songFile == "": 
+			break
+		elif !songFile.begins_with(".") and !songFile.ends_with(".import"):
+			item_list.add_item(songFile)
+	dir.list_dir_end()
+
 	pass # Replace with function body.
 
 
@@ -25,6 +36,7 @@ func _on_select_btn_pressed():
 
 	print(selected_song)
 	print(selected_song_id)
-	PlayerVariables.current_song = selected_song
+	PlayerVariables.current_song = path + selected_song
+#	PlayerVariables.current_song = "user://song_knbeegelovey_fixed.mp3"
 
-	get_tree().change_scene_to_file("res://scenes/song.tscn")
+	get_tree().change_scene_to_file("res://scenes/performance.tscn")

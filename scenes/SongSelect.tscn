@@ -25,9 +25,6 @@ offset_left = 781.0
 offset_top = 6.0
 offset_right = 1124.0
 offset_bottom = 522.0
-item_count = 2
-item_0/text = "Song1"
-item_1/text = "Song2"
 
 [connection signal="pressed" from="SelectBtn" to="." method="_on_select_btn_pressed"]
 [connection signal="pressed" from="BackBtn" to="." method="_on_back_btn_pressed"]
