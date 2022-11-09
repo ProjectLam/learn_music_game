@@ -35,6 +35,11 @@ _global_script_classes=[{
 "path": "res://qr_code/reed_solomon_generator.gd"
 }, {
 "base": "Node",
+"class": &"Song",
+"language": &"GDScript",
+"path": "res://scenes/song_parser/song.gd"
+}, {
+"base": "Node",
 "class": &"Utils",
 "language": &"GDScript",
 "path": "res://qr_code/utils.gd"
@@ -48,6 +53,11 @@ _global_script_classes=[{
 "class": &"WebSocketServer",
 "language": &"GDScript",
 "path": "res://compat/WebSocketServer.gd"
+}, {
+"base": "XMLParser",
+"class": &"XmlDeserializer",
+"language": &"GDScript",
+"path": "res://XmlDeserializer.gd"
 }]
 _global_script_class_icons={
 "GutHookScript": "",
@@ -55,9 +65,11 @@ _global_script_class_icons={
 "GutTest": "",
 "QrCode": "",
 "ReedSolomonGenerator": "",
+"Song": "",
 "Utils": "",
 "WebSocketClient": "",
-"WebSocketServer": ""
+"WebSocketServer": "",
+"XmlDeserializer": ""
 }
 
 [application]

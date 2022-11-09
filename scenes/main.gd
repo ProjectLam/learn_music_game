@@ -15,7 +15,7 @@ func _on_song_select_btn_pressed():
 	get_tree().change_scene_to_file("res://scenes/SongSelect.tscn")
 
 
-func _on_qr_code_btn_pressed():
+func _on_qr_code_btn_pres	sed():
 	get_tree().change_scene_to_file("res://scenes/QRCode.tscn")
 
 
