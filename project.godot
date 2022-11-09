@@ -72,6 +72,7 @@ run/main_scene.web="res://scenes/djclient.tscn"
 
 WebsocketServer="*res://scenes/websocket_server.gd"
 PlayerVariables="*res://scenes/PlayerVariables.gd"
+NoteFrequency="*res://autoload/note_frequency.gd"
 
 [display]
 
