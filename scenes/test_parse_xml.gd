@@ -4,6 +4,8 @@ extends Node2D
 @onready var errorCode = 0
 @onready var parser = XMLParser.new()
 @onready var xmlPBA = PackedByteArray()
+@onready var extractNodes = { "artistName": true, "title": true, "albumName": true }
+@onready var customParser = { "ebeats": true }
 
 func read_text():
 	if parser.get_node_type() == parser.NODE_ELEMENT:
@@ -44,9 +46,12 @@ func _ready():
 
 	while parser.read() != ERR_FILE_EOF:
 		print(parser.get_node_name(), ": ", parser.get_node_data())
-		print(parser.get_node_name(), ": default---"+ parser.get_named_attribute_value_safe("value"))
-		if(parser.get_node_name() == "artistName"):
-			song.artistName =  read_text()
+#		print(parser.get_node_name(), ": default---"+ parser.get_named_attribute_value_safe("value"))
+		var node_name = parser.get_node_name()
+		if(customParser.has(node_name)):
+			song.call("parser_"+node_name)
+		if(extractNodes.has(node_name)):
+			song.set(node_name, read_text())
 
 #		if(parser.get_node_name() == "phrases"):
 #			print("------phrases-----------------")
@@ -88,3 +93,4 @@ func _ready():
 			for i in range(parser.get_attribute_count()):
 				print(parser.get_attribute_name(i), ": ", parser.get_attribute_value(i))
 				dicL1[parser.get_attribute_name(i)] = parser.get_attribute_value(i)
+	print(song)
