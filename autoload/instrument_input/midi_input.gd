@@ -25,7 +25,6 @@ func get_inputs()->Array:
 
 func _input(event):
 	if event is InputEventMIDI and (event.message == MIDI_MESSAGE_NOTE_ON or event.message == MIDI_MESSAGE_NOTE_OFF):
-		print(event.message)
 		var chromatic_index = event.pitch + MIDI_OFFSET
 		if chromatic_index < 0 or chromatic_index >= NoteFrequency.CHROMATIC.size():
 			return

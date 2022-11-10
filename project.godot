@@ -74,6 +74,10 @@ config/features=PackedStringArray("4.0", "Mobile")
 config/icon="res://icon.svg"
 run/main_scene.web="res://scenes/djclient.tscn"
 
+[audio]
+
+driver/enable_input=true
+
 [autoload]
 
 WebsocketServer="*res://scenes/websocket_server.gd"
