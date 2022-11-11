@@ -38,7 +38,6 @@ _global_script_classes=[{
 "class": &"InputInstrument",
 "language": &"GDScript",
 "path": "res://autoload/instrument_input/input_instrument.gd"
-}
 }, {
 "base": "Node",
 "class": &"QrCode",
@@ -85,11 +84,8 @@ _global_script_class_icons={
 "GutHookScript": "",
 "GutStringUtils": "",
 "GutTest": "",
-<<<<<<< HEAD
 "Level": "",
-=======
 "InputInstrument": "",
->>>>>>> main
 "QrCode": "",
 "ReedSolomonGenerator": "",
 "SNote": "",
