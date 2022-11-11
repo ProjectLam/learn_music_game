@@ -6,6 +6,7 @@ var parser = XMLParser.new()
 var xmlPBA = PackedByteArray()
 var extractNodes = { "artistName": true, "title": true, "albumName": true }
 var customParser = { "ebeats": true }
+var current_song:Song
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -18,7 +19,21 @@ func _process(delta):
 
 
 func parser_ebeats():
-	print("weeee ebeats")
+	var count = parser.get_named_attribute_value_safe("count")
+	current_song.ebeats.count = count
+	
+	while parser.read() != ERR_FILE_EOF:
+		var node_name = parser.get_node_name()
+		print(parser.get_node_name(), ": ", parser.get_node_data())
+		if parser.get_node_type() == parser.NODE_ELEMENT && node_name == "ebeat":
+			var time = parser.get_named_attribute_value_safe("time").to_float()
+			var measure = parser.get_named_attribute_value_safe("measure").to_float()
+			var ebeat = Vector2(measure, time)
+			current_song.ebeats.beats.append(ebeat)		
+		elif node_name != "ebeat" && parser.get_node_type() == parser.NODE_ELEMENT_END:
+			return #ok done
+
+			
 
 # Extracts a xml element and reads the text 
 # for examle <bob a="123">test</bob> would return "test"
@@ -36,6 +51,7 @@ func xml_read_text():
 	
 func parse_xml(filename:String, song:Song):
 	parser = XMLParser.new()
+	current_song = song
 	var errorCode = parser.open(filename)
 	if errorCode != OK:
 		return #exit(errorCode)

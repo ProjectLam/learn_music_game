@@ -39,8 +39,9 @@ func _ready():
 		currentStream = load_mp3(current_song.songMusicFile)
 		print("Title of song from Meta Data-"+ current_song.title)
 		print("Ebeat data ----")
+		print("count-"+ current_song.ebeats.count)
 		for beat in current_song.ebeats.beats:
-			print("beat-"+ beat)
+			print("beat(time, measure"+ str(beat.x) + "-measure-" + str(beat.y))
 		print("--- end Ebeat data ----")
 
 
