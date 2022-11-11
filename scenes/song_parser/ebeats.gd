@@ -1,8 +1,10 @@
 extends Node
 class_name Ebeats
 
+
 @export var count  = 0 
-@export var beats = []
+@export var beats:Array[Vector2] = []
+
 
 
 # Called when the node enters the scene tree for the first time.

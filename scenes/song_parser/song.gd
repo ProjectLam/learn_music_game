@@ -10,6 +10,7 @@ class_name Song
 @export var ebeats:Ebeats = Ebeats.new()
 @export var songMusicFile = ""
 
+
 #  <albumName>The name</albumName>
 #  <albumNameSort>name, the</albumNameSort>
 #  <albumYear>1981</albumYear>
@@ -23,6 +24,3 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
-
-func parser_ebeats():
-	print("weeee ebeats")
