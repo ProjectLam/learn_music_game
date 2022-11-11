@@ -4,6 +4,18 @@ extends Node2D
 @onready var item_list_input = get_node(^"ItemListInput")
 
 func _ready():
+	var s:Song = Song.new()
+	var l:Level = Level.new()
+	var notes = l.notes
+	for n in 1000:
+		if fmod(len(notes), 100) == 0:
+			print("note- " + str(n))
+
+		var note:SNote = SNote.new() 
+		notes.append(note)
+	
+	print(len(notes))
+	
 	for item in AudioServer.get_device_list():
 		item_list.add_item(item)
 

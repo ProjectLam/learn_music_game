@@ -11,7 +11,7 @@ class_name Song
 @export var ebeats:Ebeats = Ebeats.new()
 @export var songMusicFile = ""
 @export var levels_count = 0
-@export var levels:Array[Level] = [] #potentially change this to a map
+@export var levels:Array[Level] = [] #TODO potentially change this to a map
 
 
 #  <albumName>The name</albumName>
