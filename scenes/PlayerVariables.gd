@@ -1,5 +1,7 @@
 extends Node
-var current_song = ""
+var current_song:Song
+var songs:Array[Song] = []
+
 var selected_output_device = ""
 var selected_input_device = ""
 const cfg_filename = "user://player.cfg"

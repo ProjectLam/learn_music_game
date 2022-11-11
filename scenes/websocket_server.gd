@@ -9,21 +9,24 @@ const PORT = 9080
 var _server = WebSocketServer.new()
 
 func _ready():
-	# Connect base signals to get notified of new client connections,
-	# disconnections, and disconnect requests.
-	_server.connect(&"client_connected", _connected)
-	_server.connect(&"client_disconnected", _disconnected)
-	_server.connect(&"client_close_request", _close_request)
-	# This signal is emitted when not using the Multiplayer API every time a
-	# full packet is received.
-	# Alternatively, you could check get_peer(PEER_ID).get_available_packets()
-	# in a loop for each connected peer.
-	_server.connect(&"data_received", _on_data)
-	# Start listening on the given port.
-	var err = _server.listen(PORT)
-	if err != OK:
-		print("Unable to start server")
-		set_process(false)
+	return 
+	#TODO reconnect this later, also it seems like this changed so much in BETA3 that maybe just rewrite
+#	# Connect base signals to get notified of new client connections,
+#	# disconnections, and disconnect requests.
+#	_server.connect(&"client_connected", _connected)
+#	_server.connect(&"client_disconnected", _disconnected)
+#	_server.connect(&"client_close_request", _close_request)
+#	# This signal is emitted when not using the Multiplayer API every time a
+#	# full packet is received.
+#	# Alternatively, you could check get_peer(PEER_ID).get_available_packets()
+#	# in a loop for each connected peer.
+#	_server.connect(&"data_received", _on_data)
+#	# Start listening on the given port.
+#	var err = _server.listen(PORT)
+#	if err != OK:
+#		print("Unable to start server")
+#		set_process(false)
+	
 
 
 func _connected(id, proto, rname):
@@ -56,7 +59,9 @@ func _on_data(id):
 func _process(_delta):
 	# Call this in _process or _physics_process.
 	# Data transfer, and signals emission will only happen when calling this function.
-	_server.poll()
+	
+	#_server.poll()
+	return
 
 
 func _exit_tree():
