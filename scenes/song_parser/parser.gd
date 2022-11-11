@@ -24,8 +24,9 @@ func parser_note(note:SNote):
 	for i in range(parser.get_attribute_count()):
 		var attr_name = parser.get_attribute_name(i)
 		var val = parser.get_attribute_value(i)
-		if(!notesAllowed.has(attr_name)):
-			continue
+		#lets not filter any for now, TODO in future we should
+		#if(!notesAllowed.has(attr_name)):
+		#	continue
 
 		if attr_name == "sustain"  || attr_name == "time" :
 #			print("attr-" + attr_name  + " val-" + val)
