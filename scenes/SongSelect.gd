@@ -1,6 +1,6 @@
 extends Node2D
 @onready var item_list = get_node(^"ItemList")
-var path = "user://songs/"
+var path = "user://songs"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -15,7 +15,7 @@ func _ready():
 			break
 		elif !songFile.begins_with(".") && dir.current_is_dir():
 			print("Found directory - " + songFile)
-			handle_song_dir(songFile,dir.get_current_dir() + songFile) # ugly, why isn't there any easier way to do this
+			handle_song_dir(songFile,dir.get_current_dir() + "/"+ songFile) # ugly, why isn't there any easier way to do this
 		elif songFile.ends_with(".zip"):
 			#TODO in future allow songs to be .zip files
 			print("Found zip (Not implemented yet) - " + songFile)
@@ -39,7 +39,7 @@ func handle_song_dir(songFile:String, curPath:String):
 			var full_xml =  dir.get_current_dir() + "/" + iFile
 			print("got xml - " + full_xml)
 			var sp:SongParser = SongParser.new()
-			sp.parse_xml(full_xml, song)
+			#sp.parse_xml(full_xml, song)
 			#NOTE this is the core Xml File, there are up to 4 other ones
 
 	dir.list_dir_end()

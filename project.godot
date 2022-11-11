@@ -30,6 +30,11 @@ _global_script_classes=[{
 "path": "res://addons/gut/test.gd"
 }, {
 "base": "Node",
+"class": &"Level",
+"language": &"GDScript",
+"path": "res://scenes/song_parser/level.gd"
+}, {
+"base": "Node",
 "class": &"InputInstrument",
 "language": &"GDScript",
 "path": "res://autoload/instrument_input/input_instrument.gd"
@@ -43,6 +48,11 @@ _global_script_classes=[{
 "class": &"ReedSolomonGenerator",
 "language": &"GDScript",
 "path": "res://qr_code/reed_solomon_generator.gd"
+}, {
+"base": "Node",
+"class": &"SNote",
+"language": &"GDScript",
+"path": "res://scenes/song_parser/note.gd"
 }, {
 "base": "Node",
 "class": &"Song",
@@ -74,9 +84,11 @@ _global_script_class_icons={
 "GutHookScript": "",
 "GutStringUtils": "",
 "GutTest": "",
+"Level": "",
 "InputInstrument": "",
 "QrCode": "",
 "ReedSolomonGenerator": "",
+"SNote": "",
 "Song": "",
 "SongParser": "",
 "Utils": "",

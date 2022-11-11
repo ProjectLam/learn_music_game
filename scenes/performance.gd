@@ -38,12 +38,24 @@ func _ready():
 		#TODO determine file type and handle ogg in future also
 		currentStream = load_mp3(current_song.songMusicFile)
 		print("Title of song from Meta Data-"+ current_song.title)
-		print("Ebeat data ----")
-		print("count-"+ current_song.ebeats.count)
-		for beat in current_song.ebeats.beats:
-			print("beat(time, measure"+ str(beat.x) + "-measure-" + str(beat.y))
-		print("--- end Ebeat data ----")
+		#print("Ebeat data ----")
+		#print("count-"+ current_song.ebeats.count)
+		#for beat in current_song.ebeats.beats:
+		#	print("beat(time"+ str(beat.x) + "-measure-" + str(beat.y))
+		#print("--- end Ebeat data ----")
 
+
+		print("Levels data ----")
+		print("count-"+ current_song.levels_count)
+		for level in current_song.levels:
+			print("level(difficulty"+ str(level.difficulty)+ " )")
+			print("notes data ----")
+			for note in level.notes:
+				print("---note -" + str(note)  + "- time-" + str(note.time)) #TODO expand
+			
+			print("--- end notes data ----")
+			
+		print("--- end level data ----")
 
 	audio_stream.stream = currentStream
 	audio_stream.playing = true
