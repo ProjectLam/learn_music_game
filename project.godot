@@ -9,6 +9,11 @@
 config_version=5
 
 _global_script_classes=[{
+"base": "Node",
+"class": &"Ebeats",
+"language": &"GDScript",
+"path": "res://scenes/song_parser/ebeats.gd"
+}, {
 "base": "RefCounted",
 "class": &"GutHookScript",
 "language": &"GDScript",
@@ -60,6 +65,7 @@ _global_script_classes=[{
 "path": "res://XmlDeserializer.gd"
 }]
 _global_script_class_icons={
+"Ebeats": "",
 "GutHookScript": "",
 "GutStringUtils": "",
 "GutTest": "",

@@ -10,6 +10,7 @@ var _server = WebSocketServer.new()
 
 func _ready():
 	return 
+	#TODO reconnect this later, also it seems like this changed so much in BETA3 that maybe just rewrite
 #	# Connect base signals to get notified of new client connections,
 #	# disconnections, and disconnect requests.
 #	_server.connect(&"client_connected", _connected)

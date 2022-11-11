@@ -26,14 +26,15 @@ func load_ogg(path):
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	print(PlayerVariables.current_song)
-	
-	
+		
 	var currentStream:AudioStream
-	if PlayerVariables.current_song == "":
+	if PlayerVariables.current_song == null || PlayerVariables.current_song.songMusicFile == "":
 		# just for quick debugging
 		currentStream = load_mp3("res://Arlow - How Do You Know [NCS Release].mp3")
 	else:
-		currentStream = load_mp3(PlayerVariables.current_song)
+		print(PlayerVariables.current_song.songMusicFile)
+		#TODO determine file type and handle ogg in future also
+		currentStream = load_mp3(PlayerVariables.current_song.songMusicFile)
 
 	audio_stream.stream = currentStream
 	audio_stream.playing = true
