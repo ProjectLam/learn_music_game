@@ -9,6 +9,11 @@
 config_version=5
 
 _global_script_classes=[{
+"base": "Node",
+"class": &"Ebeats",
+"language": &"GDScript",
+"path": "res://scenes/song_parser/ebeats.gd"
+}, {
 "base": "RefCounted",
 "class": &"GutHookScript",
 "language": &"GDScript",
@@ -40,6 +45,16 @@ _global_script_classes=[{
 "path": "res://qr_code/reed_solomon_generator.gd"
 }, {
 "base": "Node",
+"class": &"Song",
+"language": &"GDScript",
+"path": "res://scenes/song_parser/song.gd"
+}, {
+"base": "Node",
+"class": &"SongParser",
+"language": &"GDScript",
+"path": "res://scenes/song_parser/parser.gd"
+}, {
+"base": "Node",
 "class": &"Utils",
 "language": &"GDScript",
 "path": "res://qr_code/utils.gd"
@@ -55,12 +70,15 @@ _global_script_classes=[{
 "path": "res://compat/WebSocketServer.gd"
 }]
 _global_script_class_icons={
+"Ebeats": "",
 "GutHookScript": "",
 "GutStringUtils": "",
 "GutTest": "",
 "InputInstrument": "",
 "QrCode": "",
 "ReedSolomonGenerator": "",
+"Song": "",
+"SongParser": "",
 "Utils": "",
 "WebSocketClient": "",
 "WebSocketServer": ""
