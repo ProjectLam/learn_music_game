@@ -10,9 +10,9 @@ class_name Song
 @export var ebeats:Ebeats = Ebeats.new()
 @export var songMusicFile = ""
 
-#  <albumName>The Wall</albumName>
-#  <albumNameSort>Wall, The</albumNameSort>
-#  <albumYear>1979</albumYear>
+#  <albumName>The name</albumName>
+#  <albumNameSort>name, the</albumNameSort>
+#  <albumYear>1981</albumYear>
 
 
 # Called when the node enters the scene tree for the first time.
