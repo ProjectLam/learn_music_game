@@ -5,7 +5,7 @@ var errorCode = 0
 var parser = XMLParser.new()
 var xmlPBA = PackedByteArray()
 var extractNodes = { "artistName": true, "title": true, "albumName": true }
-var customParser = { "ebeats": true }
+var customParser = { "ebeats": true, "levels": true }
 var current_song:Song
 
 # Called when the node enters the scene tree for the first time.
@@ -17,7 +17,46 @@ func _ready():
 func _process(delta):
 	pass
 
+func attr(name) -> String:
+	return parser.get_named_attribute_value(name)
 
+func parser_note():
+	var note:Vector2 = Vector2(attr("time").to_float(), attr("sustain").to_float())
+	#TODO iterate each attribute
+	return note
+
+func parser_notes()  -> Array[Vector2]:
+	var notes:Array[Vector2] = []
+	print("notes")
+	var count = parser.get_named_attribute_value_safe("count")
+	current_song.levels_count = count
+	while parser.read() != ERR_FILE_EOF:
+		var node_name = parser.get_node_name()
+		print(parser.get_node_name(), ": ", parser.get_node_data())
+		if parser.get_node_type() == parser.NODE_ELEMENT && node_name == "note":
+			var note = parser_note()
+			notes.append(note)
+		elif node_name == "notes" && parser.get_node_type() == parser.NODE_ELEMENT_END:
+			break			
+	return notes
+
+func parser_levels():
+	print("levels")
+	var count = parser.get_named_attribute_value_safe("count")
+	current_song.levels_count = count
+	while parser.read() != ERR_FILE_EOF:
+		var node_name = parser.get_node_name()
+		print(parser.get_node_name(), ": ", parser.get_node_data())
+		if parser.get_node_type() == parser.NODE_ELEMENT && node_name == "level":
+			var difficulty = parser.get_named_attribute_value_safe("difficulty")
+			var notes = parser_notes()
+			var level = Level.new()
+			level.notes = notes
+			current_song.levels.append(level)
+		elif node_name == "levels" && parser.get_node_type() == parser.NODE_ELEMENT_END:
+			return #ok done
+
+	
 func parser_ebeats():
 	var count = parser.get_named_attribute_value_safe("count")
 	current_song.ebeats.count = count
