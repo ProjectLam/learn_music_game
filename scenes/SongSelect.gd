@@ -1,11 +1,10 @@
 extends Node2D
 @onready var item_list = get_node(^"ItemList")
 var path = "user://songs/"
-var dir:DirAccess
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	dir =  DirAccess.open(path)
+	var dir =  DirAccess.open(path)
 	dir.list_dir_begin()
 	while true:
 		var songFile = dir.get_next()
@@ -16,7 +15,7 @@ func _ready():
 			break
 		elif !songFile.begins_with(".") && dir.current_is_dir():
 			print("Found directory - " + songFile)
-			handle_song_dir(songFile)
+			handle_song_dir(songFile,dir.get_current_dir() + songFile) # ugly, why isn't there any easier way to do this
 		elif songFile.ends_with(".zip"):
 			#TODO in future allow songs to be .zip files
 			print("Found zip (Not implemented yet) - " + songFile)
@@ -24,11 +23,8 @@ func _ready():
 
 	pass # Replace with function body.
 
-func handle_song_dir(songFile:String):
-	var err = dir.change_dir(songFile)
-	if err != OK:
-		print("error - " + err)
-		return
+func handle_song_dir(songFile:String, curPath:String):
+	var dir =  DirAccess.open(curPath)
 	
 	print("handle_song_dir-" + songFile)
 	var song:Song = Song.new()
@@ -36,7 +32,7 @@ func handle_song_dir(songFile:String):
 	#	elif and !songFile.ends_with(".import"):
 	# Find the first .mp3 file that doesn't include _preview in audio/windows for now
 	# TODO in future do full directory traversal
-	err = dir.change_dir("audio/windows/")
+	var err = dir.change_dir("audio/windows/")
 	if err != OK:
 		print("error2 - " + err)
 		return
@@ -52,7 +48,6 @@ func handle_song_dir(songFile:String):
 	dir.list_dir_end()
 			
 	item_list.add_item(songFile)
-	dir.change_dir("..")
 	dir.change_dir("..")
 	dir.change_dir("..")
 
