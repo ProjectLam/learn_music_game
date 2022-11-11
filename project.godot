@@ -45,6 +45,11 @@ _global_script_classes=[{
 "path": "res://qr_code/reed_solomon_generator.gd"
 }, {
 "base": "Node",
+"class": &"SNote",
+"language": &"GDScript",
+"path": "res://scenes/song_parser/note.gd"
+}, {
+"base": "Node",
 "class": &"Song",
 "language": &"GDScript",
 "path": "res://scenes/song_parser/song.gd"
@@ -77,6 +82,7 @@ _global_script_class_icons={
 "Level": "",
 "QrCode": "",
 "ReedSolomonGenerator": "",
+"SNote": "",
 "Song": "",
 "SongParser": "",
 "Utils": "",

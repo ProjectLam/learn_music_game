@@ -39,7 +39,7 @@ func handle_song_dir(songFile:String, curPath:String):
 			var full_xml =  dir.get_current_dir() + "/" + iFile
 			print("got xml - " + full_xml)
 			var sp:SongParser = SongParser.new()
-			sp.parse_xml(full_xml, song)
+			#sp.parse_xml(full_xml, song)
 			#NOTE this is the core Xml File, there are up to 4 other ones
 
 	dir.list_dir_end()
