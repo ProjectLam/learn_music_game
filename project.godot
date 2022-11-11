@@ -63,11 +63,6 @@ _global_script_classes=[{
 "class": &"WebSocketServer",
 "language": &"GDScript",
 "path": "res://compat/WebSocketServer.gd"
-}, {
-"base": "XMLParser",
-"class": &"XmlDeserializer",
-"language": &"GDScript",
-"path": "res://XmlDeserializer.gd"
 }]
 _global_script_class_icons={
 "Ebeats": "",
@@ -80,8 +75,7 @@ _global_script_class_icons={
 "SongParser": "",
 "Utils": "",
 "WebSocketClient": "",
-"WebSocketServer": "",
-"XmlDeserializer": ""
+"WebSocketServer": ""
 }
 
 [application]
