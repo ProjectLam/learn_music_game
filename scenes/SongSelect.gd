@@ -15,7 +15,7 @@ func _ready():
 			break
 		elif !songFile.begins_with(".") && dir.current_is_dir():
 			print("Found directory - " + songFile)
-			handle_song_dir(songFile,dir.get_current_dir() + songFile) # ugly, why isn't there any easier way to do this
+			handle_song_dir(songFile,dir.get_current_dir() + "/"+ songFile) # ugly, why isn't there any easier way to do this
 		elif songFile.ends_with(".zip"):
 			#TODO in future allow songs to be .zip files
 			print("Found zip (Not implemented yet) - " + songFile)
