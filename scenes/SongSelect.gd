@@ -29,22 +29,60 @@ func handle_song_dir(songFile:String, curPath:String):
 	print("handle_song_dir-" + songFile)
 	var song:Song = Song.new()
 	PlayerVariables.songs.append(song)
-	#	elif and !songFile.ends_with(".import"):
+
+	dir.list_dir_begin()
+	while true:
+		var iFile = dir.get_next()
+		if iFile == "": 
+			break
+		elif iFile.ends_with(".xml"):
+			var full_xml =  dir.get_current_dir() + "/" + iFile
+			print("got xml - " + full_xml)
+			var sp:SongParser = SongParser.new()
+			sp.parse_xml(full_xml, song)
+			#NOTE this is the core Xml File, there are up to 4 other ones
+
+	dir.list_dir_end()
+	
+	
+	#Find the instrument specific ones, for now we are only going to look for lead guitair
+	var err = dir.change_dir("songs/arr")
+	if err != OK:
+		print("error2 - " + err)
+		return
+	
+	dir.list_dir_begin()
+	while true:
+		var iFile = dir.get_next()
+		if iFile == "": 
+			break
+		elif iFile.ends_with("_lead.xml"):
+			var full_xml =  dir.get_current_dir() + "/" + iFile
+			print("got xml - " + full_xml)
+			var sp:SongParser = SongParser.new()
+			sp.parse_xml(full_xml, song)
+			#NOTE  TODO this is the lead guitar Xml File, there are up to 4 other ones, including vocals
+
+	dir.list_dir_end()
+	dir.change_dir("..")
+	dir.change_dir("..")
+
 	# Find the first .mp3 file that doesn't include _preview in audio/windows for now
 	# TODO in future do full directory traversal
-	var err = dir.change_dir("audio/windows/")
+	err = dir.change_dir("audio/windows/")
 	if err != OK:
 		print("error2 - " + err)
 		return
 		
 	dir.list_dir_begin()
-	while true:
+	while true: 
 		var iFile = dir.get_next()
 		if iFile == "": 
 			break
 		elif iFile.ends_with(".mp3") && !("preview" in iFile):
 			song.songMusicFile = dir.get_current_dir() + "/" + iFile
 			print(song.songMusicFile)
+
 	dir.list_dir_end()
 			
 	item_list.add_item(songFile)

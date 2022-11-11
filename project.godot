@@ -45,6 +45,11 @@ _global_script_classes=[{
 "path": "res://scenes/song_parser/song.gd"
 }, {
 "base": "Node",
+"class": &"SongParser",
+"language": &"GDScript",
+"path": "res://scenes/song_parser/parser.gd"
+}, {
+"base": "Node",
 "class": &"Utils",
 "language": &"GDScript",
 "path": "res://qr_code/utils.gd"
@@ -72,6 +77,7 @@ _global_script_class_icons={
 "QrCode": "",
 "ReedSolomonGenerator": "",
 "Song": "",
+"SongParser": "",
 "Utils": "",
 "WebSocketClient": "",
 "WebSocketServer": "",
