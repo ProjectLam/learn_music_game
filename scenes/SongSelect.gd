@@ -1,6 +1,6 @@
 extends Node2D
 @onready var item_list = get_node(^"ItemList")
-var path = "user://songs/"
+var path = "user://songs"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
