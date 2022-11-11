@@ -51,7 +51,7 @@ func _ready():
 			print("level(difficulty"+ str(level.difficulty)+ " )")
 			print("notes data ----")
 			for note in level.notes:
-				print("---note -" + str(note)) #TODO expand
+				print("---note -" + str(note)  + "- time-" + str(note.time)) #TODO expand
 			
 			print("--- end notes data ----")
 			

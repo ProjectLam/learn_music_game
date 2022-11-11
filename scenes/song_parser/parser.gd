@@ -28,14 +28,13 @@ func parser_note(note:SNote):
 			continue
 
 		if attr_name == "sustain"  || attr_name == "time" :
-			print("attr-" + attr_name  + " val-" + val)
-			#note.set(attr_name, val.to_int()) #to_float())
+#			print("attr-" + attr_name  + " val-" + val)
+			note.set(attr_name, val.to_float())
 		else:
 			note.set(attr_name, val.to_int())
 	return note
 
 func parser_notes(notes:Array[SNote]):
-	print("notes")
 	var node_name = ""
 	var last_node_data = ""
 	while parser.read() != ERR_FILE_EOF:
@@ -49,15 +48,9 @@ func parser_notes(notes:Array[SNote]):
 			var count = parser.get_named_attribute_value_safe("count")
 			current_song.levels_count = count
 		elif parser.get_node_type() == parser.NODE_ELEMENT && node_name == "note":
-			if len(notes) == 633:
-				print("Weeeeeee")
-
 			var note:SNote = SNote.new() 
-			#parser_note(note)
+			parser_note(note)
 			notes.append(note)
-			if fmod(len(notes), 100) == 0:
-				print("note- " + str(note))
-				print("notes size- " + str(len(notes)))
 		elif node_name == "notes" && parser.get_node_type() == parser.NODE_ELEMENT_END:
 			break
 	print("final - notes size- " + str(len(notes)))			
