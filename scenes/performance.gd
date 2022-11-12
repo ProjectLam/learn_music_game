@@ -35,8 +35,4 @@ func _process_speakers(delta):
 	$SoundVizSurfaceOne/Speaker.scale = Vector3(4.0 + energy*3, 4.0 + energy*3, 4.0 + energy*3)
 
 func load_ogg(path: String) -> AudioStreamOggVorbis:
-	var ogg_file = FileAccess.open(path, FileAccess.READ)
-	var bytes = ogg_file.get_buffer(ogg_file.get_length())
-	var stream = AudioStreamOggVorbis.new()
-	stream.packet_sequence = bytes
-	return stream
+	return AudioStreamOggVorbis.from_filesystem(path)
