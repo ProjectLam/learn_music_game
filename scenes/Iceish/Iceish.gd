@@ -1,8 +1,3 @@
-#
-# 3D Audio Visualizer
-# Copyright (C) 2022, Oğuzhan Eroğlu <rohanrhu2@gmail.com> (https://oguzhaneroglu.com)
-#
-
 extends Node3D
 
 enum Mode {
