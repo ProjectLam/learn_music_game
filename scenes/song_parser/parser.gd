@@ -8,19 +8,11 @@ var customParser = { "ebeats": true, "levels": true }
 var notesAllowed = { "sustain": true, "time": true, "harmonic": true, "fret": true }
 var current_song:Song
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
 
 func attr(name) -> String:
 	return parser.get_named_attribute_value(name)
 
-func parser_note(note:SNote):
+func parser_note(note:Note):
 	for i in range(parser.get_attribute_count()):
 		var attr_name = parser.get_attribute_name(i)
 		var val = parser.get_attribute_value(i)
@@ -35,7 +27,7 @@ func parser_note(note:SNote):
 			note.set(attr_name, val.to_int())
 	return note
 
-func parser_notes(notes:Array[SNote]):
+func parser_notes(notes:Array[Note]):
 	var node_name = ""
 	var last_node_data = ""
 	while parser.read() != ERR_FILE_EOF:
@@ -49,7 +41,7 @@ func parser_notes(notes:Array[SNote]):
 			var count = parser.get_named_attribute_value_safe("count")
 			current_song.levels_count = count
 		elif parser.get_node_type() == parser.NODE_ELEMENT && node_name == "note":
-			var note:SNote = SNote.new() 
+			var note:Note = Note.new() 
 			parser_note(note)
 			notes.append(note)
 		elif node_name == "notes" && parser.get_node_type() == parser.NODE_ELEMENT_END:
