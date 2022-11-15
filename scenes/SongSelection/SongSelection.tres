@@ -1,0 +1,10 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+
+[ext_resource path="res://shaders/Blur.shader" type="Shader" id=1]
+
+[resource]
+shader = ExtResource( 1 )
+shader_param/power = 4.434
+shader_param/radius = 1.0
+shader_param/animate = false
+shader_param/square_scale = 0.1

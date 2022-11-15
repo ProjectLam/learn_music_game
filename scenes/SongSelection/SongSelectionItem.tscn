@@ -1,0 +1,108 @@
+[gd_scene load_steps=8 format=3 uid="uid://dj8l57ak8jvxn"]
+
+[ext_resource type="Theme" uid="uid://dcjudft85l8o2" path="res://themes/windows_10_light/theme.tres" id="1"]
+[ext_resource type="Shader" path="res://scenes/SongSelection/SongSelectionItem.gdshader" id="1_utsrc"]
+[ext_resource type="Texture2D" uid="uid://crd856d282ue5" path="res://assets/gui/icons/play.png" id="3_dwb8o"]
+[ext_resource type="Script" path="res://scenes/SongSelection/SongSelectionItem.gd" id="4"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xaqsc"]
+shader = ExtResource("1_utsrc")
+shader_parameter/indicate = null
+shader_parameter/indicating_point = Vector2(0.5, 0.5)
+shader_parameter/indicating_power = 0.5
+shader_parameter/radius_base = 0.5
+shader_parameter/size = null
+
+[sub_resource type="StyleBoxFlat" id="3"]
+content_margin_left = 20.0
+content_margin_right = 20.0
+bg_color = Color(1, 1, 1, 0.117647)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="4"]
+content_margin_left = 20.0
+content_margin_right = 20.0
+bg_color = Color(1, 0, 0.819608, 0.627451)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="SongSelectionItem" type="PanelContainer"]
+material = SubResource("ShaderMaterial_xaqsc")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+theme = ExtResource("1")
+script = ExtResource("4")
+item_style_box = SubResource("3")
+item_style_box__selected = SubResource("4")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 892.0
+offset_bottom = 592.0
+
+[node name="Song" type="HBoxContainer" parent="VBoxContainer"]
+offset_right = 884.0
+offset_bottom = 72.0
+size_flags_vertical = 0
+theme_override_constants/separation = 10
+
+[node name="Avatar" type="TextureRect" parent="VBoxContainer/Song"]
+offset_bottom = 72.0
+stretch_mode = 6
+
+[node name="Details" type="VBoxContainer" parent="VBoxContainer/Song"]
+offset_left = 10.0
+offset_right = 824.0
+offset_bottom = 72.0
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="Name" type="Label" parent="VBoxContainer/Song/Details"]
+offset_right = 814.0
+offset_bottom = 34.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+mouse_filter = 1
+text = "Song Name"
+
+[node name="Artist" type="Label" parent="VBoxContainer/Song/Details"]
+offset_top = 38.0
+offset_right = 814.0
+offset_bottom = 72.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+mouse_filter = 1
+text = "Artist Name"
+
+[node name="PrelistenBtn" type="TextureButton" parent="VBoxContainer/Song"]
+custom_minimum_size = Vector2(50, 50)
+offset_left = 834.0
+offset_right = 884.0
+offset_bottom = 72.0
+mouse_filter = 1
+texture_normal = ExtResource("3_dwb8o")
+texture_pressed = ExtResource("3_dwb8o")
+texture_hover = ExtResource("3_dwb8o")
+texture_disabled = ExtResource("3_dwb8o")
+texture_focused = ExtResource("3_dwb8o")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="HoldTimer" type="Timer" parent="."]
+wait_time = 1.3
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="pressed" from="VBoxContainer/Song/PrelistenBtn" to="." method="_on_PrelistenBtn_pressed"]
+[connection signal="timeout" from="HoldTimer" to="." method="_on_HoldTimer_timeout"]

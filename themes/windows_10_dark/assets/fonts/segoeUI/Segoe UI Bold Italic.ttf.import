@@ -1,0 +1,32 @@
+[remap]
+
+importer="font_data_dynamic"
+type="FontFile"
+uid="uid://wmtpq8sj4ll8"
+path="res://.godot/imported/Segoe UI Bold Italic.ttf-29e1544c9bc094e229327724a4f34898.fontdata"
+
+[deps]
+
+source_file="res://themes/windows_10_dark/assets/fonts/segoeUI/Segoe UI Bold Italic.ttf"
+dest_files=["res://.godot/imported/Segoe UI Bold Italic.ttf-29e1544c9bc094e229327724a4f34898.fontdata"]
+
+[params]
+
+Rendering=null
+antialiasing=1
+generate_mipmaps=false
+multichannel_signed_distance_field=false
+msdf_pixel_range=8
+msdf_size=48
+force_autohinter=false
+hinting=1
+subpixel_positioning=1
+oversampling=0.0
+Fallbacks=null
+fallbacks=[]
+Compress=null
+compress=true
+preload=[]
+language_support={}
+script_support={}
+opentype_features={}

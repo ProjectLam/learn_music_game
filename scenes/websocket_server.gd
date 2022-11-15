@@ -9,6 +9,7 @@ const PORT = 9080
 var _server = WebSocketServer.new()
 
 func _ready():
+	return
 	# Connect base signals to get notified of new client connections,
 	# disconnections, and disconnect requests.
 	_server.connect(&"client_connected", _connected)

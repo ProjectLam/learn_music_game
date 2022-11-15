@@ -34,6 +34,26 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://qr_code/reed_solomon_generator.gd"
 }, {
+"base": "PanelContainer",
+"class": &"SongSelectionItem",
+"language": &"GDScript",
+"path": "res://scenes/SongSelection/SongSelectionItem.gd"
+}, {
+"base": "Object",
+"class": &"TSong",
+"language": &"GDScript",
+"path": "res://types/TSong.gd"
+}, {
+"base": "Control",
+"class": &"TSongSelectionItem",
+"language": &"GDScript",
+"path": "res://scenes/SongSelection/TSongSelectionItem.gd"
+}, {
+"base": "Object",
+"class": &"TSongs",
+"language": &"GDScript",
+"path": "res://types/TSongs.gd"
+}, {
 "base": "Node",
 "class": &"Utils",
 "language": &"GDScript",
@@ -55,6 +75,10 @@ _global_script_class_icons={
 "GutTest": "",
 "QrCode": "",
 "ReedSolomonGenerator": "",
+"SongSelectionItem": "",
+"TSong": "",
+"TSongSelectionItem": "",
+"TSongs": "",
 "Utils": "",
 "WebSocketClient": "",
 "WebSocketServer": ""
@@ -65,6 +89,7 @@ _global_script_class_icons={
 config/name="Lam-dj"
 run/main_scene="res://scenes/main.tscn"
 config/features=PackedStringArray("4.0", "Mobile")
+boot_splash/bg_color=Color(0.141176, 0.141176, 0.141176, 1)
 config/icon="res://icon.svg"
 run/main_scene.web="res://scenes/djclient.tscn"
 
@@ -72,11 +97,18 @@ run/main_scene.web="res://scenes/djclient.tscn"
 
 WebsocketServer="*res://scenes/websocket_server.gd"
 PlayerVariables="*res://scenes/PlayerVariables.gd"
+SS="*res://scenes/SongSelection/SongSelection.tscn"
+
+[debug]
+
+gdscript/warnings/enable=false
 
 [display]
 
-window/size/viewport_width=1600
-window/size/viewport_height=1000
+window/size/viewport_width=900
+window/size/viewport_height=600
+window/size/always_on_top=true
+window/dpi/allow_hidpi=false
 
 [editor_plugins]
 
@@ -84,5 +116,5 @@ enabled=PackedStringArray("res://addons/gut/plugin.cfg")
 
 [rendering]
 
-renderer/rendering_method="mobile"
+renderer/rendering_method="gl_compatibility"
 anti_aliasing/quality/msaa_3d=2

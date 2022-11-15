@@ -1,10 +1,25 @@
-[gd_scene load_steps=2 format=3 uid="uid://ba00fe7v6cj6a"]
+[gd_scene load_steps=3 format=3 uid="uid://ba00fe7v6cj6a"]
 
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_iayte"]
+[ext_resource type="Texture2D" uid="uid://b663ry1brb1re" path="res://assets/gui/background.jpg" id="2_y3f1t"]
 
 [node name="main" type="Node2D"]
 position = Vector2(424, 191)
 script = ExtResource("1_iayte")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -960.0
+offset_top = -480.0
+offset_right = 960.0
+offset_bottom = 480.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_y3f1t")
+stretch_mode = 5
+flip_h = true
 
 [node name="OptionsBtn" type="Button" parent="."]
 offset_left = 313.0
@@ -37,10 +52,10 @@ offset_right = 694.0
 offset_bottom = 357.0
 text = "Exit"
 
-[connection signal="pressed" from="OptionsBtn" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="OptionsBtn" to="." method="_on_options_btn_pressed"]
-[connection signal="pressed" from="QRCodeBtn" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="OptionsBtn" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="QRCodeBtn" to="." method="_on_qr_code_btn_pressed"]
+[connection signal="pressed" from="QRCodeBtn" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="SongSelectBtn" to="." method="_on_song_select_btn_pressed"]
-[connection signal="pressed" from="ExitBtn" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="ExitBtn" to="." method="_on_exit_btn_pressed"]
+[connection signal="pressed" from="ExitBtn" to="." method="_on_button_pressed"]

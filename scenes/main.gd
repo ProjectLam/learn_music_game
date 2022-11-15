@@ -8,11 +8,10 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
-	
 
 
 func _on_song_select_btn_pressed():
-	get_tree().change_scene_to_file("res://scenes/SongSelect.tscn")
+	SS.open()
 
 
 func _on_qr_code_btn_pressed():

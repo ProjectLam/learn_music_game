@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://brppj3a5ftaap"]
+[gd_scene load_steps=40 format=3 uid="uid://brppj3a5ftaap"]
 
 [ext_resource type="Script" path="res://scenes/performance.gd" id="1_7omoq"]
 [ext_resource type="PackedScene" uid="uid://bls282r4ku42k" path="res://instruments/guitar.tscn" id="1_jp1nt"]
@@ -10,7 +10,6 @@
 [ext_resource type="Script" path="res://scenes/performance/notes.gd" id="6_vvmqq"]
 [ext_resource type="PackedScene" uid="uid://ug0w5oyeug6e" path="res://scenes/performance/note.tscn" id="7_xpjkr"]
 [ext_resource type="Material" uid="uid://cy2ew3jgnwvdu" path="res://materials/Speaker.tres" id="9_oxcp2"]
-[ext_resource type="AudioStream" uid="uid://uhb4d2lbyhrq" path="res://Arlow - How Do You Know [NCS Release].ogg" id="11_0jm4r"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_18o24"]
 sky_top_color = Color(0.0666667, 0, 0.552941, 1)
@@ -336,4 +335,3 @@ surface_material_override/0 = SubResource("StandardMaterial3D_1b2fh")
 transform = Transform3D(1, -3.72529e-08, 5.96046e-08, 2.98023e-08, -4.47035e-08, 1, -7.45058e-09, -1, -5.96046e-08, -9.53674e-07, 0.100002, -1.19209e-07)
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
-stream = ExtResource("11_0jm4r")
