@@ -66,7 +66,10 @@ func _ready():
 			
 		print_song_loading_debug("--- end level data ----")
 		
-		$Notes.start_game(current_song.levels[-1])
+#		var tab_creator = preload("res://scenes/tab_creator/tab_creator.gd").new()
+#		tab_creator.create_tabs(current_song)
+		
+		$Notes.start_game(current_song.levels[0])
 
 	audio_stream.stream = currentStream
 	audio_stream.play()

@@ -90,9 +90,8 @@ func parser_ebeats():
 		#print(node_name, ": ", last_node_data)
 		if parser.get_node_type() == parser.NODE_ELEMENT && node_name == "ebeat":
 			var time = parser.get_named_attribute_value_safe("time").to_float()
-			var measure = parser.get_named_attribute_value_safe("measure").to_float()
-			var ebeat = Vector2(measure, time)
-			current_song.ebeats.beats.append(ebeat)		
+			var measure = parser.get_named_attribute_value_safe("measure").to_int()
+			current_song.ebeats.add_beat(measure, time)
 		elif node_name != "ebeat" && parser.get_node_type() == parser.NODE_ELEMENT_END:
 			return #ok done
 

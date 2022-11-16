@@ -9,7 +9,7 @@
 config_version=5
 
 _global_script_classes=[{
-"base": "Node",
+"base": "RefCounted",
 "class": &"Ebeats",
 "language": &"GDScript",
 "path": "res://scenes/song_parser/ebeats.gd"
@@ -34,12 +34,12 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://autoload/instrument_input/input_instrument.gd"
 }, {
-"base": "Node",
+"base": "RefCounted",
 "class": &"Level",
 "language": &"GDScript",
 "path": "res://scenes/song_parser/level.gd"
 }, {
-"base": "Node",
+"base": "RefCounted",
 "class": &"Note",
 "language": &"GDScript",
 "path": "res://scenes/song_parser/note.gd"
@@ -54,7 +54,7 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://qr_code/reed_solomon_generator.gd"
 }, {
-"base": "Node",
+"base": "RefCounted",
 "class": &"Song",
 "language": &"GDScript",
 "path": "res://scenes/song_parser/song.gd"

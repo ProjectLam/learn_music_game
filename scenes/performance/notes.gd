@@ -26,50 +26,7 @@ var _level_data: Level
 var _notes: Array[Note]
 
 var look_ahead: float = spawn_distance / note_speed
-
-
-#class GuitarNoteData:
-#	# 0 = bottom (high E), 5 = top (low E)
-#	var string_index: int
-#	# 0 = first fret (how do we handle open notes?)
-#	var fret_index: int
-#	# When to play the note, in seconds
-#	var time: float
-#	# How long to hold the note
-#	var duration: float
-#
-#	func _init(_string_index: int, _fret_index: int, _time: float, _duration: float):
-#		string_index = _string_index
-#		fret_index = _fret_index
-#		time = _time
-#		duration = _duration
-#
-#
-#var song: Array = [
-#	GuitarNoteData.new(0, 2, 1, 0.5),
-#	GuitarNoteData.new(1, 1, 1.5, 1),
-#	GuitarNoteData.new(4, 0, 2.5, 3)
-#]
-
 var time: float = 0.0
-
-
-#func _process(delta):
-#	time += delta
-#	while song.size() > 0 and song[0].time <= time:
-#		var note_data = song.pop_front()
-#		var note = note_scene.instantiate()
-#		add_child(note)
-#		note.position = Vector3(
-#			fret_offset + fret_spacing * note_data.fret_index,
-#			string_offset + string_spacing * note_data.string_index,
-#			-spawn_distance
-#		)
-#		note.color = string_colors[note_data.string_index]
-#		note.duration = note_data.duration
-#		note.note_started.connect(on_note_started.bind(note_data))
-#		note.note_ended.connect(on_note_ended.bind(note_data))
-
 
 
 func start_game(level_data: Level):
@@ -87,12 +44,18 @@ func _process(delta):
 		add_child(note)
 		note.position = Vector3(
 			fret_offset + fret_spacing * note_data.fret,
-			string_offset + string_spacing * note_data.string,
+			get_string_y(note_data.string),
 			-note_speed * (note_data.time - time)
 		)
 		note.color = string_colors[note_data.string]
+		note.duration = note_data.sustain
 		note.note_started.connect(on_note_started.bind(note_data))
 		note.note_ended.connect(on_note_ended.bind(note_data))
+
+
+func get_string_y(string_index):
+	# Strings start at index 0, 0 being the low E (top string)
+	return string_offset + (5 - string_index) * string_spacing
 
 
 func on_note_started(note_data: Note):
