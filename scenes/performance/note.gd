@@ -1,12 +1,11 @@
 extends Node3D
 
 
-signal note_started()
-signal note_ended()
-
-
+# This note's index in level.notes[]. Will be used to delete it when the player plays it.
+var index: int = -1
 var speed: float = 10.0
-var has_started: bool = false
+var is_playing: bool = false
+
 
 var color: Color:
 	set(value):
@@ -27,11 +26,24 @@ func _ready():
 
 func _process(delta):
 	translate(Vector3.BACK * speed * delta)
-	
-	if position.z >= 0 and not has_started:
-		has_started = true
-		emit_signal("note_started")
-	
-	if position.z > speed * duration:
-		emit_signal("note_ended")
-		queue_free()
+
+
+func play():
+	# The player played this note. Do something pretty.
+	is_playing = true
+
+
+func end(successful: bool):
+	# The player played and ended this note. Do something pretty, destroy.
+	if successful:
+		# Reward player
+		pass
+	else:
+		# Show negative feedback animation/effect
+		pass
+	queue_free()
+
+
+func destroy():
+	# The player missed this note. Destroy it, maybe play a feedback animation.
+	queue_free()

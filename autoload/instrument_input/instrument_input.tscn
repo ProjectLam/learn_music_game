@@ -15,7 +15,6 @@ script = ExtResource("2_cci1d")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="MicrophoneInput"]
 stream = SubResource("AudioStreamMicrophone_xfakr")
-autoplay = true
 bus = &"Input"
 
 [node name="MidiInput" type="Node" parent="."]

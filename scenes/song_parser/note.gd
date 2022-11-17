@@ -1,39 +1,44 @@
-extends Node
-class_name SNote
-
-@export var time:float = 0 
-@export var linkNext:int
-@export var accent:int
-@export var bend:int
-@export var fret:int
-@export var hammerOn:int
-@export var harmonic:int
-@export var hopo:int
-@export var ignore:int
-@export var leftHand:int
-@export var mute:int
-@export var palmMute:int
-@export var pluck:int
-@export var pullOff:int
-@export var slap:int
-@export var slideTo:int
-@export var string:int
-@export var sustain:float
-@export var tremolo:int
-@export var harmonicPinch:int
-@export var pickDirection:int
-@export var rightHand:int
-@export var slideUnpitchTo:int
-@export var tap:int
-@export var vibrato:int
+class_name Note
 
 
+var time: float = 0 
+var linkNext: int
+var accent: int
+var bend: int
+var fret: int
+var hammerOn: int
+var harmonic: int
+var hopo: int
+var ignore: int
+var leftHand: int
+var mute: int
+var palmMute: int
+var pluck: int
+var pullOff: int
+var slap: int
+var slideTo: int
+var string: int
+var sustain: float
+var tremolo: int
+var harmonicPinch: int
+var pickDirection: int
+var rightHand: int
+var slideUnpitchTo: int
+var tap: int
+var vibrato: int
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+func get_pitch()->float:
+	var string_chromatic_indices = [
+		NoteFrequency.CHROMATIC.find(NoteFrequency.E2),
+		NoteFrequency.CHROMATIC.find(NoteFrequency.A2),
+		NoteFrequency.CHROMATIC.find(NoteFrequency.D3),
+		NoteFrequency.CHROMATIC.find(NoteFrequency.G3),
+		NoteFrequency.CHROMATIC.find(NoteFrequency.B3),
+		NoteFrequency.CHROMATIC.find(NoteFrequency.E4),
+	]
+	
+	# Adding 1 because fret 1 is at index 0.
+	var index = string_chromatic_indices[string] + fret + 1
+	
+	return NoteFrequency.CHROMATIC[index]
