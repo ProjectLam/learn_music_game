@@ -9,3 +9,11 @@ signal note_ended(frequency)
 # Abstract
 func get_inputs()->Array:
 	return []
+
+
+func activate():
+	pass
+
+
+func deactivate():
+	pass

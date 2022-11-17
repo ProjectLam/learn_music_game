@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://o3ynhdu3ub4b"]
+[gd_scene load_steps=7 format=3 uid="uid://o3ynhdu3ub4b"]
 
 [ext_resource type="Script" path="res://autoload/instrument_input/instrument_input.gd" id="1_tr0se"]
 [ext_resource type="Script" path="res://autoload/instrument_input/microphone_input.gd" id="2_cci1d"]
 [ext_resource type="Script" path="res://autoload/instrument_input/midi_input.gd" id="3_e7eyk"]
 [ext_resource type="Script" path="res://autoload/instrument_input/computer_keyboard_input.gd" id="3_nascm"]
+[ext_resource type="Script" path="res://autoload/instrument_input/feedback_label.gd" id="5_sj7eq"]
 
 [sub_resource type="AudioStreamMicrophone" id="AudioStreamMicrophone_xfakr"]
 
@@ -22,3 +23,32 @@ script = ExtResource("3_e7eyk")
 
 [node name="ComputerKeyboardInput" type="Node" parent="."]
 script = ExtResource("3_nascm")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 100
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="FeedbackLabel" type="Label" parent="CanvasLayer/Control"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+offset_right = 65.0
+grow_vertical = 0
+size_flags_horizontal = 0
+size_flags_vertical = 8
+script = ExtResource("5_sj7eq")
+
+[node name="ClearTimer" type="Timer" parent="CanvasLayer/Control/FeedbackLabel"]
+one_shot = true
+
+[connection signal="timeout" from="CanvasLayer/Control/FeedbackLabel/ClearTimer" to="CanvasLayer/Control/FeedbackLabel" method="_on_clear_timer_timeout"]
