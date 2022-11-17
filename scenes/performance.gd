@@ -52,8 +52,8 @@ func _ready():
 		#for beat in current_song.ebeats.beats:
 		#	print("beat(time"+ str(beat.x) + "-measure-" + str(beat.y))
 		#print("--- end Ebeat data ----")
-
-
+		
+		
 		print_song_loading_debug("Levels data ----")
 		print_song_loading_debug("count-"+ current_song.levels_count)
 		for level in current_song.levels:
@@ -70,7 +70,7 @@ func _ready():
 #		tab_creator.create_tabs(current_song)
 		
 		$Notes.start_game(current_song.levels[0])
-
+	
 	audio_stream.stream = currentStream
 	audio_stream.play()
 #	audio_stream.volume_db = -16
