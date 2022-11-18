@@ -113,6 +113,7 @@ WebsocketServer="*res://scenes/websocket_server.gd"
 PlayerVariables="*res://scenes/PlayerVariables.gd"
 NoteFrequency="*res://autoload/note_frequency.gd"
 InstrumentInput="*res://autoload/instrument_input/instrument_input.tscn"
+Debug="*res://autoload/debug/debug.tscn"
 
 [display]
 
@@ -122,6 +123,13 @@ window/size/viewport_height=1000
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/gut/plugin.cfg")
+
+[input]
+
+test={
+"deadzone": 0.5,
+"events": []
+}
 
 [rendering]
 

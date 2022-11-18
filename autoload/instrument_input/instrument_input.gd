@@ -26,8 +26,7 @@ func _input(event):
 		disconnect_instrument(current_instrument)
 		current_instrument = (current_instrument + 1) % instrument_count
 		connect_instrument(current_instrument)
-		show_feedback("Instrument: " + str(get_child(current_instrument).name))
-		print("Switched to instrument ", get_child(current_instrument).name)
+		Debug.print_to_screen("Instrument: " + str(get_child(current_instrument).name), true)
 
 
 func disconnect_instrument(index: int):
@@ -44,12 +43,8 @@ func connect_instrument(index: int):
 
 func on_note_started(frequency):
 	note_started.emit(frequency)
-	show_feedback(NoteFrequency.CHROMATIC_NAMES[NoteFrequency.CHROMATIC.find(frequency)])
+	Debug.print_to_screen(str(get_child(current_instrument).name) + ": " + NoteFrequency.CHROMATIC_NAMES[NoteFrequency.CHROMATIC.find(frequency)])
 
 
 func on_note_ended(frequency):
 	note_ended.emit(frequency)
-
-
-func show_feedback(text: String):
-	$%"FeedbackLabel".set_text(text)
