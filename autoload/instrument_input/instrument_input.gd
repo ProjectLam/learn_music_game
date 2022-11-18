@@ -26,7 +26,7 @@ func _input(event):
 		disconnect_instrument(current_instrument)
 		current_instrument = (current_instrument + 1) % instrument_count
 		connect_instrument(current_instrument)
-		Debug.print_to_screen("Instrument: " + str(get_child(current_instrument).name), true)
+		Debug.print_to_screen("Instrument: " + str(get_child(current_instrument).name))
 
 
 func disconnect_instrument(index: int):
