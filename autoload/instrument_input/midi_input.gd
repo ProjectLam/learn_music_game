@@ -13,6 +13,14 @@ func _ready():
 	notes.fill(0)
 
 
+func activate():
+	set_process_input(true)
+
+
+func deactivate():
+	set_process_input(false)
+
+
 func get_inputs()->Array:
 	var inputs = []
 	

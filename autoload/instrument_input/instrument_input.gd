@@ -4,11 +4,29 @@ extends Node
 signal note_started(frequency)
 signal note_ended(frequency)
 
+
 var current_instrument := 0
+var instrument_count := 0
 
 
 func _ready():
+	for child in get_children():
+		if child is InputInstrument:
+			instrument_count += 1
+			if instrument_count > 1:
+				child.deactivate()
+	connect_instrument(get_instrument_index(PlayerVariables.selected_instrument))
+
+
+func set_instrument_by_index(index: int):
+	disconnect_instrument(current_instrument)
+	current_instrument = index
 	connect_instrument(current_instrument)
+	Debug.print_to_screen("Instrument: " + str(get_child(current_instrument).name))
+
+
+func set_instrument_by_name(instrument_name: String):
+	set_instrument_by_index(get_instrument_index(instrument_name))
 
 
 func get_instrument_input()->Array:
@@ -17,25 +35,34 @@ func get_instrument_input()->Array:
 
 func _input(event):
 	if event is InputEventKey and event.pressed and event.keycode == KEY_TAB:
-		disconnect_instrument(current_instrument)
-		current_instrument = (current_instrument + 1) % get_child_count()
-		connect_instrument(current_instrument)
-		print("Switched to instrument ", get_child(current_instrument).name)
+		set_instrument_by_index((current_instrument + 1) % instrument_count)
 
 
 func disconnect_instrument(index: int):
+	get_child(index).deactivate()
 	get_child(index).note_started.disconnect(on_note_started)
 	get_child(index).note_ended.disconnect(on_note_ended)
 
 
 func connect_instrument(index: int):
+	get_child(index).activate()
 	get_child(index).note_started.connect(on_note_started)
 	get_child(index).note_ended.connect(on_note_ended)
+	current_instrument = index
 
 
 func on_note_started(frequency):
 	note_started.emit(frequency)
+	Debug.print_to_screen(str(get_child(current_instrument).name) + ": " + NoteFrequency.CHROMATIC_NAMES[NoteFrequency.CHROMATIC.find(frequency)])
 
 
 func on_note_ended(frequency):
 	note_ended.emit(frequency)
+
+
+func get_instrument_name(index: int)->String:
+	return str(get_child(index).name)
+
+
+func get_instrument_index(instrument_name: String)->int:
+	return get_node(instrument_name).get_index()

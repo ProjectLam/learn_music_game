@@ -1,84 +1,158 @@
-[gd_scene load_steps=3 format=3 uid="uid://bd17mh5yqy4j4"]
+[gd_scene load_steps=4 format=3 uid="uid://bd17mh5yqy4j4"]
 
 [ext_resource type="Script" path="res://scenes/options.gd" id="1_6lgmj"]
 [ext_resource type="AudioStream" uid="uid://b1n8ma63lfkxx" path="res://Arlow - How Do You Know [NCS Release].mp3" id="2_1guvh"]
 
-[node name="options" type="Node2D"]
+[sub_resource type="ButtonGroup" id="ButtonGroup_3hgip"]
+
+[node name="options" type="VBoxContainer"]
 script = ExtResource("1_6lgmj")
-
-[node name="SetSpeaker" type="Button" parent="."]
-offset_left = 305.0
-offset_top = 265.0
-offset_right = 405.0
-offset_bottom = 297.0
-text = "Set Speaker"
-
-[node name="BackBtn" type="Button" parent="."]
-offset_left = 38.0
-offset_top = 576.0
-offset_right = 433.0
-offset_bottom = 642.0
-text = "Back
-"
-
-[node name="Label" type="Label" parent="."]
-offset_left = 37.0
-offset_top = 42.0
-offset_right = 77.0
-offset_bottom = 65.0
-text = "Options Dialog
-"
-
-[node name="ItemListOutput" type="ItemList" parent="."]
-offset_left = 66.0
-offset_top = 214.0
-offset_right = 255.0
-offset_bottom = 510.0
-
-[node name="ItemListInput" type="ItemList" parent="."]
-offset_left = 464.0
-offset_top = 210.0
-offset_right = 656.0
-offset_bottom = 503.0
-
-[node name="Label2" type="Label" parent="."]
-offset_left = 78.0
-offset_top = 162.0
-offset_right = 216.0
-offset_bottom = 188.0
-text = "Speaker Selection"
-
-[node name="Label3" type="Label" parent="."]
-offset_left = 493.0
-offset_top = 174.0
-offset_right = 533.0
-offset_bottom = 197.0
-text = "Input Selection"
-
-[node name="DeviceInfo" type="Label" parent="."]
-offset_left = 484.0
-offset_top = 514.0
-offset_right = 722.0
-offset_bottom = 610.0
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_1guvh")
 
-[node name="PlayAudio" type="Button" parent="."]
-offset_left = 306.0
-offset_top = 215.0
-offset_right = 403.0
-offset_bottom = 251.0
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+offset_right = 576.0
+offset_bottom = 26.0
+text = "Options Dialog
+"
+
+[node name="DeviceInfo" type="Label" parent="."]
+layout_mode = 2
+offset_top = 30.0
+offset_right = 576.0
+offset_bottom = 53.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+offset_top = 57.0
+offset_right = 576.0
+offset_bottom = 487.0
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+offset_right = 200.0
+offset_bottom = 430.0
+
+[node name="Label2" type="Label" parent="HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+offset_right = 200.0
+offset_bottom = 26.0
+text = "Speaker Selection"
+
+[node name="ItemListOutput" type="ItemList" parent="HBoxContainer/VBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 400)
+layout_mode = 2
+offset_top = 30.0
+offset_right = 200.0
+offset_bottom = 430.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+offset_left = 204.0
+offset_right = 372.0
+offset_bottom = 430.0
+alignment = 1
+
+[node name="PlayAudio" type="Button" parent="HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_top = 164.0
+offset_right = 168.0
+offset_bottom = 195.0
 text = "PlayAudio"
 
-[node name="SetInput" type="Button" parent="."]
-offset_left = 279.0
-offset_top = 308.0
-offset_right = 447.0
-offset_bottom = 339.0
+[node name="SetInput" type="Button" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+offset_top = 199.0
+offset_right = 168.0
+offset_bottom = 230.0
 text = "Set Recording device"
 
-[connection signal="pressed" from="SetSpeaker" to="." method="_on_set_speaker_pressed"]
+[node name="SetSpeaker" type="Button" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+offset_top = 234.0
+offset_right = 168.0
+offset_bottom = 265.0
+text = "Set Speaker"
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+offset_left = 376.0
+offset_right = 576.0
+offset_bottom = 430.0
+
+[node name="Label3" type="Label" parent="HBoxContainer/VBoxContainer3"]
+layout_mode = 2
+offset_right = 200.0
+offset_bottom = 26.0
+text = "Input Selection"
+
+[node name="ItemListInput" type="ItemList" parent="HBoxContainer/VBoxContainer3"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 400)
+layout_mode = 2
+offset_top = 30.0
+offset_right = 200.0
+offset_bottom = 430.0
+
+[node name="InputInstrumentMenu" type="VBoxContainer" parent="."]
+layout_mode = 2
+offset_top = 491.0
+offset_right = 163.0
+offset_bottom = 622.0
+size_flags_horizontal = 0
+
+[node name="Label" type="Label" parent="InputInstrumentMenu"]
+layout_mode = 2
+offset_right = 163.0
+offset_bottom = 26.0
+text = "Input method"
+
+[node name="MicrophoneInputBtn" type="Button" parent="InputInstrumentMenu"]
+layout_mode = 2
+offset_top = 30.0
+offset_right = 163.0
+offset_bottom = 61.0
+toggle_mode = true
+button_group = SubResource("ButtonGroup_3hgip")
+text = "Microphone"
+
+[node name="MidiInputBtn" type="Button" parent="InputInstrumentMenu"]
+layout_mode = 2
+offset_top = 65.0
+offset_right = 163.0
+offset_bottom = 96.0
+toggle_mode = true
+button_group = SubResource("ButtonGroup_3hgip")
+text = "Midi"
+
+[node name="ComputerKeyboardBtn" type="Button" parent="InputInstrumentMenu"]
+layout_mode = 2
+offset_top = 100.0
+offset_right = 163.0
+offset_bottom = 131.0
+toggle_mode = true
+button_group = SubResource("ButtonGroup_3hgip")
+text = "Computer keyboard"
+
+[node name="BackBtn" type="Button" parent="."]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+offset_left = 188.0
+offset_top = 626.0
+offset_right = 388.0
+offset_bottom = 657.0
+size_flags_horizontal = 4
+text = "Back
+"
+
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/PlayAudio" to="." method="_on_play_audio_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/SetInput" to="." method="_on_set_input_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/SetSpeaker" to="." method="_on_set_speaker_pressed"]
+[connection signal="toggled" from="InputInstrumentMenu/MicrophoneInputBtn" to="." method="on_instrument_toggled" binds= [0]]
+[connection signal="toggled" from="InputInstrumentMenu/MidiInputBtn" to="." method="on_instrument_toggled" binds= [1]]
+[connection signal="toggled" from="InputInstrumentMenu/ComputerKeyboardBtn" to="." method="on_instrument_toggled" binds= [2]]
 [connection signal="pressed" from="BackBtn" to="." method="_on_back_btn_pressed"]
-[connection signal="pressed" from="PlayAudio" to="." method="_on_play_audio_pressed"]
-[connection signal="pressed" from="SetInput" to="." method="_on_set_input_pressed"]

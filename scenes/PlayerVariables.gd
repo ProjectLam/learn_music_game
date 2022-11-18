@@ -1,41 +1,40 @@
 extends Node
+
+
+const CFG_FILENAME = "user://player.cfg"
+
 var current_song:Song
 var songs:Array[Song] = []
 
 var selected_output_device = ""
 var selected_input_device = ""
-const cfg_filename = "user://player.cfg"
+
+var selected_instrument = ""
+
 var config = ConfigFile.new()
 
-# Called when the node enters the scene tree for the first time.
+
 func _ready():
 	selected_output_device = AudioServer.get_device()
-	selected_input_device = AudioServer.capture_get_device()	
-
+	selected_input_device = AudioServer.capture_get_device()
+	selected_instrument = InstrumentInput.get_instrument_name(0)
+	
 	# Load data from a file.
-	var err = config.load(cfg_filename)
+	var err = config.load(CFG_FILENAME)
 	if err != OK:
 		print("Couldn't load config creating new one")
-		
-		config = ConfigFile.new()
-		config.set_value("hardware", "selected_output_device", selected_output_device)
-		config.set_value("hardware", "selected_input_device", selected_input_device)
-
-		# Save it to a file (overwrite if already exists).
-		config.save(cfg_filename)
+		save()
 	else:
 		selected_output_device = config.get_value("hardware", "selected_output_device")
 		selected_input_device = config.get_value("hardware", "selected_input_device")
+		selected_instrument = config.get_value("hardware", "selected_instrument")
 		print("finished loading config")
+
 
 func save():
 	config.set_value("hardware", "selected_output_device", selected_output_device)
 	config.set_value("hardware", "selected_input_device", selected_input_device)
-
-	# Save it to a file (overwrite if already exists).
-	config.save(cfg_filename)
+	config.set_value("hardware", "selected_instrument", selected_instrument)
 	
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+	# Save it to a file (overwrite if already exists).
+	config.save(CFG_FILENAME)
