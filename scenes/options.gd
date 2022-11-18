@@ -1,7 +1,9 @@
-extends Node2D
+extends VBoxContainer
 
-@onready var item_list = get_node(^"ItemListOutput")
-@onready var item_list_input = get_node(^"ItemListInput")
+
+@onready var item_list = $%ItemListOutput
+@onready var item_list_input = $%ItemListInput
+
 
 func _ready():
 	for item in AudioServer.get_device_list():
@@ -20,6 +22,13 @@ func _ready():
 		if PlayerVariables.selected_input_device == item_list_input.get_item_text(i):
 			item_list_input.select(i)
 			break
+	
+	var instrument_buttons: Array
+	for child in $InputInstrumentMenu.get_children():
+		if child is Button:
+			instrument_buttons.append(child)
+	instrument_buttons[InstrumentInput.current_instrument].button_pressed = true
+
 
 func _process(_delta):
 	var speaker_mode_text = "Stereo"
@@ -50,10 +59,10 @@ func _on_set_speaker_pressed():
 func _on_play_audio_pressed():
 	if $AudioStreamPlayer.playing:
 		$AudioStreamPlayer.stop()
-		$PlayAudio.text = "Play Audio"
+		$%PlayAudio.text = "Play Audio"
 	else:
 		$AudioStreamPlayer.play()
-		$PlayAudio.text = "Stop Audio"
+		$%PlayAudio.text = "Stop Audio"
 
 
 func _on_set_input_pressed():
@@ -68,3 +77,10 @@ func _on_set_input_pressed():
 
 func _on_back_btn_pressed():
 	get_tree().change_scene_to_file("res://scenes/main.tscn")
+
+
+func on_instrument_toggled(button_pressed: bool, index: int):
+	if button_pressed:
+		InstrumentInput.set_instrument_by_index(index)
+		PlayerVariables.selected_instrument = InstrumentInput.get_instrument_name(index)
+		PlayerVariables.save()

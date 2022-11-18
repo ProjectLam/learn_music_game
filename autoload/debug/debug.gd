@@ -7,6 +7,11 @@ extends CanvasLayer
 var _is_active: bool = true
 
 
+func _ready():
+	if !OS.is_debug_build():
+		hide()
+
+
 func print_to_screen(msg: String, print_to_output: bool = false):
 	if print_to_output:
 		print(msg)
