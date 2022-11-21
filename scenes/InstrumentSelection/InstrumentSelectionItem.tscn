@@ -1,104 +1,26 @@
-[gd_scene load_steps=8 format=3 uid="uid://75f2hppujmyr"]
+[gd_scene load_steps=9 format=3 uid="uid://75f2hppujmyr"]
 
 [ext_resource type="Texture2D" uid="uid://bludcfr13nglg" path="res://assets/gui/main/mandoline.png" id="1_d445m"]
 [ext_resource type="Script" path="res://scenes/InstrumentSelection/InstrumentSelectionItem.gd" id="1_x6hsj"]
+[ext_resource type="Shader" path="res://scenes/InstrumentSelection/ItemCircle.gdshader" id="2_7ry3f"]
 [ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="2_p10hh"]
 [ext_resource type="Texture2D" uid="uid://bcyql8pbvs5yj" path="res://assets/gui/icons/song.png" id="3_qlxjn"]
 
-[sub_resource type="Shader" id="Shader_iysk6"]
-code = "shader_type canvas_item;
-
-uniform float power: hint_range(0.0, 5.0);
-
-uniform float radius: hint_range(0., 1.) = 1;
-uniform bool animate = false;
-uniform float square_scale: hint_range(0., 1.) = 0.1;
-uniform vec4 albedo: source_color;
-
-void fragment() {
-    float sc = square_scale + square_scale/2.;
-    float r = square_scale + (1. - radius) * (square_scale/2.);
-    
-    float scax = 1. - square_scale;
-    
-    float dx;
-    float dy;
-    float d;
-    float a;
-    
-    COLOR = texture(TEXTURE, UV);
-    
-    if (UV.x < square_scale && UV.y > scax) {
-        dx = square_scale - UV.x;
-        dy = scax - UV.y;
-        d = sqrt(pow(dx, 2.) + pow(dy, 2.));
-        a = asin(d);
-        
-        if (a > r) {
-            if (!animate) {
-                COLOR.a = 0.;
-            } else if (a > sc * sin(3.14 * fract(TIME))) {
-                COLOR.a = 0.;
-            }
-        }
-    }
-    
-    if (UV.x < square_scale && UV.y < square_scale) {
-        dx = square_scale - UV.x;
-        dy = square_scale - UV.y;
-        d = sqrt(pow(dx, 2.) + pow(dy, 2.));
-        a = asin(d);
-        
-        if (a > r) {
-            if (!animate) {
-                COLOR.a = 0.;
-            } else if (a > sc * sin(3.14 * fract(TIME))) {
-                COLOR.a = 0.;
-            }
-        }
-    }
-    
-    if (UV.x > scax && UV.y < square_scale) {
-        dx = scax - UV.x;
-        dy = square_scale - UV.y;
-        d = sqrt(pow(dx, 2.) + pow(dy, 2.));
-        a = asin(d);
-        
-        if (a > r) {
-            if (!animate) {
-                COLOR.a = 0.;
-            } else if (a > sc * sin(3.14 * fract(TIME))) {
-                COLOR.a = 0.;
-            }
-        }
-    }
-
-    if (UV.x > scax && UV.y > scax) {
-        dx = scax - UV.x;
-        dy = scax - UV.y;
-        d = sqrt(pow(dx, 2.) + pow(dy, 2.));
-        a = asin(d);
-        
-        if (a > r) {
-            if (!animate) {
-                COLOR.a = 0.;
-            } else if (a > sc * sin(3.14 * fract(TIME))) {
-                COLOR.a = 0.;
-            }
-        }
-    }
-	
-	COLOR.rgb = textureLod(SCREEN_TEXTURE, SCREEN_UV, power).rgb;
-	COLOR.rgb += albedo.rgb * albedo.a;
-}"
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yxg63"]
-shader = SubResource("Shader_iysk6")
-shader_parameter/albedo = Color(0.964706, 0, 0.819608, 0.152941)
+shader = ExtResource("2_7ry3f")
+shader_parameter/albedo = Color(0.968627, 0, 0.8, 0.458824)
 shader_parameter/animate = false
-shader_parameter/power = 3.106
+shader_parameter/indicate = false
+shader_parameter/indicating_power = 1.0
+shader_parameter/lighting_point = Vector2(0.5, 0.5)
 shader_parameter/radius = 1.0
-shader_parameter/square_scale = 0.503
+shader_parameter/radius_base = 0.5
+shader_parameter/size = Vector2(600, 600)
+shader_parameter/square_scale = 0.509
+shader_parameter/static_power = 0.5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pcstd"]
+bg_color = Color(0.145098, 0.462745, 1, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_gs1dp"]
 font = ExtResource("2_p10hh")
@@ -124,6 +46,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(260, 260)
+mouse_filter = 1
 
 [node name="Layer" type="Panel" parent="Circle"]
 use_parent_material = true
@@ -132,6 +55,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_pcstd")
 
 [node name="Image" type="TextureRect" parent="."]
 anchors_preset = 8
@@ -163,6 +88,7 @@ grow_vertical = 2
 [node name="NameLabel" type="Label" parent="Info"]
 offset_right = 207.0
 offset_bottom = 43.0
+mouse_filter = 1
 text = "MANDOLINE"
 label_settings = SubResource("LabelSettings_gs1dp")
 
@@ -183,12 +109,14 @@ stretch_mode = 3
 offset_left = 25.0
 offset_right = 35.0
 offset_bottom = 26.0
+mouse_filter = 1
 text = "0"
 
 [node name="SongsCountLabel" type="Label" parent="Info/Songs"]
 offset_left = 40.0
 offset_right = 85.0
 offset_bottom = 26.0
+mouse_filter = 1
 text = "songs"
 
 [node name="Courses" type="HBoxContainer" parent="Info"]
@@ -207,10 +135,15 @@ stretch_mode = 3
 offset_left = 24.0
 offset_right = 34.0
 offset_bottom = 26.0
+mouse_filter = 1
 text = "0"
 
 [node name="CoursesCountLabel" type="Label" parent="Info/Courses"]
 offset_left = 38.0
 offset_right = 98.0
 offset_bottom = 26.0
+mouse_filter = 1
 text = "courses"
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
