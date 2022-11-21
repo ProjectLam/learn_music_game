@@ -1,13 +1,13 @@
-[gd_scene load_steps=9 format=3 uid="uid://75f2hppujmyr"]
+[gd_scene load_steps=9 format=3 uid="uid://b2ew1c3swawaj"]
 
-[ext_resource type="Texture2D" uid="uid://bludcfr13nglg" path="res://assets/gui/main/mandoline.png" id="1_d445m"]
-[ext_resource type="Script" path="res://scenes/InstrumentSelection/InstrumentSelectionItem.gd" id="1_x6hsj"]
-[ext_resource type="Shader" path="res://scenes/InstrumentSelection/ItemCircle.gdshader" id="2_7ry3f"]
-[ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="2_p10hh"]
-[ext_resource type="Texture2D" uid="uid://bcyql8pbvs5yj" path="res://assets/gui/icons/song.png" id="3_qlxjn"]
+[ext_resource type="Script" path="res://scenes/instrument_selection/instrument_selection_item.gd" id="1_g0eae"]
+[ext_resource type="Shader" path="res://scenes/instrument_selection/item_circle.gdshader" id="2_tm0hu"]
+[ext_resource type="Texture2D" uid="uid://bludcfr13nglg" path="res://assets/gui/main/mandoline.png" id="3_s8f7b"]
+[ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="4_e8mw7"]
+[ext_resource type="Texture2D" uid="uid://bcyql8pbvs5yj" path="res://assets/gui/icons/song.png" id="5_v7lu5"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yxg63"]
-shader = ExtResource("2_7ry3f")
+shader = ExtResource("2_tm0hu")
 shader_parameter/albedo = Color(0.968627, 0, 0.8, 0.458824)
 shader_parameter/animate = false
 shader_parameter/indicate = false
@@ -23,7 +23,7 @@ shader_parameter/static_power = 0.5
 bg_color = Color(0.145098, 0.462745, 1, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_gs1dp"]
-font = ExtResource("2_p10hh")
+font = ExtResource("4_e8mw7")
 font_size = 40
 
 [node name="InstrumentSelectionItem" type="Control"]
@@ -34,7 +34,7 @@ offset_bottom = 509.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
-script = ExtResource("1_x6hsj")
+script = ExtResource("1_g0eae")
 metadata/_edit_group_ = true
 
 [node name="Circle" type="Control" parent="."]
@@ -70,7 +70,7 @@ offset_right = 228.5
 offset_bottom = 102.5
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("1_d445m")
+texture = ExtResource("3_s8f7b")
 
 [node name="Info" type="VBoxContainer" parent="."]
 anchors_preset = 8
@@ -102,7 +102,7 @@ theme_override_constants/separation = 5
 custom_minimum_size = Vector2(20, 0)
 offset_right = 20.0
 offset_bottom = 26.0
-texture = ExtResource("3_qlxjn")
+texture = ExtResource("5_v7lu5")
 stretch_mode = 3
 
 [node name="Number" type="Label" parent="Info/Songs"]
@@ -128,7 +128,7 @@ offset_bottom = 103.0
 custom_minimum_size = Vector2(20, 0)
 offset_right = 20.0
 offset_bottom = 26.0
-texture = ExtResource("3_qlxjn")
+texture = ExtResource("5_v7lu5")
 stretch_mode = 3
 
 [node name="Number" type="Label" parent="Info/Courses"]

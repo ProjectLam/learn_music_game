@@ -1,6 +1,6 @@
 extends Control
 
-var cInstrumentSelectionItem = preload("res://scenes/InstrumentSelection/InstrumentSelectionItem.tscn")
+var cInstrumentSelectionItem = preload("res://scenes/instrument_selection/instrument_selection_item.tscn")
 
 @onready var nItems = find_child("Items")
 

@@ -1,7 +1,7 @@
 extends Object
 class_name TInstrumentSelectionItems
 
-var cInstrumentSelectionItem = preload("res://scenes/InstrumentSelection/InstrumentSelectionItem.tscn")
+var cInstrumentSelectionItem = preload("res://scenes/instrument_selection/instrument_selection_item.tscn")
 
 var items: Dictionary = {}
 

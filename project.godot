@@ -37,7 +37,7 @@ _global_script_classes=[{
 "base": "Control",
 "class": &"InstrumentSelectionItem",
 "language": &"GDScript",
-"path": "res://scenes/InstrumentSelection/InstrumentSelectionItem.gd"
+"path": "res://scenes/instrument_selection/instrument_selection_item.gd"
 }, {
 "base": "RefCounted",
 "class": &"Level",
@@ -72,12 +72,12 @@ _global_script_classes=[{
 "base": "Object",
 "class": &"TInstrumentSelectionItem",
 "language": &"GDScript",
-"path": "res://scenes/InstrumentSelection/TInstrumentSelectionItem.gd"
+"path": "res://scenes/instrument_selection/t_instrument_selection_item.gd"
 }, {
 "base": "Object",
 "class": &"TInstrumentSelectionItems",
 "language": &"GDScript",
-"path": "res://scenes/InstrumentSelection/TInstrumentSelectionItems.gd"
+"path": "res://scenes/instrument_selection/t_instrument_selection_items.gd"
 }, {
 "base": "Node",
 "class": &"Utils",
