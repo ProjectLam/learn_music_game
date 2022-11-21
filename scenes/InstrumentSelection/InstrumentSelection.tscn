@@ -1,0 +1,333 @@
+[gd_scene load_steps=23 format=3 uid="uid://b7w45nlbxmemm"]
+
+[ext_resource type="Script" path="res://scenes/InstrumentSelection/InstrumentSelection.gd" id="1_dojki"]
+[ext_resource type="Texture2D" uid="uid://ctu1miqp425c5" path="res://assets/gui/icons/casette.png" id="2_ewqfu"]
+[ext_resource type="Texture2D" uid="uid://dxcxogdwflpig" path="res://assets/gui/main/background.png" id="2_q1xst"]
+[ext_resource type="Shader" path="res://shaders/LightingBackground.gdshader" id="3_1pfd6"]
+[ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="3_w5urv"]
+[ext_resource type="Texture2D" uid="uid://ixiw3q117w38" path="res://assets/gui/main/txt-choose-instrument.png" id="4_5eybd"]
+[ext_resource type="Shader" path="res://shaders/Glitch.gdshader" id="4_x7ekd"]
+[ext_resource type="Texture2D" uid="uid://cewj8er7rgjhq" path="res://assets/gui/icons/left.png" id="6_bixae"]
+[ext_resource type="Texture2D" uid="uid://dfxg2q3m2tb8m" path="res://assets/gui/icons/right.png" id="7_vqmqn"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_y6ivb"]
+shader = ExtResource("3_1pfd6")
+shader_parameter/indicate = true
+shader_parameter/indicating_power = 1.0
+shader_parameter/lighting_point = Vector2(0.5, 0.5)
+shader_parameter/radius_base = 0.5
+shader_parameter/size = null
+shader_parameter/static_power = 0.4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_utcdj"]
+bg_color = Color(0.0862745, 0.0313726, 0.176471, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ja2ug"]
+bg_color = Color(1, 1, 1, 0.145098)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kv4qc"]
+bg_color = Color(1, 1, 1, 0.0509804)
+
+[sub_resource type="LabelSettings" id="LabelSettings_ypi7r"]
+font = ExtResource("3_w5urv")
+font_size = 42
+font_color = Color(1, 1, 1, 0.192157)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d6h5r"]
+bg_color = Color(1, 1, 1, 0.145098)
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0vvxe"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r73yg"]
+shader = ExtResource("4_x7ekd")
+shader_parameter/shake_block_size = 10.0
+shader_parameter/shake_color_rate = 0.017
+shader_parameter/shake_power = 0.001
+shader_parameter/shake_rate = 0.2
+shader_parameter/shake_speed = 5.0
+
+[sub_resource type="Gradient" id="Gradient_8xbrk"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_8lcxw"]
+gradient = SubResource("Gradient_8xbrk")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b60ok"]
+bg_color = Color(1, 1, 1, 0.0431373)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3ay0s"]
+bg_color = Color(1, 1, 1, 0.290196)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r5pn7"]
+bg_color = Color(1, 1, 1, 0.290196)
+border_color = Color(0.690196, 0.0784314, 0.670588, 0.764706)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+
+[node name="InstrumentSelection" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(-149, 500)
+script = ExtResource("1_dojki")
+unselected_scale = 0.65
+
+[node name="Background" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_q1xst")
+stretch_mode = 6
+
+[node name="Layer" type="Panel" parent="Background"]
+material = SubResource("ShaderMaterial_y6ivb")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_utcdj")
+
+[node name="Left" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 62.0
+offset_top = 48.0
+offset_right = 159.0
+offset_bottom = -49.0
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Left"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="Top" type="PanelContainer" parent="Left/VBoxContainer"]
+custom_minimum_size = Vector2(0, 75)
+layout_mode = 2
+offset_right = 97.0
+offset_bottom = 106.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ja2ug")
+
+[node name="TextureRect" type="TextureRect" parent="Left/VBoxContainer/Top"]
+layout_mode = 2
+offset_right = 97.0
+offset_bottom = 106.0
+texture = ExtResource("2_ewqfu")
+stretch_mode = 5
+
+[node name="Middle" type="PanelContainer" parent="Left/VBoxContainer"]
+custom_minimum_size = Vector2(0, 75)
+layout_mode = 2
+offset_top = 106.0
+offset_right = 97.0
+offset_bottom = 728.0
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_kv4qc")
+
+[node name="Control" type="Control" parent="Left/VBoxContainer/Middle"]
+layout_mode = 2
+anchors_preset = 0
+offset_right = 97.0
+offset_bottom = 622.0
+
+[node name="Label" type="Label" parent="Left/VBoxContainer/Middle/Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.5
+offset_top = 105.0
+offset_right = 234.5
+offset_bottom = 151.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -1.5708
+text = "LAM PROJECT"
+label_settings = SubResource("LabelSettings_ypi7r")
+
+[node name="Bottom" type="PanelContainer" parent="Left/VBoxContainer"]
+custom_minimum_size = Vector2(0, 175)
+layout_mode = 2
+offset_top = 728.0
+offset_right = 97.0
+offset_bottom = 903.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_d6h5r")
+
+[node name="Right" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 204.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Title" type="Control" parent="Right"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 308.0
+grow_horizontal = 2
+
+[node name="Text" type="TextureRect" parent="Right/Title"]
+material = SubResource("ShaderMaterial_0vvxe")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_5eybd")
+stretch_mode = 3
+
+[node name="GlitchLayer" type="TextureRect" parent="Right/Title"]
+material = SubResource("ShaderMaterial_r73yg")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture1D_8lcxw")
+
+[node name="InstrumentMenu" type="Control" parent="Right"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 183.0
+offset_right = -61.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Right/InstrumentMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Left" type="Control" parent="Right/InstrumentMenu/HBoxContainer"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+anchors_preset = 0
+offset_right = 80.0
+offset_bottom = 817.0
+
+[node name="LeftBtn" type="Button" parent="Right/InstrumentMenu/HBoxContainer/Left"]
+custom_minimum_size = Vector2(65, 65)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.5
+offset_top = -32.5
+offset_right = 32.5
+offset_bottom = 32.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxFlat_b60ok")
+theme_override_styles/hover = SubResource("StyleBoxFlat_3ay0s")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_r5pn7")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_b60ok")
+theme_override_styles/focus = SubResource("StyleBoxFlat_b60ok")
+icon = ExtResource("6_bixae")
+icon_alignment = 1
+
+[node name="Middle" type="Control" parent="Right/InstrumentMenu/HBoxContainer"]
+clip_contents = true
+layout_mode = 2
+anchors_preset = 0
+offset_left = 84.0
+offset_right = 1231.0
+offset_bottom = 817.0
+size_flags_horizontal = 3
+
+[node name="Items" type="Control" parent="Right/InstrumentMenu/HBoxContainer/Middle"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Right" type="Control" parent="Right/InstrumentMenu/HBoxContainer"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+anchors_preset = 0
+offset_left = 1235.0
+offset_right = 1315.0
+offset_bottom = 817.0
+
+[node name="RightBtn" type="Button" parent="Right/InstrumentMenu/HBoxContainer/Right"]
+custom_minimum_size = Vector2(65, 65)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -32.5
+offset_right = 25.0
+offset_bottom = 32.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxFlat_b60ok")
+theme_override_styles/hover = SubResource("StyleBoxFlat_3ay0s")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_r5pn7")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_b60ok")
+theme_override_styles/focus = SubResource("StyleBoxFlat_b60ok")
+icon = ExtResource("7_vqmqn")
+icon_alignment = 1
+
+[connection signal="script_changed" from="." to="." method="_on_script_changed"]
+[connection signal="pressed" from="Right/InstrumentMenu/HBoxContainer/Left/LeftBtn" to="." method="_on_left_btn_pressed"]
+[connection signal="item_rect_changed" from="Right/InstrumentMenu/HBoxContainer/Middle/Items" to="." method="_on_Items_item_rect_changed"]
+[connection signal="pressed" from="Right/InstrumentMenu/HBoxContainer/Right/RightBtn" to="." method="_on_right_btn_pressed"]
