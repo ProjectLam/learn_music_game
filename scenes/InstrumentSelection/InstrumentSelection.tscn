@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://b7w45nlbxmemm"]
+[gd_scene load_steps=19 format=3 uid="uid://b7w45nlbxmemm"]
 
 [ext_resource type="Script" path="res://scenes/InstrumentSelection/InstrumentSelection.gd" id="1_dojki"]
 [ext_resource type="Texture2D" uid="uid://ctu1miqp425c5" path="res://assets/gui/icons/casette.png" id="2_ewqfu"]
@@ -6,7 +6,6 @@
 [ext_resource type="Shader" path="res://shaders/LightingBackground.gdshader" id="3_1pfd6"]
 [ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="3_w5urv"]
 [ext_resource type="Texture2D" uid="uid://ixiw3q117w38" path="res://assets/gui/main/txt-choose-instrument.png" id="4_5eybd"]
-[ext_resource type="Shader" path="res://shaders/Glitch.gdshader" id="4_x7ekd"]
 [ext_resource type="Texture2D" uid="uid://cewj8er7rgjhq" path="res://assets/gui/icons/left.png" id="6_bixae"]
 [ext_resource type="Texture2D" uid="uid://dfxg2q3m2tb8m" path="res://assets/gui/icons/right.png" id="7_vqmqn"]
 
@@ -41,21 +40,6 @@ corner_radius_bottom_right = 100
 corner_radius_bottom_left = 100
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0vvxe"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_r73yg"]
-shader = ExtResource("4_x7ekd")
-shader_parameter/shake_block_size = 10.0
-shader_parameter/shake_color_rate = 0.017
-shader_parameter/shake_power = 0.001
-shader_parameter/shake_rate = 0.2
-shader_parameter/shake_speed = 5.0
-
-[sub_resource type="Gradient" id="Gradient_8xbrk"]
-offsets = PackedFloat32Array(0)
-colors = PackedColorArray(1, 1, 1, 1)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_8lcxw"]
-gradient = SubResource("Gradient_8xbrk")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b60ok"]
 bg_color = Color(1, 1, 1, 0.0431373)
@@ -217,16 +201,6 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("4_5eybd")
 stretch_mode = 3
-
-[node name="GlitchLayer" type="TextureRect" parent="Right/Title"]
-material = SubResource("ShaderMaterial_r73yg")
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = SubResource("GradientTexture1D_8lcxw")
 
 [node name="InstrumentMenu" type="Control" parent="Right"]
 layout_mode = 1
