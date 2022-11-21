@@ -65,6 +65,10 @@ func _ready():
 	nMiddle = nItems.get_child(1)
 	nRight = nItems.get_child(2)
 	
+	for i in range(3, items.items.size()):
+		var nItem: InstrumentSelectionItem = items.items.values()[i].nItem
+		nItem.visible = false
+	
 	_process_items()
 
 func _process(delta):
@@ -113,15 +117,6 @@ func _process_items():
 	
 	nLeft.scale = Vector2(unselected_scale, unselected_scale)
 	nRight.scale = Vector2(unselected_scale, unselected_scale)
-	
-	var nLast = nRight
-	
-	for i in range(3, items.items.size()):
-		var nItem: InstrumentSelectionItem = nItems.get_child(i)
-		nItem.position.y = nLast.position.y
-		nItem.position.x = nLast.position.x + nLast.size.x
-		nItem.size = nLast.size
-		nItem.scale = Vector2(unselected_scale, unselected_scale)
 
 func go_left():
 	if is_playing:
@@ -132,11 +127,13 @@ func go_left():
 	index = (index+1) % items.items.size()
 	
 	nIncoming = items.get_item_circular(index+1).nItem
+	nDisappearing = nLeft
 	
 	nIncoming.size = nRight.size
 	nIncoming.position.y = nRight.position.y
 	nIncoming.position.x = nRight.position.x + nRight.size.x
 	nIncoming.scale = nRight.scale
+	nIncoming.visible = true
 	
 	var nLeft_pos = nLeft.position
 	var nLeft_scale = nLeft.scale
@@ -157,7 +154,10 @@ func go_left():
 	nMiddle = nRight
 	nRight = nIncoming
 	
+	var nDisappearing_curr = nDisappearing
+	
 	tween.connect("finished", func ():
+		nDisappearing_curr.visible = false
 		is_playing = false
 	)
 
@@ -170,11 +170,13 @@ func go_right():
 	index = (index-1) % items.items.size()
 	
 	nIncoming = items.get_item_circular(index-1).nItem
+	nDisappearing = nRight
 	
 	nIncoming.size = nLeft.size
 	nIncoming.position.y = nLeft.position.y
 	nIncoming.position.x = nLeft.position.x - nRight.size.x
 	nIncoming.scale = nLeft.scale
+	nIncoming.visible = true
 	
 	var nRight_pos = nRight.position
 	var nRight_scale = nRight.scale
@@ -195,7 +197,10 @@ func go_right():
 	nMiddle = nLeft
 	nLeft = nIncoming
 	
+	var nDisappearing_curr = nDisappearing
+	
 	tween.connect("finished", func ():
+		nDisappearing_curr.visible = false
 		is_playing = false
 	)
 
