@@ -7,6 +7,8 @@ extends Node3D
 
 @export var should_print_song_loading_debugs: bool = false
 
+var performance_instrument: PerformanceInstrument
+
 
 # You can load a file without having to import it beforehand using the code snippet below. Keep in mind that this snippet loads the whole file into memory and may not be ideal for huge files (hundreds of megabytes or more).
 func load_mp3(path):
@@ -69,7 +71,9 @@ func _ready():
 #		var tab_creator = preload("res://scenes/tab_creator/tab_creator.gd").new()
 #		tab_creator.create_tabs(current_song)
 		
-		$Notes.start_game(current_song.levels[0])
+		performance_instrument = preload("res://scenes/performance/instruments/performance_guitar.tscn").instantiate()
+		add_child(performance_instrument)
+		performance_instrument.start_game(current_song.levels[0])
 	
 	audio_stream.stream = currentStream
 	audio_stream.play()

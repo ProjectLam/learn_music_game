@@ -1,14 +1,10 @@
-[gd_scene load_steps=36 format=3 uid="uid://brppj3a5ftaap"]
+[gd_scene load_steps=19 format=3 uid="uid://brppj3a5ftaap"]
 
 [ext_resource type="Script" path="res://scenes/performance.gd" id="1_2i2o3"]
-[ext_resource type="PackedScene" uid="uid://bls282r4ku42k" path="res://instruments/guitar.tscn" id="1_jp1nt"]
 [ext_resource type="Script" path="res://scenes/performance/dancing_dots.gd" id="2_kgtlr"]
 [ext_resource type="Script" path="res://scenes/performance/camera.gd" id="2_qtcyo"]
 [ext_resource type="Shader" path="res://scenes/performance/tunnel.gdshader" id="3_30o2r"]
-[ext_resource type="Shader" path="res://scenes/performance/lane.gdshader" id="5_1u2ag"]
 [ext_resource type="Script" path="res://scenes/performance/speaker.gd" id="5_5sxnp"]
-[ext_resource type="Script" path="res://scenes/performance/notes.gd" id="6_vvmqq"]
-[ext_resource type="PackedScene" uid="uid://ug0w5oyeug6e" path="res://scenes/performance/note.tscn" id="7_xpjkr"]
 
 [sub_resource type="Environment" id="Environment_n4e55"]
 background_mode = 1
@@ -75,88 +71,11 @@ top_radius = 0.4
 bottom_radius = 0.2
 height = 0.2
 
-[sub_resource type="QuadMesh" id="QuadMesh_yx7cj"]
-size = Vector2(1.8, 48)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_v5s2x"]
-render_priority = 0
-shader = ExtResource("5_1u2ag")
-shader_parameter/brightness = 0.5
-shader_parameter/color = Color(0.207843, 0.505882, 0.615686, 1)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_287sk"]
-render_priority = 0
-shader = ExtResource("5_1u2ag")
-shader_parameter/brightness = 0.5
-shader_parameter/color = Color(0.207843, 0.505882, 0.615686, 1)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ncp8n"]
-render_priority = 0
-shader = ExtResource("5_1u2ag")
-shader_parameter/brightness = 0.5
-shader_parameter/color = Color(0.207843, 0.505882, 0.615686, 1)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_cqa8w"]
-render_priority = 0
-shader = ExtResource("5_1u2ag")
-shader_parameter/brightness = 0.5
-shader_parameter/color = Color(0.207843, 0.505882, 0.615686, 1)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_poqsb"]
-render_priority = 0
-shader = ExtResource("5_1u2ag")
-shader_parameter/brightness = 0.5
-shader_parameter/color = Color(0.207843, 0.505882, 0.615686, 1)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_rawr0"]
-render_priority = 0
-shader = ExtResource("5_1u2ag")
-shader_parameter/brightness = 0.5
-shader_parameter/color = Color(0.207843, 0.505882, 0.615686, 1)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_yy30a"]
-render_priority = 0
-shader = ExtResource("5_1u2ag")
-shader_parameter/brightness = 0.5
-shader_parameter/color = Color(0.207843, 0.505882, 0.615686, 1)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_7m1du"]
-render_priority = 0
-shader = ExtResource("5_1u2ag")
-shader_parameter/brightness = 0.5
-shader_parameter/color = Color(0.207843, 0.505882, 0.615686, 1)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_qp7oy"]
-render_priority = 0
-shader = ExtResource("5_1u2ag")
-shader_parameter/brightness = 0.5
-shader_parameter/color = Color(0.207843, 0.505882, 0.615686, 1)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_6lepk"]
-render_priority = 0
-shader = ExtResource("5_1u2ag")
-shader_parameter/brightness = 0.5
-shader_parameter/color = Color(0.207843, 0.505882, 0.615686, 1)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_gjwka"]
-render_priority = 0
-shader = ExtResource("5_1u2ag")
-shader_parameter/brightness = 0.5
-shader_parameter/color = Color(0.207843, 0.505882, 0.615686, 1)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ahbiq"]
-render_priority = 0
-shader = ExtResource("5_1u2ag")
-shader_parameter/brightness = 0.5
-shader_parameter/color = Color(0.207843, 0.505882, 0.615686, 1)
-
 [node name="Performance" type="Node3D"]
 script = ExtResource("1_2i2o3")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_n4e55")
-
-[node name="guitar" parent="." instance=ExtResource("1_jp1nt")]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.0300017, -0.727535, 0.685414, 0.436551, 0.607328, 0.663759, -0.899179, 0.319132, 0.299385, 0, 2.80025, 0)
@@ -219,88 +138,5 @@ surface_material_override/0 = SubResource("StandardMaterial3D_1b2fh")
 
 [node name="Marker3D" type="Marker3D" parent="Speaker2/SpeakerCone"]
 transform = Transform3D(1, 2.23517e-08, 5.96046e-08, 0, -5.21541e-08, 1, 0, -1, -4.47035e-08, 0, 0.1, 0)
-
-[node name="Lanes" type="Node3D" parent="."]
-
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="Lanes"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 1, 0, -24)
-mesh = SubResource("QuadMesh_yx7cj")
-skeleton = NodePath("../..")
-surface_material_override/0 = SubResource("ShaderMaterial_v5s2x")
-
-[node name="MeshInstance3D3" type="MeshInstance3D" parent="Lanes"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 3, 0, -24)
-mesh = SubResource("QuadMesh_yx7cj")
-skeleton = NodePath("../..")
-surface_material_override/0 = SubResource("ShaderMaterial_287sk")
-
-[node name="MeshInstance3D4" type="MeshInstance3D" parent="Lanes"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 5, 0, -24)
-mesh = SubResource("QuadMesh_yx7cj")
-skeleton = NodePath("../..")
-surface_material_override/0 = SubResource("ShaderMaterial_ncp8n")
-
-[node name="MeshInstance3D5" type="MeshInstance3D" parent="Lanes"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 7, 0, -24)
-mesh = SubResource("QuadMesh_yx7cj")
-skeleton = NodePath("../..")
-surface_material_override/0 = SubResource("ShaderMaterial_cqa8w")
-
-[node name="MeshInstance3D6" type="MeshInstance3D" parent="Lanes"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 9, 0, -24)
-mesh = SubResource("QuadMesh_yx7cj")
-skeleton = NodePath("../..")
-surface_material_override/0 = SubResource("ShaderMaterial_poqsb")
-
-[node name="MeshInstance3D7" type="MeshInstance3D" parent="Lanes"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 11, 0, -24)
-mesh = SubResource("QuadMesh_yx7cj")
-skeleton = NodePath("../..")
-surface_material_override/0 = SubResource("ShaderMaterial_rawr0")
-
-[node name="MeshInstance3D8" type="MeshInstance3D" parent="Lanes"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 13, 0, -24)
-mesh = SubResource("QuadMesh_yx7cj")
-skeleton = NodePath("../..")
-surface_material_override/0 = SubResource("ShaderMaterial_yy30a")
-
-[node name="MeshInstance3D9" type="MeshInstance3D" parent="Lanes"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 15, 0, -24)
-mesh = SubResource("QuadMesh_yx7cj")
-skeleton = NodePath("../..")
-surface_material_override/0 = SubResource("ShaderMaterial_7m1du")
-
-[node name="MeshInstance3D10" type="MeshInstance3D" parent="Lanes"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 17, 0, -24)
-mesh = SubResource("QuadMesh_yx7cj")
-skeleton = NodePath("../..")
-surface_material_override/0 = SubResource("ShaderMaterial_qp7oy")
-
-[node name="MeshInstance3D11" type="MeshInstance3D" parent="Lanes"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 19, 0, -24)
-mesh = SubResource("QuadMesh_yx7cj")
-skeleton = NodePath("../..")
-surface_material_override/0 = SubResource("ShaderMaterial_6lepk")
-
-[node name="MeshInstance3D12" type="MeshInstance3D" parent="Lanes"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 21, 0, -24)
-mesh = SubResource("QuadMesh_yx7cj")
-skeleton = NodePath("../..")
-surface_material_override/0 = SubResource("ShaderMaterial_gjwka")
-
-[node name="MeshInstance3D13" type="MeshInstance3D" parent="Lanes"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 23, 0, -24)
-mesh = SubResource("QuadMesh_yx7cj")
-skeleton = NodePath("../..")
-surface_material_override/0 = SubResource("ShaderMaterial_ahbiq")
-
-[node name="Notes" type="Node3D" parent="."]
-script = ExtResource("6_vvmqq")
-note_scene = ExtResource("7_xpjkr")
-string_colors = PackedColorArray(0.682353, 0, 0, 1, 0.682353, 0.682353, 0, 1, 0, 0, 0.682353, 1, 0.682353, 0.498039, 0, 1, 0, 0.682353, 0, 1, 0.682353, 0, 0.623529, 1)
-string_spacing = 0.36
-string_offset = 0.2
-fret_spacing = 2.0
-fret_offset = 1.0
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]

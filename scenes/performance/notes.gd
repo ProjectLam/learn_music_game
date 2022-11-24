@@ -97,6 +97,7 @@ func _on_input_note_started(pitch: float):
 		_on_good_note_start(_performance_note_index, timing_error)
 		_current_note_indices.append(_performance_note_index)
 		_play_note(_performance_note_index)
+		note_started.emit(expected)
 	else:
 		_on_wrong_pitch(_performance_note_index, timing_error)
 		_destroy_note(_performance_note_index)
@@ -124,6 +125,7 @@ func _on_input_note_ended(pitch: float):
 	
 	_on_good_note_end(expected_index, timing_error)
 	_end_note(expected_index, abs(timing_error) < 1)
+	note_ended.emit(expected)
 
 
 func _play_note(index: int):
