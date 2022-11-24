@@ -1,0 +1,87 @@
+[gd_scene load_steps=8 format=3 uid="uid://bddskm6v7w82v"]
+
+[ext_resource type="Script" path="res://scenes/song_selection/song_selection_item.gd" id="1_t4p3h"]
+[ext_resource type="Texture2D" uid="uid://ctu1miqp425c5" path="res://assets/gui/icons/casette.png" id="1_x0k4k"]
+[ext_resource type="FontFile" uid="uid://df06bw7a1s1u7" path="res://fonts/Montserrat-Bold.ttf" id="3_lp4ge"]
+[ext_resource type="FontFile" uid="uid://cl8syiom7jxno" path="res://fonts/Montserrat-Regular.ttf" id="4_sgiw1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iqc83"]
+bg_color = Color(0.545098, 0, 0.505882, 0.27451)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.992157, 0, 0.909804, 0.643137)
+corner_radius_top_left = 1024
+corner_radius_top_right = 1024
+corner_radius_bottom_right = 1024
+corner_radius_bottom_left = 1024
+
+[sub_resource type="LabelSettings" id="LabelSettings_tgewp"]
+font = ExtResource("3_lp4ge")
+
+[sub_resource type="LabelSettings" id="LabelSettings_igyx1"]
+font = ExtResource("4_sgiw1")
+
+[node name="song_selection_item" type="Container"]
+anchors_preset = -1
+anchor_right = 1.0
+script = ExtResource("1_t4p3h")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Box" type="PanelContainer" parent="VBoxContainer"]
+offset_right = 1600.0
+offset_bottom = 108.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_iqc83")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Box"]
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 1599.0
+offset_bottom = 107.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="AvatarImage" type="TextureRect" parent="VBoxContainer/Box/HBoxContainer"]
+offset_right = 92.0
+offset_bottom = 106.0
+texture = ExtResource("1_x0k4k")
+stretch_mode = 5
+
+[node name="Details" type="VBoxContainer" parent="VBoxContainer/Box/HBoxContainer"]
+offset_left = 96.0
+offset_right = 1574.0
+offset_bottom = 106.0
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="NameLabel" type="Label" parent="VBoxContainer/Box/HBoxContainer/Details"]
+offset_top = 27.0
+offset_right = 1478.0
+offset_bottom = 51.0
+text = "Song Name"
+label_settings = SubResource("LabelSettings_tgewp")
+
+[node name="ArtistLabel" type="Label" parent="VBoxContainer/Box/HBoxContainer/Details"]
+offset_top = 55.0
+offset_right = 1478.0
+offset_bottom = 79.0
+text = "Artist Name"
+label_settings = SubResource("LabelSettings_igyx1")
+
+[node name="Spacer" type="Control" parent="VBoxContainer/Box/HBoxContainer"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 3
+anchors_preset = 0
+offset_left = 1578.0
+offset_right = 1598.0
+offset_bottom = 106.0
+
+[connection signal="gui_input" from="VBoxContainer/Box" to="." method="_on_Box_gui_input"]

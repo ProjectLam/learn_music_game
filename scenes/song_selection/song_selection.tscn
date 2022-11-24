@@ -1,0 +1,85 @@
+[gd_scene load_steps=7 format=3 uid="uid://r5oy8h4p8suy"]
+
+[ext_resource type="Script" path="res://scenes/song_selection/song_selection.gd" id="1_w4sd3"]
+[ext_resource type="Texture2D" uid="uid://dxcxogdwflpig" path="res://assets/gui/main/background.png" id="2_hoap4"]
+[ext_resource type="Shader" path="res://shaders/LightingBackground.gdshader" id="3_ry738"]
+[ext_resource type="PackedScene" uid="uid://drhti1f6dfqep" path="res://scenes/left_bar/left_bar.tscn" id="4_bgttp"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ec2p8"]
+shader = ExtResource("3_ry738")
+shader_parameter/indicate = true
+shader_parameter/indicating_power = 1.0
+shader_parameter/lighting_point = Vector2(0.5, 0.5)
+shader_parameter/radius_base = 0.5
+shader_parameter/size = null
+shader_parameter/static_power = 0.4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_afwxd"]
+bg_color = Color(0.0862745, 0.0313726, 0.176471, 1)
+
+[node name="song_selection" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_w4sd3")
+
+[node name="Background" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_hoap4")
+stretch_mode = 6
+
+[node name="Layer" type="Panel" parent="Background"]
+material = SubResource("ShaderMaterial_ec2p8")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_afwxd")
+
+[node name="LeftBar" parent="." instance=ExtResource("4_bgttp")]
+layout_mode = 1
+
+[node name="Right" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 204.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Songs" type="Control" parent="Right"]
+layout_mode = 1
+anchor_left = 0.57
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="Items" type="Control" parent="Right/Songs"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[connection signal="item_rect_changed" from="Right/Songs" to="." method="_on_Songs_item_rect_changed"]
