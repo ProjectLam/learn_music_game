@@ -1,9 +1,8 @@
-[gd_scene load_steps=19 format=3 uid="uid://cgxsyt8xt7rpr"]
+[gd_scene load_steps=18 format=3 uid="uid://b3afukytaku6f"]
 
 [ext_resource type="Script" path="res://scenes/performance/instruments/performance_instrument.gd" id="1_b3xwo"]
 [ext_resource type="Shader" path="res://scenes/performance/lane.gdshader" id="1_euv2x"]
-[ext_resource type="Script" path="res://scenes/performance/notes.gd" id="2_fui8d"]
-[ext_resource type="PackedScene" uid="uid://ug0w5oyeug6e" path="res://scenes/performance/note.tscn" id="3_7orcd"]
+[ext_resource type="Script" path="res://scenes/performance/instruments/guitar_notes.gd" id="3_60h86"]
 [ext_resource type="PackedScene" uid="uid://bls282r4ku42k" path="res://instruments/guitar.tscn" id="4_e1r3b"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_85lqa"]
@@ -159,8 +158,7 @@ skeleton = NodePath("../../..")
 surface_material_override/0 = SubResource("ShaderMaterial_ok42b")
 
 [node name="Notes" type="Node3D" parent="."]
-script = ExtResource("2_fui8d")
-note_scene = ExtResource("3_7orcd")
+script = ExtResource("3_60h86")
 string_colors = PackedColorArray(0.682353, 0, 0, 1, 0.682353, 0.682353, 0, 1, 0, 0, 0.682353, 1, 0.682353, 0.498039, 0, 1, 0, 0.682353, 0, 1, 0.682353, 0, 0.623529, 1)
 string_spacing = 0.36
 string_offset = 0.2

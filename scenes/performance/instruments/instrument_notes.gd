@@ -1,3 +1,4 @@
+class_name InstrumentNotes
 extends Node3D
 
 
@@ -6,21 +7,10 @@ signal note_ended(note_data)
 
 
 @export var note_scene: PackedScene
-# The colors for the guitar strings, from bottom to top
-@export var string_colors: PackedColorArray
-
 # How far back from the world origin notes should be spawned
 @export var spawn_distance: float = 48
 @export var note_speed: float = 10.0
 
-# How far apart the strings are
-@export var string_spacing: float
-# How far up from the world origin the first string is
-@export var string_offset: float
-# How far apart the frets are
-@export var fret_spacing: float
-# How far to the right from the world origin the first note should hit
-@export var fret_offset: float
 
 var _level_data: Level
 # The notes you see on screen
@@ -58,17 +48,8 @@ func _process(delta):
 	while _notes.size() > 0 and _notes[0].time <= time + look_ahead:
 		var note_data: Note = _notes.pop_front()
 		_spawned_notes.append(note_data)
-		var note = note_scene.instantiate()
-		note.speed = note_speed
-		add_child(note)
-		note.position = Vector3(
-			fret_offset + fret_spacing * note_data.fret,
-			_get_string_y(note_data.string),
-			-note_speed * (note_data.time - time)
-		)
-		note.color = string_colors[note_data.string]
-		note.duration = note_data.sustain
-		note.index = _spawned_notes.size() - 1
+		
+		spawn_note(note_data, _spawned_notes.size() - 1)
 	
 	while _performance_notes[_performance_note_index].time + _performance_notes[_performance_note_index].sustain < time - missed_max_error:
 		_on_missed_note(_performance_note_index)
@@ -76,9 +57,9 @@ func _process(delta):
 		_performance_note_index += 1
 
 
-func _get_string_y(string_index):
-	# Strings start at index 0, 0 being the low E (top string)
-	return string_offset + (5 - string_index) * string_spacing
+# Abstract, override in child class
+func spawn_note(note_data: Note, note_index: int):
+	pass
 
 
 func _on_input_note_started(pitch: float):
