@@ -1,11 +1,17 @@
-extends Node
+extends InstrumentNote
 
 
-# Called when the node enters the scene tree for the first time.
+func set_color(value):
+	$MeshInstance3D.material_override.albedo_color = value
+	$MeshInstance3D.material_override.emission = value
+	$DurationTail/MeshInstance3D.material_override.albedo_color = 0.5 * value
+
+
+func set_duration(value):
+	duration = value
+	$DurationTail.scale.z = value * speed
+
+
 func _ready():
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+	$MeshInstance3D.material_override = $MeshInstance3D.material_override.duplicate()
+	$DurationTail/MeshInstance3D.material_override = $DurationTail/MeshInstance3D.material_override.duplicate()

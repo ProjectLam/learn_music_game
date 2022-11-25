@@ -27,7 +27,7 @@ func spawn_note(note_data: Note, note_index: int):
 	)
 	note.color = string_colors[note_data.string]
 	note.duration = note_data.sustain
-	note.index = _spawned_notes.size() - 1
+	note.index = note_index
 
 
 
