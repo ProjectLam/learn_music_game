@@ -1,6 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://ug0w5oyeug6e"]
+[gd_scene load_steps=6 format=3 uid="uid://dbmsu8ssa6w6j"]
 
-[ext_resource type="Script" path="res://scenes/performance/note.gd" id="1_2e1gw"]
+[ext_resource type="Script" path="res://scenes/performance/instruments/guitar_note.gd" id="1_p8yhw"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w8le8"]
 shading_mode = 0
@@ -14,8 +14,8 @@ shading_mode = 0
 
 [sub_resource type="QuadMesh" id="QuadMesh_0mjjq"]
 
-[node name="Note" type="Node3D"]
-script = ExtResource("1_2e1gw")
+[node name="GuitarNote" type="Node3D"]
+script = ExtResource("1_p8yhw")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 material_override = SubResource("StandardMaterial3D_w8le8")

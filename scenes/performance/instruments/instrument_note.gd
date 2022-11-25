@@ -1,3 +1,4 @@
+class_name InstrumentNote
 extends Node3D
 
 
@@ -7,21 +8,8 @@ var speed: float = 10.0
 var is_playing: bool = false
 
 
-var color: Color:
-	set(value):
-		$MeshInstance3D.material_override.albedo_color = value
-		$MeshInstance3D.material_override.emission = value
-		$DurationTail/MeshInstance3D.material_override.albedo_color = 0.5 * value
-
-var duration: float:
-	set(value):
-		duration = value
-		$DurationTail.scale.z = value * speed
-
-
-func _ready():
-	$MeshInstance3D.material_override = $MeshInstance3D.material_override.duplicate()
-	$DurationTail/MeshInstance3D.material_override = $DurationTail/MeshInstance3D.material_override.duplicate()
+var color: Color: set = set_color
+var duration: float: set = set_duration
 
 
 func _process(delta):
@@ -47,3 +35,13 @@ func end(successful: bool):
 func destroy():
 	# The player missed this note. Destroy it, maybe play a feedback animation.
 	queue_free()
+
+
+# Abstract, use to update the color if needed
+func set_color(value: Color):
+	pass
+
+
+# Abstract, use to update the visuals (like a "tail") to depict duration
+func set_duration(value: float):
+	pass

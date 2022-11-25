@@ -1,8 +1,9 @@
-[gd_scene load_steps=13 format=3 uid="uid://bfeas0r8kqnyo"]
+[gd_scene load_steps=14 format=3 uid="uid://bfeas0r8kqnyo"]
 
 [ext_resource type="Script" path="res://scenes/performance/instruments/performance_instrument.gd" id="1_4dhxj"]
 [ext_resource type="Shader" path="res://scenes/performance/lane.gdshader" id="1_d17bu"]
 [ext_resource type="PackedScene" uid="uid://cjao57jfa05am" path="res://models/instruments/piano.glb" id="2_jfq7w"]
+[ext_resource type="Script" path="res://scenes/performance/instruments/piano_notes.gd" id="4_0scbe"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_7m535"]
 size = Vector2(0.8, 48)
@@ -582,3 +583,4 @@ surface_material_override/0 = SubResource("ShaderMaterial_3e0j7")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23, 0, 0)
 
 [node name="Notes" type="Node3D" parent="."]
+script = ExtResource("4_0scbe")

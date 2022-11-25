@@ -35,6 +35,11 @@ _global_script_classes=[{
 "path": "res://autoload/instrument_input/input_instrument.gd"
 }, {
 "base": "Node3D",
+"class": &"InstrumentNote",
+"language": &"GDScript",
+"path": "res://scenes/performance/instruments/instrument_note.gd"
+}, {
+"base": "Node3D",
 "class": &"InstrumentNotes",
 "language": &"GDScript",
 "path": "res://scenes/performance/instruments/instrument_notes.gd"
@@ -110,6 +115,7 @@ _global_script_class_icons={
 "GutStringUtils": "",
 "GutTest": "",
 "InputInstrument": "",
+"InstrumentNote": "",
 "InstrumentNotes": "",
 "InstrumentSelectionItem": "",
 "Level": "",
