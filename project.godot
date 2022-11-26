@@ -84,6 +84,11 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://scenes/instrument_selection/t_instrument_selection_items.gd"
 }, {
+"base": "Object",
+"class": &"TSong",
+"language": &"GDScript",
+"path": "res://scenes/song_selection/t_song.gd"
+}, {
 "base": "Node",
 "class": &"Utils",
 "language": &"GDScript",
@@ -115,6 +120,7 @@ _global_script_class_icons={
 "SongSelectionItem": "",
 "TInstrumentSelectionItem": "",
 "TInstrumentSelectionItems": "",
+"TSong": "",
 "Utils": "",
 "WebSocketClient": "",
 "WebSocketServer": ""

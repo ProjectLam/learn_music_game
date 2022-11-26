@@ -31,10 +31,6 @@ func _ready():
 	index = 3
 	offset = index - middle_i
 	
-	print("middle_i: ", middle_i)
-	print("offset: ", offset)
-	print("index: ", index)
-	
 	_process_items_vertically()
 	_process_items()
 
@@ -46,13 +42,35 @@ func select_item(p_index: int) -> void:
 		tween_y.stop()
 	tween_y = get_tree().create_tween().set_parallel(true)
 	
+	var viewport_height = get_viewport_rect().size.y
+	item_height = viewport_height / items_number
+	
 	var middle_i = floor(items_count / floor(items_number / 2)) - 2
 	
 	index = p_index
 	offset = index - middle_i
 	
-	print("Index: ", index)
-	print("Offset: ", offset)
+	var di = middle_i - index
+	
+	if di >= 0:
+		var mov_lim = items_count - di
+		var mov_i = items_count - 1
+		
+		var i = 0
+		while mov_i >= mov_lim:
+			var nMovingUp = nItems.get_child(-1)
+			nItems.move_child(nMovingUp, 0)
+			nMovingUp.position.y = -1 * (item_height * (i+1))
+			mov_i -= 1
+			i += 1
+		
+		for j in range(items_number - middle_i, nItems.get_child_count()):
+			var nMovingDown = nItems.get_child(j)
+			var y = nMovingDown.position.y + item_height
+			tween_y.tween_property(nMovingDown, "position:y", y, animation_duration)
+		
+		index = p_index + di
+		offset = 0
 	
 	var items_y = offset * item_height
 	items_y *= -1
@@ -61,6 +79,10 @@ func select_item(p_index: int) -> void:
 	_process_items()
 
 func _process_items_vertically():
+	if tween_y:
+		tween_y.stop()
+	tween_y = get_tree().create_tween().set_parallel(true)
+	
 	var viewport_height = get_viewport_rect().size.y
 	
 	item_height = viewport_height / items_number
@@ -76,7 +98,8 @@ func _process_items_vertically():
 		nItem.custom_minimum_size.y = item_height
 		nBox.custom_minimum_size.y = item_height * 0.75
 		
-		nItem.position.y = i * item_height
+		var y = i * item_height
+		nItem.position.y = y
 
 func _process_items() -> void:
 	if tween_x:
@@ -84,13 +107,10 @@ func _process_items() -> void:
 	tween_x = get_tree().create_tween().set_parallel(true)
 	
 	var viewport_height = get_viewport_rect().size.y
-	
 	item_height = viewport_height / items_number
-	
 	items_count = nItems.get_child_count()
 	
 	var middle_i = floor(items_count / floor(items_number / 2)) - 2
-	print("middle_i: ", middle_i)
 	
 	tween_x.set_ease(Tween.EASE_OUT_IN)
 	
@@ -121,7 +141,6 @@ func _process_items() -> void:
 	
 	var mi = offset + middle_i
 	var nMiddle = nItems.get_child(mi)
-	print("mi: ", mi)
 	tween_x.tween_property(nMiddle, "position:x", 0, animation_duration)
 	
 	j = 1
@@ -136,8 +155,11 @@ func _process_items() -> void:
 		
 		j += 1
 
-func _place_item() -> void:
-	print("_place_items(): offset: ", offset, " - index: ", index)
+func go_down():
+	select_item((index+1) % items_count)
+
+func go_up():
+	select_item((index-1) % items_count)
 
 func _on_Songs_item_rect_changed():
 	if not nItems:
@@ -150,3 +172,9 @@ func _on_Songs_item_rect_changed():
 
 func _on_Item_selected(p_nItem: SongSelectionItem):
 	select_item(p_nItem.get_index())
+
+func _on_DownBtn_pressed():
+	go_down()
+
+func _on_UpBtn_pressed():
+	go_up()

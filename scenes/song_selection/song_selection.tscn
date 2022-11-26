@@ -1,9 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://r5oy8h4p8suy"]
+[gd_scene load_steps=12 format=3 uid="uid://r5oy8h4p8suy"]
 
 [ext_resource type="Script" path="res://scenes/song_selection/song_selection.gd" id="1_w4sd3"]
 [ext_resource type="Texture2D" uid="uid://dxcxogdwflpig" path="res://assets/gui/main/background.png" id="2_hoap4"]
 [ext_resource type="Shader" path="res://shaders/LightingBackground.gdshader" id="3_ry738"]
 [ext_resource type="PackedScene" uid="uid://drhti1f6dfqep" path="res://scenes/left_bar/left_bar.tscn" id="4_bgttp"]
+[ext_resource type="Texture2D" uid="uid://d1xyolkxthdp1" path="res://assets/gui/icons/down.png" id="5_cr51n"]
+[ext_resource type="Texture2D" uid="uid://1uht5wqqvkkv" path="res://assets/gui/icons/up.png" id="6_xy0pm"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ec2p8"]
 shader = ExtResource("3_ry738")
@@ -16,6 +18,33 @@ shader_parameter/static_power = 0.4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_afwxd"]
 bg_color = Color(0.0862745, 0.0313726, 0.176471, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_chwfm"]
+bg_color = Color(0.980392, 0, 1, 1)
+border_width_bottom = 5
+border_color = Color(0.760784, 0, 0.776471, 1)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ac34n"]
+bg_color = Color(0.996078, 0.435294, 1, 1)
+border_width_bottom = 5
+border_color = Color(0.760784, 0, 0.776471, 1)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_601iy"]
+bg_color = Color(0.996078, 0.435294, 1, 1)
+border_width_bottom = 5
+border_color = Color(0.760784, 0, 0.776471, 1)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
 
 [node name="song_selection" type="Control"]
 layout_mode = 3
@@ -82,4 +111,40 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="Buttons" type="HBoxContainer" parent="Right/Songs"]
+layout_mode = 0
+offset_top = 51.0
+offset_right = 125.0
+offset_bottom = 101.0
+theme_override_constants/separation = 25
+
+[node name="DownBtn" type="Button" parent="Right/Songs/Buttons"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+offset_right = 50.0
+offset_bottom = 50.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_chwfm")
+theme_override_styles/hover = SubResource("StyleBoxFlat_chwfm")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ac34n")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_chwfm")
+theme_override_styles/focus = SubResource("StyleBoxFlat_chwfm")
+icon = ExtResource("5_cr51n")
+icon_alignment = 1
+
+[node name="UpBtn" type="Button" parent="Right/Songs/Buttons"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+offset_left = 75.0
+offset_right = 125.0
+offset_bottom = 50.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_chwfm")
+theme_override_styles/hover = SubResource("StyleBoxFlat_chwfm")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_601iy")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_chwfm")
+theme_override_styles/focus = SubResource("StyleBoxFlat_chwfm")
+icon = ExtResource("6_xy0pm")
+icon_alignment = 1
+
 [connection signal="item_rect_changed" from="Right/Songs" to="." method="_on_Songs_item_rect_changed"]
+[connection signal="pressed" from="Right/Songs/Buttons/DownBtn" to="." method="_on_DownBtn_pressed"]
+[connection signal="pressed" from="Right/Songs/Buttons/UpBtn" to="." method="_on_UpBtn_pressed"]
