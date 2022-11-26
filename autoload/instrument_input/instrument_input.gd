@@ -15,7 +15,7 @@ func _ready():
 			instrument_count += 1
 			if instrument_count > 1:
 				child.deactivate()
-#	connect_instrument(get_instrument_index(PlayerVariables.selected_instrument))
+	connect_instrument(get_instrument_index(PlayerVariables.selected_instrument))
 
 
 func set_instrument_by_index(index: int):
