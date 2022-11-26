@@ -113,8 +113,9 @@ grow_vertical = 2
 
 [node name="Buttons" type="HBoxContainer" parent="Right/Songs"]
 layout_mode = 0
+offset_left = 1.28003
 offset_top = 51.0
-offset_right = 125.0
+offset_right = 126.28
 offset_bottom = 101.0
 theme_override_constants/separation = 25
 

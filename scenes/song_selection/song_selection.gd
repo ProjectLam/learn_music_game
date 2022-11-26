@@ -37,7 +37,7 @@ func _ready():
 func _process(delta):
 	pass
 
-func select_item(p_index: int) -> void:
+func select_item(p_index: int, p_is_internal: bool = false) -> void:
 	if tween_y:
 		tween_y.stop()
 	tween_y = get_tree().create_tween().set_parallel(true)
@@ -66,11 +66,33 @@ func select_item(p_index: int) -> void:
 		
 		for j in range(items_number - middle_i, nItems.get_child_count()):
 			var nMovingDown = nItems.get_child(j)
-			var y = nMovingDown.position.y + item_height
+			var y = nMovingDown.position.y + (item_height * di)
 			tween_y.tween_property(nMovingDown, "position:y", y, animation_duration)
 		
 		index = p_index + di
 		offset = 0
+	else:
+		var did = (middle_i - (items_count - index)) + 1
+		
+		if did > 0:
+			var move_lim = did
+			
+			for i in range(did):
+				var nMovingUp = nItems.get_child(0)
+				nItems.move_child(nMovingUp, -1)
+				
+				var y = (((items_count - 1) + i) * item_height) + item_height
+				
+				nMovingUp.position.y = y
+			
+			var j = offset - 1
+			while j >= 0:
+				var nMovingUp = nItems.get_child(j)
+				nMovingUp.position.y -= item_height * ((offset - 1) - j)
+				j -= 1
+			
+			offset -= did
+			index -= did
 	
 	var items_y = offset * item_height
 	items_y *= -1
@@ -169,6 +191,8 @@ func _on_Songs_item_rect_changed():
 	
 	_process_items_vertically()
 	_process_items()
+	
+	select_item(index, true)
 
 func _on_Item_selected(p_nItem: SongSelectionItem):
 	select_item(p_nItem.get_index())
