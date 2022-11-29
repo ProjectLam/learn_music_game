@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://drhti1f6dfqep"]
+[gd_scene load_steps=8 format=3 uid="uid://drhti1f6dfqep"]
 
 [ext_resource type="Texture2D" uid="uid://ctu1miqp425c5" path="res://assets/gui/icons/casette.png" id="1_fr83g"]
+[ext_resource type="Script" path="res://scenes/left_bar/left_bar.gd" id="1_gck2n"]
 [ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="2_norfk"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ja2ug"]
@@ -30,6 +31,7 @@ offset_top = 48.0
 offset_right = 159.0
 offset_bottom = -49.0
 grow_vertical = 2
+script = ExtResource("1_gck2n")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 anchors_preset = 15
@@ -59,13 +61,13 @@ offset_bottom = 728.0
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_kv4qc")
 
-[node name="Control" type="Control" parent="VBoxContainer/Middle"]
+[node name="Empty" type="Control" parent="VBoxContainer/Middle"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 97.0
 offset_bottom = 622.0
 
-[node name="Label" type="Label" parent="VBoxContainer/Middle/Control"]
+[node name="Label" type="Label" parent="VBoxContainer/Middle/Empty"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
