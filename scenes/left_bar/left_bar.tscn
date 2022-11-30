@@ -1,0 +1,91 @@
+[gd_scene load_steps=8 format=3 uid="uid://drhti1f6dfqep"]
+
+[ext_resource type="Texture2D" uid="uid://ctu1miqp425c5" path="res://assets/gui/icons/casette.png" id="1_fr83g"]
+[ext_resource type="Script" path="res://scenes/left_bar/left_bar.gd" id="1_gck2n"]
+[ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="2_norfk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ja2ug"]
+bg_color = Color(1, 1, 1, 0.145098)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kv4qc"]
+bg_color = Color(1, 1, 1, 0.0509804)
+
+[sub_resource type="LabelSettings" id="LabelSettings_ypi7r"]
+font = ExtResource("2_norfk")
+font_size = 42
+font_color = Color(1, 1, 1, 0.192157)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d6h5r"]
+bg_color = Color(1, 1, 1, 0.145098)
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+
+[node name="LeftBar" type="Control"]
+layout_mode = 3
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 62.0
+offset_top = 48.0
+offset_right = 159.0
+offset_bottom = -49.0
+grow_vertical = 2
+script = ExtResource("1_gck2n")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="Top" type="PanelContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 75)
+offset_right = 97.0
+offset_bottom = 106.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ja2ug")
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Top"]
+offset_right = 97.0
+offset_bottom = 106.0
+texture = ExtResource("1_fr83g")
+stretch_mode = 5
+
+[node name="Middle" type="PanelContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 75)
+offset_top = 106.0
+offset_right = 97.0
+offset_bottom = 728.0
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_kv4qc")
+
+[node name="Empty" type="Control" parent="VBoxContainer/Middle"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 97.0
+offset_bottom = 622.0
+
+[node name="Label" type="Label" parent="VBoxContainer/Middle/Empty"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.5
+offset_top = 105.0
+offset_right = 234.5
+offset_bottom = 151.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -1.5708
+text = "LAM PROJECT"
+label_settings = SubResource("LabelSettings_ypi7r")
+
+[node name="Bottom" type="PanelContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 175)
+offset_top = 728.0
+offset_right = 97.0
+offset_bottom = 903.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_d6h5r")

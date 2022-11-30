@@ -69,6 +69,11 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://scenes/song_parser/parser.gd"
 }, {
+"base": "Control",
+"class": &"SongSelectionItem",
+"language": &"GDScript",
+"path": "res://scenes/song_selection/song_selection_item.gd"
+}, {
 "base": "Object",
 "class": &"TInstrumentSelectionItem",
 "language": &"GDScript",
@@ -78,6 +83,11 @@ _global_script_classes=[{
 "class": &"TInstrumentSelectionItems",
 "language": &"GDScript",
 "path": "res://scenes/instrument_selection/t_instrument_selection_items.gd"
+}, {
+"base": "Object",
+"class": &"TSong",
+"language": &"GDScript",
+"path": "res://scenes/song_selection/t_song.gd"
 }, {
 "base": "Node",
 "class": &"Utils",
@@ -107,8 +117,10 @@ _global_script_class_icons={
 "ReedSolomonGenerator": "",
 "Song": "",
 "SongParser": "",
+"SongSelectionItem": "",
 "TInstrumentSelectionItem": "",
 "TInstrumentSelectionItems": "",
+"TSong": "",
 "Utils": "",
 "WebSocketClient": "",
 "WebSocketServer": ""
