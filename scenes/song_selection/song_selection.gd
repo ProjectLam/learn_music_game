@@ -5,6 +5,7 @@ var cSongSelectionItem = preload("res://scenes/song_selection/song_selection_ite
 @onready var nItems = find_child("Items")
 
 @export var items_number = 7
+@export var middle_i = 3
 @export var animation_duration = 0.15
 
 var item_height: float
@@ -17,22 +18,114 @@ var index: int
 var tween_y: Tween
 var tween_x: Tween
 
+@export var songs_path = "user://songs"
+
 func _ready():
-	for i in 15:
-		var nItem: SongSelectionItem = cSongSelectionItem.instantiate()
-		nItems.add_child(nItem)
-		nItem.connect("selected", _on_Item_selected)
-		nItem.find_child("NameLabel").text += " " + str(i)
+#	for i in 5:
+#		var nItem: SongSelectionItem = cSongSelectionItem.instantiate()
+#		nItems.add_child(nItem)
+#		nItem.connect("selected", _on_Item_selected)
+#		nItem.find_child("NameLabel").text += " " + str(i)
 	
+	load_songs()
 	items_count = nItems.get_child_count()
-	
-	var middle_i = floor(items_count / floor(items_number / 2)) - 2
+	if items_count:
+		while items_count < items_number:
+			load_songs()
+			items_count = nItems.get_child_count()
 	
 	index = 3
 	offset = index - middle_i
 	
 	_process_items_vertically()
 	_process_items()
+
+func load_songs():
+	var dir =  DirAccess.open(songs_path)
+	dir.list_dir_begin()
+	while true:
+		var songFile = dir.get_next()
+
+		#Assume each directory is 1 song
+		#TODO in future allow a JSON file that has direct links to song zip or directories
+		if songFile == "": 
+			break
+		elif !songFile.begins_with(".") && dir.current_is_dir():
+			print("Found directory - " + songFile)
+			_handle_song_dir(songFile,dir.get_current_dir() + "/"+ songFile) # ugly, why isn't there any easier way to do this
+		elif songFile.ends_with(".zip"):
+			#TODO in future allow songs to be .zip files
+			print("Found zip (Not implemented yet) - " + songFile)
+	dir.list_dir_end()
+
+func _handle_song_dir(songFile:String, curPath:String):
+	var dir =  DirAccess.open(curPath)
+	
+	print("handle_song_dir-" + songFile)
+	var song:Song = Song.new()
+	PlayerVariables.songs.append(song)
+
+	dir.list_dir_begin()
+	while true:
+		var iFile = dir.get_next()
+		if iFile == "": 
+			break
+		elif iFile.ends_with(".xml"):
+			var full_xml =  dir.get_current_dir() + "/" + iFile
+			print("got xml - " + full_xml)
+			var sp:SongParser = SongParser.new()
+			#sp.parse_xml(full_xml, song)
+			#NOTE this is the core Xml File, there are up to 4 other ones
+
+	dir.list_dir_end()
+	
+	#Find the instrument specific ones, for now we are only going to look for lead guitair
+	var err = dir.change_dir("songs/arr")
+	if err != OK:
+		print("error2 - " + err)
+		return
+	
+	dir.list_dir_begin()
+	while true:
+		var iFile = dir.get_next()
+		if iFile == "": 
+			break
+		elif iFile.ends_with("_lead.xml"):
+			var full_xml =  dir.get_current_dir() + "/" + iFile
+			print("got xml - " + full_xml)
+			var sp:SongParser = SongParser.new()
+			sp.parse_xml(full_xml, song)
+			#NOTE  TODO this is the lead guitar Xml File, there are up to 4 other ones, including vocals
+
+	var nItem: SongSelectionItem = cSongSelectionItem.instantiate()
+	nItems.add_child(nItem)
+	nItem.connect("selected", _on_Item_selected)
+	nItem.find_child("NameLabel").text = songFile
+	
+	dir.list_dir_end()
+	dir.change_dir("..")
+	dir.change_dir("..")
+
+	# Find the first .mp3 file that doesn't include _preview in audio/windows for now
+	# TODO in future do full directory traversal
+	err = dir.change_dir("audio/windows/")
+	if err != OK:
+		print("error2 - " + err)
+		return
+		
+	dir.list_dir_begin()
+	while true: 
+		var iFile = dir.get_next()
+		if iFile == "": 
+			break
+		elif iFile.ends_with(".mp3") && !("preview" in iFile):
+			song.songMusicFile = dir.get_current_dir() + "/" + iFile
+			print(song.songMusicFile)
+
+	dir.list_dir_end()
+	
+	dir.change_dir("..")
+	dir.change_dir("..")
 
 func _process(delta):
 	pass
@@ -44,8 +137,6 @@ func select_item(p_index: int, p_is_internal: bool = false) -> void:
 	
 	var viewport_height = get_viewport_rect().size.y
 	item_height = viewport_height / items_number
-	
-	var middle_i = floor(items_count / floor(items_number / 2)) - 2
 	
 	index = p_index
 	offset = index - middle_i
@@ -131,8 +222,6 @@ func _process_items() -> void:
 	var viewport_height = get_viewport_rect().size.y
 	item_height = viewport_height / items_number
 	items_count = nItems.get_child_count()
-	
-	var middle_i = floor(items_count / floor(items_number / 2)) - 2
 	
 	tween_x.set_ease(Tween.EASE_OUT_IN)
 	
