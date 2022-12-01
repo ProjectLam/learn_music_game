@@ -2,6 +2,11 @@ extends PerformanceInstrument
 
 
 const MIDDLE_C_OFFSET = 3 + 3 * 12
+const MOVEMENT_DISTANCE_THRESHOLD: float = 1.0
+
+@onready var target_position = position
+
+@export var move_speed = 0.1
 
 
 func _ready():
@@ -14,6 +19,9 @@ func _ready():
 		on_keyboard_activated()
 	else:
 		on_keyboard_deactivated()
+	
+	$Notes.note_spawned.connect(on_note_spawned)
+	$Notes.note_destroyed.connect(on_note_destroyed)
 
 
 func on_keyboard_octave_changed(new_offset):
@@ -26,3 +34,23 @@ func on_keyboard_activated():
 
 func on_keyboard_deactivated():
 	$ComputerKeyboardLabels.hide()
+
+
+func on_note_spawned():
+	update_position()
+
+
+func on_note_destroyed():
+	return
+#	update_position()
+
+
+func update_position():
+	var notes_center = $Notes.get_notes_center_x()
+	target_position.x = -notes_center
+
+
+func _process(delta):
+	if target_position.distance_to(position) >= MOVEMENT_DISTANCE_THRESHOLD:
+		var direction = (target_position - position).normalized()
+		translate(direction * move_speed * delta)
