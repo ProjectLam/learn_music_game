@@ -1,9 +1,10 @@
-[gd_scene load_steps=15 format=3 uid="uid://bfeas0r8kqnyo"]
+[gd_scene load_steps=16 format=3 uid="uid://bfeas0r8kqnyo"]
 
 [ext_resource type="Shader" path="res://scenes/performance/lane.gdshader" id="1_d17bu"]
-[ext_resource type="Script" path="res://scenes/performance/instruments/performance_instrument.gd" id="1_t0xjv"]
-[ext_resource type="PackedScene" uid="uid://du1rp0l2cxxjy" path="res://models/instruments/piano.glb" id="2_jfq7w"]
+[ext_resource type="Script" path="res://scenes/performance/instruments/performance_piano.gd" id="1_vwgk5"]
+[ext_resource type="PackedScene" uid="uid://mwx86ddyshyt" path="res://models/instruments/piano.glb" id="2_jfq7w"]
 [ext_resource type="Script" path="res://scenes/performance/instruments/piano_notes.gd" id="4_0scbe"]
+[ext_resource type="Script" path="res://models/instruments/piano_model_data.gd" id="4_8kycb"]
 [ext_resource type="PackedScene" uid="uid://cwnmxqldm8kpr" path="res://scenes/performance/instruments/piano_note.tscn" id="5_mrvpn"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_lp660"]
@@ -43,7 +44,7 @@ shader_parameter/brightness = 0.5
 shader_parameter/color = Color(0.619608, 0.211765, 0.211765, 1)
 
 [node name="PerformancePiano" type="Node3D"]
-script = ExtResource("1_t0xjv")
+script = ExtResource("1_vwgk5")
 
 [node name="Lanes" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23, 0, 0)
@@ -582,6 +583,8 @@ surface_material_override/0 = SubResource("ShaderMaterial_fvuf4")
 
 [node name="piano" parent="." instance=ExtResource("2_jfq7w")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23, 0, 0)
+script = ExtResource("4_8kycb")
+key_nodes = [NodePath("key_a_0"), NodePath("key_a_sharp_0"), NodePath("key_b_0"), NodePath("key_c_1"), NodePath("key_c_sharp_1"), NodePath("key_d_1"), NodePath("key_d_sharp_1"), NodePath("key_e_1"), NodePath("key_f_1"), NodePath("key_f_sharp_1"), NodePath("key_g_1"), NodePath("key_g_sharp_1"), NodePath("key_a_1"), NodePath("key_a_sharp_1"), NodePath("key_b_1"), NodePath("key_c_2"), NodePath("key_c_sharp_2"), NodePath("key_d_2"), NodePath("key_d_sharp_2"), NodePath("key_e_2"), NodePath("key_f_2"), NodePath("key_f_sharp_2"), NodePath("key_g_2"), NodePath("key_g_sharp_2"), NodePath("key_a_2"), NodePath("key_a_sharp_2"), NodePath("key_b_2"), NodePath("key_c_3"), NodePath("key_c_sharp_3"), NodePath("key_d_3"), NodePath("key_d_sharp_3"), NodePath("key_e_3"), NodePath("key_f_3"), NodePath("key_f_sharp_3"), NodePath("key_g_3"), NodePath("key_g_sharp_3"), NodePath("key_a_3"), NodePath("key_a_sharp_3"), NodePath("key_b_3"), NodePath("key_c_4"), NodePath("key_c_sharp_4"), NodePath("key_d_4"), NodePath("key_d_sharp_4"), NodePath("key_e_4"), NodePath("key_f_4"), NodePath("key_f_sharp_4"), NodePath("key_g_4"), NodePath("key_g_sharp_4"), NodePath("key_a_4"), NodePath("key_a_sharp_4"), NodePath("key_b_4"), NodePath("key_c_5"), NodePath("key_c_sharp_5"), NodePath("key_d_5"), NodePath("key_d_sharp_5"), NodePath("key_e_5"), NodePath("key_f_5"), NodePath("key_f_sharp_5"), NodePath("key_g_5"), NodePath("key_g_sharp_5"), NodePath("key_a_5"), NodePath("key_a_sharp_5"), NodePath("key_b_5"), NodePath("key_c_6"), NodePath("key_c_sharp_6"), NodePath("key_d_6"), NodePath("key_d_sharp_6"), NodePath("key_e_6"), NodePath("key_f_6"), NodePath("key_f_sharp_6"), NodePath("key_g_6"), NodePath("key_g_sharp_6"), NodePath("key_a_6"), NodePath("key_a_sharp_6"), NodePath("key_b_6"), NodePath("key_c_7"), NodePath("key_c_sharp_7"), NodePath("key_d_7"), NodePath("key_e_sharp_7"), NodePath("key_e_7"), NodePath("key_f_7"), NodePath("key_F_sharp_7"), NodePath("key_g_7"), NodePath("key_g_sharp_7"), NodePath("key_a_7"), NodePath("key_a_sharp_7"), NodePath("key_b_7"), NodePath("key_c_8")]
 
 [node name="Notes" type="Node3D" parent="."]
 script = ExtResource("4_0scbe")
@@ -852,3 +855,113 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27.65, 0, 0)
 
 [node name="C8" type="Marker3D" parent="SpawnPositions"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.5, 0, 0)
+
+[node name="ComputerKeyboardLabels" type="Node3D" parent="."]
+
+[node name="A" type="Label3D" parent="ComputerKeyboardLabels"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0.5, 0.1, 5)
+modulate = Color(0, 0, 0, 1)
+text = "A"
+font_size = 150
+
+[node name="W" type="Label3D" parent="ComputerKeyboardLabels"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0.95, 0.3, 3)
+text = "W
+"
+font_size = 150
+outline_size = 44
+
+[node name="S" type="Label3D" parent="ComputerKeyboardLabels"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 1.5, 0.1, 5)
+modulate = Color(0, 0, 0, 1)
+text = "S"
+font_size = 150
+
+[node name="E" type="Label3D" parent="ComputerKeyboardLabels"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 2.04999, 0.3, 3)
+text = "E"
+font_size = 150
+outline_size = 44
+
+[node name="D" type="Label3D" parent="ComputerKeyboardLabels"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 2.5, 0.1, 5)
+modulate = Color(0, 0, 0, 1)
+text = "D"
+font_size = 150
+
+[node name="F" type="Label3D" parent="ComputerKeyboardLabels"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 3.5, 0.1, 5)
+modulate = Color(0, 0, 0, 1)
+text = "F"
+font_size = 150
+
+[node name="T" type="Label3D" parent="ComputerKeyboardLabels"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 3.95, 0.3, 3)
+text = "T
+"
+font_size = 150
+outline_size = 44
+
+[node name="G" type="Label3D" parent="ComputerKeyboardLabels"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 4.5, 0.1, 5)
+modulate = Color(0, 0, 0, 1)
+text = "G"
+font_size = 150
+
+[node name="Y" type="Label3D" parent="ComputerKeyboardLabels"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 5, 0.3, 3)
+text = "Y
+"
+font_size = 150
+outline_size = 44
+
+[node name="H" type="Label3D" parent="ComputerKeyboardLabels"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 5.5, 0.1, 5)
+modulate = Color(0, 0, 0, 1)
+text = "H"
+font_size = 150
+
+[node name="U" type="Label3D" parent="ComputerKeyboardLabels"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 6.05, 0.3, 3)
+text = "U
+"
+font_size = 150
+outline_size = 44
+
+[node name="J" type="Label3D" parent="ComputerKeyboardLabels"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 6.5, 0.1, 5)
+modulate = Color(0, 0, 0, 1)
+text = "J"
+font_size = 150
+
+[node name="K" type="Label3D" parent="ComputerKeyboardLabels"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 7.5, 0.1, 5)
+modulate = Color(0, 0, 0, 1)
+text = "K"
+font_size = 150
+
+[node name="O" type="Label3D" parent="ComputerKeyboardLabels"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 7.95, 0.3, 3)
+text = "O"
+font_size = 150
+outline_size = 44
+
+[node name="L" type="Label3D" parent="ComputerKeyboardLabels"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 8.5, 0.1, 5)
+modulate = Color(0, 0, 0, 1)
+text = "L"
+font_size = 150
+
+[node name="P" type="Label3D" parent="ComputerKeyboardLabels"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 9.05, 0.3, 3)
+text = "P"
+font_size = 150
+outline_size = 44
+
+[node name=";" type="Label3D" parent="ComputerKeyboardLabels"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 9.5, 0.1, 5)
+modulate = Color(0, 0, 0, 1)
+text = ";"
+font_size = 150
+
+[editable path="piano"]
