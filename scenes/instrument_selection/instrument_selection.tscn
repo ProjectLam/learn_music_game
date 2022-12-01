@@ -1,10 +1,9 @@
-[gd_scene load_steps=22 format=3 uid="uid://cr2hwlak7qku5"]
+[gd_scene load_steps=17 format=3 uid="uid://cr2hwlak7qku5"]
 
 [ext_resource type="Script" path="res://scenes/instrument_selection/instrument_selection.gd" id="1_wh42a"]
 [ext_resource type="Texture2D" uid="uid://dxcxogdwflpig" path="res://assets/gui/main/background.png" id="2_i41le"]
 [ext_resource type="Shader" path="res://shaders/LightingBackground.gdshader" id="3_hqkqb"]
-[ext_resource type="Texture2D" uid="uid://ctu1miqp425c5" path="res://assets/gui/icons/casette.png" id="4_hb58k"]
-[ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="5_6fbx4"]
+[ext_resource type="PackedScene" uid="uid://drhti1f6dfqep" path="res://scenes/left_bar/left_bar.tscn" id="4_qvqqh"]
 [ext_resource type="Texture2D" uid="uid://ixiw3q117w38" path="res://assets/gui/main/txt-choose-instrument.png" id="6_nrcw0"]
 [ext_resource type="Texture2D" uid="uid://cewj8er7rgjhq" path="res://assets/gui/icons/left.png" id="7_572yt"]
 [ext_resource type="Texture2D" uid="uid://dfxg2q3m2tb8m" path="res://assets/gui/icons/right.png" id="8_j2st0"]
@@ -21,24 +20,6 @@ shader_parameter/static_power = 0.4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_utcdj"]
 bg_color = Color(0.0862745, 0.0313726, 0.176471, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ja2ug"]
-bg_color = Color(1, 1, 1, 0.145098)
-corner_radius_top_left = 100
-corner_radius_top_right = 100
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kv4qc"]
-bg_color = Color(1, 1, 1, 0.0509804)
-
-[sub_resource type="LabelSettings" id="LabelSettings_ypi7r"]
-font = ExtResource("5_6fbx4")
-font_size = 42
-font_color = Color(1, 1, 1, 0.192157)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d6h5r"]
-bg_color = Color(1, 1, 1, 0.145098)
-corner_radius_bottom_right = 100
-corner_radius_bottom_left = 100
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0vvxe"]
 
@@ -105,7 +86,7 @@ pivot_offset = Vector2(-149, 500)
 script = ExtResource("1_wh42a")
 
 [node name="Background" type="Control" parent="."]
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -113,7 +94,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="TextureRect" type="TextureRect" parent="Background"]
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -124,7 +104,6 @@ stretch_mode = 6
 
 [node name="Layer" type="Panel" parent="Background"]
 material = SubResource("ShaderMaterial_y6ivb")
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -132,81 +111,10 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_utcdj")
 
-[node name="Left" type="Control" parent="."]
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_left = 62.0
-offset_top = 48.0
-offset_right = 159.0
-offset_bottom = -49.0
-grow_vertical = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Left"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 0
-
-[node name="Top" type="PanelContainer" parent="Left/VBoxContainer"]
-custom_minimum_size = Vector2(0, 75)
-layout_mode = 2
-offset_right = 97.0
-offset_bottom = 106.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_ja2ug")
-
-[node name="TextureRect" type="TextureRect" parent="Left/VBoxContainer/Top"]
-layout_mode = 2
-offset_right = 97.0
-offset_bottom = 106.0
-texture = ExtResource("4_hb58k")
-stretch_mode = 5
-
-[node name="Middle" type="PanelContainer" parent="Left/VBoxContainer"]
-custom_minimum_size = Vector2(0, 75)
-layout_mode = 2
-offset_top = 106.0
-offset_right = 97.0
-offset_bottom = 728.0
-size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_kv4qc")
-
-[node name="Control" type="Control" parent="Left/VBoxContainer/Middle"]
-layout_mode = 2
-anchors_preset = 0
-offset_right = 97.0
-offset_bottom = 622.0
-
-[node name="Label" type="Label" parent="Left/VBoxContainer/Middle/Control"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.5
-offset_top = 105.0
-offset_right = 234.5
-offset_bottom = 151.0
-grow_horizontal = 2
-grow_vertical = 2
-rotation = -1.5708
-text = "LAM PROJECT"
-label_settings = SubResource("LabelSettings_ypi7r")
-
-[node name="Bottom" type="PanelContainer" parent="Left/VBoxContainer"]
-custom_minimum_size = Vector2(0, 175)
-layout_mode = 2
-offset_top = 728.0
-offset_right = 97.0
-offset_bottom = 903.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_d6h5r")
+[node name="LeftBar" parent="." instance=ExtResource("4_qvqqh")]
 
 [node name="Right" type="Control" parent="."]
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -215,7 +123,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Title" type="Control" parent="Right"]
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 308.0
@@ -223,7 +131,6 @@ grow_horizontal = 2
 
 [node name="Text" type="TextureRect" parent="Right/Title"]
 material = SubResource("ShaderMaterial_0vvxe")
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -233,7 +140,7 @@ texture = ExtResource("6_nrcw0")
 stretch_mode = 3
 
 [node name="InstrumentMenu" type="Control" parent="Right"]
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -244,7 +151,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Right/InstrumentMenu"]
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -253,14 +159,13 @@ grow_vertical = 2
 
 [node name="Left" type="Control" parent="Right/InstrumentMenu/HBoxContainer"]
 custom_minimum_size = Vector2(80, 0)
-layout_mode = 2
+layout_mode = 3
 anchors_preset = 0
 offset_right = 80.0
 offset_bottom = 817.0
 
 [node name="LeftBtn" type="Button" parent="Right/InstrumentMenu/HBoxContainer/Left"]
 custom_minimum_size = Vector2(65, 65)
-layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -284,7 +189,7 @@ icon_alignment = 1
 
 [node name="Middle" type="Control" parent="Right/InstrumentMenu/HBoxContainer"]
 clip_contents = true
-layout_mode = 2
+layout_mode = 3
 anchors_preset = 0
 offset_left = 84.0
 offset_right = 1231.0
@@ -292,16 +197,20 @@ offset_bottom = 817.0
 size_flags_horizontal = 3
 
 [node name="Items" type="Control" parent="Right/InstrumentMenu/HBoxContainer/Middle"]
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 18.0
+offset_top = 47.0
+offset_right = 18.0
+offset_bottom = 47.0
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Right" type="Control" parent="Right/InstrumentMenu/HBoxContainer"]
 custom_minimum_size = Vector2(80, 0)
-layout_mode = 2
+layout_mode = 3
 anchors_preset = 0
 offset_left = 1235.0
 offset_right = 1315.0
@@ -309,7 +218,6 @@ offset_bottom = 817.0
 
 [node name="RightBtn" type="Button" parent="Right/InstrumentMenu/HBoxContainer/Right"]
 custom_minimum_size = Vector2(65, 65)
-layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -332,7 +240,6 @@ icon = ExtResource("8_j2st0")
 icon_alignment = 1
 
 [node name="Button" type="Button" parent="Right"]
-layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
