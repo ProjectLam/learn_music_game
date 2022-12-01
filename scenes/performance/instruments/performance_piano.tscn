@@ -1,0 +1,967 @@
+[gd_scene load_steps=16 format=3 uid="uid://bfeas0r8kqnyo"]
+
+[ext_resource type="Shader" path="res://scenes/performance/lane.gdshader" id="1_d17bu"]
+[ext_resource type="Script" path="res://scenes/performance/instruments/performance_piano.gd" id="1_vwgk5"]
+[ext_resource type="PackedScene" uid="uid://mwx86ddyshyt" path="res://models/instruments/piano.glb" id="2_jfq7w"]
+[ext_resource type="Script" path="res://scenes/performance/instruments/piano_notes.gd" id="4_0scbe"]
+[ext_resource type="Script" path="res://models/instruments/piano_model_data.gd" id="4_8kycb"]
+[ext_resource type="PackedScene" uid="uid://cwnmxqldm8kpr" path="res://scenes/performance/instruments/piano_note.tscn" id="5_mrvpn"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_wwb6p"]
+size = Vector2(0.8, 48)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lb2mm"]
+render_priority = 0
+shader = ExtResource("1_d17bu")
+shader_parameter/brightness = 0.5
+shader_parameter/color = Color(0.207843, 0.505882, 0.615686, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_efmbg"]
+size = Vector2(0.7, 48)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g1p58"]
+render_priority = 0
+shader = ExtResource("1_d17bu")
+shader_parameter/brightness = 0.5
+shader_parameter/color = Color(0.207843, 0.505882, 0.615686, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_toq63"]
+size = Vector2(0.6, 48)
+
+[sub_resource type="QuadMesh" id="QuadMesh_seg4i"]
+size = Vector2(0.55, 48)
+
+[sub_resource type="QuadMesh" id="QuadMesh_xfptd"]
+size = Vector2(1, 48)
+
+[sub_resource type="QuadMesh" id="QuadMesh_8o8a1"]
+size = Vector2(0.5, 48)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dxrs5"]
+render_priority = 0
+shader = ExtResource("1_d17bu")
+shader_parameter/brightness = 0.5
+shader_parameter/color = Color(0.619608, 0.211765, 0.211765, 1)
+
+[node name="PerformancePiano" type="Node3D"]
+script = ExtResource("1_vwgk5")
+
+[node name="Lanes" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23, 0, 0)
+
+[node name="WhiteLanes" type="Node3D" parent="Lanes"]
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0.4, 0, -24)
+mesh = SubResource("QuadMesh_wwb6p")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_lb2mm")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 1.65, 0, -24)
+mesh = SubResource("QuadMesh_efmbg")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 2.35, 0, -24)
+mesh = SubResource("QuadMesh_efmbg")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_lb2mm")
+
+[node name="MeshInstance3D7" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 3.5, 0, -24)
+mesh = SubResource("QuadMesh_toq63")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D10" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 6.475, 0, -24)
+mesh = SubResource("QuadMesh_seg4i")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D11" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 7.525, 0, -24)
+mesh = SubResource("QuadMesh_seg4i")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D8" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 4.65, 0, -24)
+mesh = SubResource("QuadMesh_efmbg")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D9" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 5.35, 0, -24)
+mesh = SubResource("QuadMesh_efmbg")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 8.65, 0, -24)
+mesh = SubResource("QuadMesh_efmbg")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D12" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 9.35, 0, -24)
+mesh = SubResource("QuadMesh_efmbg")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_lb2mm")
+
+[node name="MeshInstance3D13" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 10.5, 0, -24)
+mesh = SubResource("QuadMesh_toq63")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D14" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 13.475, 0, -24)
+mesh = SubResource("QuadMesh_seg4i")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D15" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 14.525, 0, -24)
+mesh = SubResource("QuadMesh_seg4i")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D16" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 11.65, 0, -24)
+mesh = SubResource("QuadMesh_efmbg")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D17" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 12.35, 0, -24)
+mesh = SubResource("QuadMesh_efmbg")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D18" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 15.65, 0, -24)
+mesh = SubResource("QuadMesh_efmbg")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D19" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 16.35, 0, -24)
+mesh = SubResource("QuadMesh_efmbg")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_lb2mm")
+
+[node name="MeshInstance3D20" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 17.5, 0, -24)
+mesh = SubResource("QuadMesh_toq63")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D21" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 20.475, 0, -24)
+mesh = SubResource("QuadMesh_seg4i")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D22" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 21.525, 0, -24)
+mesh = SubResource("QuadMesh_seg4i")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D23" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 18.65, 0, -24)
+mesh = SubResource("QuadMesh_efmbg")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D24" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 19.35, 0, -24)
+mesh = SubResource("QuadMesh_efmbg")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D25" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 22.65, 0, -24)
+mesh = SubResource("QuadMesh_efmbg")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D26" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 23.35, 0, -24)
+mesh = SubResource("QuadMesh_efmbg")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_lb2mm")
+
+[node name="MeshInstance3D27" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 24.5, 0, -24)
+mesh = SubResource("QuadMesh_toq63")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D28" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 27.475, 0, -24)
+mesh = SubResource("QuadMesh_seg4i")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D29" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 28.525, 0, -24)
+mesh = SubResource("QuadMesh_seg4i")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D30" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 25.65, 0, -24)
+mesh = SubResource("QuadMesh_efmbg")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D31" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 26.35, 0, -24)
+mesh = SubResource("QuadMesh_efmbg")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D32" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 29.65, 0, -24)
+mesh = SubResource("QuadMesh_efmbg")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D33" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 30.35, 0, -24)
+mesh = SubResource("QuadMesh_efmbg")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_lb2mm")
+
+[node name="MeshInstance3D34" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 31.5, 0, -24)
+mesh = SubResource("QuadMesh_toq63")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D35" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 34.475, 0, -24)
+mesh = SubResource("QuadMesh_seg4i")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D36" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 35.525, 0, -24)
+mesh = SubResource("QuadMesh_seg4i")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D37" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 32.65, 0, -24)
+mesh = SubResource("QuadMesh_efmbg")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D38" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 33.35, 0, -24)
+mesh = SubResource("QuadMesh_efmbg")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D39" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 36.65, 0, -24)
+mesh = SubResource("QuadMesh_efmbg")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D40" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 37.35, 0, -24)
+mesh = SubResource("QuadMesh_efmbg")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_lb2mm")
+
+[node name="MeshInstance3D41" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 38.5, 0, -24)
+mesh = SubResource("QuadMesh_toq63")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D42" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 41.475, 0, -24)
+mesh = SubResource("QuadMesh_seg4i")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D43" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 42.525, 0, -24)
+mesh = SubResource("QuadMesh_seg4i")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D44" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 39.65, 0, -24)
+mesh = SubResource("QuadMesh_efmbg")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D45" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 40.35, 0, -24)
+mesh = SubResource("QuadMesh_efmbg")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D46" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 43.65, 0, -24)
+mesh = SubResource("QuadMesh_efmbg")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D47" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 44.35, 0, -24)
+mesh = SubResource("QuadMesh_efmbg")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_lb2mm")
+
+[node name="MeshInstance3D48" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 45.5, 0, -24)
+mesh = SubResource("QuadMesh_toq63")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D49" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 48.475, 0, -24)
+mesh = SubResource("QuadMesh_seg4i")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D50" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 49.525, 0, -24)
+mesh = SubResource("QuadMesh_seg4i")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D51" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 46.65, 0, -24)
+mesh = SubResource("QuadMesh_efmbg")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D52" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 47.35, 0, -24)
+mesh = SubResource("QuadMesh_efmbg")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D53" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 50.65, 0, -24)
+mesh = SubResource("QuadMesh_efmbg")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_g1p58")
+
+[node name="MeshInstance3D54" type="MeshInstance3D" parent="Lanes/WhiteLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 51.5, 0, -24)
+mesh = SubResource("QuadMesh_xfptd")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_lb2mm")
+
+[node name="BlackLanes" type="Node3D" parent="Lanes"]
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Lanes/BlackLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 1.05, 0, -24)
+mesh = SubResource("QuadMesh_8o8a1")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_dxrs5")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Lanes/BlackLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 2.95, 0, -24)
+mesh = SubResource("QuadMesh_8o8a1")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_dxrs5")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="Lanes/BlackLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 4.05, 0, -24)
+mesh = SubResource("QuadMesh_8o8a1")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_dxrs5")
+
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="Lanes/BlackLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 5.95, 0, -24)
+mesh = SubResource("QuadMesh_8o8a1")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_dxrs5")
+
+[node name="MeshInstance3D7" type="MeshInstance3D" parent="Lanes/BlackLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 7, 0, -24)
+mesh = SubResource("QuadMesh_8o8a1")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_dxrs5")
+
+[node name="MeshInstance3D8" type="MeshInstance3D" parent="Lanes/BlackLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 8.05, 0, -24)
+mesh = SubResource("QuadMesh_8o8a1")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_dxrs5")
+
+[node name="MeshInstance3D9" type="MeshInstance3D" parent="Lanes/BlackLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 9.95, 0, -24)
+mesh = SubResource("QuadMesh_8o8a1")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_dxrs5")
+
+[node name="MeshInstance3D10" type="MeshInstance3D" parent="Lanes/BlackLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 11.05, 0, -24)
+mesh = SubResource("QuadMesh_8o8a1")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_dxrs5")
+
+[node name="MeshInstance3D11" type="MeshInstance3D" parent="Lanes/BlackLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 12.95, 0, -24)
+mesh = SubResource("QuadMesh_8o8a1")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_dxrs5")
+
+[node name="MeshInstance3D12" type="MeshInstance3D" parent="Lanes/BlackLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 14, 0, -24)
+mesh = SubResource("QuadMesh_8o8a1")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_dxrs5")
+
+[node name="MeshInstance3D13" type="MeshInstance3D" parent="Lanes/BlackLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 15.05, 0, -24)
+mesh = SubResource("QuadMesh_8o8a1")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_dxrs5")
+
+[node name="MeshInstance3D14" type="MeshInstance3D" parent="Lanes/BlackLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 16.95, 0, -24)
+mesh = SubResource("QuadMesh_8o8a1")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_dxrs5")
+
+[node name="MeshInstance3D15" type="MeshInstance3D" parent="Lanes/BlackLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 18.05, 0, -24)
+mesh = SubResource("QuadMesh_8o8a1")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_dxrs5")
+
+[node name="MeshInstance3D16" type="MeshInstance3D" parent="Lanes/BlackLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 19.95, 0, -24)
+mesh = SubResource("QuadMesh_8o8a1")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_dxrs5")
+
+[node name="MeshInstance3D17" type="MeshInstance3D" parent="Lanes/BlackLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 21, 0, -24)
+mesh = SubResource("QuadMesh_8o8a1")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_dxrs5")
+
+[node name="MeshInstance3D18" type="MeshInstance3D" parent="Lanes/BlackLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 22.05, 0, -24)
+mesh = SubResource("QuadMesh_8o8a1")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_dxrs5")
+
+[node name="MeshInstance3D19" type="MeshInstance3D" parent="Lanes/BlackLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 23.95, 0, -24)
+mesh = SubResource("QuadMesh_8o8a1")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_dxrs5")
+
+[node name="MeshInstance3D20" type="MeshInstance3D" parent="Lanes/BlackLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 25.05, 0, -24)
+mesh = SubResource("QuadMesh_8o8a1")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_dxrs5")
+
+[node name="MeshInstance3D21" type="MeshInstance3D" parent="Lanes/BlackLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 26.95, 0, -24)
+mesh = SubResource("QuadMesh_8o8a1")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_dxrs5")
+
+[node name="MeshInstance3D22" type="MeshInstance3D" parent="Lanes/BlackLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 28, 0, -24)
+mesh = SubResource("QuadMesh_8o8a1")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_dxrs5")
+
+[node name="MeshInstance3D23" type="MeshInstance3D" parent="Lanes/BlackLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 29.05, 0, -24)
+mesh = SubResource("QuadMesh_8o8a1")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_dxrs5")
+
+[node name="MeshInstance3D24" type="MeshInstance3D" parent="Lanes/BlackLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 30.95, 0, -24)
+mesh = SubResource("QuadMesh_8o8a1")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_dxrs5")
+
+[node name="MeshInstance3D25" type="MeshInstance3D" parent="Lanes/BlackLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 32.05, 0, -24)
+mesh = SubResource("QuadMesh_8o8a1")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_dxrs5")
+
+[node name="MeshInstance3D26" type="MeshInstance3D" parent="Lanes/BlackLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 33.95, 0, -24)
+mesh = SubResource("QuadMesh_8o8a1")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_dxrs5")
+
+[node name="MeshInstance3D27" type="MeshInstance3D" parent="Lanes/BlackLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 35, 0, -24)
+mesh = SubResource("QuadMesh_8o8a1")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_dxrs5")
+
+[node name="MeshInstance3D28" type="MeshInstance3D" parent="Lanes/BlackLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 36.05, 0, -24)
+mesh = SubResource("QuadMesh_8o8a1")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_dxrs5")
+
+[node name="MeshInstance3D29" type="MeshInstance3D" parent="Lanes/BlackLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 37.95, 0, -24)
+mesh = SubResource("QuadMesh_8o8a1")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_dxrs5")
+
+[node name="MeshInstance3D30" type="MeshInstance3D" parent="Lanes/BlackLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 39.05, 0, -24)
+mesh = SubResource("QuadMesh_8o8a1")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_dxrs5")
+
+[node name="MeshInstance3D31" type="MeshInstance3D" parent="Lanes/BlackLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 40.95, 0, -24)
+mesh = SubResource("QuadMesh_8o8a1")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_dxrs5")
+
+[node name="MeshInstance3D32" type="MeshInstance3D" parent="Lanes/BlackLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 42, 0, -24)
+mesh = SubResource("QuadMesh_8o8a1")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_dxrs5")
+
+[node name="MeshInstance3D33" type="MeshInstance3D" parent="Lanes/BlackLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 43.05, 0, -24)
+mesh = SubResource("QuadMesh_8o8a1")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_dxrs5")
+
+[node name="MeshInstance3D34" type="MeshInstance3D" parent="Lanes/BlackLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 44.95, 0, -24)
+mesh = SubResource("QuadMesh_8o8a1")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_dxrs5")
+
+[node name="MeshInstance3D35" type="MeshInstance3D" parent="Lanes/BlackLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 46.05, 0, -24)
+mesh = SubResource("QuadMesh_8o8a1")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_dxrs5")
+
+[node name="MeshInstance3D36" type="MeshInstance3D" parent="Lanes/BlackLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 47.95, 0, -24)
+mesh = SubResource("QuadMesh_8o8a1")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_dxrs5")
+
+[node name="MeshInstance3D37" type="MeshInstance3D" parent="Lanes/BlackLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 49, 0, -24)
+mesh = SubResource("QuadMesh_8o8a1")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_dxrs5")
+
+[node name="MeshInstance3D38" type="MeshInstance3D" parent="Lanes/BlackLanes"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 50.05, 0, -24)
+mesh = SubResource("QuadMesh_8o8a1")
+skeleton = NodePath("../../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_dxrs5")
+
+[node name="piano" parent="." instance=ExtResource("2_jfq7w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23, 0, 0)
+script = ExtResource("4_8kycb")
+key_nodes = [NodePath("key_a_0"), NodePath("key_a_sharp_0"), NodePath("key_b_0"), NodePath("key_c_1"), NodePath("key_c_sharp_1"), NodePath("key_d_1"), NodePath("key_d_sharp_1"), NodePath("key_e_1"), NodePath("key_f_1"), NodePath("key_f_sharp_1"), NodePath("key_g_1"), NodePath("key_g_sharp_1"), NodePath("key_a_1"), NodePath("key_a_sharp_1"), NodePath("key_b_1"), NodePath("key_c_2"), NodePath("key_c_sharp_2"), NodePath("key_d_2"), NodePath("key_d_sharp_2"), NodePath("key_e_2"), NodePath("key_f_2"), NodePath("key_f_sharp_2"), NodePath("key_g_2"), NodePath("key_g_sharp_2"), NodePath("key_a_2"), NodePath("key_a_sharp_2"), NodePath("key_b_2"), NodePath("key_c_3"), NodePath("key_c_sharp_3"), NodePath("key_d_3"), NodePath("key_d_sharp_3"), NodePath("key_e_3"), NodePath("key_f_3"), NodePath("key_f_sharp_3"), NodePath("key_g_3"), NodePath("key_g_sharp_3"), NodePath("key_a_3"), NodePath("key_a_sharp_3"), NodePath("key_b_3"), NodePath("key_c_4"), NodePath("key_c_sharp_4"), NodePath("key_d_4"), NodePath("key_d_sharp_4"), NodePath("key_e_4"), NodePath("key_f_4"), NodePath("key_f_sharp_4"), NodePath("key_g_4"), NodePath("key_g_sharp_4"), NodePath("key_a_4"), NodePath("key_a_sharp_4"), NodePath("key_b_4"), NodePath("key_c_5"), NodePath("key_c_sharp_5"), NodePath("key_d_5"), NodePath("key_d_sharp_5"), NodePath("key_e_5"), NodePath("key_f_5"), NodePath("key_f_sharp_5"), NodePath("key_g_5"), NodePath("key_g_sharp_5"), NodePath("key_a_5"), NodePath("key_a_sharp_5"), NodePath("key_b_5"), NodePath("key_c_6"), NodePath("key_c_sharp_6"), NodePath("key_d_6"), NodePath("key_d_sharp_6"), NodePath("key_e_6"), NodePath("key_f_6"), NodePath("key_f_sharp_6"), NodePath("key_g_6"), NodePath("key_g_sharp_6"), NodePath("key_a_6"), NodePath("key_a_sharp_6"), NodePath("key_b_6"), NodePath("key_c_7"), NodePath("key_c_sharp_7"), NodePath("key_d_7"), NodePath("key_e_sharp_7"), NodePath("key_e_7"), NodePath("key_f_7"), NodePath("key_F_sharp_7"), NodePath("key_g_7"), NodePath("key_g_sharp_7"), NodePath("key_a_7"), NodePath("key_a_sharp_7"), NodePath("key_b_7"), NodePath("key_c_8")]
+
+[node name="Notes" type="Node3D" parent="."]
+script = ExtResource("4_0scbe")
+note_scene = ExtResource("5_mrvpn")
+
+[node name="SpawnPositions" type="Node3D" parent="."]
+
+[node name="A0" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.6, 0, 0)
+
+[node name="ASharp0" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.95, 0, 0)
+
+[node name="B0" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.35, 0, 0)
+
+[node name="C1" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.65, 0, 0)
+
+[node name="CSharp1" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.05, 0, 0)
+
+[node name="D1" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.5, 0, 0)
+
+[node name="DSharp1" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.95, 0, 0)
+
+[node name="E1" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.35, 0, 0)
+
+[node name="F1" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.65, 0, 0)
+
+[node name="FSharp1" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.05, 0, 0)
+
+[node name="G1" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.525, 0, 0)
+
+[node name="GSharp1" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, 0)
+
+[node name="A1" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.475, 0, 0)
+
+[node name="ASharp1" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.95, 0, 0)
+
+[node name="B1" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.35, 0, 0)
+
+[node name="C2" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.65, 0, 0)
+
+[node name="CSharp2" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.05, 0, 0)
+
+[node name="D2" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.5, 0, 0)
+
+[node name="DSharp2" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.95, 0, 0)
+
+[node name="E2" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.35, 0, 0)
+
+[node name="F2" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.65, 0, 0)
+
+[node name="FSharp2" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.05, 0, 0)
+
+[node name="G2" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.525, 0, 0)
+
+[node name="GSharp2" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, 0)
+
+[node name="A2" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.475, 0, 0)
+
+[node name="ASharp2" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.95, 0, 0)
+
+[node name="B2" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.35, 0, 0)
+
+[node name="C3" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.65, 0, 0)
+
+[node name="CSharp3" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.05, 0, 0)
+
+[node name="D3" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 0, 0)
+
+[node name="DSharp3" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.95, 0, 0)
+
+[node name="E3" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.35, 0, 0)
+
+[node name="F3" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.65, 0, 0)
+
+[node name="FSharp3" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.05, 0, 0)
+
+[node name="G3" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.525, 0, 0)
+
+[node name="GSharp3" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)
+
+[node name="A3" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.475, 0, 0)
+
+[node name="ASharp3" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.95, 0, 0)
+
+[node name="B3" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35, 0, 0)
+
+[node name="C4" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 0, 0)
+
+[node name="CSharp4" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.950001, 0, 0)
+
+[node name="D4" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, 0)
+
+[node name="DSharp4" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.05, 0, 0)
+
+[node name="E4" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.65, 0, 0)
+
+[node name="F4" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.35, 0, 0)
+
+[node name="FSharp4" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.95, 0, 0)
+
+[node name="G4" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.475, 0, 0)
+
+[node name="GSharp4" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 0)
+
+[node name="A4" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.525, 0, 0)
+
+[node name="ASharp4" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.05, 0, 0)
+
+[node name="B4" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.65, 0, 0)
+
+[node name="C5" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.35, 0, 0)
+
+[node name="CSharp5" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.95, 0, 0)
+
+[node name="D5" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 0)
+
+[node name="DSharp5" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.05, 0, 0)
+
+[node name="E5" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.65, 0, 0)
+
+[node name="F5" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.35, 0, 0)
+
+[node name="FSharp5" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.95, 0, 0)
+
+[node name="G5" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.475, 0, 0)
+
+[node name="GSharp5" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 0)
+
+[node name="A5" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.525, 0, 0)
+
+[node name="ASharp5" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.05, 0, 0)
+
+[node name="B5" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.65, 0, 0)
+
+[node name="C6" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.35, 0, 0)
+
+[node name="CSharp6" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.95, 0, 0)
+
+[node name="D6" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.5, 0, 0)
+
+[node name="DSharp6" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.05, 0, 0)
+
+[node name="E6" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.65, 0, 0)
+
+[node name="F6" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.35, 0, 0)
+
+[node name="FSharp6" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.95, 0, 0)
+
+[node name="G6" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.475, 0, 0)
+
+[node name="GSharp6" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19, 0, 0)
+
+[node name="A6" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.525, 0, 0)
+
+[node name="ASharp6" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.05, 0, 0)
+
+[node name="B6" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.65, 0, 0)
+
+[node name="C7" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.35, 0, 0)
+
+[node name="CSharp7" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.95, 0, 0)
+
+[node name="D7" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.5, 0, 0)
+
+[node name="DSharp7" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.05, 0, 0)
+
+[node name="E7" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.65, 0, 0)
+
+[node name="F7" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.35, 0, 0)
+
+[node name="FSharp7" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.95, 0, 0)
+
+[node name="G7" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25.475, 0, 0)
+
+[node name="GSharp7" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26, 0, 0)
+
+[node name="A7" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.525, 0, 0)
+
+[node name="ASharp7" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27.05, 0, 0)
+
+[node name="B7" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27.65, 0, 0)
+
+[node name="C8" type="Marker3D" parent="SpawnPositions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.5, 0, 0)
+
+[node name="ComputerKeyboardLabels" type="Node3D" parent="."]
+
+[node name="A" type="Label3D" parent="ComputerKeyboardLabels"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0.5, 0.1, 5)
+modulate = Color(0, 0, 0, 1)
+text = "A"
+font_size = 150
+
+[node name="W" type="Label3D" parent="ComputerKeyboardLabels"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0.95, 0.3, 3)
+text = "W
+"
+font_size = 150
+outline_size = 44
+
+[node name="S" type="Label3D" parent="ComputerKeyboardLabels"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 1.5, 0.1, 5)
+modulate = Color(0, 0, 0, 1)
+text = "S"
+font_size = 150
+
+[node name="E" type="Label3D" parent="ComputerKeyboardLabels"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 2.04999, 0.3, 3)
+text = "E"
+font_size = 150
+outline_size = 44
+
+[node name="D" type="Label3D" parent="ComputerKeyboardLabels"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 2.5, 0.1, 5)
+modulate = Color(0, 0, 0, 1)
+text = "D"
+font_size = 150
+
+[node name="F" type="Label3D" parent="ComputerKeyboardLabels"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 3.5, 0.1, 5)
+modulate = Color(0, 0, 0, 1)
+text = "F"
+font_size = 150
+
+[node name="T" type="Label3D" parent="ComputerKeyboardLabels"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 3.95, 0.3, 3)
+text = "T
+"
+font_size = 150
+outline_size = 44
+
+[node name="G" type="Label3D" parent="ComputerKeyboardLabels"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 4.5, 0.1, 5)
+modulate = Color(0, 0, 0, 1)
+text = "G"
+font_size = 150
+
+[node name="Y" type="Label3D" parent="ComputerKeyboardLabels"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 5, 0.3, 3)
+text = "Y
+"
+font_size = 150
+outline_size = 44
+
+[node name="H" type="Label3D" parent="ComputerKeyboardLabels"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 5.5, 0.1, 5)
+modulate = Color(0, 0, 0, 1)
+text = "H"
+font_size = 150
+
+[node name="U" type="Label3D" parent="ComputerKeyboardLabels"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 6.05, 0.3, 3)
+text = "U
+"
+font_size = 150
+outline_size = 44
+
+[node name="J" type="Label3D" parent="ComputerKeyboardLabels"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 6.5, 0.1, 5)
+modulate = Color(0, 0, 0, 1)
+text = "J"
+font_size = 150
+
+[node name="K" type="Label3D" parent="ComputerKeyboardLabels"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 7.5, 0.1, 5)
+modulate = Color(0, 0, 0, 1)
+text = "K"
+font_size = 150
+
+[node name="O" type="Label3D" parent="ComputerKeyboardLabels"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 7.95, 0.3, 3)
+text = "O"
+font_size = 150
+outline_size = 44
+
+[node name="L" type="Label3D" parent="ComputerKeyboardLabels"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 8.5, 0.1, 5)
+modulate = Color(0, 0, 0, 1)
+text = "L"
+font_size = 150
+
+[node name="P" type="Label3D" parent="ComputerKeyboardLabels"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 9.05, 0.3, 3)
+text = "P"
+font_size = 150
+outline_size = 44
+
+[node name=";" type="Label3D" parent="ComputerKeyboardLabels"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 9.5, 0.1, 5)
+modulate = Color(0, 0, 0, 1)
+text = ";"
+font_size = 150
+
+[editable path="piano"]

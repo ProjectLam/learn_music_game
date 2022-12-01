@@ -5,6 +5,12 @@ extends Node
 signal note_started(frequency)
 signal note_ended(frequency)
 
+signal activated()
+signal deactivated()
+
+
+var is_active: bool = false
+
 
 # Abstract
 func get_inputs()->Array:
@@ -12,8 +18,10 @@ func get_inputs()->Array:
 
 
 func activate():
-	pass
+	is_active = true
+	activated.emit()
 
 
 func deactivate():
-	pass
+	is_active = false
+	deactivated.emit()

@@ -39,15 +39,15 @@ func _input(event):
 
 
 func disconnect_instrument(index: int):
-	get_child(index).deactivate()
 	get_child(index).note_started.disconnect(on_note_started)
 	get_child(index).note_ended.disconnect(on_note_ended)
+	get_child(index).deactivate()
 
 
 func connect_instrument(index: int):
-	get_child(index).activate()
 	get_child(index).note_started.connect(on_note_started)
 	get_child(index).note_ended.connect(on_note_ended)
+	get_child(index).activate()
 	current_instrument = index
 
 
@@ -66,3 +66,7 @@ func get_instrument_name(index: int)->String:
 
 func get_instrument_index(instrument_name: String)->int:
 	return get_node(instrument_name).get_index()
+
+
+func get_instrument(index: int)->InputInstrument:
+	return get_child(index)

@@ -6,6 +6,9 @@ extends InputInstrument
 # octave up or down respectively.
 
 
+signal octave_changed(new_offset)
+
+
 # Middle C
 var offset: int = 3 + 3 * 12
 
@@ -32,20 +35,24 @@ var note_data := [
 
 func activate():
 	set_process_input(true)
+	super.activate()
 
 
 func deactivate():
 	set_process_input(false)
+	super.deactivate()
 
 
 func _input(event):
 	if event is InputEventKey:
 		if event.physical_keycode == KEY_Z and event.pressed:
-			offset -= 12 if offset >= 12 else offset
+			offset -= 12 if offset >= 12 else 0
+			octave_changed.emit(offset)
 			Debug.print_to_screen(str(name) + ": Octave down")
 		elif event.physical_keycode == KEY_X and event.pressed:
 			# The computer keyboard has 17 keys available
-			offset += 12 if offset < NoteFrequency.CHROMATIC.size() - 17 else offset
+			offset += 12 if offset < NoteFrequency.CHROMATIC.size() - 17 else 0
+			octave_changed.emit(offset)
 			Debug.print_to_screen(str(name) + ": Octave up")
 		
 		match event.physical_keycode:

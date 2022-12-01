@@ -15,10 +15,12 @@ func _ready():
 
 func activate():
 	set_process_input(true)
+	super.activate()
 
 
 func deactivate():
 	set_process_input(false)
+	super.deactivate()
 
 
 func get_inputs()->Array:

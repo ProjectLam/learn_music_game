@@ -1,0 +1,132 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://mwx86ddyshyt"
+path="res://.godot/imported/piano.glb-888cceaeadad3e92877cec24a4d00ac3.scn"
+
+[deps]
+
+source_file="res://models/instruments/piano.glb"
+dest_files=["res://.godot/imported/piano.glb-888cceaeadad3e92877cec24a4d00ac3.scn"]
+
+[params]
+
+nodes/root_type="Node3D"
+nodes/root_name="Scene Root"
+nodes/apply_root_scale=true
+nodes/root_scale=1.0
+meshes/ensure_tangents=true
+meshes/generate_lods=true
+meshes/create_shadow_meshes=true
+meshes/light_baking=1
+meshes/lightmap_texel_size=0.2
+skins/use_named_skins=true
+animation/import=true
+animation/fps=30
+import_script/path=""
+_subresources={
+"meshes": {
+"piano_key_a": {
+"generate/lightmap_uv": 0,
+"generate/lods": 2,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": false,
+"save_to_file/make_streamable": "",
+"save_to_file/path": ""
+},
+"piano_key_a_bottom": {
+"generate/lightmap_uv": 0,
+"generate/lods": 2,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": false,
+"save_to_file/make_streamable": "",
+"save_to_file/path": ""
+},
+"piano_key_b": {
+"generate/lightmap_uv": 0,
+"generate/lods": 2,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": false,
+"save_to_file/make_streamable": "",
+"save_to_file/path": ""
+},
+"piano_key_black": {
+"generate/lightmap_uv": 0,
+"generate/lods": 2,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": false,
+"save_to_file/make_streamable": "",
+"save_to_file/path": ""
+},
+"piano_key_c": {
+"generate/lightmap_uv": 0,
+"generate/lods": 2,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": false,
+"save_to_file/make_streamable": "",
+"save_to_file/path": ""
+},
+"piano_key_c_top": {
+"generate/lightmap_uv": 0,
+"generate/lods": 2,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": false,
+"save_to_file/make_streamable": "",
+"save_to_file/path": ""
+},
+"piano_key_d": {
+"generate/lightmap_uv": 0,
+"generate/lods": 2,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": false,
+"save_to_file/make_streamable": "",
+"save_to_file/path": ""
+},
+"piano_key_e": {
+"generate/lightmap_uv": 0,
+"generate/lods": 2,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": false,
+"save_to_file/make_streamable": "",
+"save_to_file/path": ""
+},
+"piano_key_f": {
+"generate/lightmap_uv": 0,
+"generate/lods": 2,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": false,
+"save_to_file/make_streamable": "",
+"save_to_file/path": ""
+},
+"piano_key_g": {
+"generate/lightmap_uv": 0,
+"generate/lods": 2,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": false,
+"save_to_file/make_streamable": "",
+"save_to_file/path": ""
+}
+}
+}
