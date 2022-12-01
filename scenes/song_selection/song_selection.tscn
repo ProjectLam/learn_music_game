@@ -109,7 +109,7 @@ grow_vertical = 2
 script = ExtResource("1_w4sd3")
 
 [node name="Background" type="Control" parent="."]
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -117,7 +117,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="TextureRect" type="TextureRect" parent="Background"]
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -129,7 +128,6 @@ stretch_mode = 6
 
 [node name="Layer" type="Panel" parent="Background"]
 material = SubResource("ShaderMaterial_ec2p8")
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -138,25 +136,15 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_afwxd")
 
 [node name="LeftBar" parent="." instance=ExtResource("4_bgttp")]
-layout_mode = 1
-
-[node name="VBoxContainer" parent="LeftBar" index="0"]
-layout_mode = 1
-
-[node name="Top" parent="LeftBar/VBoxContainer" index="0"]
-layout_mode = 2
-
-[node name="TextureRect" parent="LeftBar/VBoxContainer/Top" index="0"]
-layout_mode = 2
-
-[node name="Middle" parent="LeftBar/VBoxContainer" index="1"]
-layout_mode = 2
 
 [node name="Content" type="Control" parent="LeftBar/VBoxContainer/Middle" index="0"]
-layout_mode = 2
+layout_mode = 3
+anchors_preset = 0
+offset_right = 97.0
+offset_bottom = 622.0
 
 [node name="Menu" type="Control" parent="LeftBar/VBoxContainer/Middle/Content"]
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -164,7 +152,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="LeftBar/VBoxContainer/Middle/Content/Menu"]
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -175,7 +162,10 @@ alignment = 1
 
 [node name="Button" type="Button" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer"]
 custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
+offset_left = 23.0
+offset_top = 123.0
+offset_right = 73.0
+offset_bottom = 173.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_styles/normal = SubResource("StyleBoxFlat_qg117")
@@ -188,7 +178,10 @@ icon_alignment = 1
 
 [node name="Button2" type="Button" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer"]
 custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
+offset_left = 23.0
+offset_top = 198.0
+offset_right = 73.0
+offset_bottom = 248.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_styles/normal = SubResource("StyleBoxFlat_qg117")
@@ -201,7 +194,10 @@ icon_alignment = 1
 
 [node name="Button3" type="Button" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer"]
 custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
+offset_left = 23.0
+offset_top = 273.0
+offset_right = 73.0
+offset_bottom = 323.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_styles/normal = SubResource("StyleBoxFlat_qg117")
@@ -214,7 +210,10 @@ icon_alignment = 1
 
 [node name="Button4" type="Button" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer"]
 custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
+offset_left = 23.0
+offset_top = 348.0
+offset_right = 73.0
+offset_bottom = 398.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_styles/normal = SubResource("StyleBoxFlat_qg117")
@@ -227,10 +226,13 @@ icon_alignment = 1
 
 [node name="Sep" type="Control" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer"]
 custom_minimum_size = Vector2(0, 1)
-layout_mode = 2
+layout_mode = 3
+anchors_preset = 0
+offset_top = 423.0
+offset_right = 97.0
+offset_bottom = 424.0
 
 [node name="PanelContainer" type="PanelContainer" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer/Sep"]
-layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -243,7 +245,10 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_r2op2")
 
 [node name="Button5" type="Button" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer"]
 custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
+offset_left = 23.0
+offset_top = 449.0
+offset_right = 73.0
+offset_bottom = 499.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_styles/normal = SubResource("StyleBoxFlat_qg117")
@@ -256,16 +261,9 @@ icon_alignment = 1
 
 [node name="Empty" parent="LeftBar/VBoxContainer/Middle" index="1"]
 visible = false
-layout_mode = 2
-
-[node name="Label" parent="LeftBar/VBoxContainer/Middle/Empty" index="0"]
-layout_mode = 1
-
-[node name="Bottom" parent="LeftBar/VBoxContainer" index="2"]
-layout_mode = 2
 
 [node name="Right" type="Control" parent="."]
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -274,7 +272,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Songs" type="Control" parent="Right"]
-layout_mode = 1
+layout_mode = 3
 anchor_left = 0.57
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -282,7 +280,6 @@ grow_horizontal = 0
 grow_vertical = 2
 
 [node name="Circle" type="TextureRect" parent="Right/Songs"]
-layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -295,7 +292,7 @@ ignore_texture_size = true
 stretch_mode = 6
 
 [node name="Items" type="Control" parent="Right/Songs"]
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -305,7 +302,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Buttons" type="HBoxContainer" parent="Right/Songs"]
-layout_mode = 0
 offset_left = 1.28003
 offset_top = 51.0
 offset_right = 126.28
@@ -314,7 +310,8 @@ theme_override_constants/separation = 25
 
 [node name="DownBtn" type="Button" parent="Right/Songs/Buttons"]
 custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
+offset_right = 50.0
+offset_bottom = 50.0
 theme_override_styles/normal = SubResource("StyleBoxFlat_chwfm")
 theme_override_styles/hover = SubResource("StyleBoxFlat_chwfm")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_ac34n")
@@ -325,7 +322,9 @@ icon_alignment = 1
 
 [node name="UpBtn" type="Button" parent="Right/Songs/Buttons"]
 custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
+offset_left = 75.0
+offset_right = 125.0
+offset_bottom = 50.0
 theme_override_styles/normal = SubResource("StyleBoxFlat_chwfm")
 theme_override_styles/hover = SubResource("StyleBoxFlat_chwfm")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_601iy")
@@ -335,21 +334,21 @@ icon = ExtResource("6_xy0pm")
 icon_alignment = 1
 
 [node name="SongDetails" type="Control" parent="Right"]
-layout_mode = 1
+layout_mode = 3
 anchor_right = 0.542
 anchor_bottom = 1.0
 offset_right = 8.36792
 grow_vertical = 2
 
 [node name="Cover" type="Control" parent="Right/SongDetails"]
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 572.0
 grow_horizontal = 2
 
 [node name="Box" type="Control" parent="Right/SongDetails/Cover"]
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -360,7 +359,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Background" type="TextureRect" parent="Right/SongDetails/Cover/Box"]
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -371,7 +369,7 @@ ignore_texture_size = true
 stretch_mode = 5
 
 [node name="CoverImage" type="Control" parent="Right/SongDetails/Cover/Box"]
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -385,7 +383,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="TextureRect" type="TextureRect" parent="Right/SongDetails/Cover/Box/CoverImage"]
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -396,7 +393,7 @@ ignore_texture_size = true
 stretch_mode = 5
 
 [node name="Title" type="Control" parent="Right/SongDetails/Cover/Box"]
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
@@ -406,7 +403,6 @@ grow_horizontal = 2
 grow_vertical = 0
 
 [node name="CenterContainer" type="CenterContainer" parent="Right/SongDetails/Cover/Box/Title"]
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -414,24 +410,30 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Right/SongDetails/Cover/Box/Title/CenterContainer"]
-layout_mode = 2
+offset_left = 327.0
+offset_top = 9.0
+offset_right = 437.0
+offset_bottom = 57.0
 
 [node name="SongLabel" type="Label" parent="Right/SongDetails/Cover/Box/Title/CenterContainer/VBoxContainer"]
-layout_mode = 2
+offset_right = 110.0
+offset_bottom = 23.0
 text = "GET LUCKY"
 label_settings = SubResource("LabelSettings_1jfti")
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="ArtistLabel" type="Label" parent="Right/SongDetails/Cover/Box/Title/CenterContainer/VBoxContainer"]
-layout_mode = 2
+offset_top = 27.0
+offset_right = 110.0
+offset_bottom = 48.0
 text = "Daft Punk"
 label_settings = SubResource("LabelSettings_kn7na")
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Leaderboard" type="Control" parent="Right/SongDetails"]
-layout_mode = 1
+layout_mode = 3
 anchor_right = 1.0
 anchor_bottom = 0.959
 offset_top = 558.0
@@ -441,54 +443,59 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="leaderboard" parent="Right/SongDetails/Leaderboard" instance=ExtResource("13_txwuv")]
-layout_mode = 1
 style_odd = SubResource("StyleBoxFlat_q0s1r")
 style_even = SubResource("StyleBoxFlat_xgkjy")
 
-[node name="PanelContainer" parent="Right/SongDetails/Leaderboard/leaderboard" index="0"]
-layout_mode = 1
-
 [node name="VBoxContainer" parent="Right/SongDetails/Leaderboard/leaderboard/PanelContainer" index="0"]
-layout_mode = 2
+offset_right = 766.0
+offset_bottom = 400.0
 
 [node name="Header" parent="Right/SongDetails/Leaderboard/leaderboard/PanelContainer/VBoxContainer" index="0"]
-layout_mode = 2
-
-[node name="HBoxContainer" parent="Right/SongDetails/Leaderboard/leaderboard/PanelContainer/VBoxContainer/Header" index="0"]
-layout_mode = 1
-
-[node name="TitleLabel" parent="Right/SongDetails/Leaderboard/leaderboard/PanelContainer/VBoxContainer/Header/HBoxContainer" index="0"]
-layout_mode = 2
+offset_right = 764.0
 
 [node name="Spacer" parent="Right/SongDetails/Leaderboard/leaderboard/PanelContainer/VBoxContainer/Header/HBoxContainer" index="1"]
-layout_mode = 2
+offset_right = 560.0
 
 [node name="Actions" parent="Right/SongDetails/Leaderboard/leaderboard/PanelContainer/VBoxContainer/Header/HBoxContainer" index="2"]
-layout_mode = 2
-
-[node name="ShowAllBtn" parent="Right/SongDetails/Leaderboard/leaderboard/PanelContainer/VBoxContainer/Header/HBoxContainer/Actions" index="0"]
-layout_mode = 2
+offset_left = 564.0
+offset_right = 764.0
 
 [node name="Content" parent="Right/SongDetails/Leaderboard/leaderboard/PanelContainer/VBoxContainer" index="1"]
-layout_mode = 2
+offset_right = 764.0
+offset_bottom = 398.0
 
 [node name="Items" parent="Right/SongDetails/Leaderboard/leaderboard/PanelContainer/VBoxContainer/Content" index="0"]
-layout_mode = 2
+offset_right = 756.0
+offset_bottom = 530.0
 
 [node name="leaderboard_item" parent="Right/SongDetails/Leaderboard/leaderboard/PanelContainer/VBoxContainer/Content/Items" index="0" instance=ExtResource("14_2th4i")]
-layout_mode = 2
+anchor_right = 0.0
+offset_right = 756.0
+offset_bottom = 106.0
 
 [node name="leaderboard_item2" parent="Right/SongDetails/Leaderboard/leaderboard/PanelContainer/VBoxContainer/Content/Items" index="1" instance=ExtResource("14_2th4i")]
-layout_mode = 2
+anchor_right = 0.0
+offset_top = 106.0
+offset_right = 756.0
+offset_bottom = 212.0
 
 [node name="leaderboard_item3" parent="Right/SongDetails/Leaderboard/leaderboard/PanelContainer/VBoxContainer/Content/Items" index="2" instance=ExtResource("14_2th4i")]
-layout_mode = 2
+anchor_right = 0.0
+offset_top = 212.0
+offset_right = 756.0
+offset_bottom = 318.0
 
 [node name="leaderboard_item4" parent="Right/SongDetails/Leaderboard/leaderboard/PanelContainer/VBoxContainer/Content/Items" index="3" instance=ExtResource("14_2th4i")]
-layout_mode = 2
+anchor_right = 0.0
+offset_top = 318.0
+offset_right = 756.0
+offset_bottom = 424.0
 
 [node name="leaderboard_item5" parent="Right/SongDetails/Leaderboard/leaderboard/PanelContainer/VBoxContainer/Content/Items" index="4" instance=ExtResource("14_2th4i")]
-layout_mode = 2
+anchor_right = 0.0
+offset_top = 424.0
+offset_right = 756.0
+offset_bottom = 530.0
 
 [connection signal="item_rect_changed" from="Right/Songs" to="." method="_on_Songs_item_rect_changed"]
 [connection signal="pressed" from="Right/Songs/Buttons/DownBtn" to="." method="_on_DownBtn_pressed"]
