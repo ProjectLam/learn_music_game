@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://cjxj065i82tnw"]
+
+[ext_resource type="Script" path="res://scenes/dialogs/dialogs.gd" id="1_7treo"]
+
+[node name="Dialogs" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_7treo")
