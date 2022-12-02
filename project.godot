@@ -162,6 +162,7 @@ PlayerVariables="*res://scenes/PlayerVariables.gd"
 NoteFrequency="*res://autoload/note_frequency.gd"
 InstrumentInput="*res://autoload/instrument_input/instrument_input.tscn"
 Debug="*res://autoload/debug/debug.tscn"
+SessionVariables="*res://autoload/session_variables.gd"
 
 [debug]
 

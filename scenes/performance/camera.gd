@@ -13,16 +13,29 @@ var home: Vector3
 @export var guitar_rotation_degrees = Vector3(-8.1, 3, 0)
 @export var piano_position = Vector3(0, 6.039, 8.259)
 @export var piano_rotation_degrees = Vector3(-8.1, 0, 0)
+@export var phin_position = Vector3(7.596, 6.039, 8.259)
+@export var phin_rotation_degrees = Vector3(-8.1, 3, 0)
 
 
 func _ready():
-	position = piano_position
-	rotation = Vector3(
-			deg_to_rad(piano_rotation_degrees.x),
-			deg_to_rad(piano_rotation_degrees.y),
-			deg_to_rad(piano_rotation_degrees.z)
-		)
+	match SessionVariables.instrument:
+		SessionVariables.Instrument.GUITAR:
+			set_camera_position(guitar_position, guitar_rotation_degrees)
+		SessionVariables.Instrument.PIANO:
+			set_camera_position(piano_position, piano_rotation_degrees)
+		SessionVariables.Instrument.PHIN:
+			set_camera_position(phin_position, phin_rotation_degrees)
+	
 	home = position
+
+
+func set_camera_position(_position: Vector3, _rotation_degrees: Vector3):
+	position = _position
+	rotation = Vector3(
+		deg_to_rad(_rotation_degrees.x),
+		deg_to_rad(_rotation_degrees.y),
+		deg_to_rad(_rotation_degrees.z)
+	)
 
 
 func _process(delta):
