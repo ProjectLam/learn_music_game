@@ -2,6 +2,7 @@ extends Control
 
 @onready var nAnimationPlayer = $AnimationPlayer
 @onready var nLayer = $CanvasLayer/Layer
+@onready var nBox = find_child("Box")
 
 var is_opened: bool = false
 
@@ -9,7 +10,8 @@ func _ready():
 	nLayer.visible = false
 
 func _process(delta):
-	pass
+	nBox.pivot_offset.x = nBox.size.x / 2
+	nBox.pivot_offset.y = nBox.size.y / 2
 
 func open() -> void:
 	is_opened = true
