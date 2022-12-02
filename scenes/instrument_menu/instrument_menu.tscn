@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://chhf5tjr2l5py"]
+[gd_scene load_steps=20 format=3 uid="uid://chhf5tjr2l5py"]
 
 [ext_resource type="Script" path="res://scenes/instrument_menu/instrument_menu.gd" id="1_66tmw"]
 [ext_resource type="Texture2D" uid="uid://dxcxogdwflpig" path="res://assets/gui/main/background.png" id="2_hvina"]
@@ -6,9 +6,14 @@
 [ext_resource type="PackedScene" uid="uid://drhti1f6dfqep" path="res://scenes/left_bar/left_bar.tscn" id="4_jve2t"]
 [ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="5_bh1g2"]
 [ext_resource type="Script" path="res://scenes/instrument_selection/instrument_selection_item.gd" id="5_n81pi"]
+[ext_resource type="Texture2D" uid="uid://bcyql8pbvs5yj" path="res://assets/gui/icons/song.png" id="6_rhfwd"]
 [ext_resource type="Shader" path="res://scenes/instrument_selection/item_circle.gdshader" id="6_rmx6f"]
 [ext_resource type="Texture2D" uid="uid://bludcfr13nglg" path="res://assets/gui/main/mandoline.png" id="7_cgjnb"]
-[ext_resource type="FontFile" uid="uid://df06bw7a1s1u7" path="res://fonts/Montserrat-Bold.ttf" id="8_ml8oq"]
+[ext_resource type="Texture2D" uid="uid://cmdd61q57jiu" path="res://assets/gui/icons/course.png" id="7_o5ydg"]
+[ext_resource type="PackedScene" uid="uid://bvqgs74gtjvsj" path="res://scenes/instrument_menu/instrument_menu_action.tscn" id="8_88a38"]
+[ext_resource type="Texture2D" uid="uid://cxpbdejhyhyxu" path="res://assets/gui/icons/lyrics.png" id="9_mhjhx"]
+[ext_resource type="Texture2D" uid="uid://drypojyiolrwq" path="res://assets/gui/icons/settings.png" id="10_oow68"]
+[ext_resource type="Texture2D" uid="uid://de686ygqs5poa" path="res://assets/gui/icons/logout.png" id="11_quq3v"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_y6ivb"]
 shader = ExtResource("3_f3xdb")
@@ -42,36 +47,6 @@ shader_parameter/static_power = 0.5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pcstd"]
 bg_color = Color(0.145098, 0.462745, 1, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rundt"]
-content_margin_left = 50.0
-content_margin_top = 20.0
-content_margin_right = 50.0
-content_margin_bottom = 23.0
-bg_color = Color(0.760784, 0, 0.776471, 1)
-border_width_bottom = 5
-border_color = Color(0.54902, 0, 0.560784, 1)
-corner_radius_top_left = 25
-corner_radius_top_right = 25
-corner_radius_bottom_right = 25
-corner_radius_bottom_left = 25
-shadow_color = Color(1, 0.262745, 0.784314, 0.14902)
-shadow_size = 27
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_guqxe"]
-content_margin_left = 50.0
-content_margin_top = 20.0
-content_margin_right = 50.0
-content_margin_bottom = 23.0
-bg_color = Color(0.886275, 0, 0.905882, 1)
-border_width_bottom = 5
-border_color = Color(0.54902, 0, 0.560784, 1)
-corner_radius_top_left = 25
-corner_radius_top_right = 25
-corner_radius_bottom_right = 25
-corner_radius_bottom_left = 25
-shadow_color = Color(1, 0.337255, 0.792157, 0.168627)
-shadow_size = 25
 
 [node name="InstrumentMenu" type="Control"]
 layout_mode = 3
@@ -137,6 +112,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="Spacer" type="Control" parent="Right/Left/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
 [node name="BackBtn" type="Button" parent="Right/Left/VBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.980392, 0, 1, 1)
@@ -145,11 +124,104 @@ text = "< Back"
 flat = true
 alignment = 0
 
-[node name="Label" type="Label" parent="Right/Left/VBoxContainer"]
+[node name="InstrumentTitle" type="Label" parent="Right/Left/VBoxContainer"]
 layout_mode = 2
 text = "MANDOLINE"
 label_settings = SubResource("LabelSettings_garyf")
 vertical_alignment = 1
+
+[node name="Details" type="HBoxContainer" parent="Right/Left/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Songs" type="HBoxContainer" parent="Right/Left/VBoxContainer/Details"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Icon" type="TextureRect" parent="Right/Left/VBoxContainer/Details/Songs"]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+texture = ExtResource("6_rhfwd")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Number" type="Label" parent="Right/Left/VBoxContainer/Details/Songs"]
+layout_mode = 2
+mouse_filter = 1
+text = "0"
+
+[node name="SongsCountLabel" type="Label" parent="Right/Left/VBoxContainer/Details/Songs"]
+layout_mode = 2
+mouse_filter = 1
+text = "songs"
+
+[node name="Courses" type="HBoxContainer" parent="Right/Left/VBoxContainer/Details"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Icon" type="TextureRect" parent="Right/Left/VBoxContainer/Details/Courses"]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+texture = ExtResource("7_o5ydg")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Number" type="Label" parent="Right/Left/VBoxContainer/Details/Courses"]
+layout_mode = 2
+mouse_filter = 1
+text = "0"
+
+[node name="CoursesCountLabel" type="Label" parent="Right/Left/VBoxContainer/Details/Courses"]
+layout_mode = 2
+mouse_filter = 1
+text = "courses"
+
+[node name="Spacer2" type="Control" parent="Right/Left/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="Actions" type="VBoxContainer" parent="Right/Left/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="Learn" parent="Right/Left/VBoxContainer/Actions" instance=ExtResource("8_88a38")]
+layout_mode = 2
+
+[node name="Play" parent="Right/Left/VBoxContainer/Actions" instance=ExtResource("8_88a38")]
+layout_mode = 2
+
+[node name="Icon" parent="Right/Left/VBoxContainer/Actions/Play/HBoxContainer/HBoxContainer" index="1"]
+texture = ExtResource("6_rhfwd")
+
+[node name="Label" parent="Right/Left/VBoxContainer/Actions/Play/HBoxContainer/HBoxContainer" index="3"]
+text = "PLAY A SONG"
+
+[node name="Tuning" parent="Right/Left/VBoxContainer/Actions" instance=ExtResource("8_88a38")]
+layout_mode = 2
+
+[node name="Icon" parent="Right/Left/VBoxContainer/Actions/Tuning/HBoxContainer/HBoxContainer" index="1"]
+texture = ExtResource("9_mhjhx")
+
+[node name="Label" parent="Right/Left/VBoxContainer/Actions/Tuning/HBoxContainer/HBoxContainer" index="3"]
+text = "PLAY A SONG"
+
+[node name="Settings" parent="Right/Left/VBoxContainer/Actions" instance=ExtResource("8_88a38")]
+layout_mode = 2
+
+[node name="Icon" parent="Right/Left/VBoxContainer/Actions/Settings/HBoxContainer/HBoxContainer" index="1"]
+texture = ExtResource("10_oow68")
+
+[node name="Label" parent="Right/Left/VBoxContainer/Actions/Settings/HBoxContainer/HBoxContainer" index="3"]
+text = "SETTINGS"
+
+[node name="Quit" parent="Right/Left/VBoxContainer/Actions" instance=ExtResource("8_88a38")]
+layout_mode = 2
+
+[node name="Icon" parent="Right/Left/VBoxContainer/Actions/Quit/HBoxContainer/HBoxContainer" index="1"]
+texture = ExtResource("11_quq3v")
+
+[node name="Label" parent="Right/Left/VBoxContainer/Actions/Quit/HBoxContainer/HBoxContainer" index="3"]
+text = "QUIT"
 
 [node name="Right" type="Control" parent="Right"]
 layout_mode = 1
@@ -213,29 +285,11 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("7_cgjnb")
 
-[node name="SelectBtn" type="Button" parent="Right"]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -89.0
-offset_top = -145.0
-offset_right = 89.0
-offset_bottom = -79.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_override_fonts/font = ExtResource("8_ml8oq")
-theme_override_font_sizes/font_size = 18
-theme_override_styles/normal = SubResource("StyleBoxFlat_rundt")
-theme_override_styles/hover = SubResource("StyleBoxFlat_guqxe")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_rundt")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_rundt")
-theme_override_styles/focus = SubResource("StyleBoxFlat_rundt")
-text = "Get that"
-
 [connection signal="script_changed" from="." to="." method="_on_script_changed"]
 [connection signal="mouse_entered" from="Right/Right/InstrumentBox" to="Right/Right/InstrumentBox" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Right/Right/InstrumentBox" to="Right/Right/InstrumentBox" method="_on_mouse_exited"]
-[connection signal="pressed" from="Right/SelectBtn" to="." method="_on_SelectBtn_pressed"]
+
+[editable path="Right/Left/VBoxContainer/Actions/Play"]
+[editable path="Right/Left/VBoxContainer/Actions/Tuning"]
+[editable path="Right/Left/VBoxContainer/Actions/Settings"]
+[editable path="Right/Left/VBoxContainer/Actions/Quit"]
