@@ -1,14 +1,10 @@
-[gd_scene load_steps=20 format=3 uid="uid://liuc3q8c1vo8"]
+[gd_scene load_steps=16 format=3 uid="uid://cgo0ianoaxvph"]
 
-[ext_resource type="Script" path="res://scenes/login_dialog/login_dialog.gd" id="1_xllbb"]
-[ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="2_54es4"]
-[ext_resource type="Texture2D" uid="uid://4jhy1ls4ta6u" path="res://assets/gui/blur.jpg" id="2_surap"]
-[ext_resource type="Texture2D" uid="uid://cq0qaoeso6jc" path="res://assets/gui/icons/email.png" id="3_0qdct"]
-[ext_resource type="FontFile" uid="uid://df06bw7a1s1u7" path="res://fonts/Montserrat-Bold.ttf" id="4_chs0v"]
-[ext_resource type="Texture2D" uid="uid://bklulehpjhbgk" path="res://assets/gui/icons/social/original/facebook.png" id="5_gvvm0"]
-[ext_resource type="Texture2D" uid="uid://dyplfa2stgo07" path="res://assets/gui/icons/social/original/twitter.png" id="6_usyfn"]
-[ext_resource type="Texture2D" uid="uid://ck7iqeul1urwb" path="res://assets/gui/icons/social/original/google.png" id="7_oo8if"]
-[ext_resource type="Texture2D" uid="uid://cbeinajolsgnw" path="res://assets/gui/icons/social/original/apple.png" id="9_rqe5g"]
+[ext_resource type="Script" path="res://scenes/register_dialog/register_dialog.gd" id="1_xufkn"]
+[ext_resource type="Texture2D" uid="uid://4jhy1ls4ta6u" path="res://assets/gui/blur.jpg" id="2_deppv"]
+[ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="3_cxlij"]
+[ext_resource type="Texture2D" uid="uid://cq0qaoeso6jc" path="res://assets/gui/icons/email.png" id="4_16j4a"]
+[ext_resource type="FontFile" uid="uid://df06bw7a1s1u7" path="res://fonts/Montserrat-Bold.ttf" id="5_ov7xg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rh8hi"]
 bg_color = Color(0.282353, 0.192157, 0.454902, 0.933333)
@@ -23,7 +19,7 @@ corner_radius_bottom_right = 25
 corner_radius_bottom_left = 25
 
 [sub_resource type="LabelSettings" id="LabelSettings_gl7oe"]
-font = ExtResource("2_54es4")
+font = ExtResource("3_cxlij")
 font_size = 40
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_whjt8"]
@@ -139,7 +135,7 @@ _data = {
 "Open": SubResource("Animation_ns50l")
 }
 
-[node name="LoginDialog" type="Control"]
+[node name="RegisterDialog" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -147,7 +143,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-script = ExtResource("1_xllbb")
+script = ExtResource("1_xufkn")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 layer = 100
@@ -166,30 +162,30 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -341.0
-offset_top = -361.5
-offset_right = 341.0
-offset_bottom = 361.5
+offset_left = -242.0
+offset_top = -439.5
+offset_right = 242.0
+offset_bottom = 439.5
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset = Vector2(341, 361.5)
+pivot_offset = Vector2(240, 462.5)
 theme_override_styles/panel = SubResource("StyleBoxFlat_rh8hi")
 
 [node name="Background" type="TextureRect" parent="CanvasLayer/Layer/Box"]
 self_modulate = Color(1, 1, 1, 0.156863)
 offset_left = 1.0
 offset_top = 1.0
-offset_right = 681.0
-offset_bottom = 722.0
-texture = ExtResource("2_surap")
+offset_right = 483.0
+offset_bottom = 892.0
+texture = ExtResource("2_deppv")
 ignore_texture_size = true
 stretch_mode = 6
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Layer/Box"]
 offset_left = 1.0
 offset_top = 1.0
-offset_right = 681.0
-offset_bottom = 722.0
+offset_right = 483.0
+offset_bottom = 892.0
 theme_override_constants/margin_left = 40
 theme_override_constants/margin_top = 40
 theme_override_constants/margin_right = 40
@@ -198,25 +194,39 @@ theme_override_constants/margin_bottom = 40
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Layer/Box/MarginContainer"]
 offset_left = 40.0
 offset_top = 40.0
-offset_right = 640.0
-offset_bottom = 681.0
+offset_right = 442.0
+offset_bottom = 851.0
 theme_override_constants/separation = 30
 
 [node name="Label" type="Label" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer"]
-offset_right = 600.0
+offset_right = 402.0
 offset_bottom = 43.0
-text = "LOGIN"
+text = "SIGN UP"
 label_settings = SubResource("LabelSettings_gl7oe")
 
 [node name="Form" type="VBoxContainer" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer"]
 offset_top = 73.0
-offset_right = 600.0
-offset_bottom = 365.0
+offset_right = 402.0
+offset_bottom = 704.0
 theme_override_constants/separation = 30
 
-[node name="EmailInput" type="LineEdit" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/Form"]
-offset_right = 600.0
+[node name="NameInput" type="LineEdit" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/Form"]
+offset_right = 402.0
 offset_bottom = 83.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_whjt8")
+placeholder_text = "Name"
+
+[node name="SurnameInput" type="LineEdit" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/Form"]
+offset_top = 113.0
+offset_right = 402.0
+offset_bottom = 196.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_whjt8")
+placeholder_text = "Surname"
+
+[node name="EmailInput" type="LineEdit" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/Form"]
+offset_top = 226.0
+offset_right = 402.0
+offset_bottom = 309.0
 theme_override_styles/normal = SubResource("StyleBoxFlat_whjt8")
 placeholder_text = "Email"
 
@@ -230,12 +240,12 @@ offset_top = -8.0
 offset_right = 51.0
 offset_bottom = 8.0
 grow_vertical = 2
-texture = ExtResource("3_0qdct")
+texture = ExtResource("4_16j4a")
 
 [node name="PasswordInput" type="LineEdit" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/Form"]
-offset_top = 113.0
-offset_right = 600.0
-offset_bottom = 196.0
+offset_top = 339.0
+offset_right = 402.0
+offset_bottom = 422.0
 theme_override_styles/normal = SubResource("StyleBoxFlat_whjt8")
 placeholder_text = "Password"
 secret = true
@@ -250,97 +260,67 @@ offset_top = -8.0
 offset_right = 51.0
 offset_bottom = 8.0
 grow_vertical = 2
-texture = ExtResource("3_0qdct")
+texture = ExtResource("4_16j4a")
+
+[node name="PasswordRepeatInput" type="LineEdit" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/Form"]
+offset_top = 452.0
+offset_right = 402.0
+offset_bottom = 535.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_whjt8")
+placeholder_text = "Repeat password"
+secret = true
+
+[node name="Icon" type="TextureRect" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/Form/PasswordRepeatInput"]
+modulate = Color(1, 1, 1, 0.784314)
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 33.0
+offset_top = -8.0
+offset_right = 51.0
+offset_bottom = 8.0
+grow_vertical = 2
+texture = ExtResource("4_16j4a")
 
 [node name="Buttons" type="HBoxContainer" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/Form"]
-offset_top = 226.0
-offset_right = 600.0
-offset_bottom = 292.0
+offset_top = 565.0
+offset_right = 402.0
+offset_bottom = 631.0
 
-[node name="LoginBtn" type="Button" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/Form/Buttons"]
-offset_right = 298.0
+[node name="RegisterBtn" type="Button" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/Form/Buttons"]
+offset_right = 402.0
 offset_bottom = 66.0
-grow_horizontal = 2
-grow_vertical = 0
 size_flags_horizontal = 3
-theme_override_fonts/font = ExtResource("4_chs0v")
+theme_override_fonts/font = ExtResource("5_ov7xg")
 theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = SubResource("StyleBoxFlat_rcba4")
 theme_override_styles/hover = SubResource("StyleBoxFlat_dpvm0")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_rcba4")
 theme_override_styles/disabled = SubResource("StyleBoxFlat_rcba4")
 theme_override_styles/focus = SubResource("StyleBoxFlat_rcba4")
-text = "Login"
-
-[node name="ForgotPasswordBtn" type="Button" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/Form/Buttons"]
-offset_left = 455.0
-offset_right = 600.0
-offset_bottom = 66.0
-size_flags_horizontal = 10
-theme_override_colors/font_color = Color(0.980392, 0, 1, 1)
-text = "Forgot password?"
-flat = true
-
-[node name="Label2" type="Label" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer"]
-offset_top = 395.0
-offset_right = 600.0
-offset_bottom = 421.0
-text = "Or use"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Socials" type="HBoxContainer" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer"]
-offset_top = 451.0
-offset_right = 600.0
-offset_bottom = 499.0
-theme_override_constants/separation = 25
-alignment = 1
-
-[node name="FacebookBtn" type="TextureButton" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/Socials"]
-offset_left = 166.0
-offset_right = 214.0
-offset_bottom = 48.0
-texture_normal = ExtResource("5_gvvm0")
-
-[node name="TwitterBtn" type="TextureButton" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/Socials"]
-offset_left = 239.0
-offset_right = 287.0
-offset_bottom = 48.0
-texture_normal = ExtResource("6_usyfn")
-
-[node name="GoogleBtn" type="TextureButton" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/Socials"]
-offset_left = 312.0
-offset_right = 360.0
-offset_bottom = 48.0
-texture_normal = ExtResource("7_oo8if")
-
-[node name="GoogleBtn2" type="TextureButton" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/Socials"]
-offset_left = 385.0
-offset_right = 433.0
-offset_bottom = 48.0
-texture_normal = ExtResource("9_rqe5g")
+text = "Sign Up"
 
 [node name="NewAccount" type="PanelContainer" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer"]
-offset_top = 529.0
-offset_right = 600.0
-offset_bottom = 606.0
+offset_top = 734.0
+offset_right = 402.0
+offset_bottom = 811.0
 theme_override_styles/panel = SubResource("StyleBoxEmpty_2m76u")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/NewAccount"]
-offset_right = 600.0
+offset_right = 402.0
 offset_bottom = 77.0
 
 [node name="Spacer" type="Control" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/NewAccount/VBoxContainer"]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 3
 anchors_preset = 0
-offset_right = 600.0
+offset_right = 402.0
 offset_bottom = 10.0
 
 [node name="Sep" type="Panel" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/NewAccount/VBoxContainer"]
 custom_minimum_size = Vector2(0, 1)
 offset_top = 14.0
-offset_right = 600.0
+offset_right = 402.0
 offset_bottom = 15.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_jg4r4")
 
@@ -349,30 +329,30 @@ custom_minimum_size = Vector2(0, 20)
 layout_mode = 3
 anchors_preset = 0
 offset_top = 19.0
-offset_right = 600.0
+offset_right = 402.0
 offset_bottom = 39.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/NewAccount/VBoxContainer"]
 offset_top = 43.0
-offset_right = 600.0
+offset_right = 402.0
 offset_bottom = 77.0
 theme_override_constants/separation = 15
 alignment = 1
 
 [node name="Label" type="Label" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/NewAccount/VBoxContainer/HBoxContainer"]
-offset_left = 169.0
+offset_left = 67.0
 offset_top = 4.0
-offset_right = 349.0
+offset_right = 264.0
 offset_bottom = 30.0
-text = "Don't have an account?"
+text = "Already have an account?"
 
-[node name="RegisterBtn" type="Button" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/NewAccount/VBoxContainer/HBoxContainer"]
-offset_left = 364.0
-offset_right = 430.0
+[node name="LoginBtn" type="Button" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/NewAccount/VBoxContainer/HBoxContainer"]
+offset_left = 279.0
+offset_right = 335.0
 offset_bottom = 34.0
 theme_override_colors/font_color = Color(0.980392, 0, 1, 1)
 theme_override_font_sizes/font_size = 18
-text = "Create"
+text = "Login"
 flat = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -380,4 +360,4 @@ libraries = {
 "": SubResource("AnimationLibrary_b82ex")
 }
 
-[connection signal="pressed" from="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/NewAccount/VBoxContainer/HBoxContainer/RegisterBtn" to="." method="_on_RegisterBtn_pressed"]
+[connection signal="pressed" from="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/NewAccount/VBoxContainer/HBoxContainer/LoginBtn" to="." method="_on_LoginBtn_pressed"]

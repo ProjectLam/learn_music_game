@@ -19,5 +19,5 @@ func close() -> void:
 	is_opened = false
 	nAnimationPlayer.play("Close")
 
-func _on_RegisterBtn_pressed():
-	GDialogs.open_single(GRegisterDialog)
+func _on_LoginBtn_pressed():
+	GDialogs.open_single(GLoginDialog)
