@@ -219,3 +219,7 @@ func _on_Items_item_rect_changed():
 
 func _on_script_changed():
 	_process_items()
+
+
+func _on_SelectBtn_pressed():
+	GLoginDialog.open()
