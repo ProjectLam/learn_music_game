@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://7bwe18ukufk6"]
+[gd_scene load_steps=10 format=3 uid="uid://7bwe18ukufk6"]
 
 [ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="1_cv8gp"]
+[ext_resource type="Script" path="res://scenes/leaderboard/leaderboard_item.gd" id="1_evpvl"]
 [ext_resource type="Texture2D" uid="uid://ctu1miqp425c5" path="res://assets/gui/icons/casette.png" id="2_6ex3l"]
 [ext_resource type="FontFile" uid="uid://df06bw7a1s1u7" path="res://fonts/Montserrat-Bold.ttf" id="3_gotih"]
 
@@ -31,10 +32,11 @@ corner_radius_bottom_left = 10
 line_spacing = 0.0
 font = ExtResource("3_gotih")
 
-[node name="leaderboard_item" type="PanelContainer"]
+[node name="LeaderboardItem" type="PanelContainer"]
 anchors_preset = -1
 anchor_right = 1.0
 size_flags_horizontal = 3
+script = ExtResource("1_evpvl")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 offset_right = 1600.0
@@ -68,41 +70,42 @@ stretch_mode = 5
 
 [node name="Details" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
 offset_left = 172.0
-offset_right = 832.0
+offset_right = 810.0
 offset_bottom = 106.0
 size_flags_horizontal = 3
 alignment = 1
 
 [node name="NameLabel" type="Label" parent="VBoxContainer/HBoxContainer/Details"]
 offset_top = 41.0
-offset_right = 660.0
+offset_right = 638.0
 offset_bottom = 65.0
 text = "Song Name"
 label_settings = SubResource("LabelSettings_hnxk5")
 
 [node name="DateLabel" type="Label" parent="VBoxContainer/HBoxContainer"]
-offset_left = 836.0
+offset_left = 814.0
 offset_top = 40.0
-offset_right = 1497.0
+offset_right = 1452.0
 offset_bottom = 66.0
 size_flags_horizontal = 3
-text = "28 Nov 2022"
+text = "Date"
 
-[node name="Percent" type="PanelContainer" parent="VBoxContainer/HBoxContainer"]
-offset_left = 1501.0
+[node name="ScoreLabel" type="Label" parent="VBoxContainer/HBoxContainer"]
+offset_left = 1456.0
+offset_top = 32.0
+offset_right = 1507.0
+offset_bottom = 73.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_edmsi")
+text = "0"
+label_settings = SubResource("LabelSettings_va7hq")
+
+[node name="PercentLabel" type="Label" parent="VBoxContainer/HBoxContainer"]
+offset_left = 1511.0
 offset_top = 32.0
 offset_right = 1576.0
 offset_bottom = 73.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_styles/panel = SubResource("StyleBoxFlat_edmsi")
-
-[node name="PercentLabel" type="Label" parent="VBoxContainer/HBoxContainer/Percent"]
-offset_left = 20.0
-offset_top = 10.0
-offset_right = 55.0
-offset_bottom = 31.0
-text = "86%"
+theme_override_styles/normal = SubResource("StyleBoxFlat_edmsi")
+text = "%0"
 label_settings = SubResource("LabelSettings_va7hq")
 
 [node name="Spacer" type="Control" parent="VBoxContainer/HBoxContainer"]
