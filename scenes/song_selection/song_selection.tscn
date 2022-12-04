@@ -446,52 +446,52 @@ grow_vertical = 2
 style_odd = SubResource("StyleBoxFlat_q0s1r")
 style_even = SubResource("StyleBoxFlat_xgkjy")
 
-[node name="VBoxContainer" parent="Right/SongDetails/Leaderboard/leaderboard/PanelContainer" index="0"]
+[node name="VBoxContainer" parent="Right/SongDetails/Leaderboard/leaderboard" index="0"]
 offset_right = 766.0
 offset_bottom = 400.0
 
-[node name="Header" parent="Right/SongDetails/Leaderboard/leaderboard/PanelContainer/VBoxContainer" index="0"]
+[node name="Header" parent="Right/SongDetails/Leaderboard/leaderboard/VBoxContainer" index="0"]
 offset_right = 764.0
 
-[node name="Spacer" parent="Right/SongDetails/Leaderboard/leaderboard/PanelContainer/VBoxContainer/Header/HBoxContainer" index="1"]
+[node name="Spacer" parent="Right/SongDetails/Leaderboard/leaderboard/VBoxContainer/Header/HBoxContainer" index="1"]
 offset_right = 560.0
 
-[node name="Actions" parent="Right/SongDetails/Leaderboard/leaderboard/PanelContainer/VBoxContainer/Header/HBoxContainer" index="2"]
+[node name="Actions" parent="Right/SongDetails/Leaderboard/leaderboard/VBoxContainer/Header/HBoxContainer" index="2"]
 offset_left = 564.0
 offset_right = 764.0
 
-[node name="Content" parent="Right/SongDetails/Leaderboard/leaderboard/PanelContainer/VBoxContainer" index="1"]
+[node name="Content" parent="Right/SongDetails/Leaderboard/leaderboard/VBoxContainer" index="1"]
 offset_right = 764.0
 offset_bottom = 398.0
 
-[node name="Items" parent="Right/SongDetails/Leaderboard/leaderboard/PanelContainer/VBoxContainer/Content" index="0"]
+[node name="Items" parent="Right/SongDetails/Leaderboard/leaderboard/VBoxContainer/Content" index="0"]
 offset_right = 756.0
 offset_bottom = 530.0
 
-[node name="leaderboard_item" parent="Right/SongDetails/Leaderboard/leaderboard/PanelContainer/VBoxContainer/Content/Items" index="0" instance=ExtResource("14_2th4i")]
+[node name="leaderboard_item" parent="Right/SongDetails/Leaderboard/leaderboard/VBoxContainer/Content/Items" index="0" instance=ExtResource("14_2th4i")]
 anchor_right = 0.0
 offset_right = 756.0
 offset_bottom = 106.0
 
-[node name="leaderboard_item2" parent="Right/SongDetails/Leaderboard/leaderboard/PanelContainer/VBoxContainer/Content/Items" index="1" instance=ExtResource("14_2th4i")]
+[node name="leaderboard_item2" parent="Right/SongDetails/Leaderboard/leaderboard/VBoxContainer/Content/Items" index="1" instance=ExtResource("14_2th4i")]
 anchor_right = 0.0
 offset_top = 106.0
 offset_right = 756.0
 offset_bottom = 212.0
 
-[node name="leaderboard_item3" parent="Right/SongDetails/Leaderboard/leaderboard/PanelContainer/VBoxContainer/Content/Items" index="2" instance=ExtResource("14_2th4i")]
+[node name="leaderboard_item3" parent="Right/SongDetails/Leaderboard/leaderboard/VBoxContainer/Content/Items" index="2" instance=ExtResource("14_2th4i")]
 anchor_right = 0.0
 offset_top = 212.0
 offset_right = 756.0
 offset_bottom = 318.0
 
-[node name="leaderboard_item4" parent="Right/SongDetails/Leaderboard/leaderboard/PanelContainer/VBoxContainer/Content/Items" index="3" instance=ExtResource("14_2th4i")]
+[node name="leaderboard_item4" parent="Right/SongDetails/Leaderboard/leaderboard/VBoxContainer/Content/Items" index="3" instance=ExtResource("14_2th4i")]
 anchor_right = 0.0
 offset_top = 318.0
 offset_right = 756.0
 offset_bottom = 424.0
 
-[node name="leaderboard_item5" parent="Right/SongDetails/Leaderboard/leaderboard/PanelContainer/VBoxContainer/Content/Items" index="4" instance=ExtResource("14_2th4i")]
+[node name="leaderboard_item5" parent="Right/SongDetails/Leaderboard/leaderboard/VBoxContainer/Content/Items" index="4" instance=ExtResource("14_2th4i")]
 anchor_right = 0.0
 offset_top = 424.0
 offset_right = 756.0
