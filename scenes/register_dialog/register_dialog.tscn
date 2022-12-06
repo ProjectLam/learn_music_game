@@ -1,10 +1,11 @@
-[gd_scene load_steps=16 format=3 uid="uid://cgo0ianoaxvph"]
+[gd_scene load_steps=17 format=3 uid="uid://cgo0ianoaxvph"]
 
 [ext_resource type="Script" path="res://scenes/register_dialog/register_dialog.gd" id="1_xufkn"]
 [ext_resource type="Texture2D" uid="uid://4jhy1ls4ta6u" path="res://assets/gui/blur.jpg" id="2_deppv"]
 [ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="3_cxlij"]
 [ext_resource type="Texture2D" uid="uid://cq0qaoeso6jc" path="res://assets/gui/icons/email.png" id="4_16j4a"]
 [ext_resource type="FontFile" uid="uid://df06bw7a1s1u7" path="res://fonts/Montserrat-Bold.ttf" id="5_ov7xg"]
+[ext_resource type="Texture2D" uid="uid://d31d65aktssi6" path="res://assets/gui/icons/close.png" id="6_r4ok0"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rh8hi"]
 bg_color = Color(0.282353, 0.192157, 0.454902, 0.933333)
@@ -158,6 +159,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Box" type="PanelContainer" parent="CanvasLayer/Layer"]
+layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -174,65 +176,49 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_rh8hi")
 
 [node name="Background" type="TextureRect" parent="CanvasLayer/Layer/Box"]
 self_modulate = Color(1, 1, 1, 0.156863)
-offset_left = 1.0
-offset_top = 1.0
-offset_right = 483.0
-offset_bottom = 892.0
+layout_mode = 2
 texture = ExtResource("2_deppv")
 ignore_texture_size = true
 stretch_mode = 6
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Layer/Box"]
-offset_left = 1.0
-offset_top = 1.0
-offset_right = 483.0
-offset_bottom = 892.0
+layout_mode = 2
 theme_override_constants/margin_left = 40
 theme_override_constants/margin_top = 40
 theme_override_constants/margin_right = 40
 theme_override_constants/margin_bottom = 40
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Layer/Box/MarginContainer"]
-offset_left = 40.0
-offset_top = 40.0
-offset_right = 442.0
-offset_bottom = 851.0
+layout_mode = 2
 theme_override_constants/separation = 30
 
 [node name="Label" type="Label" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer"]
-offset_right = 402.0
-offset_bottom = 43.0
+layout_mode = 2
 text = "SIGN UP"
 label_settings = SubResource("LabelSettings_gl7oe")
 
 [node name="Form" type="VBoxContainer" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer"]
-offset_top = 73.0
-offset_right = 402.0
-offset_bottom = 704.0
+layout_mode = 2
 theme_override_constants/separation = 30
 
 [node name="NameInput" type="LineEdit" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/Form"]
-offset_right = 402.0
-offset_bottom = 83.0
+layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_whjt8")
 placeholder_text = "Name"
 
 [node name="SurnameInput" type="LineEdit" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/Form"]
-offset_top = 113.0
-offset_right = 402.0
-offset_bottom = 196.0
+layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_whjt8")
 placeholder_text = "Surname"
 
 [node name="EmailInput" type="LineEdit" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/Form"]
-offset_top = 226.0
-offset_right = 402.0
-offset_bottom = 309.0
+layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_whjt8")
 placeholder_text = "Email"
 
 [node name="Icon" type="TextureRect" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/Form/EmailInput"]
 modulate = Color(1, 1, 1, 0.784314)
+layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
@@ -244,15 +230,14 @@ grow_vertical = 2
 texture = ExtResource("4_16j4a")
 
 [node name="PasswordInput" type="LineEdit" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/Form"]
-offset_top = 339.0
-offset_right = 402.0
-offset_bottom = 422.0
+layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_whjt8")
 placeholder_text = "Password"
 secret = true
 
 [node name="Icon" type="TextureRect" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/Form/PasswordInput"]
 modulate = Color(1, 1, 1, 0.784314)
+layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
@@ -264,15 +249,14 @@ grow_vertical = 2
 texture = ExtResource("4_16j4a")
 
 [node name="PasswordRepeatInput" type="LineEdit" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/Form"]
-offset_top = 452.0
-offset_right = 402.0
-offset_bottom = 535.0
+layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_whjt8")
 placeholder_text = "Repeat password"
 secret = true
 
 [node name="Icon" type="TextureRect" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/Form/PasswordRepeatInput"]
 modulate = Color(1, 1, 1, 0.784314)
+layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
@@ -284,13 +268,10 @@ grow_vertical = 2
 texture = ExtResource("4_16j4a")
 
 [node name="Buttons" type="HBoxContainer" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/Form"]
-offset_top = 565.0
-offset_right = 402.0
-offset_bottom = 631.0
+layout_mode = 2
 
 [node name="RegisterBtn" type="Button" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/Form/Buttons"]
-offset_right = 402.0
-offset_bottom = 66.0
+layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("5_ov7xg")
 theme_override_font_sizes/font_size = 18
@@ -302,59 +283,60 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_rcba4")
 text = "Sign Up"
 
 [node name="NewAccount" type="PanelContainer" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer"]
-offset_top = 734.0
-offset_right = 402.0
-offset_bottom = 811.0
+layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_2m76u")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/NewAccount"]
-offset_right = 402.0
-offset_bottom = 77.0
+layout_mode = 2
 
 [node name="Spacer" type="Control" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/NewAccount/VBoxContainer"]
 custom_minimum_size = Vector2(0, 10)
-layout_mode = 3
-anchors_preset = 0
-offset_right = 402.0
-offset_bottom = 10.0
+layout_mode = 2
 
 [node name="Sep" type="Panel" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/NewAccount/VBoxContainer"]
 custom_minimum_size = Vector2(0, 1)
-offset_top = 14.0
-offset_right = 402.0
-offset_bottom = 15.0
+layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_jg4r4")
 
 [node name="Spacer2" type="Control" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/NewAccount/VBoxContainer"]
 custom_minimum_size = Vector2(0, 20)
-layout_mode = 3
-anchors_preset = 0
-offset_top = 19.0
-offset_right = 402.0
-offset_bottom = 39.0
+layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/NewAccount/VBoxContainer"]
-offset_top = 43.0
-offset_right = 402.0
-offset_bottom = 77.0
+layout_mode = 2
 theme_override_constants/separation = 15
 alignment = 1
 
 [node name="Label" type="Label" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/NewAccount/VBoxContainer/HBoxContainer"]
-offset_left = 67.0
-offset_top = 4.0
-offset_right = 264.0
-offset_bottom = 30.0
+layout_mode = 2
 text = "Already have an account?"
 
 [node name="LoginBtn" type="Button" parent="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/NewAccount/VBoxContainer/HBoxContainer"]
-offset_left = 279.0
-offset_right = 335.0
-offset_bottom = 34.0
+layout_mode = 2
 theme_override_colors/font_color = Color(0.980392, 0, 1, 1)
 theme_override_font_sizes/font_size = 18
 text = "Login"
 flat = true
+
+[node name="Overlay" type="Control" parent="CanvasLayer/Layer/Box"]
+layout_mode = 2
+mouse_filter = 2
+metadata/_edit_lock_ = true
+
+[node name="CloseBtn" type="Button" parent="CanvasLayer/Layer/Box/Overlay"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -52.0
+offset_top = 25.0
+offset_right = -25.0
+offset_bottom = 52.0
+grow_horizontal = 0
+icon = ExtResource("6_r4ok0")
+flat = true
+icon_alignment = 1
+expand_icon = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -362,3 +344,4 @@ libraries = {
 }
 
 [connection signal="pressed" from="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/NewAccount/VBoxContainer/HBoxContainer/LoginBtn" to="." method="_on_LoginBtn_pressed"]
+[connection signal="pressed" from="CanvasLayer/Layer/Box/Overlay/CloseBtn" to="." method="_on_CloseBtn_pressed"]

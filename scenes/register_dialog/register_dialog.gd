@@ -23,3 +23,6 @@ func close() -> void:
 
 func _on_LoginBtn_pressed():
 	GDialogs.open_single(GLoginDialog)
+
+func _on_CloseBtn_pressed() -> void:
+	close()

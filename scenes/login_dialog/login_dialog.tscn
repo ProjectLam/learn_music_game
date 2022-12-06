@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://liuc3q8c1vo8"]
+[gd_scene load_steps=21 format=3 uid="uid://liuc3q8c1vo8"]
 
 [ext_resource type="Script" path="res://scenes/login_dialog/login_dialog.gd" id="1_xllbb"]
 [ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="2_54es4"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://dyplfa2stgo07" path="res://assets/gui/icons/social/original/twitter.png" id="6_usyfn"]
 [ext_resource type="Texture2D" uid="uid://ck7iqeul1urwb" path="res://assets/gui/icons/social/original/google.png" id="7_oo8if"]
 [ext_resource type="Texture2D" uid="uid://cbeinajolsgnw" path="res://assets/gui/icons/social/original/apple.png" id="9_rqe5g"]
+[ext_resource type="Texture2D" uid="uid://d31d65aktssi6" path="res://assets/gui/icons/close.png" id="10_u077k"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rh8hi"]
 bg_color = Color(0.282353, 0.192157, 0.454902, 0.933333)
@@ -154,7 +155,6 @@ script = ExtResource("1_xllbb")
 layer = 100
 
 [node name="Layer" type="Control" parent="CanvasLayer"]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -174,7 +174,6 @@ offset_right = 341.0
 offset_bottom = 361.5
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(1e-05, 1e-05)
 pivot_offset = Vector2(341, 361.5)
 theme_override_styles/panel = SubResource("StyleBoxFlat_rh8hi")
 
@@ -378,9 +377,33 @@ theme_override_font_sizes/font_size = 18
 text = "Create"
 flat = true
 
+[node name="Overlay" type="Control" parent="CanvasLayer/Layer/Box"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 681.0
+offset_bottom = 722.0
+mouse_filter = 2
+
+[node name="CloseBtn" type="Button" parent="CanvasLayer/Layer/Box/Overlay"]
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -52.0
+offset_top = 25.0
+offset_right = -25.0
+offset_bottom = 52.0
+grow_horizontal = 0
+icon = ExtResource("10_u077k")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_b82ex")
 }
 
 [connection signal="pressed" from="CanvasLayer/Layer/Box/MarginContainer/VBoxContainer/NewAccount/VBoxContainer/HBoxContainer/RegisterBtn" to="." method="_on_RegisterBtn_pressed"]
+[connection signal="pressed" from="CanvasLayer/Layer/Box/Overlay/CloseBtn" to="." method="_on_CloseBtn_pressed"]
