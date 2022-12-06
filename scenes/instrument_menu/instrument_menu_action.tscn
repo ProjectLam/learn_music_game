@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://bvqgs74gtjvsj"]
+[gd_scene load_steps=10 format=3 uid="uid://bvqgs74gtjvsj"]
 
 [ext_resource type="Texture2D" uid="uid://4jhy1ls4ta6u" path="res://assets/gui/blur.jpg" id="1_ptohn"]
+[ext_resource type="Script" path="res://scenes/instrument_menu/instrument_menu_action.gd" id="1_w063x"]
 [ext_resource type="Texture2D" uid="uid://cmdd61q57jiu" path="res://assets/gui/icons/course.png" id="2_2snoy"]
 [ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="3_saf71"]
 [ext_resource type="FontFile" uid="uid://df06bw7a1s1u7" path="res://fonts/Montserrat-Bold.ttf" id="4_xujib"]
@@ -37,6 +38,7 @@ shadow_size = 27
 [node name="InstrumentMenuAction" type="PanelContainer"]
 custom_minimum_size = Vector2(0, 80)
 theme_override_styles/panel = SubResource("StyleBoxFlat_qdthk")
+script = ExtResource("1_w063x")
 
 [node name="Background" type="TextureRect" parent="."]
 self_modulate = Color(1, 1, 1, 0.0862745)
@@ -120,3 +122,12 @@ anchors_preset = 0
 offset_left = 337.0
 offset_right = 342.0
 offset_bottom = 78.0
+
+[node name="BtnOverlay" type="Button" parent="."]
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 343.0
+offset_bottom = 79.0
+flat = true
+
+[connection signal="pressed" from="BtnOverlay" to="." method="_on_OverlayBtn_pressed"]
