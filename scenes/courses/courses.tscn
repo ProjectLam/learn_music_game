@@ -111,7 +111,7 @@ item_stylebox_normal = SubResource("StyleBoxFlat_45q6i")
 item_stylebox_completed = SubResource("StyleBoxFlat_33mes")
 
 [node name="Background" type="Control" parent="."]
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -119,7 +119,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="TextureRect" type="TextureRect" parent="Background"]
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -131,7 +130,6 @@ stretch_mode = 6
 
 [node name="Layer" type="Panel" parent="Background"]
 material = SubResource("ShaderMaterial_ec2p8")
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -140,25 +138,15 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_afwxd")
 
 [node name="LeftBar" parent="." instance=ExtResource("4_dbd5l")]
-layout_mode = 1
-
-[node name="VBoxContainer" parent="LeftBar" index="0"]
-layout_mode = 1
-
-[node name="Top" parent="LeftBar/VBoxContainer" index="0"]
-layout_mode = 2
-
-[node name="TextureRect" parent="LeftBar/VBoxContainer/Top" index="0"]
-layout_mode = 2
-
-[node name="Middle" parent="LeftBar/VBoxContainer" index="1"]
-layout_mode = 2
 
 [node name="Content" type="Control" parent="LeftBar/VBoxContainer/Middle" index="0"]
-layout_mode = 2
+layout_mode = 3
+anchors_preset = 0
+offset_right = 97.0
+offset_bottom = 622.0
 
 [node name="Menu" type="Control" parent="LeftBar/VBoxContainer/Middle/Content"]
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -166,7 +154,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="LeftBar/VBoxContainer/Middle/Content/Menu"]
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -177,7 +164,10 @@ alignment = 1
 
 [node name="Button" type="Button" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer"]
 custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
+offset_left = 23.0
+offset_top = 123.0
+offset_right = 73.0
+offset_bottom = 173.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_styles/normal = SubResource("StyleBoxFlat_qg117")
@@ -190,7 +180,10 @@ icon_alignment = 1
 
 [node name="Button2" type="Button" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer"]
 custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
+offset_left = 23.0
+offset_top = 198.0
+offset_right = 73.0
+offset_bottom = 248.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_styles/normal = SubResource("StyleBoxFlat_qg117")
@@ -203,7 +196,10 @@ icon_alignment = 1
 
 [node name="Button3" type="Button" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer"]
 custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
+offset_left = 23.0
+offset_top = 273.0
+offset_right = 73.0
+offset_bottom = 323.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_styles/normal = SubResource("StyleBoxFlat_qg117")
@@ -216,7 +212,10 @@ icon_alignment = 1
 
 [node name="Button4" type="Button" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer"]
 custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
+offset_left = 23.0
+offset_top = 348.0
+offset_right = 73.0
+offset_bottom = 398.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_styles/normal = SubResource("StyleBoxFlat_qg117")
@@ -229,10 +228,13 @@ icon_alignment = 1
 
 [node name="Sep" type="Control" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer"]
 custom_minimum_size = Vector2(0, 1)
-layout_mode = 2
+layout_mode = 3
+anchors_preset = 0
+offset_top = 423.0
+offset_right = 97.0
+offset_bottom = 424.0
 
 [node name="PanelContainer" type="PanelContainer" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer/Sep"]
-layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -245,7 +247,10 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_r2op2")
 
 [node name="Button5" type="Button" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer"]
 custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
+offset_left = 23.0
+offset_top = 449.0
+offset_right = 73.0
+offset_bottom = 499.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_styles/normal = SubResource("StyleBoxFlat_qg117")
@@ -258,16 +263,9 @@ icon_alignment = 1
 
 [node name="Empty" parent="LeftBar/VBoxContainer/Middle" index="1"]
 visible = false
-layout_mode = 2
-
-[node name="Label" parent="LeftBar/VBoxContainer/Middle/Empty" index="0"]
-layout_mode = 1
-
-[node name="Bottom" parent="LeftBar/VBoxContainer" index="2"]
-layout_mode = 2
 
 [node name="Right" type="Control" parent="."]
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -276,7 +274,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Right"]
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -285,19 +282,28 @@ grow_vertical = 2
 
 [node name="Spacer" type="Control" parent="Right/VBoxContainer"]
 custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1396.0
+offset_bottom = 50.0
 
 [node name="Header" type="HBoxContainer" parent="Right/VBoxContainer"]
-layout_mode = 2
+offset_top = 54.0
+offset_right = 1396.0
+offset_bottom = 137.0
 
 [node name="Title" type="Label" parent="Right/VBoxContainer/Header"]
-layout_mode = 2
+offset_top = 6.0
+offset_right = 669.0
+offset_bottom = 77.0
 size_flags_horizontal = 3
 text = "SCORE"
 label_settings = SubResource("LabelSettings_sawgy")
 
 [node name="SearchInput" type="LineEdit" parent="Right/VBoxContainer/Header"]
-layout_mode = 2
+offset_left = 673.0
+offset_right = 1342.0
+offset_bottom = 83.0
 size_flags_horizontal = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_s3372")
 text = "Search"
@@ -305,7 +311,6 @@ placeholder_text = "Email"
 
 [node name="SearchIcon" type="TextureRect" parent="Right/VBoxContainer/Header/SearchInput"]
 modulate = Color(1, 1, 1, 0.784314)
-layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
@@ -319,7 +324,6 @@ texture = ExtResource("11_v67uh")
 [node name="FiltersBtn" type="Button" parent="Right/VBoxContainer/Header/SearchInput"]
 modulate = Color(1, 1, 1, 0.784314)
 custom_minimum_size = Vector2(50, 0)
-layout_mode = 1
 anchors_preset = -1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -332,18 +336,29 @@ icon_alignment = 1
 
 [node name="Spacer" type="Control" parent="Right/VBoxContainer/Header"]
 custom_minimum_size = Vector2(50, 0)
-layout_mode = 2
+layout_mode = 3
+anchors_preset = 0
+offset_left = 1346.0
+offset_right = 1396.0
+offset_bottom = 83.0
 
 [node name="Spacer2" type="Control" parent="Right/VBoxContainer"]
 custom_minimum_size = Vector2(0, 25)
-layout_mode = 2
+layout_mode = 3
+anchors_preset = 0
+offset_top = 141.0
+offset_right = 1396.0
+offset_bottom = 166.0
 
 [node name="ItemsContainer" type="Control" parent="Right/VBoxContainer"]
-layout_mode = 2
+layout_mode = 3
+anchors_preset = 0
+offset_top = 170.0
+offset_right = 1396.0
+offset_bottom = 1000.0
 size_flags_vertical = 3
 
 [node name="Scrollable" type="ScrollContainer" parent="Right/VBoxContainer/ItemsContainer"]
-layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -354,27 +369,71 @@ size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
 [node name="Items" type="GridContainer" parent="Right/VBoxContainer/ItemsContainer/Scrollable"]
-layout_mode = 2
+offset_right = 1346.0
+offset_bottom = 830.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 columns = 3
 
 [node name="CoursesItem" parent="Right/VBoxContainer/ItemsContainer/Scrollable/Items" instance=ExtResource("13_f2m8u")]
-layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 410.0
+offset_bottom = 351.0
+grow_horizontal = 1
+grow_vertical = 1
 
 [node name="CoursesItem2" parent="Right/VBoxContainer/ItemsContainer/Scrollable/Items" instance=ExtResource("13_f2m8u")]
-layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 414.0
+offset_right = 824.0
+offset_bottom = 351.0
+grow_horizontal = 1
+grow_vertical = 1
 
 [node name="CoursesItem3" parent="Right/VBoxContainer/ItemsContainer/Scrollable/Items" instance=ExtResource("13_f2m8u")]
-layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 828.0
+offset_right = 1238.0
+offset_bottom = 351.0
+grow_horizontal = 1
+grow_vertical = 1
 
 [node name="CoursesItem4" parent="Right/VBoxContainer/ItemsContainer/Scrollable/Items" instance=ExtResource("13_f2m8u")]
-layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_top = 355.0
+offset_right = 410.0
+offset_bottom = 706.0
+grow_horizontal = 1
+grow_vertical = 1
 
 [node name="CoursesItem5" parent="Right/VBoxContainer/ItemsContainer/Scrollable/Items" instance=ExtResource("13_f2m8u")]
-layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 414.0
+offset_top = 355.0
+offset_right = 824.0
+offset_bottom = 706.0
+grow_horizontal = 1
+grow_vertical = 1
 
 [node name="CoursesItem6" parent="Right/VBoxContainer/ItemsContainer/Scrollable/Items" instance=ExtResource("13_f2m8u")]
-layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 828.0
+offset_top = 355.0
+offset_right = 1238.0
+offset_bottom = 706.0
+grow_horizontal = 1
+grow_vertical = 1
 
 [editable path="LeftBar"]
