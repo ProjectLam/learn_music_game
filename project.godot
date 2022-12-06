@@ -9,6 +9,16 @@
 config_version=5
 
 _global_script_classes=[{
+"base": "Control",
+"class": &"Courses",
+"language": &"GDScript",
+"path": "res://scenes/courses/courses.gd"
+}, {
+"base": "MarginContainer",
+"class": &"CoursesItem",
+"language": &"GDScript",
+"path": "res://scenes/courses/courses_item.gd"
+}, {
 "base": "RefCounted",
 "class": &"Ebeats",
 "language": &"GDScript",
@@ -130,6 +140,8 @@ _global_script_classes=[{
 "path": "res://compat/WebSocketServer.gd"
 }]
 _global_script_class_icons={
+"Courses": "",
+"CoursesItem": "",
 "Ebeats": "",
 "GutHookScript": "",
 "GutStringUtils": "",
