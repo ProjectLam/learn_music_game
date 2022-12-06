@@ -171,7 +171,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Lam-dj"
-run/main_scene="res://scenes/main.tscn"
+run/main_scene="res://scenes/instrument_selection/instrument_selection.tscn"
 config/features=PackedStringArray("4.0", "Mobile")
 config/icon="res://icon.svg"
 run/main_scene.web="res://scenes/djclient.tscn"
