@@ -178,7 +178,7 @@ grow_vertical = 2
 script = ExtResource("1_5f6xf")
 
 [node name="Background" type="Control" parent="."]
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -186,7 +186,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="TextureRect" type="TextureRect" parent="Background"]
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -198,7 +197,6 @@ stretch_mode = 6
 
 [node name="Layer" type="Panel" parent="Background"]
 material = SubResource("ShaderMaterial_ec2p8")
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -207,25 +205,15 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_afwxd")
 
 [node name="LeftBar" parent="." instance=ExtResource("4_577jl")]
-layout_mode = 1
-
-[node name="VBoxContainer" parent="LeftBar" index="0"]
-layout_mode = 1
-
-[node name="Top" parent="LeftBar/VBoxContainer" index="0"]
-layout_mode = 2
-
-[node name="TextureRect" parent="LeftBar/VBoxContainer/Top" index="0"]
-layout_mode = 2
-
-[node name="Middle" parent="LeftBar/VBoxContainer" index="1"]
-layout_mode = 2
 
 [node name="Content" type="Control" parent="LeftBar/VBoxContainer/Middle" index="0"]
-layout_mode = 2
+layout_mode = 3
+anchors_preset = 0
+offset_right = 97.0
+offset_bottom = 622.0
 
 [node name="Menu" type="Control" parent="LeftBar/VBoxContainer/Middle/Content"]
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -233,7 +221,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="LeftBar/VBoxContainer/Middle/Content/Menu"]
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -244,7 +231,10 @@ alignment = 1
 
 [node name="Button" type="Button" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer"]
 custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
+offset_left = 23.0
+offset_top = 123.0
+offset_right = 73.0
+offset_bottom = 173.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_styles/normal = SubResource("StyleBoxFlat_qg117")
@@ -257,7 +247,10 @@ icon_alignment = 1
 
 [node name="Button2" type="Button" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer"]
 custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
+offset_left = 23.0
+offset_top = 198.0
+offset_right = 73.0
+offset_bottom = 248.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_styles/normal = SubResource("StyleBoxFlat_qg117")
@@ -270,7 +263,10 @@ icon_alignment = 1
 
 [node name="Button3" type="Button" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer"]
 custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
+offset_left = 23.0
+offset_top = 273.0
+offset_right = 73.0
+offset_bottom = 323.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_styles/normal = SubResource("StyleBoxFlat_qg117")
@@ -283,7 +279,10 @@ icon_alignment = 1
 
 [node name="Button4" type="Button" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer"]
 custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
+offset_left = 23.0
+offset_top = 348.0
+offset_right = 73.0
+offset_bottom = 398.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_styles/normal = SubResource("StyleBoxFlat_qg117")
@@ -296,10 +295,13 @@ icon_alignment = 1
 
 [node name="Sep" type="Control" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer"]
 custom_minimum_size = Vector2(0, 1)
-layout_mode = 2
+layout_mode = 3
+anchors_preset = 0
+offset_top = 423.0
+offset_right = 97.0
+offset_bottom = 424.0
 
 [node name="PanelContainer" type="PanelContainer" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer/Sep"]
-layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -312,7 +314,10 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_r2op2")
 
 [node name="Button5" type="Button" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer"]
 custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
+offset_left = 23.0
+offset_top = 449.0
+offset_right = 73.0
+offset_bottom = 499.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_styles/normal = SubResource("StyleBoxFlat_qg117")
@@ -325,16 +330,9 @@ icon_alignment = 1
 
 [node name="Empty" parent="LeftBar/VBoxContainer/Middle" index="1"]
 visible = false
-layout_mode = 2
-
-[node name="Label" parent="LeftBar/VBoxContainer/Middle/Empty" index="0"]
-layout_mode = 1
-
-[node name="Bottom" parent="LeftBar/VBoxContainer" index="2"]
-layout_mode = 2
 
 [node name="Right" type="Control" parent="."]
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -343,13 +341,12 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Left" type="Control" parent="Right"]
-layout_mode = 1
+layout_mode = 3
 anchor_right = 0.5
 anchor_bottom = 1.0
 grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Right/Left"]
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -358,33 +355,77 @@ grow_vertical = 2
 
 [node name="Spacer" type="Control" parent="Right/Left/VBoxContainer"]
 custom_minimum_size = Vector2(0, 75)
-layout_mode = 2
+layout_mode = 3
+anchors_preset = 0
+offset_right = 698.0
+offset_bottom = 75.0
 
 [node name="Title" type="Label" parent="Right/Left/VBoxContainer"]
-layout_mode = 2
+offset_top = 79.0
+offset_right = 698.0
+offset_bottom = 150.0
 text = "SCORE"
 label_settings = SubResource("LabelSettings_c6ep4")
 
 [node name="Spacer2" type="Control" parent="Right/Left/VBoxContainer"]
 custom_minimum_size = Vector2(0, 25)
-layout_mode = 2
+layout_mode = 3
+anchors_preset = 0
+offset_top = 154.0
+offset_right = 698.0
+offset_bottom = 179.0
 
 [node name="Leaderboard" parent="Right/Left/VBoxContainer" instance=ExtResource("17_71ovv")]
-layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_top = 183.0
+offset_right = 698.0
+offset_bottom = 822.0
+grow_horizontal = 1
+grow_vertical = 1
 size_flags_vertical = 3
 style_odd = SubResource("StyleBoxFlat_q0s1r")
 style_even = SubResource("StyleBoxFlat_xgkjy")
 
+[node name="VBoxContainer" parent="Right/Left/VBoxContainer/Leaderboard" index="0"]
+offset_right = 697.0
+offset_bottom = 638.0
+
+[node name="Header" parent="Right/Left/VBoxContainer/Leaderboard/VBoxContainer" index="0"]
+offset_right = 696.0
+
+[node name="Spacer" parent="Right/Left/VBoxContainer/Leaderboard/VBoxContainer/Header/HBoxContainer" index="1"]
+offset_right = 492.0
+
+[node name="Actions" parent="Right/Left/VBoxContainer/Leaderboard/VBoxContainer/Header/HBoxContainer" index="2"]
+offset_left = 496.0
+offset_right = 696.0
+
+[node name="Content" parent="Right/Left/VBoxContainer/Leaderboard/VBoxContainer" index="1"]
+offset_right = 696.0
+offset_bottom = 637.0
+
+[node name="Items" parent="Right/Left/VBoxContainer/Leaderboard/VBoxContainer/Content" index="0"]
+offset_right = 696.0
+
 [node name="Spacer3" type="Control" parent="Right/Left/VBoxContainer"]
 custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
+layout_mode = 3
+anchors_preset = 0
+offset_top = 826.0
+offset_right = 698.0
+offset_bottom = 876.0
 
 [node name="Buttons" type="HBoxContainer" parent="Right/Left/VBoxContainer"]
-layout_mode = 2
+offset_top = 880.0
+offset_right = 698.0
+offset_bottom = 946.0
 theme_override_constants/separation = 40
 
 [node name="SelectBtn" type="Button" parent="Right/Left/VBoxContainer/Buttons"]
-layout_mode = 2
+offset_right = 329.0
+offset_bottom = 66.0
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("16_inasl")
 theme_override_font_sizes/font_size = 18
@@ -397,7 +438,9 @@ text = "Restart"
 icon = ExtResource("13_18dkn")
 
 [node name="QuitBtn" type="Button" parent="Right/Left/VBoxContainer/Buttons"]
-layout_mode = 2
+offset_left = 369.0
+offset_right = 698.0
+offset_bottom = 66.0
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.945098, 0, 0.952941, 1)
 theme_override_colors/font_hover_color = Color(0.945098, 0, 0.952941, 1)
@@ -413,10 +456,14 @@ icon = ExtResource("14_yvvws")
 
 [node name="Spacer4" type="Control" parent="Right/Left/VBoxContainer"]
 custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
+layout_mode = 3
+anchors_preset = 0
+offset_top = 950.0
+offset_right = 698.0
+offset_bottom = 1000.0
 
 [node name="Right" type="Control" parent="Right"]
-layout_mode = 1
+layout_mode = 3
 anchor_left = 0.5
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -424,7 +471,6 @@ grow_horizontal = 0
 grow_vertical = 2
 
 [node name="CenterContainer" type="CenterContainer" parent="Right/Right"]
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -432,13 +478,18 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Right/Right/CenterContainer"]
-layout_mode = 2
+offset_left = 143.0
+offset_top = 288.0
+offset_right = 555.0
+offset_bottom = 712.0
 
 [node name="Medal" type="VBoxContainer" parent="Right/Right/CenterContainer/VBoxContainer"]
-layout_mode = 2
+offset_right = 412.0
+offset_bottom = 353.0
 
 [node name="PositionLabel" type="Label" parent="Right/Right/CenterContainer/VBoxContainer/Medal"]
-layout_mode = 2
+offset_right = 412.0
+offset_bottom = 102.0
 text = "1ST
 PLACE!"
 label_settings = SubResource("LabelSettings_6oajy")
@@ -446,36 +497,52 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Image" type="TextureRect" parent="Right/Right/CenterContainer/VBoxContainer/Medal"]
-layout_mode = 2
+offset_top = 106.0
+offset_right = 412.0
+offset_bottom = 353.0
 texture = ExtResource("15_0toko")
 stretch_mode = 5
 
 [node name="Result" type="PanelContainer" parent="Right/Right/CenterContainer/VBoxContainer"]
-layout_mode = 2
+offset_top = 357.0
+offset_right = 412.0
+offset_bottom = 424.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_3lhw8")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Right/Right/CenterContainer/VBoxContainer/Result"]
-layout_mode = 2
+offset_left = 15.0
+offset_top = 15.0
+offset_right = 397.0
+offset_bottom = 52.0
 
 [node name="Label" type="Label" parent="Right/Right/CenterContainer/VBoxContainer/Result/HBoxContainer"]
-layout_mode = 2
+offset_top = 8.0
+offset_right = 124.0
+offset_bottom = 28.0
 text = "YOUR RESULT"
 label_settings = SubResource("LabelSettings_4wk5c")
 vertical_alignment = 1
 
 [node name="Spacer" type="Control" parent="Right/Right/CenterContainer/VBoxContainer/Result/HBoxContainer"]
 custom_minimum_size = Vector2(80, 0)
-layout_mode = 2
+layout_mode = 3
+anchors_preset = 0
+offset_left = 128.0
+offset_right = 208.0
+offset_bottom = 37.0
 
 [node name="ScoreIcons" type="HBoxContainer" parent="Right/Right/CenterContainer/VBoxContainer/Result/HBoxContainer"]
-layout_mode = 2
+offset_left = 212.0
+offset_right = 282.0
+offset_bottom = 37.0
 theme_override_constants/separation = 5
 
 [node name="1" type="TextureRect" parent="Right/Right/CenterContainer/VBoxContainer/Result/HBoxContainer/ScoreIcons"]
 modulate = Color(1, 1, 1, 0.411765)
 clip_contents = true
 custom_minimum_size = Vector2(20, 0)
-layout_mode = 2
+offset_right = 20.0
+offset_bottom = 37.0
 texture = ExtResource("6_jdsrm")
 ignore_texture_size = true
 stretch_mode = 5
@@ -484,7 +551,9 @@ stretch_mode = 5
 modulate = Color(1, 1, 1, 0.411765)
 clip_contents = true
 custom_minimum_size = Vector2(20, 0)
-layout_mode = 2
+offset_left = 25.0
+offset_right = 45.0
+offset_bottom = 37.0
 texture = ExtResource("6_jdsrm")
 ignore_texture_size = true
 stretch_mode = 5
@@ -493,17 +562,25 @@ stretch_mode = 5
 modulate = Color(1, 1, 1, 0.411765)
 clip_contents = true
 custom_minimum_size = Vector2(20, 0)
-layout_mode = 2
+offset_left = 50.0
+offset_right = 70.0
+offset_bottom = 37.0
 texture = ExtResource("6_jdsrm")
 ignore_texture_size = true
 stretch_mode = 5
 
 [node name="Spacer2" type="Control" parent="Right/Right/CenterContainer/VBoxContainer/Result/HBoxContainer"]
 custom_minimum_size = Vector2(25, 0)
-layout_mode = 2
+layout_mode = 3
+anchors_preset = 0
+offset_left = 286.0
+offset_right = 311.0
+offset_bottom = 37.0
 
 [node name="ScoreLabel" type="Label" parent="Right/Right/CenterContainer/VBoxContainer/Result/HBoxContainer"]
-layout_mode = 2
+offset_left = 315.0
+offset_right = 382.0
+offset_bottom = 37.0
 theme_override_styles/normal = SubResource("StyleBoxFlat_o5ylh")
 text = "12500"
 label_settings = SubResource("LabelSettings_5erun")
