@@ -19,6 +19,9 @@ var tween_y: Tween
 var tween_x: Tween
 
 @export var songs_path = "user://songs"
+@export_range(0, 100) var h_space: int = 100
+
+var h_ratio: int = 1
 
 func _ready():
 #	for i in 5:
@@ -246,7 +249,9 @@ func _process_items() -> void:
 			break
 		var nBox: PanelContainer = nItem.find_child("Box")
 		
-		tween_x.tween_property(nItem, "position:x", j * 100, animation_duration * 0.5 * i)
+		var vr = get_viewport_rect().size.x / ProjectSettings.get("display/window/size/viewport_width")
+		
+		tween_x.tween_property(nItem, "position:x", j * h_space * h_ratio, animation_duration * 0.5 * i)
 		
 		j -= 1
 	
@@ -262,7 +267,7 @@ func _process_items() -> void:
 			break
 		var nBox: PanelContainer = nItem.find_child("Box")
 
-		tween_x.tween_property(nItem, "position:x", j * 100, animation_duration * 0.5 * i)
+		tween_x.tween_property(nItem, "position:x", j * h_space * h_ratio, animation_duration * 0.5 * i)
 		
 		j += 1
 
@@ -291,3 +296,6 @@ func _on_DownBtn_pressed():
 
 func _on_UpBtn_pressed():
 	go_up()
+
+func _on_item_rect_changed() -> void:
+	h_ratio = get_rect().size.x / ProjectSettings.get("display/window/size/viewport_width")
