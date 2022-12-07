@@ -104,6 +104,8 @@ func _handle_song_dir(songFile:String, curPath:String):
 	nItems.add_child(nItem)
 	nItem.connect("selected", _on_Item_selected)
 	nItem.find_child("NameLabel").text = songFile
+	nItem.song = TSong.new()
+	nItem.song.file_name = songFile
 	
 	dir.list_dir_end()
 	dir.change_dir("..")
@@ -277,6 +279,9 @@ func go_down():
 func go_up():
 	select_item((index-1) % items_count)
 
+func get_song(p_index: int) -> SongSelectionItem:
+	return nItems.get_child(p_index)
+
 func _on_Songs_item_rect_changed():
 	if not nItems:
 		return
@@ -289,7 +294,11 @@ func _on_Songs_item_rect_changed():
 	select_item(index, true)
 
 func _on_Item_selected(p_nItem: SongSelectionItem):
-	select_item(p_nItem.get_index())
+	var song_index = p_nItem.get_index()
+	
+	select_item(song_index)
+	PlayerVariables.current_song = PlayerVariables.songs[song_index]
+	get_tree().change_scene_to_file("res://scenes/performance.tscn")
 
 func _on_DownBtn_pressed():
 	go_down()

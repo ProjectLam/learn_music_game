@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bddskm6v7w82v"]
+[gd_scene load_steps=9 format=3 uid="uid://bddskm6v7w82v"]
 
 [ext_resource type="Script" path="res://scenes/song_selection/song_selection_item.gd" id="1_t4p3h"]
 [ext_resource type="Texture2D" uid="uid://ctu1miqp425c5" path="res://assets/gui/icons/casette.png" id="1_x0k4k"]
@@ -22,6 +22,8 @@ font = ExtResource("3_lp4ge")
 
 [sub_resource type="LabelSettings" id="LabelSettings_ydbje"]
 font = ExtResource("4_sgiw1")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_11j7a"]
 
 [node name="song_selection_item" type="Container"]
 anchors_preset = -1
@@ -84,4 +86,16 @@ offset_left = 1578.0
 offset_right = 1598.0
 offset_bottom = 106.0
 
-[connection signal="gui_input" from="VBoxContainer/Box" to="." method="_on_Box_gui_input"]
+[node name="SelectBtn" type="Button" parent="VBoxContainer/Box"]
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 1599.0
+offset_bottom = 107.0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_11j7a")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_11j7a")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_11j7a")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_11j7a")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_11j7a")
+flat = true
+
+[connection signal="pressed" from="VBoxContainer/Box/SelectBtn" to="." method="_on_SelectBtn_pressed"]
