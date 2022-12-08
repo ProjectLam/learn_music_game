@@ -8,7 +8,7 @@ class_name LeaderboardItem
 @onready var nDateLabel: Label = find_child("DateLabel")
 @onready var nAvatarImage: TextureRect = find_child("AvatarImage")
 
-var nLeaderboard: Leaderboard
+var nLeaderboard
 
 var item: TLeaderboardItem: set = set_item
 var is_me: bool = false: set = set_is_me

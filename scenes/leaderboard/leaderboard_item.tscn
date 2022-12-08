@@ -5,19 +5,19 @@
 [ext_resource type="Texture2D" uid="uid://ctu1miqp425c5" path="res://assets/gui/icons/casette.png" id="2_6ex3l"]
 [ext_resource type="FontFile" uid="uid://df06bw7a1s1u7" path="res://fonts/Montserrat-Bold.ttf" id="3_gotih"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qtlil"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jshvv"]
 content_margin_left = 25.0
 content_margin_right = 25.0
 
-[sub_resource type="LabelSettings" id="LabelSettings_v8lqc"]
+[sub_resource type="LabelSettings" id="LabelSettings_o68jf"]
 line_spacing = 0.0
 font = ExtResource("1_cv8gp")
 font_size = 23
 
-[sub_resource type="LabelSettings" id="LabelSettings_hnxk5"]
+[sub_resource type="LabelSettings" id="LabelSettings_61103"]
 font = ExtResource("3_gotih")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_edmsi"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4qdkv"]
 content_margin_left = 20.0
 content_margin_top = 10.0
 content_margin_right = 20.0
@@ -28,7 +28,7 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[sub_resource type="LabelSettings" id="LabelSettings_va7hq"]
+[sub_resource type="LabelSettings" id="LabelSettings_hh7xi"]
 line_spacing = 0.0
 font = ExtResource("3_gotih")
 
@@ -39,79 +39,52 @@ size_flags_horizontal = 3
 script = ExtResource("1_evpvl")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-offset_right = 1600.0
-offset_bottom = 106.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
-offset_right = 1600.0
-offset_bottom = 106.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 
 [node name="NumberLabel" type="Label" parent="VBoxContainer/HBoxContainer"]
-offset_top = 41.0
-offset_right = 72.0
-offset_bottom = 65.0
-theme_override_styles/normal = SubResource("StyleBoxEmpty_qtlil")
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_jshvv")
 text = "01"
-label_settings = SubResource("LabelSettings_v8lqc")
+label_settings = SubResource("LabelSettings_o68jf")
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="AvatarImage" type="TextureRect" parent="VBoxContainer/HBoxContainer"]
-offset_left = 76.0
-offset_right = 168.0
-offset_bottom = 106.0
+layout_mode = 2
 texture = ExtResource("2_6ex3l")
 stretch_mode = 5
 
 [node name="Details" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
-offset_left = 172.0
-offset_right = 810.0
-offset_bottom = 106.0
+layout_mode = 2
 size_flags_horizontal = 3
 alignment = 1
 
 [node name="NameLabel" type="Label" parent="VBoxContainer/HBoxContainer/Details"]
-offset_top = 41.0
-offset_right = 638.0
-offset_bottom = 65.0
+layout_mode = 2
 text = "Song Name"
-label_settings = SubResource("LabelSettings_hnxk5")
+label_settings = SubResource("LabelSettings_61103")
 
 [node name="DateLabel" type="Label" parent="VBoxContainer/HBoxContainer"]
-offset_left = 814.0
-offset_top = 40.0
-offset_right = 1452.0
-offset_bottom = 66.0
+layout_mode = 2
 size_flags_horizontal = 3
 text = "Date"
 
 [node name="ScoreLabel" type="Label" parent="VBoxContainer/HBoxContainer"]
-offset_left = 1456.0
-offset_top = 32.0
-offset_right = 1507.0
-offset_bottom = 73.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_edmsi")
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_4qdkv")
 text = "0"
-label_settings = SubResource("LabelSettings_va7hq")
+label_settings = SubResource("LabelSettings_hh7xi")
 
 [node name="PercentLabel" type="Label" parent="VBoxContainer/HBoxContainer"]
-offset_left = 1511.0
-offset_top = 32.0
-offset_right = 1576.0
-offset_bottom = 73.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_edmsi")
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_4qdkv")
 text = "%0"
-label_settings = SubResource("LabelSettings_va7hq")
+label_settings = SubResource("LabelSettings_hh7xi")
 
 [node name="Spacer" type="Control" parent="VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(20, 0)
-layout_mode = 3
-anchors_preset = 0
-offset_left = 1580.0
-offset_right = 1600.0
-offset_bottom = 106.0
+layout_mode = 2
