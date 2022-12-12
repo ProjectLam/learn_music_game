@@ -219,3 +219,6 @@ func _on_Items_item_rect_changed():
 
 func _on_script_changed():
 	_process_items()
+
+func _on_SelectBtn_pressed():
+	get_tree().change_scene_to_file("res://scenes/instrument_menu/instrument_menu.tscn")

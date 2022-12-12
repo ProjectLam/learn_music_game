@@ -2,7 +2,7 @@ extends Node2D
 
 
 func _on_song_select_btn_pressed():
-	get_tree().change_scene_to_file("res://scenes/SongSelect.tscn")
+	get_tree().change_scene_to_file("res://scenes/song_selection/song_selection.tscn")
 
 
 func _on_qr_code_btn_pressed():

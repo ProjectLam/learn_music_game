@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://b2ew1c3swawaj"]
+[gd_scene load_steps=10 format=3 uid="uid://b2ew1c3swawaj"]
 
 [ext_resource type="Script" path="res://scenes/instrument_selection/instrument_selection_item.gd" id="1_g0eae"]
 [ext_resource type="Shader" path="res://scenes/instrument_selection/item_circle.gdshader" id="2_tm0hu"]
 [ext_resource type="Texture2D" uid="uid://bludcfr13nglg" path="res://assets/gui/main/mandoline.png" id="3_s8f7b"]
 [ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="4_e8mw7"]
 [ext_resource type="Texture2D" uid="uid://bcyql8pbvs5yj" path="res://assets/gui/icons/song.png" id="5_v7lu5"]
+[ext_resource type="Texture2D" uid="uid://cmdd61q57jiu" path="res://assets/gui/icons/course.png" id="6_sdkno"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yxg63"]
 shader = ExtResource("2_tm0hu")
@@ -39,7 +40,7 @@ metadata/_edit_group_ = true
 
 [node name="Circle" type="Control" parent="."]
 material = SubResource("ShaderMaterial_yxg63")
-layout_mode = 3
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -50,6 +51,7 @@ mouse_filter = 1
 
 [node name="Layer" type="Panel" parent="Circle"]
 use_parent_material = true
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -59,6 +61,7 @@ mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_pcstd")
 
 [node name="Image" type="TextureRect" parent="."]
+layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -73,6 +76,7 @@ grow_vertical = 2
 texture = ExtResource("3_s8f7b")
 
 [node name="Info" type="VBoxContainer" parent="."]
+layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -86,62 +90,47 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="NameLabel" type="Label" parent="Info"]
-offset_right = 207.0
-offset_bottom = 43.0
+layout_mode = 2
 mouse_filter = 1
 text = "MANDOLINE"
 label_settings = SubResource("LabelSettings_gs1dp")
 
 [node name="Songs" type="HBoxContainer" parent="Info"]
-offset_top = 47.0
-offset_right = 207.0
-offset_bottom = 73.0
+layout_mode = 2
 theme_override_constants/separation = 5
 
 [node name="Icon" type="TextureRect" parent="Info/Songs"]
 custom_minimum_size = Vector2(20, 0)
-offset_right = 20.0
-offset_bottom = 26.0
+layout_mode = 2
 texture = ExtResource("5_v7lu5")
 stretch_mode = 3
 
 [node name="Number" type="Label" parent="Info/Songs"]
-offset_left = 25.0
-offset_right = 35.0
-offset_bottom = 26.0
+layout_mode = 2
 mouse_filter = 1
 text = "0"
 
 [node name="SongsCountLabel" type="Label" parent="Info/Songs"]
-offset_left = 40.0
-offset_right = 85.0
-offset_bottom = 26.0
+layout_mode = 2
 mouse_filter = 1
 text = "songs"
 
 [node name="Courses" type="HBoxContainer" parent="Info"]
-offset_top = 77.0
-offset_right = 207.0
-offset_bottom = 103.0
+layout_mode = 2
 
 [node name="Icon" type="TextureRect" parent="Info/Courses"]
 custom_minimum_size = Vector2(20, 0)
-offset_right = 20.0
-offset_bottom = 26.0
-texture = ExtResource("5_v7lu5")
+layout_mode = 2
+texture = ExtResource("6_sdkno")
 stretch_mode = 3
 
 [node name="Number" type="Label" parent="Info/Courses"]
-offset_left = 24.0
-offset_right = 34.0
-offset_bottom = 26.0
+layout_mode = 2
 mouse_filter = 1
 text = "0"
 
 [node name="CoursesCountLabel" type="Label" parent="Info/Courses"]
-offset_left = 38.0
-offset_right = 98.0
-offset_bottom = 26.0
+layout_mode = 2
 mouse_filter = 1
 text = "courses"
 
