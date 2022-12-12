@@ -1,7 +1,6 @@
 extends Node
 class_name ReedSolomonGenerator
 
-
 var coefficients: Array = []
 
 
@@ -31,22 +30,22 @@ func get_remainder(data: Array) -> Array:
 
 	for byte in data:
 		var factor = byte ^ result.pop_front()
-		result.append(0);
-		
+		result.append(0)
+
 		for index in coefficients.size():
 			result[index] ^= self._multiply(coefficients[index], factor)
 
-	return result;
+	return result
 
 
 func _multiply(x: int, y: int) -> int:
-	if ((x >> 8) != 0 || (y >> 8) != 0):
+	if (x >> 8) != 0 || (y >> 8) != 0:
 		push_error("Byte out of range")
 
 	var z: int = 0
 
 	for i in range(7, -1, -1):
-		z = ((z << 1)) ^ ((z >> 7) * 0x11D)
+		z = (z << 1) ^ ((z >> 7) * 0x11D)
 		z ^= ((y >> i) & 1) * x
 
 	if (z >> 8) != 0:

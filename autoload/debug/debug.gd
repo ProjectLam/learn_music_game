@@ -3,7 +3,6 @@ extends CanvasLayer
 # It will only show up in debug builds. To make sure that's the case when you add more functionality,
 # check for is_active().
 
-
 var _is_active: bool = true
 
 
@@ -15,17 +14,17 @@ func _ready():
 func print_to_screen(msg: String, print_to_output: bool = false):
 	if print_to_output:
 		print(msg)
-	
+
 	if not is_active():
 		return
-	
+
 	var debug_print = preload("res://autoload/debug/debug_print.tscn").instantiate()
 	debug_print.text = msg
-	
+
 	$PrintContainer.add_child(debug_print)
 
 
-func is_active()->bool:
+func is_active() -> bool:
 	return OS.is_debug_build() and _is_active
 
 

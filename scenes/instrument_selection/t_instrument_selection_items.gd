@@ -5,12 +5,9 @@ var cInstrumentSelectionItem = preload("res://scenes/instrument_selection/instru
 
 var items: Dictionary = {}
 
+
 func set_item(
-	p_name: String,
-	p_label: String,
-	p_image: Texture,
-	p_songs_count: int,
-	p_courses_count: int
+	p_name: String, p_label: String, p_image: Texture, p_songs_count: int, p_courses_count: int
 ) -> TInstrumentSelectionItem:
 	var item: TInstrumentSelectionItem = TInstrumentSelectionItem.new()
 	item.nItem = cInstrumentSelectionItem.instantiate()
@@ -21,16 +18,19 @@ func set_item(
 	item.image = p_image
 	item.songs_count = p_songs_count
 	item.courses_count = p_courses_count
-	
+
 	items[p_name] = item
-	
+
 	return item
+
 
 func get_item(p_name) -> TInstrumentSelectionItem:
 	return items[p_name]
 
+
 func get_item_by_index(p_index: int) -> TInstrumentSelectionItem:
 	return items[items.keys()[p_index]]
+
 
 func get_item_circular(p_index: int) -> TInstrumentSelectionItem:
 	return get_item_by_index(p_index % items.size())
