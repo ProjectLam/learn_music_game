@@ -14,8 +14,5 @@ func _process(delta):
 func set_song(p_song: TSong):
 	song = p_song
 
-func _on_Box_gui_input(event):
-	if event is InputEventMouseButton:
-		event = event as InputEventMouseButton
-		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT and not event.is_echo():
-			emit_signal("selected", self)
+func _on_SelectBtn_pressed() -> void:
+	emit_signal("selected", self)

@@ -239,7 +239,7 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_b60ok")
 icon = ExtResource("8_j2st0")
 icon_alignment = 1
 
-[node name="Button" type="Button" parent="Right"]
+[node name="SelectBtn" type="Button" parent="Right"]
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -264,3 +264,4 @@ text = "Get that"
 [connection signal="pressed" from="Right/InstrumentMenu/HBoxContainer/Left/LeftBtn" to="." method="_on_left_btn_pressed"]
 [connection signal="item_rect_changed" from="Right/InstrumentMenu/HBoxContainer/Middle/Items" to="." method="_on_Items_item_rect_changed"]
 [connection signal="pressed" from="Right/InstrumentMenu/HBoxContainer/Right/RightBtn" to="." method="_on_right_btn_pressed"]
+[connection signal="pressed" from="Right/SelectBtn" to="." method="_on_SelectBtn_pressed"]

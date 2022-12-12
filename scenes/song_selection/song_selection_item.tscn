@@ -1,11 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://bddskm6v7w82v"]
+[gd_scene load_steps=9 format=3 uid="uid://bddskm6v7w82v"]
 
 [ext_resource type="Script" path="res://scenes/song_selection/song_selection_item.gd" id="1_t4p3h"]
 [ext_resource type="Texture2D" uid="uid://ctu1miqp425c5" path="res://assets/gui/icons/casette.png" id="1_x0k4k"]
 [ext_resource type="FontFile" uid="uid://df06bw7a1s1u7" path="res://fonts/Montserrat-Bold.ttf" id="3_lp4ge"]
 [ext_resource type="FontFile" uid="uid://cl8syiom7jxno" path="res://fonts/Montserrat-Regular.ttf" id="4_sgiw1"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iqc83"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7hxhx"]
 bg_color = Color(0.545098, 0, 0.505882, 0.27451)
 border_width_left = 1
 border_width_top = 1
@@ -17,11 +17,13 @@ corner_radius_top_right = 1024
 corner_radius_bottom_right = 1024
 corner_radius_bottom_left = 1024
 
-[sub_resource type="LabelSettings" id="LabelSettings_tgewp"]
+[sub_resource type="LabelSettings" id="LabelSettings_gn3kf"]
 font = ExtResource("3_lp4ge")
 
-[sub_resource type="LabelSettings" id="LabelSettings_igyx1"]
+[sub_resource type="LabelSettings" id="LabelSettings_ydbje"]
 font = ExtResource("4_sgiw1")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_11j7a"]
 
 [node name="song_selection_item" type="Container"]
 anchors_preset = -1
@@ -39,7 +41,7 @@ alignment = 1
 [node name="Box" type="PanelContainer" parent="VBoxContainer"]
 offset_right = 1600.0
 offset_bottom = 108.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_iqc83")
+theme_override_styles/panel = SubResource("StyleBoxFlat_7hxhx")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Box"]
 offset_left = 1.0
@@ -67,14 +69,14 @@ offset_top = 27.0
 offset_right = 1478.0
 offset_bottom = 51.0
 text = "Song Name"
-label_settings = SubResource("LabelSettings_tgewp")
+label_settings = SubResource("LabelSettings_gn3kf")
 
 [node name="ArtistLabel" type="Label" parent="VBoxContainer/Box/HBoxContainer/Details"]
 offset_top = 55.0
 offset_right = 1478.0
 offset_bottom = 79.0
 text = "Artist Name"
-label_settings = SubResource("LabelSettings_igyx1")
+label_settings = SubResource("LabelSettings_ydbje")
 
 [node name="Spacer" type="Control" parent="VBoxContainer/Box/HBoxContainer"]
 custom_minimum_size = Vector2(20, 0)
@@ -84,4 +86,16 @@ offset_left = 1578.0
 offset_right = 1598.0
 offset_bottom = 106.0
 
-[connection signal="gui_input" from="VBoxContainer/Box" to="." method="_on_Box_gui_input"]
+[node name="SelectBtn" type="Button" parent="VBoxContainer/Box"]
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 1599.0
+offset_bottom = 107.0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_11j7a")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_11j7a")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_11j7a")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_11j7a")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_11j7a")
+flat = true
+
+[connection signal="pressed" from="VBoxContainer/Box/SelectBtn" to="." method="_on_SelectBtn_pressed"]

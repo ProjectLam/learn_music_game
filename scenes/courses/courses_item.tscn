@@ -1,0 +1,166 @@
+[gd_scene load_steps=14 format=3 uid="uid://ceb0f6o4g7pft"]
+
+[ext_resource type="Script" path="res://scenes/courses/courses_item.gd" id="1_g7qpp"]
+[ext_resource type="Texture2D" uid="uid://bxsfhh2nma3sv" path="res://assets/gui/courses/string.png" id="1_tj80t"]
+[ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="2_lgigj"]
+[ext_resource type="FontFile" uid="uid://cl8syiom7jxno" path="res://fonts/Montserrat-Regular.ttf" id="4_v82o0"]
+[ext_resource type="FontFile" uid="uid://df06bw7a1s1u7" path="res://fonts/Montserrat-Bold.ttf" id="5_r6nr5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uscpp"]
+bg_color = Color(0.427451, 0.254902, 0.560784, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.941176, 0.760784, 1, 0.890196)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mavwx"]
+content_margin_left = 15.0
+content_margin_top = 10.0
+content_margin_right = 15.0
+content_margin_bottom = 15.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_4hogh"]
+line_spacing = 0.0
+font = ExtResource("2_lgigj")
+font_size = 18
+
+[sub_resource type="LabelSettings" id="LabelSettings_eesjq"]
+line_spacing = 0.0
+font = ExtResource("4_v82o0")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_82wdb"]
+content_margin_left = 12.0
+content_margin_top = 8.0
+content_margin_right = 12.0
+content_margin_bottom = 8.0
+bg_color = Color(1, 1, 1, 0.290196)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="LabelSettings" id="LabelSettings_4ffa0"]
+line_spacing = 0.0
+font = ExtResource("5_r6nr5")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qbw2o"]
+content_margin_left = 10.0
+content_margin_top = 8.0
+content_margin_right = 10.0
+content_margin_bottom = 8.0
+bg_color = Color(0, 0.992157, 0.227451, 0.403922)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="LabelSettings" id="LabelSettings_pji40"]
+line_spacing = 0.0
+font = ExtResource("5_r6nr5")
+font_size = 18
+
+[node name="CoursesItem" type="MarginContainer"]
+clip_children = 2
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+script = ExtResource("1_g7qpp")
+
+[node name="Box" type="PanelContainer" parent="."]
+clip_children = 2
+anchors_preset = -1
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 1580.0
+offset_bottom = 980.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_uscpp")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Box"]
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 1559.0
+offset_bottom = 959.0
+
+[node name="CourseImage" type="TextureRect" parent="Box/VBoxContainer"]
+offset_right = 1558.0
+offset_bottom = 885.0
+size_flags_vertical = 3
+texture = ExtResource("1_tj80t")
+stretch_mode = 6
+
+[node name="Bottom" type="PanelContainer" parent="Box/VBoxContainer"]
+offset_top = 889.0
+offset_right = 1558.0
+offset_bottom = 958.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_mavwx")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Box/VBoxContainer/Bottom"]
+offset_left = 15.0
+offset_top = 10.0
+offset_right = 1543.0
+offset_bottom = 54.0
+
+[node name="Left" type="VBoxContainer" parent="Box/VBoxContainer/Bottom/HBoxContainer"]
+offset_right = 1422.0
+offset_bottom = 44.0
+size_flags_horizontal = 3
+
+[node name="TitleLabel" type="Label" parent="Box/VBoxContainer/Bottom/HBoxContainer/Left"]
+offset_right = 1422.0
+offset_bottom = 19.0
+text = "STRING"
+label_settings = SubResource("LabelSettings_4hogh")
+
+[node name="DescLabel" type="Label" parent="Box/VBoxContainer/Bottom/HBoxContainer/Left"]
+offset_top = 23.0
+offset_right = 1422.0
+offset_bottom = 44.0
+text = "Learn the basics of string
+"
+label_settings = SubResource("LabelSettings_eesjq")
+
+[node name="LevelLabel" type="Label" parent="Box/VBoxContainer/Bottom/HBoxContainer"]
+offset_left = 1426.0
+offset_top = 3.0
+offset_right = 1528.0
+offset_bottom = 40.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_82wdb")
+text = "Beginner"
+label_settings = SubResource("LabelSettings_4ffa0")
+
+[node name="Overlay" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 1580.0
+offset_bottom = 980.0
+mouse_filter = 1
+metadata/_edit_lock_ = true
+
+[node name="CompletedLabel" type="Label" parent="Overlay"]
+visible = false
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_top = 25.0
+offset_right = -25.0
+grow_horizontal = 0
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_qbw2o")
+text = "Completed"
+label_settings = SubResource("LabelSettings_pji40")

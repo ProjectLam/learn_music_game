@@ -9,6 +9,16 @@
 config_version=5
 
 _global_script_classes=[{
+"base": "Control",
+"class": &"Courses",
+"language": &"GDScript",
+"path": "res://scenes/courses/courses.gd"
+}, {
+"base": "MarginContainer",
+"class": &"CoursesItem",
+"language": &"GDScript",
+"path": "res://scenes/courses/courses_item.gd"
+}, {
 "base": "RefCounted",
 "class": &"Ebeats",
 "language": &"GDScript",
@@ -49,6 +59,16 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://scenes/instrument_selection/instrument_selection_item.gd"
 }, {
+"base": "Control",
+"class": &"Leaderboard",
+"language": &"GDScript",
+"path": "res://scenes/leaderboard/leaderboard.gd"
+}, {
+"base": "PanelContainer",
+"class": &"LeaderboardItem",
+"language": &"GDScript",
+"path": "res://scenes/leaderboard/leaderboard_item.gd"
+}, {
 "base": "RefCounted",
 "class": &"Level",
 "language": &"GDScript",
@@ -73,6 +93,11 @@ _global_script_classes=[{
 "class": &"ReedSolomonGenerator",
 "language": &"GDScript",
 "path": "res://qr_code/reed_solomon_generator.gd"
+}, {
+"base": "Control",
+"class": &"Score",
+"language": &"GDScript",
+"path": "res://scenes/score/score.gd"
 }, {
 "base": "RefCounted",
 "class": &"Song",
@@ -100,9 +125,19 @@ _global_script_classes=[{
 "path": "res://scenes/instrument_selection/t_instrument_selection_items.gd"
 }, {
 "base": "Object",
+"class": &"TLeaderboardItem",
+"language": &"GDScript",
+"path": "res://scenes/leaderboard/t_leaderboard_item.gd"
+}, {
+"base": "Object",
 "class": &"TSong",
 "language": &"GDScript",
 "path": "res://scenes/song_selection/t_song.gd"
+}, {
+"base": "Object",
+"class": &"TUser",
+"language": &"GDScript",
+"path": "res://types/t_user.gd"
 }, {
 "base": "Node",
 "class": &"Utils",
@@ -120,6 +155,8 @@ _global_script_classes=[{
 "path": "res://compat/WebSocketServer.gd"
 }]
 _global_script_class_icons={
+"Courses": "",
+"CoursesItem": "",
 "Ebeats": "",
 "GutHookScript": "",
 "GutStringUtils": "",
@@ -128,17 +165,22 @@ _global_script_class_icons={
 "InstrumentNote": "",
 "InstrumentNotes": "",
 "InstrumentSelectionItem": "",
+"Leaderboard": "",
+"LeaderboardItem": "",
 "Level": "",
 "Note": "",
 "PerformanceInstrument": "",
 "QrCode": "",
 "ReedSolomonGenerator": "",
+"Score": "",
 "Song": "",
 "SongParser": "",
 "SongSelectionItem": "",
 "TInstrumentSelectionItem": "",
 "TInstrumentSelectionItems": "",
+"TLeaderboardItem": "",
 "TSong": "",
+"TUser": "",
 "Utils": "",
 "WebSocketClient": "",
 "WebSocketServer": ""
@@ -147,7 +189,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Lam-dj"
-run/main_scene="res://scenes/main.tscn"
+run/main_scene="res://scenes/instrument_selection/instrument_selection.tscn"
 config/features=PackedStringArray("4.0", "Mobile")
 run/main_scene.web="res://scenes/djclient.tscn"
 
@@ -163,6 +205,9 @@ NoteFrequency="*res://autoload/note_frequency.gd"
 InstrumentInput="*res://autoload/instrument_input/instrument_input.tscn"
 Debug="*res://autoload/debug/debug.tscn"
 SessionVariables="*res://autoload/session_variables.gd"
+GLoginDialog="*res://scenes/login_dialog/login_dialog.tscn"
+GRegisterDialog="*res://scenes/register_dialog/register_dialog.tscn"
+GDialogs="*res://scenes/dialogs/dialogs.tscn"
 
 [debug]
 
