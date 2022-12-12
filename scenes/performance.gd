@@ -71,7 +71,14 @@ func _ready():
 #		var tab_creator = preload("res://scenes/tab_creator/tab_creator.gd").new()
 #		tab_creator.create_tabs(current_song)
 		
-		performance_instrument = preload("res://scenes/performance/instruments/performance_piano.tscn").instantiate()
+		match SessionVariables.instrument:
+			SessionVariables.Instrument.GUITAR:
+				performance_instrument = preload("res://scenes/performance/instruments/performance_guitar.tscn").instantiate()
+			SessionVariables.Instrument.PIANO:
+				performance_instrument = preload("res://scenes/performance/instruments/performance_piano.tscn").instantiate()
+			SessionVariables.Instrument.PHIN:
+				pass
+		
 		add_child(performance_instrument)
 		performance_instrument.start_game(current_song.levels[0])
 	
