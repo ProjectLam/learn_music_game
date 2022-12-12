@@ -1,0 +1,79 @@
+[gd_scene load_steps=6 format=3 uid="uid://c0psdyqkp43ov"]
+
+[ext_resource type="Texture2D" uid="uid://1uht5wqqvkkv" path="res://assets/gui/icons/up.png" id="1_gdowb"]
+[ext_resource type="Script" path="res://scenes/tuner.gd" id="1_nftna"]
+[ext_resource type="FontFile" uid="uid://df06bw7a1s1u7" path="res://fonts/Montserrat-Bold.ttf" id="3_attg0"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jqwc5"]
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 270
+corner_radius_top_right = 270
+
+[sub_resource type="AudioStreamGenerator" id="AudioStreamGenerator_obkhd"]
+mix_rate = 22050.0
+
+[node name="Tuner" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_nftna")
+tuning_mode = 0
+
+[node name="NeedleAnchor" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Needle" type="Sprite2D" parent="NeedleAnchor"]
+unique_name_in_owner = true
+scale = Vector2(10, 20)
+texture = ExtResource("1_gdowb")
+centered = false
+offset = Vector2(-6, -21)
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -270.0
+offset_top = -270.0
+offset_right = 270.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_jqwc5")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -57.5
+offset_top = -220.0
+offset_right = 57.5
+offset_bottom = -33.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("3_attg0")
+theme_override_font_sizes/font_size = 150
+text = "A"
+horizontal_alignment = 1
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamGenerator_obkhd")
+autoplay = true
