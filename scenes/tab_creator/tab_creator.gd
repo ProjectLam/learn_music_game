@@ -7,18 +7,21 @@ func create_tabs(song: Song):
 	var strings: Array
 	for i in 6:
 		strings.append("")
-	
+
 	var string_length: int = 0
-	
+
 	var notes = song.levels[0].notes.duplicate()
-	
+
 	var time: float
-	var beat_length: float = song.ebeats.measures[0].beats[1].time - song.ebeats.measures[0].beats[0].time
+	var beat_length: float = (
+		song.ebeats.measures[0].beats[1].time
+		- song.ebeats.measures[0].beats[0].time
+	)
 	for measure in song.ebeats.measures:
 		for i in strings.size():
 			strings[i] += "+"
 		string_length += 1
-		
+
 		for beat in measure.beats:
 			for subdivision in 4:
 				time = beat.time + beat_length / subdivision
@@ -29,6 +32,6 @@ func create_tabs(song: Song):
 					if strings[i].length() <= string_length:
 						strings[i] += "-"
 				string_length += 1
-	
+
 	for string in strings:
 		print(string)

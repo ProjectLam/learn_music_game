@@ -5,9 +5,7 @@ extends InputInstrument
 # a piano would have a black key (WETYUOP on a US keyboard). The Z and X keys let the user move an
 # octave up or down respectively.
 
-
 signal octave_changed(new_offset)
-
 
 # Middle C
 var offset: int = 3 + 3 * 12
@@ -54,7 +52,7 @@ func _input(event):
 			offset += 12 if offset < NoteFrequency.CHROMATIC.size() - 17 else 0
 			octave_changed.emit(offset)
 			Debug.print_to_screen(str(name) + ": Octave up")
-		
+
 		match event.physical_keycode:
 			KEY_A:
 				toggle_note(0, event.pressed)
@@ -92,7 +90,7 @@ func _input(event):
 				toggle_note(16, event.pressed)
 
 
-func get_inputs()->Array:
+func get_inputs() -> Array:
 	var inputs := []
 	for note in note_data:
 		if note.pressed:
@@ -112,10 +110,10 @@ func toggle_note(note, pressed):
 class NoteData:
 	var frequency: float = 0.0
 	var pressed: bool = false
-	
+
 	func press(_frequency):
 		frequency = _frequency
 		pressed = true
-	
+
 	func release():
 		pressed = false

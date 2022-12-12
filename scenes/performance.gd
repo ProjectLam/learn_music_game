@@ -57,7 +57,7 @@ func _ready():
 		
 		
 		print_song_loading_debug("Levels data ----")
-		print_song_loading_debug("count-"+ current_song.levels_count)
+		print_song_loading_debug("count-"+ str(current_song.levels_count))
 		for level in current_song.levels:
 			print_song_loading_debug("level(difficulty"+ str(level.difficulty)+ " )")
 			print_song_loading_debug("notes data ----")
