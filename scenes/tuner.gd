@@ -7,10 +7,15 @@ enum TuningMode {
 	PHIN,
 }
 
-@export var tuning_mode: TuningMode
-@export var max_needle_angle = 70.0
+@export var tuning_mode: TuningMode = TuningMode.CHROMATIC
+@export var max_needle_angle = 60.0
 
 @onready var needle = $%"Needle"
+@onready var perfect_arrows = $TextureRect/PerfectArrows
+@onready var too_high_arrow = $TextureRect/TooHighArrow
+@onready var too_low_arrow = $TextureRect/TooLowArrow
+
+var max_error = 0.05
 
 
 func _process(delta):
@@ -21,7 +26,13 @@ func _process(delta):
 
 func set_input_frequency(new_frequency: float):
 	var nearest_frequency_data = _get_nearest_target_frequency(new_frequency)
-	$Label.text = nearest_frequency_data.note_name
+	$TextureRect/NoteLabels/Label0.text = NoteFrequency.CHROMATIC_NAMES_NO_OCTAVES[(nearest_frequency_data.chromatic_index - 3) % 12]
+	$TextureRect/NoteLabels/Label1.text = NoteFrequency.CHROMATIC_NAMES_NO_OCTAVES[(nearest_frequency_data.chromatic_index - 2) % 12]
+	$TextureRect/NoteLabels/Label2.text = NoteFrequency.CHROMATIC_NAMES_NO_OCTAVES[(nearest_frequency_data.chromatic_index - 1) % 12]
+	$TextureRect/NoteLabels/Label3.text = NoteFrequency.CHROMATIC_NAMES_NO_OCTAVES[nearest_frequency_data.chromatic_index % 12]
+	$TextureRect/NoteLabels/Label4.text = NoteFrequency.CHROMATIC_NAMES_NO_OCTAVES[(nearest_frequency_data.chromatic_index + 1) % 12]
+	$TextureRect/NoteLabels/Label5.text = NoteFrequency.CHROMATIC_NAMES_NO_OCTAVES[(nearest_frequency_data.chromatic_index + 2) % 12]
+	$TextureRect/NoteLabels/Label6.text = NoteFrequency.CHROMATIC_NAMES_NO_OCTAVES[(nearest_frequency_data.chromatic_index + 3) % 12]
 	
 	var target: float = nearest_frequency_data.frequency
 	var min_frequency: float = 0.5 * target * pow(2.0, 11.5/12.0)
@@ -31,6 +42,19 @@ func set_input_frequency(new_frequency: float):
 	deviation = clamp(deviation, 0.0, 1.0)
 	
 	needle.rotation = deg_to_rad(lerp(-max_needle_angle, max_needle_angle, deviation))
+	
+	if abs(2 * deviation - 1) <= max_error:
+		perfect_arrows.show()
+		too_low_arrow.hide()
+		too_high_arrow.hide()
+	elif deviation < 0.5:
+		perfect_arrows.hide()
+		too_low_arrow.show()
+		too_high_arrow.hide()
+	else:
+		perfect_arrows.hide()
+		too_low_arrow.hide()
+		too_high_arrow.show()
 
 
 func _get_nearest_target_frequency(frequency: float):
@@ -66,5 +90,6 @@ func _get_nearest_target_frequency(frequency: float):
 	
 	return {
 		frequency = frequencies[target_index],
-		note_name = note_names[target_index]
+		note_name = note_names[target_index],
+		chromatic_index = NoteFrequency.CHROMATIC.find(frequencies[target_index])
 	}
