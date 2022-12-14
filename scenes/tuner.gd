@@ -93,3 +93,7 @@ func _get_nearest_target_frequency(frequency: float):
 		note_name = note_names[target_index],
 		chromatic_index = NoteFrequency.CHROMATIC.find(frequencies[target_index])
 	}
+
+
+func _on_back_button_pressed():
+	get_tree().change_scene_to_file("res://scenes/instrument_menu/instrument_menu.tscn")
