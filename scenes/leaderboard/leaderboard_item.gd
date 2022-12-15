@@ -22,14 +22,14 @@ func _process(delta):
 func set_item(p_item: TLeaderboardItem) -> void:
 	item = p_item
 	
-	if item.number >= 0:
-		nNumberLabel.text = "#" + str(item.number)
+	if item.rank >= 0:
+		nNumberLabel.text = "#" + str(item.rank)
 		nNumberLabel.show()
 	else:
 		nNumberLabel.hide()
 	
 	if item.user:
-		nNameLabel.text = item.user.name
+		nNameLabel.text = item.user.username
 		
 		if item.percent >= 0:
 			nPercentLabel.text = "%" + str(item.percent)
