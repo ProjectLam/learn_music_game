@@ -11,6 +11,17 @@ class_name Leaderboard
 
 func _ready():
 	_update_style()
+	load_items()
+#	add_test_record()
+
+func add_test_record():
+	var leaderboard_id = "TestBoard"
+	var score = 160
+	var record: NakamaAPI.ApiLeaderboardRecord = await GBackend.client.write_leaderboard_record_async(GBackend.session, leaderboard_id, score)
+	if record.is_exception():
+		print("An error occurred while loading leaderboard: ", record)
+		return
+	print("New record username %s and score %s" % [record.username, record.score])
 
 func _process(delta):
 	pass
@@ -32,3 +43,16 @@ func add_item(item: TLeaderboardItem):
 
 func get_item(p_index: int) -> LeaderboardItem:
 	return nItems.get_child(p_index)
+
+func load_items() -> void:
+	var leaderboard_id = "TestBoard"
+	var result: NakamaAPI.ApiLeaderboardRecordList = await GBackend.client.list_leaderboard_records_async(GBackend.session, leaderboard_id)
+	if result.is_exception():
+		print("An error occurred while loading leaderboard: %s" % result)
+		return
+	
+	for r in result.records:
+		var record: NakamaAPI.ApiLeaderboardRecord = r
+		var item: TLeaderboardItem = await TLeaderboardItem.new()
+		await item.set_nakama_object(record)
+		add_item(item)

@@ -5,7 +5,7 @@
 [ext_resource type="FontFile" uid="uid://df06bw7a1s1u7" path="res://fonts/Montserrat-Bold.ttf" id="3_lp4ge"]
 [ext_resource type="FontFile" uid="uid://cl8syiom7jxno" path="res://fonts/Montserrat-Regular.ttf" id="4_sgiw1"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7hxhx"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_73oho"]
 bg_color = Color(0.545098, 0, 0.505882, 0.27451)
 border_width_left = 1
 border_width_top = 1
@@ -17,13 +17,13 @@ corner_radius_top_right = 1024
 corner_radius_bottom_right = 1024
 corner_radius_bottom_left = 1024
 
-[sub_resource type="LabelSettings" id="LabelSettings_gn3kf"]
+[sub_resource type="LabelSettings" id="LabelSettings_204qd"]
 font = ExtResource("3_lp4ge")
 
-[sub_resource type="LabelSettings" id="LabelSettings_ydbje"]
+[sub_resource type="LabelSettings" id="LabelSettings_t7h6u"]
 font = ExtResource("4_sgiw1")
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_11j7a"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0eaxv"]
 
 [node name="song_selection_item" type="Container"]
 anchors_preset = -1
@@ -41,7 +41,7 @@ alignment = 1
 [node name="Box" type="PanelContainer" parent="VBoxContainer"]
 offset_right = 1600.0
 offset_bottom = 108.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_7hxhx")
+theme_override_styles/panel = SubResource("StyleBoxFlat_73oho")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Box"]
 offset_left = 1.0
@@ -69,14 +69,14 @@ offset_top = 27.0
 offset_right = 1478.0
 offset_bottom = 51.0
 text = "Song Name"
-label_settings = SubResource("LabelSettings_gn3kf")
+label_settings = SubResource("LabelSettings_204qd")
 
 [node name="ArtistLabel" type="Label" parent="VBoxContainer/Box/HBoxContainer/Details"]
 offset_top = 55.0
 offset_right = 1478.0
 offset_bottom = 79.0
 text = "Artist Name"
-label_settings = SubResource("LabelSettings_ydbje")
+label_settings = SubResource("LabelSettings_t7h6u")
 
 [node name="Spacer" type="Control" parent="VBoxContainer/Box/HBoxContainer"]
 custom_minimum_size = Vector2(20, 0)
@@ -91,11 +91,11 @@ offset_left = 1.0
 offset_top = 1.0
 offset_right = 1599.0
 offset_bottom = 107.0
-theme_override_styles/normal = SubResource("StyleBoxEmpty_11j7a")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_11j7a")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_11j7a")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_11j7a")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_11j7a")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_0eaxv")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_0eaxv")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_0eaxv")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_0eaxv")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_0eaxv")
 flat = true
 
 [connection signal="pressed" from="VBoxContainer/Box/SelectBtn" to="." method="_on_SelectBtn_pressed"]

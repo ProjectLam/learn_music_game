@@ -75,6 +75,86 @@ _global_script_classes=[{
 "path": "res://scenes/song_parser/level.gd"
 }, {
 "base": "RefCounted",
+"class": &"NakamaAPI",
+"language": &"GDScript",
+"path": "res://addons/com.heroiclabs.nakama/api/NakamaAPI.gd"
+}, {
+"base": "RefCounted",
+"class": &"NakamaAsyncResult",
+"language": &"GDScript",
+"path": "res://addons/com.heroiclabs.nakama/utils/NakamaAsyncResult.gd"
+}, {
+"base": "RefCounted",
+"class": &"NakamaClient",
+"language": &"GDScript",
+"path": "res://addons/com.heroiclabs.nakama/client/NakamaClient.gd"
+}, {
+"base": "RefCounted",
+"class": &"NakamaException",
+"language": &"GDScript",
+"path": "res://addons/com.heroiclabs.nakama/utils/NakamaException.gd"
+}, {
+"base": "Node",
+"class": &"NakamaHTTPAdapter",
+"language": &"GDScript",
+"path": "res://addons/com.heroiclabs.nakama/client/NakamaHTTPAdapter.gd"
+}, {
+"base": "RefCounted",
+"class": &"NakamaLogger",
+"language": &"GDScript",
+"path": "res://addons/com.heroiclabs.nakama/utils/NakamaLogger.gd"
+}, {
+"base": "RefCounted",
+"class": &"NakamaMultiplayerBridge",
+"language": &"GDScript",
+"path": "res://addons/com.heroiclabs.nakama/utils/NakamaMultiplayerBridge.gd"
+}, {
+"base": "MultiplayerPeerExtension",
+"class": &"NakamaMultiplayerPeer",
+"language": &"GDScript",
+"path": "res://addons/com.heroiclabs.nakama/utils/NakamaMultiplayerPeer.gd"
+}, {
+"base": "NakamaAsyncResult",
+"class": &"NakamaRTAPI",
+"language": &"GDScript",
+"path": "res://addons/com.heroiclabs.nakama/api/NakamaRTAPI.gd"
+}, {
+"base": "RefCounted",
+"class": &"NakamaRTMessage",
+"language": &"GDScript",
+"path": "res://addons/com.heroiclabs.nakama/api/NakamaRTMessage.gd"
+}, {
+"base": "RefCounted",
+"class": &"NakamaSerializer",
+"language": &"GDScript",
+"path": "res://addons/com.heroiclabs.nakama/utils/NakamaSerializer.gd"
+}, {
+"base": "NakamaAsyncResult",
+"class": &"NakamaSession",
+"language": &"GDScript",
+"path": "res://addons/com.heroiclabs.nakama/api/NakamaSession.gd"
+}, {
+"base": "RefCounted",
+"class": &"NakamaSocket",
+"language": &"GDScript",
+"path": "res://addons/com.heroiclabs.nakama/socket/NakamaSocket.gd"
+}, {
+"base": "Node",
+"class": &"NakamaSocketAdapter",
+"language": &"GDScript",
+"path": "res://addons/com.heroiclabs.nakama/socket/NakamaSocketAdapter.gd"
+}, {
+"base": "RefCounted",
+"class": &"NakamaStorageObjectId",
+"language": &"GDScript",
+"path": "res://addons/com.heroiclabs.nakama/api/NakamaStorageObjectId.gd"
+}, {
+"base": "RefCounted",
+"class": &"NakamaWriteStorageObject",
+"language": &"GDScript",
+"path": "res://addons/com.heroiclabs.nakama/api/NakamaWriteStorageObject.gd"
+}, {
+"base": "RefCounted",
 "class": &"Note",
 "language": &"GDScript",
 "path": "res://scenes/song_parser/note.gd"
@@ -168,6 +248,22 @@ _global_script_class_icons={
 "Leaderboard": "",
 "LeaderboardItem": "",
 "Level": "",
+"NakamaAPI": "",
+"NakamaAsyncResult": "",
+"NakamaClient": "",
+"NakamaException": "",
+"NakamaHTTPAdapter": "",
+"NakamaLogger": "",
+"NakamaMultiplayerBridge": "",
+"NakamaMultiplayerPeer": "",
+"NakamaRTAPI": "",
+"NakamaRTMessage": "",
+"NakamaSerializer": "",
+"NakamaSession": "",
+"NakamaSocket": "",
+"NakamaSocketAdapter": "",
+"NakamaStorageObjectId": "",
+"NakamaWriteStorageObject": "",
 "Note": "",
 "PerformanceInstrument": "",
 "QrCode": "",
@@ -191,6 +287,7 @@ _global_script_class_icons={
 config/name="Lam-dj"
 run/main_scene="res://scenes/instrument_selection/instrument_selection.tscn"
 config/features=PackedStringArray("4.0", "Mobile")
+config/icon="res://icon.svg"
 run/main_scene.web="res://scenes/djclient.tscn"
 
 [audio]
@@ -204,10 +301,13 @@ PlayerVariables="*res://scenes/PlayerVariables.gd"
 NoteFrequency="*res://autoload/note_frequency.gd"
 InstrumentInput="*res://autoload/instrument_input/instrument_input.tscn"
 Debug="*res://autoload/debug/debug.tscn"
-SessionVariables="*res://autoload/session_variables.gd"
 GLoginDialog="*res://scenes/login_dialog/login_dialog.tscn"
 GRegisterDialog="*res://scenes/register_dialog/register_dialog.tscn"
 GDialogs="*res://scenes/dialogs/dialogs.tscn"
+Nakama="*res://addons/com.heroiclabs.nakama/Nakama.gd"
+SessionVariables="*res://autoload/session_variables.gd"
+GGoogleAuth="*res://scenes/google_auth/google_auth.tscn"
+GBackend="*res://scenes/backend/backend.tscn"
 
 [debug]
 
@@ -217,6 +317,7 @@ gdscript/warnings/enable=false
 
 window/size/viewport_width=1600
 window/size/viewport_height=1000
+window/size/always_on_top=true
 
 [editor_plugins]
 
