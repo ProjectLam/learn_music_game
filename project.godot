@@ -293,7 +293,6 @@ _global_script_class_icons={
 config/name="Lam-dj"
 run/main_scene="res://scenes/instrument_selection/instrument_selection.tscn"
 config/features=PackedStringArray("4.0", "Mobile")
-config/icon="res://icon.svg"
 run/main_scene.web="res://scenes/djclient.tscn"
 
 [audio]
@@ -307,13 +306,10 @@ PlayerVariables="*res://scenes/PlayerVariables.gd"
 NoteFrequency="*res://autoload/note_frequency.gd"
 InstrumentInput="*res://autoload/instrument_input/instrument_input.tscn"
 Debug="*res://autoload/debug/debug.tscn"
+SessionVariables="*res://autoload/session_variables.gd"
 GLoginDialog="*res://scenes/login_dialog/login_dialog.tscn"
 GRegisterDialog="*res://scenes/register_dialog/register_dialog.tscn"
 GDialogs="*res://scenes/dialogs/dialogs.tscn"
-Nakama="*res://addons/com.heroiclabs.nakama/Nakama.gd"
-SessionVariables="*res://autoload/session_variables.gd"
-GGoogleAuth="*res://scenes/google_auth/google_auth.tscn"
-GBackend="*res://scenes/backend/backend.tscn"
 
 [debug]
 
