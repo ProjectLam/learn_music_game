@@ -41,17 +41,11 @@ script = ExtResource("1_vquxf")
 style_me = SubResource("StyleBoxFlat_aqmnr")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-offset_left = 1.0
-offset_top = 1.0
-offset_right = 1599.0
-offset_bottom = 999.0
 
 [node name="Header" type="Control" parent="VBoxContainer"]
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 3
 anchors_preset = 0
-offset_right = 1598.0
-offset_bottom = 60.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Header"]
 anchors_preset = 15
@@ -62,9 +56,6 @@ grow_vertical = 2
 
 [node name="TitleLabel" type="Label" parent="VBoxContainer/Header/HBoxContainer"]
 custom_minimum_size = Vector2(180, 0)
-offset_top = 20.0
-offset_right = 180.0
-offset_bottom = 39.0
 text = "LEADERBOARD"
 label_settings = SubResource("LabelSettings_216by")
 horizontal_alignment = 1
@@ -73,23 +64,14 @@ vertical_alignment = 1
 [node name="Spacer" type="Control" parent="VBoxContainer/Header/HBoxContainer"]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 184.0
-offset_right = 1394.0
-offset_bottom = 60.0
 size_flags_horizontal = 3
 
 [node name="Actions" type="HBoxContainer" parent="VBoxContainer/Header/HBoxContainer"]
 custom_minimum_size = Vector2(200, 0)
-offset_left = 1398.0
-offset_right = 1598.0
-offset_bottom = 60.0
 alignment = 1
 
 [node name="ShowAllBtn" type="Button" parent="VBoxContainer/Header/HBoxContainer/Actions"]
 custom_minimum_size = Vector2(100, 0)
-offset_left = 50.0
-offset_right = 150.0
-offset_bottom = 60.0
 theme_override_colors/font_color = Color(0.980392, 0, 1, 1)
 theme_override_styles/normal = SubResource("StyleBoxEmpty_vkstr")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_vkstr")
@@ -99,12 +81,8 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_vkstr")
 text = "Show All >"
 
 [node name="Content" type="ScrollContainer" parent="VBoxContainer"]
-offset_top = 64.0
-offset_right = 1598.0
-offset_bottom = 998.0
 size_flags_vertical = 3
 
 [node name="Items" type="VBoxContainer" parent="VBoxContainer/Content"]
-offset_right = 1598.0
 size_flags_horizontal = 3
 theme_override_constants/separation = 0

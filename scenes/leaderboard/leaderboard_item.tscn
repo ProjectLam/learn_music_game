@@ -5,19 +5,19 @@
 [ext_resource type="Texture2D" uid="uid://ctu1miqp425c5" path="res://assets/gui/icons/casette.png" id="2_6ex3l"]
 [ext_resource type="FontFile" uid="uid://df06bw7a1s1u7" path="res://fonts/Montserrat-Bold.ttf" id="3_gotih"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jshvv"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_o1c11"]
 content_margin_left = 25.0
 content_margin_right = 25.0
 
-[sub_resource type="LabelSettings" id="LabelSettings_o68jf"]
+[sub_resource type="LabelSettings" id="LabelSettings_s8gk0"]
 line_spacing = 0.0
 font = ExtResource("1_cv8gp")
 font_size = 23
 
-[sub_resource type="LabelSettings" id="LabelSettings_61103"]
+[sub_resource type="LabelSettings" id="LabelSettings_of6sf"]
 font = ExtResource("3_gotih")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4qdkv"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_03sh8"]
 content_margin_left = 20.0
 content_margin_top = 10.0
 content_margin_right = 20.0
@@ -28,7 +28,7 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[sub_resource type="LabelSettings" id="LabelSettings_hh7xi"]
+[sub_resource type="LabelSettings" id="LabelSettings_k47sq"]
 line_spacing = 0.0
 font = ExtResource("3_gotih")
 
@@ -39,52 +39,44 @@ size_flags_horizontal = 3
 script = ExtResource("1_evpvl")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 2
 alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
-layout_mode = 2
 
 [node name="NumberLabel" type="Label" parent="VBoxContainer/HBoxContainer"]
-layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxEmpty_jshvv")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_o1c11")
 text = "01"
-label_settings = SubResource("LabelSettings_o68jf")
+label_settings = SubResource("LabelSettings_s8gk0")
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="AvatarImage" type="TextureRect" parent="VBoxContainer/HBoxContainer"]
-layout_mode = 2
 texture = ExtResource("2_6ex3l")
 stretch_mode = 5
 
 [node name="Details" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
-layout_mode = 2
 size_flags_horizontal = 3
 alignment = 1
 
 [node name="NameLabel" type="Label" parent="VBoxContainer/HBoxContainer/Details"]
-layout_mode = 2
 text = "Song Name"
-label_settings = SubResource("LabelSettings_61103")
+label_settings = SubResource("LabelSettings_of6sf")
 
 [node name="DateLabel" type="Label" parent="VBoxContainer/HBoxContainer"]
-layout_mode = 2
 size_flags_horizontal = 3
 text = "Date"
 
 [node name="ScoreLabel" type="Label" parent="VBoxContainer/HBoxContainer"]
-layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_4qdkv")
+theme_override_styles/normal = SubResource("StyleBoxFlat_03sh8")
 text = "0"
-label_settings = SubResource("LabelSettings_hh7xi")
+label_settings = SubResource("LabelSettings_k47sq")
 
 [node name="PercentLabel" type="Label" parent="VBoxContainer/HBoxContainer"]
-layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_4qdkv")
+theme_override_styles/normal = SubResource("StyleBoxFlat_03sh8")
 text = "%0"
-label_settings = SubResource("LabelSettings_hh7xi")
+label_settings = SubResource("LabelSettings_k47sq")
 
 [node name="Spacer" type="Control" parent="VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(20, 0)
-layout_mode = 2
+layout_mode = 3
+anchors_preset = 0
