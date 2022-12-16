@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://sba2v0m8a014"]
+
+[ext_resource type="Script" path="res://instruments/instrument_data.gd" id="1_vwkxp"]
+
+[resource]
+script = ExtResource("1_vwkxp")
+instrument_name = "Bass (five string)"
+family = 0
+tuning_pitches = [2, 7, 12, 17, 22]
+transposition = -12

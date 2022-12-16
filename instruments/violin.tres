@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://bb5hp24ievfvx"]
+
+[ext_resource type="Script" path="res://instruments/instrument_data.gd" id="1_tv8y2"]
+
+[resource]
+script = ExtResource("1_tv8y2")
+instrument_name = "Violin"
+family = 1
+tuning_pitches = [34, 41, 48, 55]
+transposition = 0

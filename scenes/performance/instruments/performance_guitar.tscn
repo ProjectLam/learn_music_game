@@ -1,10 +1,10 @@
-[gd_scene load_steps=19 format=3 uid="uid://b3afukytaku6f"]
+[gd_scene load_steps=19 format=3]
 
 [ext_resource type="Script" path="res://scenes/performance/instruments/performance_instrument.gd" id="1_b3xwo"]
 [ext_resource type="Shader" path="res://scenes/performance/lane.gdshader" id="1_euv2x"]
 [ext_resource type="Script" path="res://scenes/performance/instruments/guitar_notes.gd" id="3_60h86"]
 [ext_resource type="PackedScene" uid="uid://dbmsu8ssa6w6j" path="res://scenes/performance/instruments/guitar_note.tscn" id="4_b6pis"]
-[ext_resource type="PackedScene" uid="uid://bls282r4ku42k" path="res://instruments/guitar.tscn" id="4_e1r3b"]
+[ext_resource type="PackedScene" uid="uid://bls282r4ku42k" path="res://scenes/performance/instruments/guitar.tscn" id="4_e1r3b"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_8wpfw"]
 size = Vector2(1.8, 48)

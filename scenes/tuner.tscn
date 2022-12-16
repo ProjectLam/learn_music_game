@@ -1,6 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://c0psdyqkp43ov"]
+[gd_scene load_steps=11 format=3 uid="uid://c0psdyqkp43ov"]
 
 [ext_resource type="Script" path="res://scenes/tuner.gd" id="1_nftna"]
+[ext_resource type="Resource" uid="uid://sba2v0m8a014" path="res://instruments/bass_guitar_five_string.tres" id="2_c46f0"]
 [ext_resource type="Texture2D" uid="uid://dc5drx1lt0y1c" path="res://assets/gui/tuner/needle.png" id="3_7m07o"]
 [ext_resource type="FontFile" uid="uid://df06bw7a1s1u7" path="res://fonts/Montserrat-Bold.ttf" id="3_attg0"]
 [ext_resource type="Texture2D" uid="uid://cg02jwx5fxg4r" path="res://assets/gui/tuner/circle.png" id="5_p2yhm"]
@@ -20,6 +21,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_nftna")
+instrument_data = ExtResource("2_c46f0")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1
@@ -281,5 +283,27 @@ offset_right = 252.0
 offset_bottom = -27.0
 grow_vertical = 0
 text = "Back"
+
+[node name="HeadStock" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 335.0
+offset_top = -196.0
+offset_right = 679.0
+offset_bottom = 196.0
+grow_vertical = 2
+
+[node name="LeftPegs" type="VBoxContainer" parent="HeadStock"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="HeadStock"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="RightPegs" type="VBoxContainer" parent="HeadStock"]
+layout_mode = 2
+size_flags_vertical = 4
 
 [connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]

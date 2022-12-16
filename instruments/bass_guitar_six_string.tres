@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://drypivmk6flq6"]
+
+[ext_resource type="Script" path="res://instruments/instrument_data.gd" id="1_psui7"]
+
+[resource]
+script = ExtResource("1_psui7")
+instrument_name = "Bass (six string)"
+family = 0
+tuning_pitches = [2, 7, 12, 17, 22, 27]
+transposition = -12

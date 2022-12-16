@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://d4jg01x54d3wx"]
+
+[ext_resource type="Script" path="res://instruments/instrument_data.gd" id="1_osdpj"]
+
+[resource]
+script = ExtResource("1_osdpj")
+instrument_name = "Guitar"
+family = 0
+tuning_pitches = [19, 24, 29, 34, 38, 43]
+transposition = -12
