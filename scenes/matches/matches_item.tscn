@@ -1,0 +1,96 @@
+[gd_scene load_steps=10 format=3 uid="uid://c3lxt6hmgwob7"]
+
+[ext_resource type="Script" path="res://scenes/matches/matches_item.gd" id="1_anwtr"]
+[ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="2_3q4ai"]
+[ext_resource type="Texture2D" uid="uid://ctu1miqp425c5" path="res://assets/gui/icons/casette.png" id="3_s7kml"]
+[ext_resource type="FontFile" uid="uid://df06bw7a1s1u7" path="res://fonts/Montserrat-Bold.ttf" id="4_7gtxg"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vkbts"]
+content_margin_left = 25.0
+content_margin_right = 25.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_480fe"]
+line_spacing = 0.0
+font = ExtResource("2_3q4ai")
+font_size = 23
+
+[sub_resource type="LabelSettings" id="LabelSettings_20uax"]
+font = ExtResource("4_7gtxg")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_acr0m"]
+content_margin_left = 20.0
+content_margin_top = 10.0
+content_margin_right = 20.0
+content_margin_bottom = 10.0
+bg_color = Color(0.980392, 0, 0.796078, 0.282353)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="LabelSettings" id="LabelSettings_fdl0p"]
+line_spacing = 0.0
+font = ExtResource("4_7gtxg")
+
+[node name="MatchesItem" type="PanelContainer"]
+anchors_preset = -1
+anchor_right = 1.0
+size_flags_horizontal = 3
+script = ExtResource("1_anwtr")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_right = 1600.0
+offset_bottom = 106.0
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+offset_right = 1600.0
+offset_bottom = 106.0
+
+[node name="NumberLabel" type="Label" parent="VBoxContainer/HBoxContainer"]
+offset_top = 41.0
+offset_right = 72.0
+offset_bottom = 65.0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_vkbts")
+text = "01"
+label_settings = SubResource("LabelSettings_480fe")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AvatarImage" type="TextureRect" parent="VBoxContainer/HBoxContainer"]
+offset_left = 76.0
+offset_right = 168.0
+offset_bottom = 106.0
+texture = ExtResource("3_s7kml")
+stretch_mode = 5
+
+[node name="Details" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+offset_left = 172.0
+offset_right = 1521.0
+offset_bottom = 106.0
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="NameLabel" type="Label" parent="VBoxContainer/HBoxContainer/Details"]
+offset_top = 41.0
+offset_right = 1349.0
+offset_bottom = 65.0
+text = "Song Name"
+label_settings = SubResource("LabelSettings_20uax")
+
+[node name="PlayersCountLabel" type="Label" parent="VBoxContainer/HBoxContainer"]
+offset_left = 1525.0
+offset_top = 32.0
+offset_right = 1576.0
+offset_bottom = 73.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_acr0m")
+text = "0"
+label_settings = SubResource("LabelSettings_fdl0p")
+
+[node name="Spacer" type="Control" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 3
+anchors_preset = 0
+offset_left = 1580.0
+offset_right = 1600.0
+offset_bottom = 106.0

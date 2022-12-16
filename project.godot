@@ -74,6 +74,16 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://scenes/song_parser/level.gd"
 }, {
+"base": "Control",
+"class": &"Matches",
+"language": &"GDScript",
+"path": "res://scenes/matches/matches.gd"
+}, {
+"base": "PanelContainer",
+"class": &"MatchesItem",
+"language": &"GDScript",
+"path": "res://scenes/matches/matches_item.gd"
+}, {
 "base": "RefCounted",
 "class": &"NakamaAPI",
 "language": &"GDScript",
@@ -210,6 +220,11 @@ _global_script_classes=[{
 "path": "res://scenes/leaderboard/t_leaderboard_item.gd"
 }, {
 "base": "Object",
+"class": &"TMatchesItem",
+"language": &"GDScript",
+"path": "res://scenes/matches/t_matches_item.gd"
+}, {
+"base": "Object",
 "class": &"TSong",
 "language": &"GDScript",
 "path": "res://scenes/song_selection/t_song.gd"
@@ -248,6 +263,8 @@ _global_script_class_icons={
 "Leaderboard": "",
 "LeaderboardItem": "",
 "Level": "",
+"Matches": "",
+"MatchesItem": "",
 "NakamaAPI": "",
 "NakamaAsyncResult": "",
 "NakamaClient": "",
@@ -275,6 +292,7 @@ _global_script_class_icons={
 "TInstrumentSelectionItem": "",
 "TInstrumentSelectionItems": "",
 "TLeaderboardItem": "",
+"TMatchesItem": "",
 "TSong": "",
 "TUser": "",
 "Utils": "",

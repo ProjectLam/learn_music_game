@@ -9,8 +9,8 @@ func _on_Learn_selected() -> void:
 func _on_Play_selected() -> void:
 	get_tree().change_scene_to_file("res://scenes/song_selection/song_selection.tscn")
 
-func _on_Tuning_selected() -> void:
-	get_tree().change_scene_to_file("res://scenes/song_selection/song_selection.tscn")
+func _on_Matches_selected() -> void:
+	get_tree().change_scene_to_file("res://scenes/matches/matches.tscn")
 
 func _on_Settings_selected() -> void:
 	get_tree().change_scene_to_file("res://scenes/song_selection/song_selection.tscn")
