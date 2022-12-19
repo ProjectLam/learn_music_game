@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://g4nqddsu1kwn"]
+
+[ext_resource type="Script" path="res://instruments/instrument_data.gd" id="1_txp0c"]
+
+[resource]
+script = ExtResource("1_txp0c")
+instrument_name = "Flute"
+family = 2
+tuning_pitches = [48]
+transposition = 0

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://bxt6e4b5lu855"]
+
+[ext_resource type="Script" path="res://instruments/instrument_data.gd" id="1_kvrk7"]
+
+[resource]
+script = ExtResource("1_kvrk7")
+instrument_name = "Alto saxophone"
+family = 2
+tuning_pitches = [36]
+transposition = -9

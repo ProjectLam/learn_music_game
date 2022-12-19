@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dfjerpnbt533l"]
+
+[ext_resource type="Script" path="res://instruments/instrument_data.gd" id="1_661u6"]
+
+[resource]
+script = ExtResource("1_661u6")
+instrument_name = "Soprano saxophone"
+family = 2
+tuning_pitches = [36]
+transposition = -2

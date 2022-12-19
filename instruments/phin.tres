@@ -1,0 +1,9 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dq6038chq41ke"]
+
+[ext_resource type="Script" path="res://instruments/instrument_data.gd" id="1_neudm"]
+
+[resource]
+script = ExtResource("1_neudm")
+instrument_name = "Phin"
+family = 0
+tuning_pitches = [31, 36, 43]

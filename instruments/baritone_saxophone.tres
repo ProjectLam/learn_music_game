@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://cr20hqbo4lqwv"]
+
+[ext_resource type="Script" path="res://instruments/instrument_data.gd" id="1_ae6sd"]
+
+[resource]
+script = ExtResource("1_ae6sd")
+instrument_name = "Baritone saxophone"
+family = 2
+tuning_pitches = [24]
+transposition = -21
