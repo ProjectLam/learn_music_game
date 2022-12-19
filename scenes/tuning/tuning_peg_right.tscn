@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://vvhioigfux3y"]
+
+[ext_resource type="Texture2D" uid="uid://c4goomnf4mvnk" path="res://assets/gui/tuner/tuning_peg_right.png" id="1_3byga"]
+[ext_resource type="Script" path="res://scenes/tuning/tuning_peg_right.gd" id="2_n1kvg"]
+
+[node name="TuningPegRight" type="TextureRect"]
+texture = ExtResource("1_3byga")
+script = ExtResource("2_n1kvg")

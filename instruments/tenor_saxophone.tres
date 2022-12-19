@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://c0qw77ynmms22"]
+
+[ext_resource type="Script" path="res://instruments/instrument_data.gd" id="1_okdbi"]
+
+[resource]
+script = ExtResource("1_okdbi")
+instrument_name = "Tenor saxophone"
+family = 2
+tuning_pitches = [36]
+transposition = -14

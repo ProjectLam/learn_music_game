@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://cp1dd1ersydik"]
+
+[ext_resource type="Script" path="res://instruments/instrument_data.gd" id="1_y1my7"]
+
+[resource]
+script = ExtResource("1_y1my7")
+instrument_name = "Cello"
+family = 1
+tuning_pitches = [15, 22, 29, 36]
+transposition = 0

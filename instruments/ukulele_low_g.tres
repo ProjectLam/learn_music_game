@@ -1,0 +1,9 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dpt3qepaaua7w"]
+
+[ext_resource type="Script" path="res://instruments/instrument_data.gd" id="1_pgh16"]
+
+[resource]
+script = ExtResource("1_pgh16")
+instrument_name = "Ukulele (low G)"
+family = 0
+tuning_pitches = [34, 39, 43, 48]

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://cxvyb4n2uokra"]
+
+[ext_resource type="Script" path="res://instruments/instrument_data.gd" id="1_3sqor"]
+
+[resource]
+script = ExtResource("1_3sqor")
+instrument_name = "Trumpet"
+family = 3
+tuning_pitches = [37]
+transposition = -2

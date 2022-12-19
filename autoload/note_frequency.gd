@@ -512,3 +512,18 @@ const CHROMATIC_NAMES = [
 	"G8",
 	"G#8"
 ]
+
+const CHROMATIC_NAMES_NO_OCTAVES = [
+	"A",
+	"Bb",
+	"B",
+	"C",
+	"C#",
+	"D",
+	"Eb",
+	"E",
+	"F",
+	"F#",
+	"G",
+	"G#"
+]
