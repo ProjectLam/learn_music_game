@@ -18,7 +18,7 @@
 [ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="14_h6ddd"]
 [ext_resource type="FontFile" uid="uid://df06bw7a1s1u7" path="res://fonts/Montserrat-Bold.ttf" id="15_fnnqe"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ec2p8"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6q3qs"]
 shader = ExtResource("3_ry738")
 shader_parameter/indicate = true
 shader_parameter/indicating_power = 1.0
@@ -27,34 +27,34 @@ shader_parameter/radius_base = 0.5
 shader_parameter/size = null
 shader_parameter/static_power = 0.4
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_afwxd"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3b7i0"]
 bg_color = Color(0.0862745, 0.0313726, 0.176471, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qg117"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d6dnm"]
 bg_color = Color(1, 1, 1, 0.0431373)
 corner_radius_top_left = 100
 corner_radius_top_right = 100
 corner_radius_bottom_right = 100
 corner_radius_bottom_left = 100
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hk23i"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l6lke"]
 bg_color = Color(1, 1, 1, 0.0431373)
 corner_radius_top_left = 100
 corner_radius_top_right = 100
 corner_radius_bottom_right = 100
 corner_radius_bottom_left = 100
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7rm1w"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7tu2l"]
 bg_color = Color(1, 1, 1, 0.0431373)
 corner_radius_top_left = 100
 corner_radius_top_right = 100
 corner_radius_bottom_right = 100
 corner_radius_bottom_left = 100
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r2op2"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t3rmm"]
 bg_color = Color(1, 1, 1, 0.117647)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_chwfm"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iumiy"]
 bg_color = Color(0.980392, 0, 1, 1)
 border_width_bottom = 5
 border_color = Color(0.760784, 0, 0.776471, 1)
@@ -63,7 +63,7 @@ corner_radius_top_right = 100
 corner_radius_bottom_right = 100
 corner_radius_bottom_left = 100
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ac34n"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3dqgt"]
 bg_color = Color(0.996078, 0.435294, 1, 1)
 border_width_bottom = 5
 border_color = Color(0.760784, 0, 0.776471, 1)
@@ -72,7 +72,7 @@ corner_radius_top_right = 100
 corner_radius_bottom_right = 100
 corner_radius_bottom_left = 100
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_601iy"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0025n"]
 bg_color = Color(0.996078, 0.435294, 1, 1)
 border_width_bottom = 5
 border_color = Color(0.760784, 0, 0.776471, 1)
@@ -81,20 +81,20 @@ corner_radius_top_right = 100
 corner_radius_bottom_right = 100
 corner_radius_bottom_left = 100
 
-[sub_resource type="LabelSettings" id="LabelSettings_1jfti"]
+[sub_resource type="LabelSettings" id="LabelSettings_01g4v"]
 line_spacing = 0.0
 font = ExtResource("14_h6ddd")
 font_size = 22
 
-[sub_resource type="LabelSettings" id="LabelSettings_kn7na"]
+[sub_resource type="LabelSettings" id="LabelSettings_gkmrg"]
 line_spacing = 0.0
 font = ExtResource("15_fnnqe")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q0s1r"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h5km3"]
 bg_color = Color(0.545098, 0, 0.505882, 0.27451)
 border_color = Color(0.992157, 0, 0.909804, 0.643137)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xgkjy"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uo6ul"]
 bg_color = Color(0.631373, 0.4, 0.647059, 0.27451)
 border_color = Color(0.992157, 0, 0.909804, 0.643137)
 
@@ -126,13 +126,13 @@ ignore_texture_size = true
 stretch_mode = 6
 
 [node name="Layer" type="Panel" parent="Background"]
-material = SubResource("ShaderMaterial_ec2p8")
+material = SubResource("ShaderMaterial_6q3qs")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_afwxd")
+theme_override_styles/panel = SubResource("StyleBoxFlat_3b7i0")
 
 [node name="LeftBar" parent="." instance=ExtResource("4_bgttp")]
 
@@ -167,11 +167,11 @@ offset_right = 73.0
 offset_bottom = 173.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
-theme_override_styles/normal = SubResource("StyleBoxFlat_qg117")
-theme_override_styles/hover = SubResource("StyleBoxFlat_hk23i")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_qg117")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_7rm1w")
-theme_override_styles/focus = SubResource("StyleBoxFlat_qg117")
+theme_override_styles/normal = SubResource("StyleBoxFlat_d6dnm")
+theme_override_styles/hover = SubResource("StyleBoxFlat_l6lke")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_d6dnm")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_7tu2l")
+theme_override_styles/focus = SubResource("StyleBoxFlat_d6dnm")
 icon = ExtResource("5_m5rrm")
 icon_alignment = 1
 
@@ -183,11 +183,11 @@ offset_right = 73.0
 offset_bottom = 248.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
-theme_override_styles/normal = SubResource("StyleBoxFlat_qg117")
-theme_override_styles/hover = SubResource("StyleBoxFlat_hk23i")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_qg117")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_7rm1w")
-theme_override_styles/focus = SubResource("StyleBoxFlat_qg117")
+theme_override_styles/normal = SubResource("StyleBoxFlat_d6dnm")
+theme_override_styles/hover = SubResource("StyleBoxFlat_l6lke")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_d6dnm")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_7tu2l")
+theme_override_styles/focus = SubResource("StyleBoxFlat_d6dnm")
 icon = ExtResource("6_gbpvg")
 icon_alignment = 1
 
@@ -199,11 +199,11 @@ offset_right = 73.0
 offset_bottom = 323.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
-theme_override_styles/normal = SubResource("StyleBoxFlat_qg117")
-theme_override_styles/hover = SubResource("StyleBoxFlat_hk23i")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_qg117")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_7rm1w")
-theme_override_styles/focus = SubResource("StyleBoxFlat_qg117")
+theme_override_styles/normal = SubResource("StyleBoxFlat_d6dnm")
+theme_override_styles/hover = SubResource("StyleBoxFlat_l6lke")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_d6dnm")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_7tu2l")
+theme_override_styles/focus = SubResource("StyleBoxFlat_d6dnm")
 icon = ExtResource("7_j8hq1")
 icon_alignment = 1
 
@@ -215,11 +215,11 @@ offset_right = 73.0
 offset_bottom = 398.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
-theme_override_styles/normal = SubResource("StyleBoxFlat_qg117")
-theme_override_styles/hover = SubResource("StyleBoxFlat_hk23i")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_qg117")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_7rm1w")
-theme_override_styles/focus = SubResource("StyleBoxFlat_qg117")
+theme_override_styles/normal = SubResource("StyleBoxFlat_d6dnm")
+theme_override_styles/hover = SubResource("StyleBoxFlat_l6lke")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_d6dnm")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_7tu2l")
+theme_override_styles/focus = SubResource("StyleBoxFlat_d6dnm")
 icon = ExtResource("8_xv7lx")
 icon_alignment = 1
 
@@ -240,7 +240,7 @@ offset_right = -20.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 4
-theme_override_styles/panel = SubResource("StyleBoxFlat_r2op2")
+theme_override_styles/panel = SubResource("StyleBoxFlat_t3rmm")
 
 [node name="Button5" type="Button" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer"]
 custom_minimum_size = Vector2(50, 50)
@@ -250,11 +250,11 @@ offset_right = 73.0
 offset_bottom = 499.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
-theme_override_styles/normal = SubResource("StyleBoxFlat_qg117")
-theme_override_styles/hover = SubResource("StyleBoxFlat_hk23i")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_qg117")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_7rm1w")
-theme_override_styles/focus = SubResource("StyleBoxFlat_qg117")
+theme_override_styles/normal = SubResource("StyleBoxFlat_d6dnm")
+theme_override_styles/hover = SubResource("StyleBoxFlat_l6lke")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_d6dnm")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_7tu2l")
+theme_override_styles/focus = SubResource("StyleBoxFlat_d6dnm")
 icon = ExtResource("9_quap2")
 icon_alignment = 1
 
@@ -310,11 +310,11 @@ theme_override_constants/separation = 25
 custom_minimum_size = Vector2(50, 50)
 offset_right = 50.0
 offset_bottom = 50.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_chwfm")
-theme_override_styles/hover = SubResource("StyleBoxFlat_chwfm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_ac34n")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_chwfm")
-theme_override_styles/focus = SubResource("StyleBoxFlat_chwfm")
+theme_override_styles/normal = SubResource("StyleBoxFlat_iumiy")
+theme_override_styles/hover = SubResource("StyleBoxFlat_iumiy")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_3dqgt")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_iumiy")
+theme_override_styles/focus = SubResource("StyleBoxFlat_iumiy")
 icon = ExtResource("5_cr51n")
 icon_alignment = 1
 
@@ -323,11 +323,11 @@ custom_minimum_size = Vector2(50, 50)
 offset_left = 75.0
 offset_right = 125.0
 offset_bottom = 50.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_chwfm")
-theme_override_styles/hover = SubResource("StyleBoxFlat_chwfm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_601iy")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_chwfm")
-theme_override_styles/focus = SubResource("StyleBoxFlat_chwfm")
+theme_override_styles/normal = SubResource("StyleBoxFlat_iumiy")
+theme_override_styles/hover = SubResource("StyleBoxFlat_iumiy")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_0025n")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_iumiy")
+theme_override_styles/focus = SubResource("StyleBoxFlat_iumiy")
 icon = ExtResource("6_xy0pm")
 icon_alignment = 1
 
@@ -417,7 +417,7 @@ offset_bottom = 57.0
 offset_right = 110.0
 offset_bottom = 23.0
 text = "GET LUCKY"
-label_settings = SubResource("LabelSettings_1jfti")
+label_settings = SubResource("LabelSettings_01g4v")
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -426,7 +426,7 @@ offset_top = 27.0
 offset_right = 110.0
 offset_bottom = 48.0
 text = "Daft Punk"
-label_settings = SubResource("LabelSettings_kn7na")
+label_settings = SubResource("LabelSettings_gkmrg")
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -441,8 +441,8 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="leaderboard" parent="Right/SongDetails/Leaderboard" instance=ExtResource("13_txwuv")]
-style_odd = SubResource("StyleBoxFlat_q0s1r")
-style_even = SubResource("StyleBoxFlat_xgkjy")
+style_odd = SubResource("StyleBoxFlat_h5km3")
+style_even = SubResource("StyleBoxFlat_uo6ul")
 
 [node name="VBoxContainer" parent="Right/SongDetails/Leaderboard/leaderboard" index="0"]
 offset_left = 1.0

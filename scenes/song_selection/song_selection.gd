@@ -1,4 +1,7 @@
 extends Control
+class_name SongSelection
+
+signal item_selected
 
 var cSongSelectionItem = preload("res://scenes/song_selection/song_selection_item.tscn")
 
@@ -297,8 +300,7 @@ func _on_Item_selected(p_nItem: SongSelectionItem):
 	var song_index = p_nItem.get_index()
 	
 	select_item(song_index)
-	PlayerVariables.current_song = PlayerVariables.songs[song_index]
-	get_tree().change_scene_to_file("res://scenes/performance.tscn")
+	emit_signal("item_selected", p_nItem, song_index)
 
 func _on_DownBtn_pressed():
 	go_down()
