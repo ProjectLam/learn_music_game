@@ -48,6 +48,7 @@ func add_item(p_item: TMatchesItem) -> void:
 	
 	var nItem: MatchesItem = cMatchesItem.instantiate()
 	nItem.name = node_name
+	nItem.connect("selected", _on_Item_selected)
 	nItems.add_child(nItem, true)
 	nItem.nMatches = self
 	nItem.item = p_item
@@ -79,3 +80,8 @@ func load_items() -> void:
 func _on_RefreshTimer_timeout() -> void:
 	await load_items()
 	$RefreshTimer.start()
+
+func _on_Item_selected(p_nItem: MatchesItem) -> void:
+	print("Match selected: ", p_nItem.item.nakama_object.match_id)
+	await GBackend.socket.join_match_async(p_nItem.item.nakama_object.match_id)
+	get_tree().change_scene_to_file("res://scenes/performance.tscn")

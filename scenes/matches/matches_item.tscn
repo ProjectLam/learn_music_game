@@ -94,3 +94,10 @@ anchors_preset = 0
 offset_left = 1580.0
 offset_right = 1600.0
 offset_bottom = 106.0
+
+[node name="SelectBtn" type="Button" parent="."]
+offset_right = 1600.0
+offset_bottom = 106.0
+flat = true
+
+[connection signal="pressed" from="SelectBtn" to="." method="_on_SelectBtn_pressed"]

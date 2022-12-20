@@ -9,10 +9,13 @@ extends Control
 @onready var nMatches: Matches = find_child("Matches")
 
 var game_match: NakamaRTAPI.Match
+var match_players_count = 0
 
 func _ready():
 	GDialogs.open_single(GLoginDialog)
 	nSongSelection.connect("item_selected", _on_song_selected)
+	
+	GBackend.socket.connect("received_match_presence", _on_received_match_presence)
 
 func _on_Create_selected() -> void:
 	nSongSelection.show()
@@ -25,6 +28,8 @@ func _on_song_selected(p_nSong: SongSelectionItem, p_index: int):
 	
 	game_match = await GBackend.socket.create_match_async("Meowing Cats Room " + str(Time.get_ticks_msec() / 1000))
 	print("Match created: #%s - %s" % [game_match.match_id, game_match.label])
-	
-#	nWaitingOpponent_AnimationPlayer.play("Default")
-#	get_tree().change_scene_to_file("res://scenes/performance.tscn")
+
+func _on_received_match_presence(p_presence: NakamaRTAPI.MatchPresenceEvent):
+	match_players_count += 1
+	if match_players_count == 2:
+		get_tree().change_scene_to_file("res://scenes/performance.tscn")

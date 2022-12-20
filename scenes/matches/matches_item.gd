@@ -1,6 +1,8 @@
 extends PanelContainer
 class_name MatchesItem
 
+signal selected(nMatch)
+
 @onready var nNumberLabel: Label = find_child("NumberLabel")
 @onready var nNameLabel: Label = find_child("NameLabel")
 @onready var nPlayersCountLabel: Label = find_child("PlayersCountLabel")
@@ -34,3 +36,6 @@ func set_is_mine(p_is_mine: bool) -> void:
 	
 	if is_mine:
 		add_theme_stylebox_override("panel", nMatches.style_mine)
+
+func _on_SelectBtn_pressed() -> void:
+	emit_signal("selected", self)
