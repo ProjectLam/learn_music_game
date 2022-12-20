@@ -20,12 +20,6 @@ func _process(delta):
 func set_item(p_item: TMatchesItem) -> void:
 	item = p_item
 	
-	if item.rank >= 0:
-		nNumberLabel.text = "#" + str(item.rank)
-		nNumberLabel.show()
-	else:
-		nNumberLabel.hide()
-	
 	if item.user:
 		nNameLabel.text = item.user.username
 		

@@ -1,7 +1,7 @@
 extends Control
 class_name Matches
 
-@onready var cLeaderboardItem = preload("res://scenes/leaderboard/leaderboard_item.tscn")
+@onready var cMatchesItem = preload("res://scenes/matches/matches_item.tscn")
 
 @export var style_odd: StyleBox
 @export var style_even: StyleBox
@@ -18,7 +18,6 @@ class_name Matches
 
 func _ready():
 	_update_style()
-	await add_test_record()
 	await load_items()
 
 func add_test_record():
@@ -39,21 +38,44 @@ func _update_style() -> void:
 			if style_even:
 				nItem.add_theme_stylebox_override("panel", style_even)
 
-func add_item(p_item: TLeaderboardItem):
-	var nItem: LeaderboardItem = cLeaderboardItem.instantiate()
-	nItems.add_child(nItem)
-	nItem.nLeaderboard = self
+func add_item(p_item: TMatchesItem) -> void:
+	var node_name = p_item.nakama_object.match_id.replace(".", "")
+	
+	var nExisting = nItems.get_node_or_null(node_name)
+	
+	if nExisting:
+		return
+	
+	var nItem: MatchesItem = cMatchesItem.instantiate()
+	nItem.name = node_name
+	nItems.add_child(nItem, true)
+	nItem.nMatches = self
 	nItem.item = p_item
 	_update_style()
 
-func get_item(p_index: int) -> LeaderboardItem:
+func get_item(p_index: int) -> MatchesItem:
 	return nItems.get_child(p_index)
 
 func load_items() -> void:
+	print("Loading matches...")
+	
 	var result = await GBackend.client.list_matches_async(GBackend.session, min_players, max_players, limit, authoritative, label, query)
+	
+	var match_ids = []
 	
 	for m in result.matches:
 		var game_match: NakamaAPI.ApiMatch = m
-		var item = await TMatchesItem.new()
+		var item: TMatchesItem = await TMatchesItem.new()
 		await item.set_nakama_object(game_match)
-		print("%s: %s/10 players", game_match)
+		add_item(item)
+		
+		match_ids.push_back(game_match.match_id)
+	
+	for i in nItems.get_children():
+		var nExisting: MatchesItem = i
+		if not match_ids.has(nExisting.item.nakama_object.match_id):
+			nExisting.queue_free()
+
+func _on_RefreshTimer_timeout() -> void:
+	await load_items()
+	$RefreshTimer.start()

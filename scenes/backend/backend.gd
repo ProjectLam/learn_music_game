@@ -5,7 +5,7 @@ var session: NakamaSession
 var multiplayer_bridge: NakamaMultiplayerBridge
 var socket: NakamaSocket
 
-var test_email = "meow2@meow.com"
+var test_email = "meow@meow.com"
 var test_password = "meowwwwww"
 
 func _ready():

@@ -50,15 +50,4 @@ func set_date(p_date: String = "") -> void:
 
 func set_nakama_object(p_nakama_object: NakamaAPI.ApiMatch):
 	nakama_object = p_nakama_object
-	
-	var nakama_user: NakamaAPI.ApiUser
-	var _users: NakamaAPI.ApiUsers = await GBackend.client.get_users_async(GBackend.session, [nakama_object.self_user.user_id], [p_nakama_object.self_user.username])
-	if not _users.users.size():
-		print("Error while getting leaderboard user: #%s %s" % [nakama_object.owner_id, nakama_object.username])
-		return
-	nakama_user = _users.users[0]
-	
-	set_user(TUser.new(nakama_user))
 	set_players_count(nakama_object.size)
-	
-	return _users
