@@ -10,7 +10,7 @@ var test_password = "meowwwwww"
 
 var is_connected = false
 
-var scheme = "http"
+var scheme = "https"
 var host = "nakama.projectlam.org"
 var port = 7352
 var server_key = "defaultkey"
