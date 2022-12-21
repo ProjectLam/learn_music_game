@@ -13,7 +13,7 @@ var is_connected = false
 var scheme = "https"
 var host = "nakama.projectlam.org"
 var port = 7352
-var server_key = "defaultkey"
+var server_key = "iIvf]<9:kwRzWn2(A8:hnkF/c@iK@IZY"
 
 func _ready():
 	check_dev_values()
