@@ -12,7 +12,6 @@ var game_match: NakamaRTAPI.Match
 var match_players_count = 0
 
 func _ready():
-	GDialogs.open_single(GLoginDialog)
 	nSongSelection.connect("item_selected", _on_song_selected)
 	
 	GBackend.socket.connect("received_match_presence", _on_received_match_presence)

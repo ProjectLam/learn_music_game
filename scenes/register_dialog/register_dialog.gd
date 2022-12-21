@@ -22,7 +22,7 @@ func close() -> void:
 	nAnimationPlayer.play("Close")
 
 func _on_LoginBtn_pressed():
-	GDialogs.open_single(GLoginDialog)
+	pass
 
 func _on_CloseBtn_pressed() -> void:
 	close()

@@ -1,7 +1,7 @@
 extends Control
 
 func _ready():
-	GDialogs.open_single(GLoginDialog)
+	pass
 
 func _on_Learn_selected() -> void:
 	get_tree().change_scene_to_file("res://scenes/song_selection/song_selection.tscn")

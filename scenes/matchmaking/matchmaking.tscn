@@ -164,6 +164,95 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_utcdj")
 
 [node name="LeftBar" parent="." instance=ExtResource("4_cayno")]
 
+[node name="VBoxContainer" parent="LeftBar" index="0"]
+layout_mode = 3
+
+[node name="Top" parent="LeftBar/VBoxContainer" index="0"]
+layout_mode = 3
+offset_right = 97.0
+offset_bottom = 106.0
+
+[node name="TextureRect" parent="LeftBar/VBoxContainer/Top" index="0"]
+layout_mode = 3
+offset_right = 97.0
+offset_bottom = 106.0
+
+[node name="Middle" parent="LeftBar/VBoxContainer" index="1"]
+layout_mode = 3
+offset_top = 106.0
+offset_right = 97.0
+offset_bottom = 728.0
+
+[node name="Empty" parent="LeftBar/VBoxContainer/Middle" index="0"]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="Label" parent="LeftBar/VBoxContainer/Middle/Empty" index="0"]
+layout_mode = 3
+
+[node name="Content" parent="LeftBar/VBoxContainer/Middle" index="1"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 97.0
+offset_bottom = 622.0
+
+[node name="Menu" parent="LeftBar/VBoxContainer/Middle/Content" index="0"]
+layout_mode = 3
+
+[node name="VBoxContainer" parent="LeftBar/VBoxContainer/Middle/Content/Menu" index="0"]
+layout_mode = 3
+
+[node name="Button" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer" index="0"]
+layout_mode = 3
+offset_left = 23.0
+offset_top = 123.0
+offset_right = 73.0
+offset_bottom = 173.0
+
+[node name="Button2" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer" index="1"]
+layout_mode = 3
+offset_left = 23.0
+offset_top = 198.0
+offset_right = 73.0
+offset_bottom = 248.0
+
+[node name="Button3" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer" index="2"]
+layout_mode = 3
+offset_left = 23.0
+offset_top = 273.0
+offset_right = 73.0
+offset_bottom = 323.0
+
+[node name="Button4" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer" index="3"]
+layout_mode = 3
+offset_left = 23.0
+offset_top = 348.0
+offset_right = 73.0
+offset_bottom = 398.0
+
+[node name="Sep" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer" index="4"]
+layout_mode = 3
+anchors_preset = 0
+offset_top = 423.0
+offset_right = 97.0
+offset_bottom = 424.0
+
+[node name="PanelContainer" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer/Sep" index="0"]
+layout_mode = 3
+
+[node name="LoginBtn" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer" index="5"]
+layout_mode = 3
+offset_left = 23.0
+offset_top = 449.0
+offset_right = 73.0
+offset_bottom = 499.0
+
+[node name="Bottom" parent="LeftBar/VBoxContainer" index="2"]
+layout_mode = 3
+offset_top = 728.0
+offset_right = 97.0
+offset_bottom = 903.0
+
 [node name="Right" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 15
@@ -190,8 +279,13 @@ grow_vertical = 2
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 3
 anchors_preset = 0
+offset_right = 558.0
+offset_bottom = 50.0
 
 [node name="BackBtn" type="Button" parent="Right/Left/VBoxContainer"]
+offset_top = 54.0
+offset_right = 558.0
+offset_bottom = 88.0
 theme_override_colors/font_color = Color(0.980392, 0, 1, 1)
 theme_override_font_sizes/font_size = 18
 text = "< Back"
@@ -199,44 +293,71 @@ flat = true
 alignment = 0
 
 [node name="InstrumentTitle" type="Label" parent="Right/Left/VBoxContainer"]
+offset_top = 92.0
+offset_right = 558.0
+offset_bottom = 183.0
 text = "MANDOLINE"
 label_settings = SubResource("LabelSettings_garyf")
 vertical_alignment = 1
 
 [node name="Details" type="HBoxContainer" parent="Right/Left/VBoxContainer"]
+offset_top = 187.0
+offset_right = 558.0
+offset_bottom = 213.0
 theme_override_constants/separation = 20
 
 [node name="Songs" type="HBoxContainer" parent="Right/Left/VBoxContainer/Details"]
+offset_right = 99.0
+offset_bottom = 26.0
 theme_override_constants/separation = 10
 
 [node name="Icon" type="TextureRect" parent="Right/Left/VBoxContainer/Details/Songs"]
 custom_minimum_size = Vector2(24, 0)
+offset_right = 24.0
+offset_bottom = 26.0
 texture = ExtResource("6_tlsap")
 ignore_texture_size = true
 stretch_mode = 5
 
 [node name="Number" type="Label" parent="Right/Left/VBoxContainer/Details/Songs"]
+offset_left = 34.0
+offset_right = 44.0
+offset_bottom = 26.0
 mouse_filter = 1
 text = "0"
 
 [node name="SongsCountLabel" type="Label" parent="Right/Left/VBoxContainer/Details/Songs"]
+offset_left = 54.0
+offset_right = 99.0
+offset_bottom = 26.0
 mouse_filter = 1
 text = "songs"
 
 [node name="Courses" type="HBoxContainer" parent="Right/Left/VBoxContainer/Details"]
+offset_left = 119.0
+offset_right = 233.0
+offset_bottom = 26.0
 theme_override_constants/separation = 10
 
 [node name="Icon" type="TextureRect" parent="Right/Left/VBoxContainer/Details/Courses"]
 custom_minimum_size = Vector2(24, 0)
+offset_right = 24.0
+offset_bottom = 26.0
 texture = ExtResource("7_th5b8")
 ignore_texture_size = true
 stretch_mode = 5
 
 [node name="Number" type="Label" parent="Right/Left/VBoxContainer/Details/Courses"]
+offset_left = 34.0
+offset_right = 44.0
+offset_bottom = 26.0
 mouse_filter = 1
 text = "0"
 
 [node name="CoursesCountLabel" type="Label" parent="Right/Left/VBoxContainer/Details/Courses"]
+offset_left = 54.0
+offset_right = 114.0
+offset_bottom = 26.0
 mouse_filter = 1
 text = "courses"
 
@@ -244,26 +365,56 @@ text = "courses"
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 3
 anchors_preset = 0
+offset_top = 217.0
+offset_right = 558.0
+offset_bottom = 267.0
 
 [node name="Actions" type="VBoxContainer" parent="Right/Left/VBoxContainer"]
+offset_top = 271.0
+offset_right = 558.0
+offset_bottom = 351.0
 theme_override_constants/separation = 15
 
 [node name="Create" parent="Right/Left/VBoxContainer/Actions" instance=ExtResource("8_mij85")]
+offset_right = 558.0
+offset_bottom = 80.0
 metadata/_edit_group_ = true
+
+[node name="Background" parent="Right/Left/VBoxContainer/Actions/Create" index="0"]
+offset_right = 557.0
+
+[node name="HBoxContainer" parent="Right/Left/VBoxContainer/Actions/Create" index="1"]
+offset_right = 557.0
+
+[node name="HBoxContainer" parent="Right/Left/VBoxContainer/Actions/Create/HBoxContainer" index="0"]
+offset_right = 556.0
 
 [node name="Icon" parent="Right/Left/VBoxContainer/Actions/Create/HBoxContainer/HBoxContainer" index="1"]
 texture = ExtResource("6_tlsap")
 
 [node name="Label" parent="Right/Left/VBoxContainer/Actions/Create/HBoxContainer/HBoxContainer" index="3"]
+offset_right = 478.0
 text = "CREATE NEW MATCH"
 
+[node name="Right" parent="Right/Left/VBoxContainer/Actions/Create/HBoxContainer/HBoxContainer" index="4"]
+offset_left = 482.0
+offset_right = 547.0
+
+[node name="Spacer3" parent="Right/Left/VBoxContainer/Actions/Create/HBoxContainer/HBoxContainer" index="5"]
+offset_left = 551.0
+offset_right = 556.0
+
 [node name="BtnOverlay" parent="Right/Left/VBoxContainer/Actions/Create" index="2"]
+offset_right = 557.0
 metadata/_edit_lock_ = true
 
 [node name="Spacer3" type="Control" parent="Right/Left/VBoxContainer"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 3
 anchors_preset = 0
+offset_top = 355.0
+offset_right = 558.0
+offset_bottom = 405.0
 
 [node name="WaitingOpponent" type="PanelContainer" parent="Right/Left/VBoxContainer"]
 visible = false
@@ -279,6 +430,8 @@ stretch_mode = 6
 [node name="CenterContainer" type="CenterContainer" parent="Right/Left/VBoxContainer/WaitingOpponent"]
 
 [node name="Text" type="VBoxContainer" parent="Right/Left/VBoxContainer/WaitingOpponent/CenterContainer"]
+offset_right = 425.0
+offset_bottom = 139.0
 
 [node name="Label" type="Label" parent="Right/Left/VBoxContainer/WaitingOpponent/CenterContainer/Text"]
 text = "Waiting for opponent"
@@ -307,12 +460,21 @@ libraries = {
 }
 
 [node name="Matches" parent="Right/Left/VBoxContainer" instance=ExtResource("10_o03mo")]
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_top = 409.0
+offset_right = 558.0
+offset_bottom = 946.0
 size_flags_vertical = 3
 
 [node name="Spacer4" type="Control" parent="Right/Left/VBoxContainer"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 3
 anchors_preset = 0
+offset_top = 950.0
+offset_right = 558.0
+offset_bottom = 1000.0
 
 [node name="Right" type="Control" parent="Right"]
 layout_mode = 3
