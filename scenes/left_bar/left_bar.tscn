@@ -63,7 +63,6 @@ grow_vertical = 2
 script = ExtResource("1_gck2n")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -73,26 +72,32 @@ theme_override_constants/separation = 0
 
 [node name="Top" type="PanelContainer" parent="VBoxContainer"]
 custom_minimum_size = Vector2(0, 75)
-layout_mode = 2
+offset_right = 97.0
+offset_bottom = 106.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_ja2ug")
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/Top"]
-layout_mode = 2
+offset_right = 97.0
+offset_bottom = 106.0
 texture = ExtResource("1_fr83g")
 stretch_mode = 5
 
 [node name="Middle" type="PanelContainer" parent="VBoxContainer"]
 custom_minimum_size = Vector2(0, 75)
-layout_mode = 2
+offset_top = 106.0
+offset_right = 97.0
+offset_bottom = 728.0
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_kv4qc")
 
 [node name="Empty" type="Control" parent="VBoxContainer/Middle"]
 visible = false
-layout_mode = 2
+layout_mode = 3
+anchors_preset = 0
+offset_right = 97.0
+offset_bottom = 622.0
 
 [node name="Label" type="Label" parent="VBoxContainer/Middle/Empty"]
-layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -109,10 +114,13 @@ text = "LAM PROJECT"
 label_settings = SubResource("LabelSettings_ypi7r")
 
 [node name="Content" type="Control" parent="VBoxContainer/Middle"]
-layout_mode = 2
+layout_mode = 3
+anchors_preset = 0
+offset_right = 97.0
+offset_bottom = 622.0
 
 [node name="Menu" type="Control" parent="VBoxContainer/Middle/Content"]
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -120,7 +128,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Middle/Content/Menu"]
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -131,7 +138,10 @@ alignment = 1
 
 [node name="Button" type="Button" parent="VBoxContainer/Middle/Content/Menu/VBoxContainer"]
 custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
+offset_left = 23.0
+offset_top = 123.0
+offset_right = 73.0
+offset_bottom = 173.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_styles/normal = SubResource("StyleBoxFlat_ixvow")
@@ -144,7 +154,10 @@ icon_alignment = 1
 
 [node name="Button2" type="Button" parent="VBoxContainer/Middle/Content/Menu/VBoxContainer"]
 custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
+offset_left = 23.0
+offset_top = 198.0
+offset_right = 73.0
+offset_bottom = 248.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_styles/normal = SubResource("StyleBoxFlat_ixvow")
@@ -157,7 +170,10 @@ icon_alignment = 1
 
 [node name="Button3" type="Button" parent="VBoxContainer/Middle/Content/Menu/VBoxContainer"]
 custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
+offset_left = 23.0
+offset_top = 273.0
+offset_right = 73.0
+offset_bottom = 323.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_styles/normal = SubResource("StyleBoxFlat_ixvow")
@@ -170,7 +186,10 @@ icon_alignment = 1
 
 [node name="Button4" type="Button" parent="VBoxContainer/Middle/Content/Menu/VBoxContainer"]
 custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
+offset_left = 23.0
+offset_top = 348.0
+offset_right = 73.0
+offset_bottom = 398.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_styles/normal = SubResource("StyleBoxFlat_ixvow")
@@ -183,10 +202,13 @@ icon_alignment = 1
 
 [node name="Sep" type="Control" parent="VBoxContainer/Middle/Content/Menu/VBoxContainer"]
 custom_minimum_size = Vector2(0, 1)
-layout_mode = 2
+layout_mode = 3
+anchors_preset = 0
+offset_top = 423.0
+offset_right = 97.0
+offset_bottom = 424.0
 
 [node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/Middle/Content/Menu/VBoxContainer/Sep"]
-layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -199,7 +221,10 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_6yw14")
 
 [node name="LoginBtn" type="Button" parent="VBoxContainer/Middle/Content/Menu/VBoxContainer"]
 custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
+offset_left = 23.0
+offset_top = 449.0
+offset_right = 73.0
+offset_bottom = 499.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_styles/normal = SubResource("StyleBoxFlat_ixvow")
@@ -212,7 +237,9 @@ icon_alignment = 1
 
 [node name="Bottom" type="PanelContainer" parent="VBoxContainer"]
 custom_minimum_size = Vector2(0, 175)
-layout_mode = 2
+offset_top = 728.0
+offset_right = 97.0
+offset_bottom = 903.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_d6h5r")
 
 [connection signal="pressed" from="VBoxContainer/Middle/Content/Menu/VBoxContainer/LoginBtn" to="." method="_on_LoginBtn_pressed"]

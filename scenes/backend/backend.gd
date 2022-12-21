@@ -10,11 +10,14 @@ var test_password = "meowwwwww"
 
 var is_connected = false
 
+var scheme = "http"
+var host = "nakama.projectlam.org"
+var port = 7352
+var server_key = "defaultkey"
+
 func _ready():
-	var scheme = "http"
-	var host = "127.0.0.1"
-	var port = 7350
-	var server_key = "defaultkey"
+	check_dev_values()
+	
 	client = Nakama.create_client(server_key, host, port, scheme)
 	
 	await login_password(test_email, test_password)
@@ -30,6 +33,25 @@ func _ready():
 	multiplayer_bridge.match_join_error.connect(_on_match_join_error)
 	multiplayer_bridge.match_joined.connect(_on_match_joined)
 	get_tree().get_multiplayer().set_multiplayer_peer(multiplayer_bridge.multiplayer_peer)
+
+func check_dev_values() -> bool:
+	if not FileAccess.file_exists("user://dev.json"):
+		return false
+	var file = FileAccess.open("user://dev.json", FileAccess.READ)
+	var content = file.get_as_text()
+	var dev = JSON.parse_string(content)
+	
+	if dev.has("nakama"):
+		scheme = dev["nakama"]["connection"]["protocol"]
+		host = dev["nakama"]["connection"]["address"]
+		port = int(dev["nakama"]["connection"]["port"])
+		server_key = dev["nakama"]["connection"]["server_key"]
+		
+		if dev["nakama"].has("test_user"):
+			test_email = dev["nakama"]["test_user"]["email"]
+			test_password = dev["nakama"]["test_user"]["password"]
+	
+	return false
 
 func login_password(p_email: String, p_password: String) -> NakamaSession:
 	var email = p_email
