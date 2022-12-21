@@ -11,10 +11,16 @@ var performance_instrument: PerformanceInstrument
 
 
 # You can load a file without having to import it beforehand using the code snippet below. Keep in mind that this snippet loads the whole file into memory and may not be ideal for huge files (hundreds of megabytes or more).
-func load_mp3(path):
+func load_mp3_from_path(path):
 	var file = FileAccess.open(path, FileAccess.READ)
 	var sound = AudioStreamMP3.new()
 	sound.data = file.get_buffer(file.get_length())
+	return sound
+
+
+func load_mp3_from_buffer(buffer: PackedByteArray):
+	var sound := AudioStreamMP3.new()
+	sound.data = buffer
 	return sound
 
 
@@ -22,11 +28,11 @@ func load_mp3(path):
 func load_ogg(path):
 	var oggfile = FileAccess.open(path, FileAccess.READ)
 	var sound = AudioStreamOggVorbis.new()
-	var packetSeq = OggPacketSequence.new()
+	var packet_seq = OggPacketSequence.new()
 	var len = oggfile.get_length()
 	var data = oggfile.get_buffer(len)
-	packetSeq.packet_data = data
-	sound.packet_sequence = packetSeq
+	packet_seq.packet_data = data
+	sound.packet_sequence = packet_seq
 	sound.instantiate_playback()
 	return sound
 
@@ -37,17 +43,22 @@ func print_song_loading_debug(to_print):
 
 
 func _ready():
-	current_song = PlayerVariables.current_song;
+	current_song = PlayerVariables.current_song
 	print_song_loading_debug(current_song)
 		
-	var currentStream:AudioStream
-	if current_song == null || current_song.songMusicFile == "":
+	var current_stream:AudioStream
+	if current_song == null:
 		# just for quick debugging
-		currentStream = load_mp3("res://Arlow - How Do You Know [NCS Release].mp3")
+		current_stream = load_mp3_from_path("res://Arlow - How Do You Know [NCS Release].mp3")
 	else:
 		print_song_loading_debug(current_song.songMusicFile)
 		#TODO determine file type and handle ogg in future also
-		currentStream = load_mp3(current_song.songMusicFile)
+		
+		if current_song.songMusicFile == "":
+			current_stream = load_mp3_from_buffer(current_song.song_music_buffer)
+		else:
+			current_stream = load_mp3_from_path(current_song.songMusicFile)
+		
 		print_song_loading_debug("Title of song from Meta Data-"+ current_song.title)
 		#print("Ebeat data ----")
 		#print("count-"+ current_song.ebeats.count)
@@ -82,6 +93,6 @@ func _ready():
 		add_child(performance_instrument)
 		performance_instrument.start_game(current_song.levels[0])
 	
-	audio_stream.stream = currentStream
+	audio_stream.stream = current_stream
 	audio_stream.play()
 #	audio_stream.volume_db = -16

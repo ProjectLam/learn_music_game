@@ -110,14 +110,32 @@ func xml_read_text():
 		#TODO check
 		return text
 	return ""
-	
-func parse_xml(filename:String, song:Song):
+
+
+func parse_xml_from_file(filename: String, song: Song):
 	parser = XMLParser.new()
 	current_song = song
-	var errorCode = parser.open(filename)
-	if errorCode != OK:
-		return #exit(errorCode)
-			
+	var error_code = parser.open(filename)
+	if error_code != OK:
+		push_error("Something went wrong when trying to parse this file as XML")
+		return
+	
+	_parse_xml(parser)
+
+
+func parse_xml_from_buffer(buffer: PackedByteArray, song: Song):
+	parser = XMLParser.new()
+	current_song = song
+	
+	var error_code = parser.open_buffer(buffer)
+	if error_code != OK:
+		push_error("Something went wrong when trying to read this as XML")
+		return
+	
+	_parse_xml(parser)
+
+
+func _parse_xml(parser: XMLParser):
 	var node_name = ""
 	var last_node_data = ""
 	while parser.read() != ERR_FILE_EOF:
@@ -125,14 +143,12 @@ func parse_xml(filename:String, song:Song):
 			node_name = parser.get_node_name()
 		elif parser.get_node_type() == XMLParser.NODE_TEXT:
 			last_node_data = parser.get_node_data()
-			
-		#print("Node-" + node_name, ": ", last_node_data)
-#		print(parser.get_node_name(), ": default---"+ parser.get_named_attribute_value_safe("value"))
-		if(customParser.has(node_name)):
+		
+		if customParser.has(node_name):
 			call("parser_"+node_name)
 			node_name = ""
-		if(extractNodes.has(node_name)):
+		if extractNodes.has(node_name):
 			var data = xml_read_text()
 			if data != "":
-				song.set(node_name, data)
+				current_song.set(node_name, data)
 			node_name = ""

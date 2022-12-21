@@ -9,6 +9,7 @@ var artistXXXXYear = ""
 var bobXXXX = ""
 var ebeats:Ebeats = Ebeats.new()
 var songMusicFile = ""
+var song_music_buffer: PackedByteArray
 var levels_count = 0
 var levels:Array[Level] = [] #TODO potentially change this to a map
 

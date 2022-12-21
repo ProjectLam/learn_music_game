@@ -1,5 +1,6 @@
 extends Control
 
+
 var cSongSelectionItem = preload("res://scenes/song_selection/song_selection_item.tscn")
 
 @onready var nItems = find_child("Items")
@@ -19,17 +20,13 @@ var tween_y: Tween
 var tween_x: Tween
 
 @export var songs_path = "user://songs"
+@export var songs_json_file = "songs.json"
 @export_range(0, 100) var h_space: int = 100
 
 var h_ratio: int = 1
 
+
 func _ready():
-#	for i in 5:
-#		var nItem: SongSelectionItem = cSongSelectionItem.instantiate()
-#		nItems.add_child(nItem)
-#		nItem.connect("selected", _on_Item_selected)
-#		nItem.find_child("NameLabel").text += " " + str(i)
-	
 	load_songs()
 	items_count = nItems.get_child_count()
 	if items_count:
@@ -43,23 +40,39 @@ func _ready():
 	_process_items_vertically()
 	_process_items()
 
+
 func load_songs():
 	var dir =  DirAccess.open(songs_path)
 	dir.list_dir_begin()
-	while true:
-		var songFile = dir.get_next()
+	
+	# check for songs.json
+	if dir.file_exists(songs_json_file):
+		var json_path: String = songs_path + "/" + songs_json_file
+		var json_string = FileAccess.get_file_as_string(json_path)
+		var json_data = JSON.parse_string(json_string)
+		if json_data == null or not json_data.has("songs"):
+			push_error("Failed to parse the json file at ", json_path)
+			return
+		for song in json_data.songs:
+			_handle_song_zip(songs_path + "/" + song)
+	
+	else:
+		# else check for files
+		while true:
+			var songFile = dir.get_next()
+			
+			#Assume each directory is 1 song
+			#TODO in future allow a JSON file that has direct links to song zip or directories
+			if songFile == "": 
+				break
+			elif !songFile.begins_with(".") && dir.current_is_dir():
+				print("Found directory - " + songFile)
+				_handle_song_dir(songFile,dir.get_current_dir() + "/"+ songFile) # ugly, why isn't there any easier way to do this
+			elif songFile.ends_with(".zip"):
+				#TODO in future allow songs to be .zip files
+				print("Found zip (Not implemented yet) - " + songFile)
+		dir.list_dir_end()
 
-		#Assume each directory is 1 song
-		#TODO in future allow a JSON file that has direct links to song zip or directories
-		if songFile == "": 
-			break
-		elif !songFile.begins_with(".") && dir.current_is_dir():
-			print("Found directory - " + songFile)
-			_handle_song_dir(songFile,dir.get_current_dir() + "/"+ songFile) # ugly, why isn't there any easier way to do this
-		elif songFile.ends_with(".zip"):
-			#TODO in future allow songs to be .zip files
-			print("Found zip (Not implemented yet) - " + songFile)
-	dir.list_dir_end()
 
 func _handle_song_dir(songFile:String, curPath:String):
 	var dir =  DirAccess.open(curPath)
@@ -67,7 +80,7 @@ func _handle_song_dir(songFile:String, curPath:String):
 	print("handle_song_dir-" + songFile)
 	var song:Song = Song.new()
 	PlayerVariables.songs.append(song)
-
+	
 	dir.list_dir_begin()
 	while true:
 		var iFile = dir.get_next()
@@ -77,9 +90,9 @@ func _handle_song_dir(songFile:String, curPath:String):
 			var full_xml =  dir.get_current_dir() + "/" + iFile
 			print("got xml - " + full_xml)
 			var sp:SongParser = SongParser.new()
-			#sp.parse_xml(full_xml, song)
+			#sp.parse_xml_from_file(full_xml, song)
 			#NOTE this is the core Xml File, there are up to 4 other ones
-
+	
 	dir.list_dir_end()
 	
 	#Find the instrument specific ones, for now we are only going to look for lead guitair
@@ -97,9 +110,9 @@ func _handle_song_dir(songFile:String, curPath:String):
 			var full_xml =  dir.get_current_dir() + "/" + iFile
 			print("got xml - " + full_xml)
 			var sp:SongParser = SongParser.new()
-			sp.parse_xml(full_xml, song)
+			sp.parse_xml_from_file(full_xml, song)
 			#NOTE  TODO this is the lead guitar Xml File, there are up to 4 other ones, including vocals
-
+	
 	var nItem: SongSelectionItem = cSongSelectionItem.instantiate()
 	nItems.add_child(nItem)
 	nItem.connect("selected", _on_Item_selected)
@@ -110,7 +123,7 @@ func _handle_song_dir(songFile:String, curPath:String):
 	dir.list_dir_end()
 	dir.change_dir("..")
 	dir.change_dir("..")
-
+	
 	# Find the first .mp3 file that doesn't include _preview in audio/windows for now
 	# TODO in future do full directory traversal
 	err = dir.change_dir("audio/windows/")
@@ -126,14 +139,33 @@ func _handle_song_dir(songFile:String, curPath:String):
 		elif iFile.ends_with(".mp3") && !("preview" in iFile):
 			song.songMusicFile = dir.get_current_dir() + "/" + iFile
 			print(song.songMusicFile)
-
+	
 	dir.list_dir_end()
 	
 	dir.change_dir("..")
 	dir.change_dir("..")
 
-func _process(delta):
-	pass
+
+func _handle_song_zip(path: String):
+	var reader := ZIPReader.new()
+	var err := reader.open(path)
+	if err != OK:
+		push_error("This ZIP file at path ", path, " couldn't be opened")
+		return
+	
+	var song := Song.new()
+	PlayerVariables.songs.append(song)
+	
+	# Returns a PoolStringArray of all files in all directories
+	var files := reader.get_files()
+	
+	for file in files:
+		if file.ends_with("_lead.xml"):
+			var song_parser := SongParser.new()
+			song_parser.parse_xml_from_buffer(reader.read_file(file), song)
+		if file.ends_with(".mp3") and not "preview" in file:
+			song.song_music_buffer = reader.read_file(file)
+
 
 func select_item(p_index: int, p_is_internal: bool = false) -> void:
 	if tween_y:
