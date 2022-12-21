@@ -5,19 +5,19 @@
 [ext_resource type="Texture2D" uid="uid://ctu1miqp425c5" path="res://assets/gui/icons/casette.png" id="3_s7kml"]
 [ext_resource type="FontFile" uid="uid://df06bw7a1s1u7" path="res://fonts/Montserrat-Bold.ttf" id="4_7gtxg"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vkbts"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ukgxa"]
 content_margin_left = 25.0
 content_margin_right = 25.0
 
-[sub_resource type="LabelSettings" id="LabelSettings_480fe"]
+[sub_resource type="LabelSettings" id="LabelSettings_fkm56"]
 line_spacing = 0.0
 font = ExtResource("2_3q4ai")
 font_size = 23
 
-[sub_resource type="LabelSettings" id="LabelSettings_20uax"]
+[sub_resource type="LabelSettings" id="LabelSettings_owifg"]
 font = ExtResource("4_7gtxg")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_acr0m"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8gexu"]
 content_margin_left = 20.0
 content_margin_top = 10.0
 content_margin_right = 20.0
@@ -28,7 +28,7 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[sub_resource type="LabelSettings" id="LabelSettings_fdl0p"]
+[sub_resource type="LabelSettings" id="LabelSettings_dqhvv"]
 line_spacing = 0.0
 font = ExtResource("4_7gtxg")
 
@@ -51,9 +51,9 @@ offset_bottom = 106.0
 offset_top = 41.0
 offset_right = 72.0
 offset_bottom = 65.0
-theme_override_styles/normal = SubResource("StyleBoxEmpty_vkbts")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_ukgxa")
 text = "01"
-label_settings = SubResource("LabelSettings_480fe")
+label_settings = SubResource("LabelSettings_fkm56")
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -76,16 +76,16 @@ offset_top = 41.0
 offset_right = 1349.0
 offset_bottom = 65.0
 text = "Song Name"
-label_settings = SubResource("LabelSettings_20uax")
+label_settings = SubResource("LabelSettings_owifg")
 
 [node name="PlayersCountLabel" type="Label" parent="VBoxContainer/HBoxContainer"]
 offset_left = 1525.0
 offset_top = 32.0
 offset_right = 1576.0
 offset_bottom = 73.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_acr0m")
+theme_override_styles/normal = SubResource("StyleBoxFlat_8gexu")
 text = "0"
-label_settings = SubResource("LabelSettings_fdl0p")
+label_settings = SubResource("LabelSettings_dqhvv")
 
 [node name="Spacer" type="Control" parent="VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(20, 0)

@@ -8,6 +8,8 @@ var socket: NakamaSocket
 var test_email = "meow@meow.com"
 var test_password = "meowwwwww"
 
+var is_connected = false
+
 func _ready():
 	var scheme = "http"
 	var host = "127.0.0.1"
@@ -21,7 +23,8 @@ func _ready():
 	socket.connected.connect(_on_socket_connected)
 	socket.closed.connect(_on_socket_closed)
 	socket.received_error.connect(_on_socket_error)
-	await socket.connect_async(session)
+	if session:
+		await socket.connect_async(session)
 	
 	multiplayer_bridge = NakamaMultiplayerBridge.new(socket)
 	multiplayer_bridge.match_join_error.connect(_on_match_join_error)
@@ -34,6 +37,9 @@ func login_password(p_email: String, p_password: String) -> NakamaSession:
 	
 	session = await client.authenticate_email_async(email, password)
 	
+	if session.is_exception():
+		print("Login Error: ", session.exception)
+	
 	print(session)
 	print(session.token)
 	print(session.user_id)
@@ -45,9 +51,11 @@ func login_password(p_email: String, p_password: String) -> NakamaSession:
 
 func _on_socket_connected():
 	print("Socket connected.")
+	is_connected = true
 
 func _on_socket_closed():
 	print("Socket closed.")
+	is_connected = false
 
 func _on_socket_error(err):
 	printerr("Socket error %s" % err)
