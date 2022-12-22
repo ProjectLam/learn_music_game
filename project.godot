@@ -317,6 +317,7 @@ _global_script_class_icons={
 config/name="Lam-dj"
 run/main_scene="res://scenes/instrument_selection/instrument_selection.tscn"
 config/features=PackedStringArray("4.0", "Mobile")
+config/icon="res://icon.svg"
 run/main_scene.web="res://scenes/djclient.tscn"
 
 [audio]
@@ -330,7 +331,6 @@ PlayerVariables="*res://scenes/PlayerVariables.gd"
 NoteFrequency="*res://autoload/note_frequency.gd"
 InstrumentInput="*res://autoload/instrument_input/instrument_input.tscn"
 Debug="*res://autoload/debug/debug.tscn"
-SessionVariables="*res://autoload/session_variables.gd"
 GLoginDialog="*res://scenes/login_dialog/login_dialog.tscn"
 GRegisterDialog="*res://scenes/register_dialog/register_dialog.tscn"
 GDialogs="*res://scenes/dialogs/dialogs.tscn"
@@ -347,6 +347,7 @@ gdscript/warnings/enable=false
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
+window/size/always_on_top=true
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 

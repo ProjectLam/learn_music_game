@@ -266,6 +266,45 @@ layout_mode = 2
 [node name="BtnOverlay" parent="Right/Left/VBoxContainer/Actions/Matches" index="2"]
 layout_mode = 2
 
+[node name="Tuning" parent="Right/Left/VBoxContainer/Actions" instance=ExtResource("8_88a38")]
+layout_mode = 2
+metadata/_edit_group_ = true
+
+[node name="Background" parent="Right/Left/VBoxContainer/Actions/Tuning" index="0"]
+layout_mode = 2
+
+[node name="HBoxContainer" parent="Right/Left/VBoxContainer/Actions/Tuning" index="1"]
+layout_mode = 2
+
+[node name="HBoxContainer" parent="Right/Left/VBoxContainer/Actions/Tuning/HBoxContainer" index="0"]
+layout_mode = 2
+
+[node name="Spacer" parent="Right/Left/VBoxContainer/Actions/Tuning/HBoxContainer/HBoxContainer" index="0"]
+layout_mode = 2
+
+[node name="Icon" parent="Right/Left/VBoxContainer/Actions/Tuning/HBoxContainer/HBoxContainer" index="1"]
+layout_mode = 2
+texture = ExtResource("9_mhjhx")
+
+[node name="Spacer2" parent="Right/Left/VBoxContainer/Actions/Tuning/HBoxContainer/HBoxContainer" index="2"]
+layout_mode = 2
+
+[node name="Label" parent="Right/Left/VBoxContainer/Actions/Tuning/HBoxContainer/HBoxContainer" index="3"]
+layout_mode = 2
+text = "TUNER"
+
+[node name="Right" parent="Right/Left/VBoxContainer/Actions/Tuning/HBoxContainer/HBoxContainer" index="4"]
+layout_mode = 2
+
+[node name="SelectBtn" parent="Right/Left/VBoxContainer/Actions/Tuning/HBoxContainer/HBoxContainer/Right" index="0"]
+layout_mode = 2
+
+[node name="Spacer3" parent="Right/Left/VBoxContainer/Actions/Tuning/HBoxContainer/HBoxContainer" index="5"]
+layout_mode = 2
+
+[node name="BtnOverlay" parent="Right/Left/VBoxContainer/Actions/Tuning" index="2"]
+layout_mode = 2
+
 [node name="Settings" parent="Right/Left/VBoxContainer/Actions" instance=ExtResource("8_88a38")]
 layout_mode = 2
 metadata/_edit_group_ = true
@@ -410,6 +449,7 @@ texture = ExtResource("7_cgjnb")
 [connection signal="selected" from="Right/Left/VBoxContainer/Actions/Learn" to="." method="_on_Learn_selected"]
 [connection signal="selected" from="Right/Left/VBoxContainer/Actions/Play" to="." method="_on_Play_selected"]
 [connection signal="selected" from="Right/Left/VBoxContainer/Actions/Matches" to="." method="_on_Matches_selected"]
+[connection signal="selected" from="Right/Left/VBoxContainer/Actions/Tuning" to="." method="_on_Tuning_selected"]
 [connection signal="selected" from="Right/Left/VBoxContainer/Actions/Settings" to="." method="_on_Settings_selected"]
 [connection signal="selected" from="Right/Left/VBoxContainer/Actions/Quit" to="." method="_on_Quit_selected"]
 [connection signal="mouse_entered" from="Right/Right/InstrumentBox" to="Right/Right/InstrumentBox" method="_on_mouse_entered"]
@@ -417,5 +457,6 @@ texture = ExtResource("7_cgjnb")
 
 [editable path="Right/Left/VBoxContainer/Actions/Play"]
 [editable path="Right/Left/VBoxContainer/Actions/Matches"]
+[editable path="Right/Left/VBoxContainer/Actions/Tuning"]
 [editable path="Right/Left/VBoxContainer/Actions/Settings"]
 [editable path="Right/Left/VBoxContainer/Actions/Quit"]
