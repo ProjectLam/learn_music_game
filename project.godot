@@ -334,10 +334,6 @@ SessionVariables="*res://autoload/session_variables.gd"
 GLoginDialog="*res://scenes/login_dialog/login_dialog.tscn"
 GRegisterDialog="*res://scenes/register_dialog/register_dialog.tscn"
 GDialogs="*res://scenes/dialogs/dialogs.tscn"
-Nakama="*res://addons/com.heroiclabs.nakama/Nakama.gd"
-SessionVariables="*res://autoload/session_variables.gd"
-GGoogleAuth="*res://scenes/google_auth/google_auth.tscn"
-GBackend="*res://scenes/backend/backend.tscn"
 
 [debug]
 
@@ -347,7 +343,6 @@ gdscript/warnings/enable=false
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
-window/size/always_on_top=true
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
