@@ -335,6 +335,8 @@ Nakama="*res://addons/com.heroiclabs.nakama/Nakama.gd"
 GLoginDialog="*res://scenes/login_dialog/login_dialog.tscn"
 GRegisterDialog="*res://scenes/register_dialog/register_dialog.tscn"
 GDialogs="*res://scenes/dialogs/dialogs.tscn"
+SessionVariables="*res://autoload/session_variables.gd"
+GGoogleAuth="*res://scenes/google_auth/google_auth.tscn"
 GBackend="*res://scenes/backend/backend.tscn"
 
 [debug]
