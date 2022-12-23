@@ -331,9 +331,11 @@ NoteFrequency="*res://autoload/note_frequency.gd"
 InstrumentInput="*res://autoload/instrument_input/instrument_input.tscn"
 Debug="*res://autoload/debug/debug.tscn"
 SessionVariables="*res://autoload/session_variables.gd"
+Nakama="*res://addons/com.heroiclabs.nakama/Nakama.gd"
 GLoginDialog="*res://scenes/login_dialog/login_dialog.tscn"
 GRegisterDialog="*res://scenes/register_dialog/register_dialog.tscn"
 GDialogs="*res://scenes/dialogs/dialogs.tscn"
+GBackend="*res://scenes/backend/backend.tscn"
 
 [debug]
 
