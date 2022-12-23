@@ -32,3 +32,6 @@ func _on_received_match_presence(p_presence: NakamaRTAPI.MatchPresenceEvent):
 	match_players_count += 1
 	if match_players_count == 2:
 		get_tree().change_scene_to_file("res://scenes/performance.tscn")
+
+func _on_BackBtn_pressed() -> void:
+	get_tree().change_scene_to_file("res://scenes/instrument_menu/instrument_menu.tscn")

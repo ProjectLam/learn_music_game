@@ -446,6 +446,7 @@ grow_vertical = 2
 texture = ExtResource("7_cgjnb")
 
 [connection signal="script_changed" from="." to="." method="_on_script_changed"]
+[connection signal="pressed" from="Right/Left/VBoxContainer/BackBtn" to="." method="_on_BackBtn_pressed"]
 [connection signal="selected" from="Right/Left/VBoxContainer/Actions/Learn" to="." method="_on_Learn_selected"]
 [connection signal="selected" from="Right/Left/VBoxContainer/Actions/Play" to="." method="_on_Play_selected"]
 [connection signal="selected" from="Right/Left/VBoxContainer/Actions/Matches" to="." method="_on_Matches_selected"]

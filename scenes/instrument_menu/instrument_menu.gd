@@ -20,3 +20,6 @@ func _on_Tuning_selected() -> void:
 
 func _on_Quit_selected() -> void:
 	get_tree().change_scene_to_file("res://scenes/instrument_selection/instrument_selection.tscn")
+
+func _on_BackBtn_pressed() -> void:
+	get_tree().change_scene_to_file("res://scenes/instrument_selection/instrument_selection.tscn")
