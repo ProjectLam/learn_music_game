@@ -26,6 +26,8 @@ var tween_x: Tween
 
 var h_ratio: int = 1
 
+var selected_index: int
+
 func _ready():
 #	for i in 5:
 #		var nItem: SongSelectionItem = cSongSelectionItem.instantiate()
@@ -299,8 +301,13 @@ func _on_Songs_item_rect_changed():
 func _on_Item_selected(p_nItem: SongSelectionItem):
 	var song_index = p_nItem.get_index()
 	
-	select_item(song_index)
-	emit_signal("item_selected", p_nItem, song_index)
+	if song_index != selected_index:
+		selected_index = song_index
+		select_item(song_index)
+		emit_signal("item_selected", p_nItem, song_index)
+	else:
+		PlayerVariables.current_song = PlayerVariables.songs[song_index]
+		get_tree().change_scene_to_file("res://scenes/performance.tscn")
 
 func _on_DownBtn_pressed():
 	go_down()
