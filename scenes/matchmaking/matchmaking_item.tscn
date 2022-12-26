@@ -1,0 +1,103 @@
+[gd_scene load_steps=10 format=3 uid="uid://cboegvm4jt3bp"]
+
+[ext_resource type="Script" path="res://scenes/matchmaking/matchmaking_item.gd" id="1_qc4gi"]
+[ext_resource type="Texture2D" uid="uid://4jhy1ls4ta6u" path="res://assets/gui/blur.jpg" id="2_5jav5"]
+[ext_resource type="Texture2D" uid="uid://cmdd61q57jiu" path="res://assets/gui/icons/course.png" id="3_ojel7"]
+[ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="4_p487y"]
+[ext_resource type="FontFile" uid="uid://df06bw7a1s1u7" path="res://fonts/Montserrat-Bold.ttf" id="5_t4h1j"]
+[ext_resource type="Texture2D" uid="uid://dfxg2q3m2tb8m" path="res://assets/gui/icons/right.png" id="6_6geqw"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qdthk"]
+bg_color = Color(0.282353, 0.192157, 0.454902, 0.8)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 0.823529, 0.964706, 0.2)
+corner_radius_top_left = 1024
+corner_radius_top_right = 1024
+corner_radius_bottom_right = 1024
+corner_radius_bottom_left = 1024
+
+[sub_resource type="LabelSettings" id="LabelSettings_hh1sg"]
+line_spacing = 0.0
+font = ExtResource("4_p487y")
+font_size = 30
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yje14"]
+bg_color = Color(0.760784, 0, 0.776471, 1)
+border_width_bottom = 5
+border_color = Color(0.54902, 0, 0.560784, 1)
+corner_radius_top_left = 1024
+corner_radius_top_right = 1024
+corner_radius_bottom_right = 1024
+corner_radius_bottom_left = 1024
+shadow_color = Color(1, 0.262745, 0.784314, 0.14902)
+shadow_size = 27
+
+[node name="MatchmakingItem" type="PanelContainer"]
+custom_minimum_size = Vector2(0, 80)
+theme_override_styles/panel = SubResource("StyleBoxFlat_qdthk")
+script = ExtResource("1_qc4gi")
+
+[node name="Background" type="TextureRect" parent="."]
+self_modulate = Color(1, 1, 1, 0.0862745)
+layout_mode = 2
+texture = ExtResource("2_5jav5")
+ignore_texture_size = true
+stretch_mode = 6
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Spacer" type="Control" parent="HBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(15, 0)
+layout_mode = 2
+
+[node name="Icon" type="TextureRect" parent="HBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(34, 0)
+layout_mode = 2
+texture = ExtResource("3_ojel7")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Spacer2" type="Control" parent="HBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "..."
+label_settings = SubResource("LabelSettings_hh1sg")
+vertical_alignment = 1
+
+[node name="Right" type="CenterContainer" parent="HBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="SelectBtn" type="Button" parent="HBoxContainer/HBoxContainer/Right"]
+custom_minimum_size = Vector2(65, 65)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_t4h1j")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_yje14")
+theme_override_styles/hover = SubResource("StyleBoxFlat_yje14")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_yje14")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_yje14")
+theme_override_styles/focus = SubResource("StyleBoxFlat_yje14")
+icon = ExtResource("6_6geqw")
+icon_alignment = 1
+
+[node name="Spacer3" type="Control" parent="HBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(5, 0)
+layout_mode = 2
+
+[node name="BtnOverlay" type="Button" parent="."]
+layout_mode = 2
+flat = true
+
+[connection signal="pressed" from="BtnOverlay" to="." method="_on_OverlayBtn_pressed"]

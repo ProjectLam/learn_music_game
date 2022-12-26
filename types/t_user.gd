@@ -1,7 +1,7 @@
 extends Object
 class_name TUser
 
-var id: int = 0
+var id: String = ""
 var username: String = ""
 var avatar_url: String = ""
 var is_online: bool: set = set_is_online
@@ -46,7 +46,7 @@ func set_is_online(p_is_online: bool) -> void:
 func set_nakama_object(p_nakama_object: NakamaAPI.ApiUser) -> void:
 	nakama_object = p_nakama_object
 	
-	id = int(nakama_object.id)
+	id = nakama_object.id
 	username = nakama_object.username
 	avatar_url = nakama_object.avatar_url
 	is_online = p_nakama_object.online
