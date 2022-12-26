@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://iocifn6g1y67"]
+
+[ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="1_4gvg1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ft7d1"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="LabelSettings" id="LabelSettings_0nq8g"]
+line_spacing = 0.0
+font = ExtResource("1_4gvg1")
+font_size = 60
+
+[node name="NotesItem" type="PanelContainer"]
+offset_right = 122.0
+offset_bottom = 62.0
+pivot_offset = Vector2(61, 31)
+theme_override_styles/panel = SubResource("StyleBoxFlat_ft7d1")
+
+[node name="MnemonicLabel" type="Label" parent="."]
+custom_minimum_size = Vector2(120, 0)
+offset_top = 1.0
+offset_right = 122.0
+offset_bottom = 61.0
+text = "AB"
+label_settings = SubResource("LabelSettings_0nq8g")
+horizontal_alignment = 1
+vertical_alignment = 1
