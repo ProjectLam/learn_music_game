@@ -62,6 +62,8 @@ func load_items() -> void:
 	
 	var result = await GBackend.client.list_matches_async(GBackend.session, min_players, max_players, limit, authoritative, label, query)
 	
+	print("Total Matches: ", result.matches.size())
+	
 	var match_ids = []
 	
 	for m in result.matches:
