@@ -13,7 +13,6 @@ var match_players_count = 0
 
 func _ready():
 	nSongSelection.connect("item_selected", _on_song_selected)
-	
 	GBackend.socket.connect("received_match_presence", _on_received_match_presence)
 
 func _on_Create_selected() -> void:
@@ -34,4 +33,8 @@ func _on_received_match_presence(p_presence: NakamaRTAPI.MatchPresenceEvent):
 		get_tree().change_scene_to_file("res://scenes/performance.tscn")
 
 func _on_BackBtn_pressed() -> void:
+	get_tree().change_scene_to_file("res://scenes/instrument_menu/instrument_menu.tscn")
+
+func _on_CancelBtn_pressed() -> void:
+	await GBackend.socket.leave_match_async(game_match.match_id)
 	get_tree().change_scene_to_file("res://scenes/instrument_menu/instrument_menu.tscn")
