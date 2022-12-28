@@ -16,10 +16,10 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_43b6m"]
 shader = ExtResource("3_ry738")
 shader_parameter/indicate = true
-shader_parameter/indicating_power = 1.0
-shader_parameter/lighting_point = Vector2(0.5, 0.5)
-shader_parameter/radius_base = 0.5
 shader_parameter/size = null
+shader_parameter/lighting_point = Vector2(0.5, 0.5)
+shader_parameter/indicating_power = 1.0
+shader_parameter/radius_base = 0.5
 shader_parameter/static_power = 0.4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_brs2d"]
@@ -136,6 +136,10 @@ offset_bottom = 464.0
 [node name="LoginBtn" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer" index="5"]
 offset_top = 489.0
 offset_bottom = 539.0
+
+[node name="Bottom" parent="LeftBar/VBoxContainer" index="2"]
+offset_top = 808.0
+offset_bottom = 983.0
 
 [node name="Bottom" parent="LeftBar/VBoxContainer" index="2"]
 offset_top = 808.0
