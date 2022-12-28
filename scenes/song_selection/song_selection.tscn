@@ -1,24 +1,19 @@
-[gd_scene load_steps=31 format=3 uid="uid://r5oy8h4p8suy"]
+[gd_scene load_steps=22 format=3 uid="uid://r5oy8h4p8suy"]
 
 [ext_resource type="Script" path="res://scenes/song_selection/song_selection.gd" id="1_w4sd3"]
 [ext_resource type="Texture2D" uid="uid://c4e8lna5vxx00" path="res://assets/gui/song_selection/songs-bg.png" id="2_wl6ga"]
 [ext_resource type="Shader" path="res://shaders/LightingBackground.gdshader" id="3_ry738"]
 [ext_resource type="PackedScene" uid="uid://drhti1f6dfqep" path="res://scenes/left_bar/left_bar.tscn" id="4_bgttp"]
 [ext_resource type="Texture2D" uid="uid://d1xyolkxthdp1" path="res://assets/gui/icons/down.png" id="5_cr51n"]
-[ext_resource type="Texture2D" uid="uid://cojmsogxnfbum" path="res://assets/gui/icons/page.png" id="5_m5rrm"]
-[ext_resource type="Texture2D" uid="uid://bcyql8pbvs5yj" path="res://assets/gui/icons/song.png" id="6_gbpvg"]
 [ext_resource type="Texture2D" uid="uid://1uht5wqqvkkv" path="res://assets/gui/icons/up.png" id="6_xy0pm"]
 [ext_resource type="Texture2D" uid="uid://dncor6oxblufk" path="res://assets/gui/song_selection/song-cover-frame.png" id="7_gdab5"]
-[ext_resource type="Texture2D" uid="uid://cxpbdejhyhyxu" path="res://assets/gui/icons/lyrics.png" id="7_j8hq1"]
-[ext_resource type="Texture2D" uid="uid://drypojyiolrwq" path="res://assets/gui/icons/settings.png" id="8_xv7lx"]
-[ext_resource type="Texture2D" uid="uid://de686ygqs5poa" path="res://assets/gui/icons/logout.png" id="9_quap2"]
 [ext_resource type="Texture2D" uid="uid://cu4qiedvo3tpg" path="res://assets/gui/song_selection/songs-list-circle.png" id="12_5xcv7"]
 [ext_resource type="Texture2D" uid="uid://ydg0vt7dcjkr" path="res://assets/gui/song_selection/song-cover.png" id="13_dk4qy"]
 [ext_resource type="PackedScene" uid="uid://kcofab2hm5wo" path="res://scenes/leaderboard/leaderboard.tscn" id="13_txwuv"]
 [ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="14_h6ddd"]
 [ext_resource type="FontFile" uid="uid://df06bw7a1s1u7" path="res://fonts/Montserrat-Bold.ttf" id="15_fnnqe"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ec2p8"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_43b6m"]
 shader = ExtResource("3_ry738")
 shader_parameter/indicate = true
 shader_parameter/size = null
@@ -27,34 +22,10 @@ shader_parameter/indicating_power = 1.0
 shader_parameter/radius_base = 0.5
 shader_parameter/static_power = 0.4
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_afwxd"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_brs2d"]
 bg_color = Color(0.0862745, 0.0313726, 0.176471, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qg117"]
-bg_color = Color(1, 1, 1, 0.0431373)
-corner_radius_top_left = 100
-corner_radius_top_right = 100
-corner_radius_bottom_right = 100
-corner_radius_bottom_left = 100
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hk23i"]
-bg_color = Color(1, 1, 1, 0.0431373)
-corner_radius_top_left = 100
-corner_radius_top_right = 100
-corner_radius_bottom_right = 100
-corner_radius_bottom_left = 100
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7rm1w"]
-bg_color = Color(1, 1, 1, 0.0431373)
-corner_radius_top_left = 100
-corner_radius_top_right = 100
-corner_radius_bottom_right = 100
-corner_radius_bottom_left = 100
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r2op2"]
-bg_color = Color(1, 1, 1, 0.117647)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_chwfm"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x708r"]
 bg_color = Color(0.980392, 0, 1, 1)
 border_width_bottom = 5
 border_color = Color(0.760784, 0, 0.776471, 1)
@@ -63,7 +34,7 @@ corner_radius_top_right = 100
 corner_radius_bottom_right = 100
 corner_radius_bottom_left = 100
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ac34n"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uuutn"]
 bg_color = Color(0.996078, 0.435294, 1, 1)
 border_width_bottom = 5
 border_color = Color(0.760784, 0, 0.776471, 1)
@@ -72,7 +43,7 @@ corner_radius_top_right = 100
 corner_radius_bottom_right = 100
 corner_radius_bottom_left = 100
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_601iy"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lpjho"]
 bg_color = Color(0.996078, 0.435294, 1, 1)
 border_width_bottom = 5
 border_color = Color(0.760784, 0, 0.776471, 1)
@@ -81,20 +52,20 @@ corner_radius_top_right = 100
 corner_radius_bottom_right = 100
 corner_radius_bottom_left = 100
 
-[sub_resource type="LabelSettings" id="LabelSettings_1jfti"]
+[sub_resource type="LabelSettings" id="LabelSettings_6dpm7"]
 line_spacing = 0.0
 font = ExtResource("14_h6ddd")
 font_size = 22
 
-[sub_resource type="LabelSettings" id="LabelSettings_kn7na"]
+[sub_resource type="LabelSettings" id="LabelSettings_vjqsb"]
 line_spacing = 0.0
 font = ExtResource("15_fnnqe")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q0s1r"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_84iau"]
 bg_color = Color(0.545098, 0, 0.505882, 0.27451)
 border_color = Color(0.992157, 0, 0.909804, 0.643137)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xgkjy"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_18t0q"]
 bg_color = Color(0.631373, 0.4, 0.647059, 0.27451)
 border_color = Color(0.992157, 0, 0.909804, 0.643137)
 
@@ -126,143 +97,49 @@ ignore_texture_size = true
 stretch_mode = 6
 
 [node name="Layer" type="Panel" parent="Background"]
-material = SubResource("ShaderMaterial_ec2p8")
+material = SubResource("ShaderMaterial_43b6m")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_afwxd")
+theme_override_styles/panel = SubResource("StyleBoxFlat_brs2d")
 
 [node name="LeftBar" parent="." instance=ExtResource("4_bgttp")]
 
 [node name="Middle" parent="LeftBar/VBoxContainer" index="1"]
 offset_bottom = 808.0
 
-[node name="Content" type="Control" parent="LeftBar/VBoxContainer/Middle" index="0"]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 97.0
+[node name="Content" parent="LeftBar/VBoxContainer/Middle" index="1"]
 offset_bottom = 702.0
 
-[node name="Menu" type="Control" parent="LeftBar/VBoxContainer/Middle/Content"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="LeftBar/VBoxContainer/Middle/Content/Menu"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 25
-alignment = 1
-
-[node name="Button" type="Button" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer"]
-custom_minimum_size = Vector2(50, 50)
-offset_left = 23.0
+[node name="Button" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer" index="0"]
 offset_top = 163.0
-offset_right = 73.0
 offset_bottom = 213.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_styles/normal = SubResource("StyleBoxFlat_qg117")
-theme_override_styles/hover = SubResource("StyleBoxFlat_hk23i")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_qg117")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_7rm1w")
-theme_override_styles/focus = SubResource("StyleBoxFlat_qg117")
-icon = ExtResource("5_m5rrm")
-icon_alignment = 1
 
-[node name="Button2" type="Button" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer"]
-custom_minimum_size = Vector2(50, 50)
-offset_left = 23.0
+[node name="Button2" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer" index="1"]
 offset_top = 238.0
-offset_right = 73.0
 offset_bottom = 288.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_styles/normal = SubResource("StyleBoxFlat_qg117")
-theme_override_styles/hover = SubResource("StyleBoxFlat_hk23i")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_qg117")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_7rm1w")
-theme_override_styles/focus = SubResource("StyleBoxFlat_qg117")
-icon = ExtResource("6_gbpvg")
-icon_alignment = 1
 
-[node name="Button3" type="Button" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer"]
-custom_minimum_size = Vector2(50, 50)
-offset_left = 23.0
+[node name="Button3" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer" index="2"]
 offset_top = 313.0
-offset_right = 73.0
 offset_bottom = 363.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_styles/normal = SubResource("StyleBoxFlat_qg117")
-theme_override_styles/hover = SubResource("StyleBoxFlat_hk23i")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_qg117")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_7rm1w")
-theme_override_styles/focus = SubResource("StyleBoxFlat_qg117")
-icon = ExtResource("7_j8hq1")
-icon_alignment = 1
 
-[node name="Button4" type="Button" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer"]
-custom_minimum_size = Vector2(50, 50)
-offset_left = 23.0
+[node name="Button4" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer" index="3"]
 offset_top = 388.0
-offset_right = 73.0
 offset_bottom = 438.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_styles/normal = SubResource("StyleBoxFlat_qg117")
-theme_override_styles/hover = SubResource("StyleBoxFlat_hk23i")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_qg117")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_7rm1w")
-theme_override_styles/focus = SubResource("StyleBoxFlat_qg117")
-icon = ExtResource("8_xv7lx")
-icon_alignment = 1
 
-[node name="Sep" type="Control" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer"]
-custom_minimum_size = Vector2(0, 1)
-layout_mode = 3
-anchors_preset = 0
+[node name="Sep" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer" index="4"]
 offset_top = 463.0
-offset_right = 97.0
 offset_bottom = 464.0
 
-[node name="PanelContainer" type="PanelContainer" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer/Sep"]
-anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 20.0
-offset_right = -20.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_vertical = 4
-theme_override_styles/panel = SubResource("StyleBoxFlat_r2op2")
-
-[node name="Button5" type="Button" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer"]
-custom_minimum_size = Vector2(50, 50)
-offset_left = 23.0
+[node name="LoginBtn" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer" index="5"]
 offset_top = 489.0
-offset_right = 73.0
 offset_bottom = 539.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_styles/normal = SubResource("StyleBoxFlat_qg117")
-theme_override_styles/hover = SubResource("StyleBoxFlat_hk23i")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_qg117")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_7rm1w")
-theme_override_styles/focus = SubResource("StyleBoxFlat_qg117")
-icon = ExtResource("9_quap2")
-icon_alignment = 1
 
-[node name="Empty" parent="LeftBar/VBoxContainer/Middle" index="1"]
-visible = false
+[node name="Bottom" parent="LeftBar/VBoxContainer" index="2"]
+offset_top = 808.0
+offset_bottom = 983.0
 
 [node name="Bottom" parent="LeftBar/VBoxContainer" index="2"]
 offset_top = 808.0
@@ -317,11 +194,11 @@ theme_override_constants/separation = 25
 custom_minimum_size = Vector2(50, 50)
 offset_right = 50.0
 offset_bottom = 50.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_chwfm")
-theme_override_styles/hover = SubResource("StyleBoxFlat_chwfm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_ac34n")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_chwfm")
-theme_override_styles/focus = SubResource("StyleBoxFlat_chwfm")
+theme_override_styles/normal = SubResource("StyleBoxFlat_x708r")
+theme_override_styles/hover = SubResource("StyleBoxFlat_x708r")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_uuutn")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_x708r")
+theme_override_styles/focus = SubResource("StyleBoxFlat_x708r")
 icon = ExtResource("5_cr51n")
 icon_alignment = 1
 
@@ -330,11 +207,11 @@ custom_minimum_size = Vector2(50, 50)
 offset_left = 75.0
 offset_right = 125.0
 offset_bottom = 50.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_chwfm")
-theme_override_styles/hover = SubResource("StyleBoxFlat_chwfm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_601iy")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_chwfm")
-theme_override_styles/focus = SubResource("StyleBoxFlat_chwfm")
+theme_override_styles/normal = SubResource("StyleBoxFlat_x708r")
+theme_override_styles/hover = SubResource("StyleBoxFlat_x708r")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_lpjho")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_x708r")
+theme_override_styles/focus = SubResource("StyleBoxFlat_x708r")
 icon = ExtResource("6_xy0pm")
 icon_alignment = 1
 
@@ -424,7 +301,7 @@ offset_bottom = 57.0
 offset_right = 110.0
 offset_bottom = 23.0
 text = "GET LUCKY"
-label_settings = SubResource("LabelSettings_1jfti")
+label_settings = SubResource("LabelSettings_6dpm7")
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -433,7 +310,7 @@ offset_top = 27.0
 offset_right = 110.0
 offset_bottom = 48.0
 text = "Daft Punk"
-label_settings = SubResource("LabelSettings_kn7na")
+label_settings = SubResource("LabelSettings_vjqsb")
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -448,41 +325,24 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="leaderboard" parent="Right/SongDetails/Leaderboard" instance=ExtResource("13_txwuv")]
-style_odd = SubResource("StyleBoxFlat_q0s1r")
-style_even = SubResource("StyleBoxFlat_xgkjy")
+style_odd = SubResource("StyleBoxFlat_84iau")
+style_even = SubResource("StyleBoxFlat_18t0q")
 
 [node name="VBoxContainer" parent="Right/SongDetails/Leaderboard/leaderboard" index="0"]
-offset_left = 1.0
-offset_top = 1.0
 offset_right = 939.44
 offset_bottom = 476.72
 
 [node name="Header" parent="Right/SongDetails/Leaderboard/leaderboard/VBoxContainer" index="0"]
 offset_right = 938.0
-offset_bottom = 60.0
-
-[node name="TitleLabel" parent="Right/SongDetails/Leaderboard/leaderboard/VBoxContainer/Header/HBoxContainer" index="0"]
-offset_top = 20.0
-offset_right = 180.0
-offset_bottom = 39.0
 
 [node name="Spacer" parent="Right/SongDetails/Leaderboard/leaderboard/VBoxContainer/Header/HBoxContainer" index="1"]
-offset_left = 184.0
 offset_right = 734.0
-offset_bottom = 60.0
 
 [node name="Actions" parent="Right/SongDetails/Leaderboard/leaderboard/VBoxContainer/Header/HBoxContainer" index="2"]
 offset_left = 738.0
 offset_right = 938.0
-offset_bottom = 60.0
-
-[node name="ShowAllBtn" parent="Right/SongDetails/Leaderboard/leaderboard/VBoxContainer/Header/HBoxContainer/Actions" index="0"]
-offset_left = 50.0
-offset_right = 150.0
-offset_bottom = 60.0
 
 [node name="Content" parent="Right/SongDetails/Leaderboard/leaderboard/VBoxContainer" index="1"]
-offset_top = 64.0
 offset_right = 938.0
 offset_bottom = 475.0
 

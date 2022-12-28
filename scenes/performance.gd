@@ -96,3 +96,13 @@ func _ready():
 	audio_stream.stream = current_stream
 	audio_stream.play()
 #	audio_stream.volume_db = -16
+
+
+func _process(delta: float) -> void:
+	if Input.is_action_pressed("ui_cancel"):
+		get_tree().change_scene_to_file("res://scenes/instrument_selection/instrument_selection.tscn")
+		return
+
+
+func _on_QuitBtn_pressed() -> void:
+	get_tree().change_scene_to_file("res://scenes/instrument_selection/instrument_selection.tscn")

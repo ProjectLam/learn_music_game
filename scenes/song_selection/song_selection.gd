@@ -1,4 +1,7 @@
 extends Control
+class_name SongSelection
+
+signal item_selected
 
 
 var cSongSelectionItem = preload("res://scenes/song_selection/song_selection_item.tscn")
@@ -25,6 +28,7 @@ var tween_x: Tween
 
 var h_ratio: int = 1
 
+var selected_index: int
 
 func _ready():
 	load_songs()
@@ -70,7 +74,8 @@ func load_songs():
 				_handle_song_dir(songFile,dir.get_current_dir() + "/"+ songFile) # ugly, why isn't there any easier way to do this
 			elif songFile.ends_with(".zip"):
 				#TODO in future allow songs to be .zip files
-				print("Found zip (Not implemented yet) - " + songFile)
+				_handle_song_zip(dir.get_current_dir() + "/" + songFile)
+				print("Found zip - " + songFile)
 		dir.list_dir_end()
 
 
@@ -328,9 +333,13 @@ func _on_Songs_item_rect_changed():
 func _on_Item_selected(p_nItem: SongSelectionItem):
 	var song_index = p_nItem.get_index()
 	
-	select_item(song_index)
-	PlayerVariables.current_song = PlayerVariables.songs[song_index]
-	get_tree().change_scene_to_file("res://scenes/performance.tscn")
+	if song_index != selected_index:
+		selected_index = song_index
+		select_item(song_index)
+		emit_signal("item_selected", p_nItem, song_index)
+	else:
+		PlayerVariables.current_song = PlayerVariables.songs[song_index]
+		get_tree().change_scene_to_file("res://scenes/performance.tscn")
 
 func _on_DownBtn_pressed():
 	go_down()

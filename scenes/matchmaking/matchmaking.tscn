@@ -1,0 +1,519 @@
+[gd_scene load_steps=28 format=3 uid="uid://bv37gq72fhn1c"]
+
+[ext_resource type="Script" path="res://scenes/matchmaking/matchmaking.gd" id="1_62mgw"]
+[ext_resource type="Texture2D" uid="uid://dxcxogdwflpig" path="res://assets/gui/main/background.png" id="2_i2m6c"]
+[ext_resource type="Shader" path="res://shaders/LightingBackground.gdshader" id="3_11mtd"]
+[ext_resource type="PackedScene" uid="uid://drhti1f6dfqep" path="res://scenes/left_bar/left_bar.tscn" id="4_cayno"]
+[ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="5_pdkhr"]
+[ext_resource type="Texture2D" uid="uid://bcyql8pbvs5yj" path="res://assets/gui/icons/song.png" id="6_tlsap"]
+[ext_resource type="Texture2D" uid="uid://cmdd61q57jiu" path="res://assets/gui/icons/course.png" id="7_th5b8"]
+[ext_resource type="PackedScene" uid="uid://bvqgs74gtjvsj" path="res://scenes/instrument_menu/instrument_menu_action.tscn" id="8_mij85"]
+[ext_resource type="Texture2D" uid="uid://4jhy1ls4ta6u" path="res://assets/gui/blur.jpg" id="9_bqm6e"]
+[ext_resource type="FontFile" uid="uid://df06bw7a1s1u7" path="res://fonts/Montserrat-Bold.ttf" id="10_1qgjq"]
+[ext_resource type="PackedScene" uid="uid://ba0n1dg0yxtpj" path="res://scenes/matches/matches.tscn" id="10_o03mo"]
+[ext_resource type="Script" path="res://scenes/instrument_selection/instrument_selection_item.gd" id="12_gknbb"]
+[ext_resource type="Shader" path="res://scenes/instrument_selection/item_circle.gdshader" id="13_iscuv"]
+[ext_resource type="PackedScene" uid="uid://r5oy8h4p8suy" path="res://scenes/song_selection/song_selection.tscn" id="13_tr8mu"]
+[ext_resource type="Texture2D" uid="uid://bludcfr13nglg" path="res://assets/gui/main/mandoline.png" id="14_nk32l"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_y6ivb"]
+shader = ExtResource("3_11mtd")
+shader_parameter/indicate = true
+shader_parameter/indicating_power = 1.0
+shader_parameter/lighting_point = Vector2(0.5, 0.5)
+shader_parameter/radius_base = 0.5
+shader_parameter/size = null
+shader_parameter/static_power = 0.4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_utcdj"]
+bg_color = Color(0.0862745, 0.0313726, 0.176471, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_garyf"]
+line_spacing = 0.0
+font = ExtResource("5_pdkhr")
+font_size = 90
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qsdl1"]
+bg_color = Color(0.282353, 0.192157, 0.454902, 0.933333)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 0.823529, 0.964706, 0.2)
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+
+[sub_resource type="LabelSettings" id="LabelSettings_dgac7"]
+line_spacing = 0.0
+font = ExtResource("5_pdkhr")
+font_size = 40
+
+[sub_resource type="GDScript" id="GDScript_40e5y"]
+script/source = "extends Label
+
+func _process(delta: float) -> void:
+	pivot_offset.x = get_rect().size.x / 2
+	pivot_offset.y = get_rect().size.y / 2
+"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_byefl"]
+content_margin_left = 50.0
+content_margin_top = 20.0
+content_margin_right = 50.0
+content_margin_bottom = 23.0
+bg_color = Color(0.760784, 0, 0.776471, 1)
+border_width_bottom = 5
+border_color = Color(0.54902, 0, 0.560784, 1)
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+shadow_color = Color(1, 0.262745, 0.784314, 0.14902)
+shadow_size = 27
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_br7jk"]
+content_margin_left = 50.0
+content_margin_top = 20.0
+content_margin_right = 50.0
+content_margin_bottom = 23.0
+bg_color = Color(0.886275, 0, 0.905882, 1)
+border_width_bottom = 5
+border_color = Color(0.54902, 0, 0.560784, 1)
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+shadow_color = Color(1, 0.337255, 0.792157, 0.168627)
+shadow_size = 25
+
+[sub_resource type="Animation" id="Animation_igqv6"]
+resource_name = "Default"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CenterContainer/Text/Label:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.5, 1.5), Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_b00j2"]
+_data = {
+"Default": SubResource("Animation_igqv6")
+}
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yxg63"]
+shader = ExtResource("13_iscuv")
+shader_parameter/albedo = Color(0.968627, 0, 0.8, 0.458824)
+shader_parameter/animate = false
+shader_parameter/indicate = false
+shader_parameter/indicating_power = 1.0
+shader_parameter/lighting_point = Vector2(0.5, 0.5)
+shader_parameter/radius = 1.0
+shader_parameter/radius_base = 0.5
+shader_parameter/size = Vector2(600, 600)
+shader_parameter/square_scale = 0.509
+shader_parameter/static_power = 0.5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pcstd"]
+bg_color = Color(0.145098, 0.462745, 1, 1)
+
+[node name="Matchmaking" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(-149, 500)
+script = ExtResource("1_62mgw")
+
+[node name="Background" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="Background"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_i2m6c")
+stretch_mode = 6
+
+[node name="Layer" type="Panel" parent="Background"]
+material = SubResource("ShaderMaterial_y6ivb")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_utcdj")
+
+[node name="LeftBar" parent="." instance=ExtResource("4_cayno")]
+
+[node name="Middle" parent="LeftBar/VBoxContainer" index="1"]
+offset_bottom = 808.0
+
+[node name="Content" parent="LeftBar/VBoxContainer/Middle" index="1"]
+offset_bottom = 702.0
+
+[node name="Button" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer" index="0"]
+offset_top = 163.0
+offset_bottom = 213.0
+
+[node name="Button2" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer" index="1"]
+offset_top = 238.0
+offset_bottom = 288.0
+
+[node name="Button3" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer" index="2"]
+offset_top = 313.0
+offset_bottom = 363.0
+
+[node name="Button4" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer" index="3"]
+offset_top = 388.0
+offset_bottom = 438.0
+
+[node name="Sep" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer" index="4"]
+offset_top = 463.0
+offset_bottom = 464.0
+
+[node name="LoginBtn" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer" index="5"]
+offset_top = 489.0
+offset_bottom = 539.0
+
+[node name="Bottom" parent="LeftBar/VBoxContainer" index="2"]
+offset_top = 808.0
+offset_bottom = 983.0
+
+[node name="Right" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 204.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Left" type="Control" parent="Right"]
+layout_mode = 3
+anchor_right = 0.4
+anchor_bottom = 1.0
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Right/Left"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Spacer" type="Control" parent="Right/Left/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 686.0
+offset_bottom = 50.0
+
+[node name="BackBtn" type="Button" parent="Right/Left/VBoxContainer"]
+offset_top = 54.0
+offset_right = 686.0
+offset_bottom = 85.0
+theme_override_colors/font_color = Color(0.980392, 0, 1, 1)
+theme_override_font_sizes/font_size = 18
+text = "< Back"
+flat = true
+alignment = 0
+
+[node name="InstrumentTitle" type="Label" parent="Right/Left/VBoxContainer"]
+offset_top = 89.0
+offset_right = 686.0
+offset_bottom = 180.0
+text = "MANDOLINE"
+label_settings = SubResource("LabelSettings_garyf")
+vertical_alignment = 1
+
+[node name="Details" type="HBoxContainer" parent="Right/Left/VBoxContainer"]
+offset_top = 184.0
+offset_right = 686.0
+offset_bottom = 208.0
+theme_override_constants/separation = 20
+
+[node name="Songs" type="HBoxContainer" parent="Right/Left/VBoxContainer/Details"]
+offset_right = 103.0
+offset_bottom = 24.0
+theme_override_constants/separation = 10
+
+[node name="Icon" type="TextureRect" parent="Right/Left/VBoxContainer/Details/Songs"]
+custom_minimum_size = Vector2(24, 0)
+offset_right = 24.0
+offset_bottom = 24.0
+texture = ExtResource("6_tlsap")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Number" type="Label" parent="Right/Left/VBoxContainer/Details/Songs"]
+offset_left = 34.0
+offset_right = 45.0
+offset_bottom = 24.0
+mouse_filter = 1
+text = "0"
+
+[node name="SongsCountLabel" type="Label" parent="Right/Left/VBoxContainer/Details/Songs"]
+offset_left = 55.0
+offset_right = 103.0
+offset_bottom = 24.0
+mouse_filter = 1
+text = "songs"
+
+[node name="Courses" type="HBoxContainer" parent="Right/Left/VBoxContainer/Details"]
+offset_left = 123.0
+offset_right = 240.0
+offset_bottom = 24.0
+theme_override_constants/separation = 10
+
+[node name="Icon" type="TextureRect" parent="Right/Left/VBoxContainer/Details/Courses"]
+custom_minimum_size = Vector2(24, 0)
+offset_right = 24.0
+offset_bottom = 24.0
+texture = ExtResource("7_th5b8")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Number" type="Label" parent="Right/Left/VBoxContainer/Details/Courses"]
+offset_left = 34.0
+offset_right = 45.0
+offset_bottom = 24.0
+mouse_filter = 1
+text = "0"
+
+[node name="CoursesCountLabel" type="Label" parent="Right/Left/VBoxContainer/Details/Courses"]
+offset_left = 55.0
+offset_right = 117.0
+offset_bottom = 24.0
+mouse_filter = 1
+text = "courses"
+
+[node name="Spacer2" type="Control" parent="Right/Left/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 3
+anchors_preset = 0
+offset_top = 212.0
+offset_right = 686.0
+offset_bottom = 262.0
+
+[node name="Actions" type="VBoxContainer" parent="Right/Left/VBoxContainer"]
+offset_top = 266.0
+offset_right = 686.0
+offset_bottom = 346.0
+theme_override_constants/separation = 15
+
+[node name="Create" parent="Right/Left/VBoxContainer/Actions" instance=ExtResource("8_mij85")]
+offset_right = 686.0
+offset_bottom = 80.0
+metadata/_edit_group_ = true
+
+[node name="Background" parent="Right/Left/VBoxContainer/Actions/Create" index="0"]
+offset_right = 685.0
+
+[node name="HBoxContainer" parent="Right/Left/VBoxContainer/Actions/Create" index="1"]
+offset_right = 685.0
+
+[node name="HBoxContainer" parent="Right/Left/VBoxContainer/Actions/Create/HBoxContainer" index="0"]
+offset_right = 684.0
+
+[node name="Icon" parent="Right/Left/VBoxContainer/Actions/Create/HBoxContainer/HBoxContainer" index="1"]
+texture = ExtResource("6_tlsap")
+
+[node name="Label" parent="Right/Left/VBoxContainer/Actions/Create/HBoxContainer/HBoxContainer" index="3"]
+offset_right = 606.0
+text = "CREATE NEW MATCH"
+
+[node name="Right" parent="Right/Left/VBoxContainer/Actions/Create/HBoxContainer/HBoxContainer" index="4"]
+offset_left = 610.0
+offset_right = 675.0
+
+[node name="Spacer3" parent="Right/Left/VBoxContainer/Actions/Create/HBoxContainer/HBoxContainer" index="5"]
+offset_left = 679.0
+offset_right = 684.0
+
+[node name="BtnOverlay" parent="Right/Left/VBoxContainer/Actions/Create" index="2"]
+offset_right = 685.0
+metadata/_edit_lock_ = true
+
+[node name="Spacer3" type="Control" parent="Right/Left/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 3
+anchors_preset = 0
+offset_top = 350.0
+offset_right = 686.0
+offset_bottom = 400.0
+
+[node name="WaitingOpponent" type="PanelContainer" parent="Right/Left/VBoxContainer"]
+visible = false
+offset_top = 404.0
+offset_right = 686.0
+offset_bottom = 713.0
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_qsdl1")
+
+[node name="Background" type="TextureRect" parent="Right/Left/VBoxContainer/WaitingOpponent"]
+self_modulate = Color(1, 1, 1, 0.156863)
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 685.0
+offset_bottom = 308.0
+texture = ExtResource("9_bqm6e")
+ignore_texture_size = true
+stretch_mode = 6
+
+[node name="CenterContainer" type="CenterContainer" parent="Right/Left/VBoxContainer/WaitingOpponent"]
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 685.0
+offset_bottom = 308.0
+
+[node name="Text" type="VBoxContainer" parent="Right/Left/VBoxContainer/WaitingOpponent/CenterContainer"]
+offset_left = 129.0
+offset_top = 84.0
+offset_right = 554.0
+offset_bottom = 223.0
+
+[node name="Label" type="Label" parent="Right/Left/VBoxContainer/WaitingOpponent/CenterContainer/Text"]
+offset_right = 425.0
+offset_bottom = 40.0
+text = "Waiting for opponent"
+label_settings = SubResource("LabelSettings_dgac7")
+script = SubResource("GDScript_40e5y")
+
+[node name="Spacer" type="Control" parent="Right/Left/VBoxContainer/WaitingOpponent/CenterContainer/Text"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 3
+anchors_preset = 0
+offset_top = 44.0
+offset_right = 425.0
+offset_bottom = 69.0
+
+[node name="CancelBtn" type="Button" parent="Right/Left/VBoxContainer/WaitingOpponent/CenterContainer/Text"]
+offset_left = 130.0
+offset_top = 73.0
+offset_right = 295.0
+offset_bottom = 139.0
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("10_1qgjq")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_byefl")
+theme_override_styles/hover = SubResource("StyleBoxFlat_br7jk")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_byefl")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_byefl")
+theme_override_styles/focus = SubResource("StyleBoxFlat_byefl")
+text = "Cancel"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Right/Left/VBoxContainer/WaitingOpponent"]
+libraries = {
+"": SubResource("AnimationLibrary_b00j2")
+}
+
+[node name="Matches" parent="Right/Left/VBoxContainer" instance=ExtResource("10_o03mo")]
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_top = 404.0
+offset_right = 686.0
+offset_bottom = 1026.0
+grow_horizontal = 1
+grow_vertical = 1
+size_flags_vertical = 3
+
+[node name="Spacer4" type="Control" parent="Right/Left/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 3
+anchors_preset = 0
+offset_top = 1030.0
+offset_right = 686.0
+offset_bottom = 1080.0
+
+[node name="Right" type="Control" parent="Right"]
+layout_mode = 3
+anchor_left = 0.4
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="InstrumentBox" type="Control" parent="Right/Right"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -254.5
+offset_top = -254.5
+offset_right = 254.5
+offset_bottom = 254.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+script = ExtResource("12_gknbb")
+metadata/_edit_group_ = true
+
+[node name="Circle" type="Control" parent="Right/Right/InstrumentBox"]
+material = SubResource("ShaderMaterial_yxg63")
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(260, 260)
+mouse_filter = 1
+
+[node name="Layer" type="Panel" parent="Right/Right/InstrumentBox/Circle"]
+use_parent_material = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_pcstd")
+
+[node name="Image" type="TextureRect" parent="Right/Right/InstrumentBox"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -281.5
+offset_top = -255.5
+offset_right = 280.5
+offset_bottom = 256.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("14_nk32l")
+
+[node name="SongSelection" parent="." instance=ExtResource("13_tr8mu")]
+visible = false
+
+[connection signal="script_changed" from="." to="." method="_on_script_changed"]
+[connection signal="pressed" from="Right/Left/VBoxContainer/BackBtn" to="." method="_on_BackBtn_pressed"]
+[connection signal="selected" from="Right/Left/VBoxContainer/Actions/Create" to="." method="_on_Create_selected"]
+[connection signal="pressed" from="Right/Left/VBoxContainer/WaitingOpponent/CenterContainer/Text/CancelBtn" to="." method="_on_CancelBtn_pressed"]
+[connection signal="mouse_entered" from="Right/Right/InstrumentBox" to="Right/Right/InstrumentBox" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Right/Right/InstrumentBox" to="Right/Right/InstrumentBox" method="_on_mouse_exited"]
+
+[editable path="LeftBar"]
+[editable path="Right/Left/VBoxContainer/Actions/Create"]
