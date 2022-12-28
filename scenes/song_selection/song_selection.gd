@@ -14,7 +14,7 @@ var cSongSelectionItem = preload("res://scenes/song_selection/song_selection_ite
 
 var item_height: float
 var middle_y: float
-var items_count: int
+var items_count: int = 0
 
 var offset: int = 0
 var index: int
@@ -32,10 +32,9 @@ var selected_index: int
 
 func _ready():
 	load_songs()
-	items_count = nItems.get_child_count()
-	if items_count:
+	if PlayerVariables.songs.size() > 0:
 		while items_count < items_number:
-			load_songs()
+			_add_song_select_items()
 			items_count = nItems.get_child_count()
 	
 	index = 3
@@ -118,13 +117,6 @@ func _handle_song_dir(songFile:String, curPath:String):
 			sp.parse_xml_from_file(full_xml, song)
 			#NOTE  TODO this is the lead guitar Xml File, there are up to 4 other ones, including vocals
 	
-	var nItem: SongSelectionItem = cSongSelectionItem.instantiate()
-	nItems.add_child(nItem)
-	nItem.connect("selected", _on_Item_selected)
-	nItem.find_child("NameLabel").text = songFile
-	nItem.song = TSong.new()
-	nItem.song.file_name = songFile
-	
 	dir.list_dir_end()
 	dir.change_dir("..")
 	dir.change_dir("..")
@@ -149,6 +141,16 @@ func _handle_song_dir(songFile:String, curPath:String):
 	
 	dir.change_dir("..")
 	dir.change_dir("..")
+
+
+func _add_song_select_items():
+	for song in PlayerVariables.songs:
+		var nItem: SongSelectionItem = cSongSelectionItem.instantiate()
+		nItems.add_child(nItem)
+		nItem.connect("selected", _on_Item_selected)
+		nItem.find_child("NameLabel").text = song.title
+		nItem.song = TSong.new()
+		nItem.song.file_name = song.title
 
 
 func _handle_song_zip(path: String):
