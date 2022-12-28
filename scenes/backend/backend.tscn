@@ -1,6 +1,187 @@
-[gd_scene load_steps=2 format=3 uid="uid://curuw1ib2jb24"]
+[gd_scene load_steps=17 format=3 uid="uid://curuw1ib2jb24"]
 
 [ext_resource type="Script" path="res://scenes/backend/backend.gd" id="1_hbsao"]
+[ext_resource type="Texture2D" uid="uid://4jhy1ls4ta6u" path="res://assets/gui/blur.jpg" id="2_52skp"]
+[ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="3_43bxo"]
+[ext_resource type="Texture2D" uid="uid://d31d65aktssi6" path="res://assets/gui/icons/close.png" id="4_16o3t"]
+[ext_resource type="FontFile" uid="uid://df06bw7a1s1u7" path="res://fonts/Montserrat-Bold.ttf" id="4_nt7wx"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3l5bg"]
+bg_color = Color(0.282353, 0.192157, 0.454902, 0.933333)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 0.823529, 0.964706, 0.2)
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+
+[sub_resource type="Animation" id="Animation_37krx"]
+resource_name = "Open"
+length = 0.5
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(1.2, 1.2), Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_pxk43"]
+resource_name = "Close"
+length = 0.5
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.2, 1.2), Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bs375"]
+_data = {
+"Close": SubResource("Animation_pxk43"),
+"Open": SubResource("Animation_37krx")
+}
+
+[sub_resource type="LabelSettings" id="LabelSettings_k1egp"]
+font = ExtResource("3_43bxo")
+font_size = 40
+
+[sub_resource type="LabelSettings" id="LabelSettings_pyifv"]
+font_size = 40
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7q4ep"]
+content_margin_left = 50.0
+content_margin_top = 20.0
+content_margin_right = 50.0
+content_margin_bottom = 23.0
+bg_color = Color(0.760784, 0, 0.776471, 1)
+border_width_bottom = 5
+border_color = Color(0.54902, 0, 0.560784, 1)
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+shadow_color = Color(1, 0.262745, 0.784314, 0.14902)
+shadow_size = 27
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lliht"]
+content_margin_left = 50.0
+content_margin_top = 20.0
+content_margin_right = 50.0
+content_margin_bottom = 23.0
+bg_color = Color(0.886275, 0, 0.905882, 1)
+border_width_bottom = 5
+border_color = Color(0.54902, 0, 0.560784, 1)
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+shadow_color = Color(1, 0.337255, 0.792157, 0.168627)
+shadow_size = 25
+
+[sub_resource type="Animation" id="Animation_t6fi2"]
+resource_name = "Open"
+length = 0.5
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(1.2, 1.2), Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_28yan"]
+resource_name = "Close"
+length = 0.5
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.2, 1.2), Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3t8np"]
+_data = {
+"Close": SubResource("Animation_28yan"),
+"Open": SubResource("Animation_t6fi2")
+}
 
 [node name="Backend" type="Control"]
 layout_mode = 3
@@ -10,3 +191,183 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_hbsao")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="LoginFailedDialog" type="PanelContainer" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -341.0
+offset_top = -361.5
+offset_right = 341.0
+offset_bottom = 361.5
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(341, 361.5)
+theme_override_styles/panel = SubResource("StyleBoxFlat_3l5bg")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/LoginFailedDialog"]
+libraries = {
+"": SubResource("AnimationLibrary_bs375")
+}
+
+[node name="Background" type="TextureRect" parent="CanvasLayer/LoginFailedDialog"]
+self_modulate = Color(1, 1, 1, 0.156863)
+layout_mode = 2
+texture = ExtResource("2_52skp")
+ignore_texture_size = true
+stretch_mode = 6
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/LoginFailedDialog"]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/LoginFailedDialog/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/LoginFailedDialog/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Login Failed"
+label_settings = SubResource("LabelSettings_k1egp")
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="CanvasLayer/LoginFailedDialog/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Your email or password were wrong!"
+label_settings = SubResource("LabelSettings_pyifv")
+horizontal_alignment = 1
+
+[node name="Spacer" type="Control" parent="CanvasLayer/LoginFailedDialog/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="OkBtn" type="Button" parent="CanvasLayer/LoginFailedDialog/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("4_nt7wx")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_7q4ep")
+theme_override_styles/hover = SubResource("StyleBoxFlat_lliht")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_7q4ep")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_7q4ep")
+theme_override_styles/focus = SubResource("StyleBoxFlat_7q4ep")
+text = "Ok"
+
+[node name="Overlay" type="Control" parent="CanvasLayer/LoginFailedDialog"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="CloseBtn" type="Button" parent="CanvasLayer/LoginFailedDialog/Overlay"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -52.0
+offset_top = 25.0
+offset_right = -25.0
+offset_bottom = 52.0
+grow_horizontal = 0
+icon = ExtResource("4_16o3t")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
+[node name="ConnectionFailedDialog" type="PanelContainer" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -341.0
+offset_top = -361.5
+offset_right = 341.0
+offset_bottom = 361.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.2, 1.2)
+pivot_offset = Vector2(341, 361.5)
+theme_override_styles/panel = SubResource("StyleBoxFlat_3l5bg")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/ConnectionFailedDialog"]
+libraries = {
+"": SubResource("AnimationLibrary_3t8np")
+}
+
+[node name="Background" type="TextureRect" parent="CanvasLayer/ConnectionFailedDialog"]
+self_modulate = Color(1, 1, 1, 0.156863)
+layout_mode = 2
+texture = ExtResource("2_52skp")
+ignore_texture_size = true
+stretch_mode = 6
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/ConnectionFailedDialog"]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/ConnectionFailedDialog/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/ConnectionFailedDialog/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Connection Failed"
+label_settings = SubResource("LabelSettings_k1egp")
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="CanvasLayer/ConnectionFailedDialog/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Connection failed to server!"
+label_settings = SubResource("LabelSettings_pyifv")
+horizontal_alignment = 1
+
+[node name="Spacer" type="Control" parent="CanvasLayer/ConnectionFailedDialog/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="OkBtn" type="Button" parent="CanvasLayer/ConnectionFailedDialog/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("4_nt7wx")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_7q4ep")
+theme_override_styles/hover = SubResource("StyleBoxFlat_lliht")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_7q4ep")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_7q4ep")
+theme_override_styles/focus = SubResource("StyleBoxFlat_7q4ep")
+text = "Ok"
+
+[node name="Overlay" type="Control" parent="CanvasLayer/ConnectionFailedDialog"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="CloseBtn" type="Button" parent="CanvasLayer/ConnectionFailedDialog/Overlay"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -52.0
+offset_top = 25.0
+offset_right = -25.0
+offset_bottom = 52.0
+grow_horizontal = 0
+icon = ExtResource("4_16o3t")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
+[connection signal="pressed" from="CanvasLayer/LoginFailedDialog/MarginContainer/VBoxContainer/OkBtn" to="." method="_on_LoginFailedDialog_OkBtn_pressed"]
+[connection signal="pressed" from="CanvasLayer/LoginFailedDialog/Overlay/CloseBtn" to="." method="_on_LoginFailedDialog_CloseBtn_pressed"]
+[connection signal="pressed" from="CanvasLayer/ConnectionFailedDialog/MarginContainer/VBoxContainer/OkBtn" to="." method="_on_ConnectionFailedDialog_OkBtn_pressed"]
+[connection signal="pressed" from="CanvasLayer/ConnectionFailedDialog/Overlay/CloseBtn" to="." method="_on_ConnectionFailedDialog_CloseBtn_pressed"]

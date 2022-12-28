@@ -79,6 +79,16 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://scenes/song_parser/level.gd"
 }, {
+"base": "Control",
+"class": &"Matches",
+"language": &"GDScript",
+"path": "res://scenes/matches/matches.gd"
+}, {
+"base": "PanelContainer",
+"class": &"MatchesItem",
+"language": &"GDScript",
+"path": "res://scenes/matches/matches_item.gd"
+}, {
 "base": "RefCounted",
 "class": &"NakamaAPI",
 "language": &"GDScript",
@@ -195,6 +205,11 @@ _global_script_classes=[{
 "path": "res://scenes/song_parser/parser.gd"
 }, {
 "base": "Control",
+"class": &"SongSelection",
+"language": &"GDScript",
+"path": "res://scenes/song_selection/song_selection.gd"
+}, {
+"base": "Control",
 "class": &"SongSelectionItem",
 "language": &"GDScript",
 "path": "res://scenes/song_selection/song_selection_item.gd"
@@ -213,6 +228,11 @@ _global_script_classes=[{
 "class": &"TLeaderboardItem",
 "language": &"GDScript",
 "path": "res://scenes/leaderboard/t_leaderboard_item.gd"
+}, {
+"base": "Object",
+"class": &"TMatchesItem",
+"language": &"GDScript",
+"path": "res://scenes/matches/t_matches_item.gd"
 }, {
 "base": "Object",
 "class": &"TSong",
@@ -254,6 +274,8 @@ _global_script_class_icons={
 "Leaderboard": "",
 "LeaderboardItem": "",
 "Level": "",
+"Matches": "",
+"MatchesItem": "",
 "NakamaAPI": "",
 "NakamaAsyncResult": "",
 "NakamaClient": "",
@@ -277,10 +299,12 @@ _global_script_class_icons={
 "Score": "",
 "Song": "",
 "SongParser": "",
+"SongSelection": "",
 "SongSelectionItem": "",
 "TInstrumentSelectionItem": "",
 "TInstrumentSelectionItems": "",
 "TLeaderboardItem": "",
+"TMatchesItem": "",
 "TSong": "",
 "TUser": "",
 "Utils": "",
@@ -307,11 +331,10 @@ NoteFrequency="*res://autoload/note_frequency.gd"
 InstrumentInput="*res://autoload/instrument_input/instrument_input.tscn"
 Debug="*res://autoload/debug/debug.tscn"
 SessionVariables="*res://autoload/session_variables.gd"
+Nakama="*res://addons/com.heroiclabs.nakama/Nakama.gd"
 GLoginDialog="*res://scenes/login_dialog/login_dialog.tscn"
 GRegisterDialog="*res://scenes/register_dialog/register_dialog.tscn"
 GDialogs="*res://scenes/dialogs/dialogs.tscn"
-Nakama="*res://addons/com.heroiclabs.nakama/Nakama.gd"
-SessionVariables="*res://autoload/session_variables.gd"
 GGoogleAuth="*res://scenes/google_auth/google_auth.tscn"
 GBackend="*res://scenes/backend/backend.tscn"
 

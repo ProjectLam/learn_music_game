@@ -1,8 +1,13 @@
-[gd_scene load_steps=8 format=3 uid="uid://drhti1f6dfqep"]
+[gd_scene load_steps=17 format=3 uid="uid://drhti1f6dfqep"]
 
 [ext_resource type="Texture2D" uid="uid://ctu1miqp425c5" path="res://assets/gui/icons/casette.png" id="1_fr83g"]
 [ext_resource type="Script" path="res://scenes/left_bar/left_bar.gd" id="1_gck2n"]
 [ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="2_norfk"]
+[ext_resource type="Texture2D" uid="uid://cojmsogxnfbum" path="res://assets/gui/icons/page.png" id="4_aqkcr"]
+[ext_resource type="Texture2D" uid="uid://bcyql8pbvs5yj" path="res://assets/gui/icons/song.png" id="5_pf3wh"]
+[ext_resource type="Texture2D" uid="uid://cxpbdejhyhyxu" path="res://assets/gui/icons/lyrics.png" id="6_1kbv2"]
+[ext_resource type="Texture2D" uid="uid://drypojyiolrwq" path="res://assets/gui/icons/settings.png" id="7_1q55x"]
+[ext_resource type="Texture2D" uid="uid://de686ygqs5poa" path="res://assets/gui/icons/logout.png" id="8_mbv55"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ja2ug"]
 bg_color = Color(1, 1, 1, 0.145098)
@@ -16,6 +21,30 @@ bg_color = Color(1, 1, 1, 0.0509804)
 font = ExtResource("2_norfk")
 font_size = 42
 font_color = Color(1, 1, 1, 0.192157)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ixvow"]
+bg_color = Color(1, 1, 1, 0.0431373)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v4d1s"]
+bg_color = Color(1, 1, 1, 0.0431373)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u3nti"]
+bg_color = Color(1, 1, 1, 0.0431373)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6yw14"]
+bg_color = Color(1, 1, 1, 0.117647)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d6h5r"]
 bg_color = Color(1, 1, 1, 0.145098)
@@ -62,6 +91,7 @@ size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_kv4qc")
 
 [node name="Empty" type="Control" parent="VBoxContainer/Middle"]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 97.0
@@ -83,9 +113,133 @@ rotation = -1.5708
 text = "LAM PROJECT"
 label_settings = SubResource("LabelSettings_ypi7r")
 
+[node name="Content" type="Control" parent="VBoxContainer/Middle"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 97.0
+offset_bottom = 622.0
+
+[node name="Menu" type="Control" parent="VBoxContainer/Middle/Content"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Middle/Content/Menu"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 25
+alignment = 1
+
+[node name="Button" type="Button" parent="VBoxContainer/Middle/Content/Menu/VBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+offset_left = 23.0
+offset_top = 123.0
+offset_right = 73.0
+offset_bottom = 173.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxFlat_ixvow")
+theme_override_styles/hover = SubResource("StyleBoxFlat_v4d1s")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ixvow")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_u3nti")
+theme_override_styles/focus = SubResource("StyleBoxFlat_ixvow")
+icon = ExtResource("4_aqkcr")
+icon_alignment = 1
+
+[node name="Button2" type="Button" parent="VBoxContainer/Middle/Content/Menu/VBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+offset_left = 23.0
+offset_top = 198.0
+offset_right = 73.0
+offset_bottom = 248.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxFlat_ixvow")
+theme_override_styles/hover = SubResource("StyleBoxFlat_v4d1s")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ixvow")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_u3nti")
+theme_override_styles/focus = SubResource("StyleBoxFlat_ixvow")
+icon = ExtResource("5_pf3wh")
+icon_alignment = 1
+
+[node name="Button3" type="Button" parent="VBoxContainer/Middle/Content/Menu/VBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+offset_left = 23.0
+offset_top = 273.0
+offset_right = 73.0
+offset_bottom = 323.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxFlat_ixvow")
+theme_override_styles/hover = SubResource("StyleBoxFlat_v4d1s")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ixvow")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_u3nti")
+theme_override_styles/focus = SubResource("StyleBoxFlat_ixvow")
+icon = ExtResource("6_1kbv2")
+icon_alignment = 1
+
+[node name="Button4" type="Button" parent="VBoxContainer/Middle/Content/Menu/VBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+offset_left = 23.0
+offset_top = 348.0
+offset_right = 73.0
+offset_bottom = 398.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxFlat_ixvow")
+theme_override_styles/hover = SubResource("StyleBoxFlat_v4d1s")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ixvow")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_u3nti")
+theme_override_styles/focus = SubResource("StyleBoxFlat_ixvow")
+icon = ExtResource("7_1q55x")
+icon_alignment = 1
+
+[node name="Sep" type="Control" parent="VBoxContainer/Middle/Content/Menu/VBoxContainer"]
+custom_minimum_size = Vector2(0, 1)
+layout_mode = 3
+anchors_preset = 0
+offset_top = 423.0
+offset_right = 97.0
+offset_bottom = 424.0
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/Middle/Content/Menu/VBoxContainer/Sep"]
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_right = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_6yw14")
+
+[node name="LoginBtn" type="Button" parent="VBoxContainer/Middle/Content/Menu/VBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+offset_left = 23.0
+offset_top = 449.0
+offset_right = 73.0
+offset_bottom = 499.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxFlat_ixvow")
+theme_override_styles/hover = SubResource("StyleBoxFlat_v4d1s")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ixvow")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_u3nti")
+theme_override_styles/focus = SubResource("StyleBoxFlat_ixvow")
+icon = ExtResource("8_mbv55")
+icon_alignment = 1
+
 [node name="Bottom" type="PanelContainer" parent="VBoxContainer"]
 custom_minimum_size = Vector2(0, 175)
 offset_top = 728.0
 offset_right = 97.0
 offset_bottom = 903.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_d6h5r")
+
+[connection signal="pressed" from="VBoxContainer/Middle/Content/Menu/VBoxContainer/LoginBtn" to="." method="_on_LoginBtn_pressed"]

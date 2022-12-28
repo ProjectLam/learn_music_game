@@ -45,6 +45,9 @@ func get_item(p_index: int) -> LeaderboardItem:
 	return nItems.get_child(p_index)
 
 func load_items() -> void:
+	if not GBackend.is_connected:
+		return
+	
 	var leaderboard_id = "TestBoard"
 	var result: NakamaAPI.ApiLeaderboardRecordList = await GBackend.client.list_leaderboard_records_async(GBackend.session, leaderboard_id)
 	if result.is_exception():

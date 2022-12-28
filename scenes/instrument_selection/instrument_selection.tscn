@@ -162,7 +162,7 @@ custom_minimum_size = Vector2(80, 0)
 layout_mode = 3
 anchors_preset = 0
 offset_right = 80.0
-offset_bottom = 817.0
+offset_bottom = 897.0
 
 [node name="LeftBtn" type="Button" parent="Right/InstrumentMenu/HBoxContainer/Left"]
 custom_minimum_size = Vector2(65, 65)
@@ -192,8 +192,8 @@ clip_contents = true
 layout_mode = 3
 anchors_preset = 0
 offset_left = 84.0
-offset_right = 1231.0
-offset_bottom = 817.0
+offset_right = 1551.0
+offset_bottom = 897.0
 size_flags_horizontal = 3
 
 [node name="Items" type="Control" parent="Right/InstrumentMenu/HBoxContainer/Middle"]
@@ -212,9 +212,9 @@ grow_vertical = 2
 custom_minimum_size = Vector2(80, 0)
 layout_mode = 3
 anchors_preset = 0
-offset_left = 1235.0
-offset_right = 1315.0
-offset_bottom = 817.0
+offset_left = 1555.0
+offset_right = 1635.0
+offset_bottom = 897.0
 
 [node name="RightBtn" type="Button" parent="Right/InstrumentMenu/HBoxContainer/Right"]
 custom_minimum_size = Vector2(65, 65)

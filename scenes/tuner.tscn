@@ -24,7 +24,6 @@ script = ExtResource("1_nftna")
 instrument_data = ExtResource("2_c46f0")
 
 [node name="ColorRect" type="ColorRect" parent="."]
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -37,7 +36,6 @@ stream = SubResource("AudioStreamGenerator_obkhd")
 autoplay = true
 
 [node name="TextureRect" type="TextureRect" parent="."]
-layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -51,7 +49,6 @@ texture = ExtResource("5_p2yhm")
 
 [node name="PerfectArrows" type="TextureRect" parent="TextureRect"]
 visible = false
-layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -67,7 +64,6 @@ texture = ExtResource("6_1w18u")
 
 [node name="TooHighArrow" type="TextureRect" parent="TextureRect"]
 visible = false
-layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -83,7 +79,6 @@ texture = ExtResource("7_26mmj")
 
 [node name="TooLowArrow" type="TextureRect" parent="TextureRect"]
 visible = false
-layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -98,7 +93,7 @@ grow_vertical = 0
 texture = ExtResource("8_2aaeb")
 
 [node name="NoteLabels" type="Control" parent="TextureRect"]
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -110,7 +105,6 @@ grow_vertical = 0
 
 [node name="Label0" type="Label" parent="TextureRect/NoteLabels"]
 modulate = Color(1, 1, 1, 0)
-layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -129,7 +123,6 @@ horizontal_alignment = 1
 
 [node name="Label1" type="Label" parent="TextureRect/NoteLabels"]
 modulate = Color(1, 1, 1, 0.1)
-layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -148,7 +141,6 @@ horizontal_alignment = 1
 
 [node name="Label2" type="Label" parent="TextureRect/NoteLabels"]
 modulate = Color(1, 1, 1, 0.25)
-layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -166,7 +158,6 @@ text = "Eb"
 horizontal_alignment = 1
 
 [node name="Label3" type="Label" parent="TextureRect/NoteLabels"]
-layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -185,7 +176,6 @@ horizontal_alignment = 1
 
 [node name="Label4" type="Label" parent="TextureRect/NoteLabels"]
 modulate = Color(1, 1, 1, 0.25)
-layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -204,7 +194,6 @@ horizontal_alignment = 1
 
 [node name="Label5" type="Label" parent="TextureRect/NoteLabels"]
 modulate = Color(1, 1, 1, 0.1)
-layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -223,7 +212,6 @@ horizontal_alignment = 1
 
 [node name="Label6" type="Label" parent="TextureRect/NoteLabels"]
 modulate = Color(1, 1, 1, 0)
-layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -241,7 +229,7 @@ text = "G"
 horizontal_alignment = 1
 
 [node name="NeedleAnchor" type="Control" parent="TextureRect"]
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -260,7 +248,6 @@ centered = false
 offset = Vector2(-11, -386)
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
-layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
 offset_right = 20.0
@@ -270,10 +257,8 @@ theme_override_constants/margin_top = 25
 theme_override_constants/margin_bottom = 25
 
 [node name="LeftBar" parent="MarginContainer" instance=ExtResource("8_85bco")]
-layout_mode = 2
 
 [node name="BackButton" type="Button" parent="."]
-layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
@@ -285,7 +270,6 @@ grow_vertical = 0
 text = "Back"
 
 [node name="HeadStock" type="HBoxContainer" parent="."]
-layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
@@ -296,14 +280,13 @@ offset_bottom = 196.0
 grow_vertical = 2
 
 [node name="LeftPegs" type="VBoxContainer" parent="HeadStock"]
-layout_mode = 2
 
 [node name="Control" type="Control" parent="HeadStock"]
 custom_minimum_size = Vector2(100, 0)
-layout_mode = 2
+layout_mode = 3
+anchors_preset = 0
 
 [node name="RightPegs" type="VBoxContainer" parent="HeadStock"]
-layout_mode = 2
 size_flags_vertical = 4
 
 [connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]
