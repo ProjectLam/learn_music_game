@@ -38,7 +38,7 @@ grow_vertical = 2
 script = ExtResource("1_h3jte")
 
 [node name="Circle" type="Control" parent="."]
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -46,7 +46,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Background" type="Control" parent="Circle"]
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -54,7 +54,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="TextureRect" type="TextureRect" parent="Circle/Background"]
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -64,7 +63,7 @@ texture = ExtResource("1_d4886")
 stretch_mode = 5
 
 [node name="Stick" type="Control" parent="Circle"]
-layout_mode = 1
+layout_mode = 3
 anchor_left = 0.5
 anchor_top = 0.74
 anchor_right = 0.5
@@ -78,14 +77,14 @@ grow_vertical = 2
 pivot_offset = Vector2(20, 360)
 
 [node name="TextureRect" type="TextureRect" parent="Circle/Stick"]
-layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 texture = ExtResource("3_dm1ag")
 
 [node name="Notes" type="Control" parent="Circle"]
 clip_contents = true
-layout_mode = 1
+layout_mode = 3
+anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -97,7 +96,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Circle" type="Panel" parent="Circle/Notes"]
-layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -112,7 +110,6 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_er2hv")
 
 [node name="Items" type="HBoxContainer" parent="Circle/Notes"]
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -130,124 +127,118 @@ bus = &"Input"
 [node name="FreqInfo" type="HBoxContainer" parent="CanvasLayer"]
 
 [node name="Label" type="Label" parent="CanvasLayer/FreqInfo"]
-layout_mode = 2
+offset_right = 316.0
+offset_bottom = 148.0
 text = "Note:"
 label_settings = SubResource("LabelSettings_2j55o")
 
 [node name="Spacer" type="Control" parent="CanvasLayer/FreqInfo"]
 custom_minimum_size = Vector2(10, 0)
-layout_mode = 2
+layout_mode = 3
+anchors_preset = 0
+offset_left = 320.0
+offset_right = 330.0
+offset_bottom = 148.0
 
 [node name="FreqLabel" type="Label" parent="CanvasLayer/FreqInfo"]
-layout_mode = 2
+offset_left = 334.0
+offset_right = 335.0
+offset_bottom = 148.0
 label_settings = SubResource("LabelSettings_2j55o")
 
 [node name="NoteInfos" type="VBoxContainer" parent="."]
 visible = false
-layout_mode = 0
 offset_left = 5.0
 offset_top = 62.0
 offset_right = 870.0
 offset_bottom = 862.0
 
 [node name="EB" type="HBoxContainer" parent="NoteInfos"]
-layout_mode = 2
 
 [node name="Label" type="Label" parent="NoteInfos/EB"]
-layout_mode = 2
 text = "EB"
 label_settings = SubResource("LabelSettings_sbio8")
 
 [node name="Spacer" type="Control" parent="NoteInfos/EB"]
 custom_minimum_size = Vector2(15, 0)
-layout_mode = 2
+layout_mode = 3
+anchors_preset = 0
 
 [node name="Value" type="Label" parent="NoteInfos/EB"]
-layout_mode = 2
 text = "EB"
 label_settings = SubResource("LabelSettings_sbio8")
 
 [node name="B" type="HBoxContainer" parent="NoteInfos"]
-layout_mode = 2
 
 [node name="Label" type="Label" parent="NoteInfos/B"]
-layout_mode = 2
 text = "B"
 label_settings = SubResource("LabelSettings_sbio8")
 
 [node name="Spacer" type="Control" parent="NoteInfos/B"]
 custom_minimum_size = Vector2(15, 0)
-layout_mode = 2
+layout_mode = 3
+anchors_preset = 0
 
 [node name="Value" type="Label" parent="NoteInfos/B"]
-layout_mode = 2
 text = "EB"
 label_settings = SubResource("LabelSettings_sbio8")
 
 [node name="G" type="HBoxContainer" parent="NoteInfos"]
-layout_mode = 2
 
 [node name="Label" type="Label" parent="NoteInfos/G"]
-layout_mode = 2
 text = "G"
 label_settings = SubResource("LabelSettings_sbio8")
 
 [node name="Spacer" type="Control" parent="NoteInfos/G"]
 custom_minimum_size = Vector2(15, 0)
-layout_mode = 2
+layout_mode = 3
+anchors_preset = 0
 
 [node name="Value" type="Label" parent="NoteInfos/G"]
-layout_mode = 2
 text = "EB"
 label_settings = SubResource("LabelSettings_sbio8")
 
 [node name="D" type="HBoxContainer" parent="NoteInfos"]
-layout_mode = 2
 
 [node name="Label" type="Label" parent="NoteInfos/D"]
-layout_mode = 2
 text = "D"
 label_settings = SubResource("LabelSettings_sbio8")
 
 [node name="Spacer" type="Control" parent="NoteInfos/D"]
 custom_minimum_size = Vector2(15, 0)
-layout_mode = 2
+layout_mode = 3
+anchors_preset = 0
 
 [node name="Value" type="Label" parent="NoteInfos/D"]
-layout_mode = 2
 text = "EB"
 label_settings = SubResource("LabelSettings_sbio8")
 
 [node name="A" type="HBoxContainer" parent="NoteInfos"]
-layout_mode = 2
 
 [node name="Label" type="Label" parent="NoteInfos/A"]
-layout_mode = 2
 text = "A"
 label_settings = SubResource("LabelSettings_sbio8")
 
 [node name="Spacer" type="Control" parent="NoteInfos/A"]
 custom_minimum_size = Vector2(15, 0)
-layout_mode = 2
+layout_mode = 3
+anchors_preset = 0
 
 [node name="Value" type="Label" parent="NoteInfos/A"]
-layout_mode = 2
 text = "EB"
 label_settings = SubResource("LabelSettings_sbio8")
 
 [node name="ET" type="HBoxContainer" parent="NoteInfos"]
-layout_mode = 2
 
 [node name="Label" type="Label" parent="NoteInfos/ET"]
-layout_mode = 2
 text = "ET"
 label_settings = SubResource("LabelSettings_sbio8")
 
 [node name="Spacer" type="Control" parent="NoteInfos/ET"]
 custom_minimum_size = Vector2(15, 0)
-layout_mode = 2
+layout_mode = 3
+anchors_preset = 0
 
 [node name="Value" type="Label" parent="NoteInfos/ET"]
-layout_mode = 2
 text = "EB"
 label_settings = SubResource("LabelSettings_sbio8")
