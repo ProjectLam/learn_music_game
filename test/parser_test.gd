@@ -15,7 +15,7 @@ func _ready():
 		
 		print(json_data.songs[0])
 		
-		var xml: PackedByteArray = _get_lead_xml(songs_path + "/" + json_data.songs[0])
+		var xml: PackedByteArray = _get_lead_xml(songs_path.path_join(json_data.songs[0]))
 		var parser := SongParser.new()
 		parser.parse_xml_from_buffer(xml, Song.new())
 
@@ -36,7 +36,6 @@ func _get_lead_xml(path: String) -> PackedByteArray:
 
 	for file in files:
 		if file.ends_with("_lead.xml"):
-			print("found it!")
 			return reader.read_file(file)
 	
 	return PackedByteArray()
