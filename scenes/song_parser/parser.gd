@@ -1,115 +1,9 @@
 extends Node
 class_name SongParser
 
-var errorCode = 0
+
 var parser = XMLParser.new()
-var extractNodes = { "artistName": true, "title": true, "albumName": true }
-var customParser = { "ebeats": true, "levels": true }
-var notesAllowed = { "sustain": true, "time": true, "harmonic": true, "fret": true }
 var current_song:Song
-
-
-func attr(name) -> String:
-	return parser.get_named_attribute_value(name)
-
-func parser_note(note:Note):
-	for i in range(parser.get_attribute_count()):
-		var attr_name = parser.get_attribute_name(i)
-		var val = parser.get_attribute_value(i)
-		#lets not filter any for now, TODO in future we should
-		#if(!notesAllowed.has(attr_name)):
-		#	continue
-
-		if attr_name == "sustain"  || attr_name == "time" :
-#			print("attr-" + attr_name  + " val-" + val)
-			note.set(attr_name, val.to_float())
-		else:
-			note.set(attr_name, val.to_int())
-	return note
-
-func parser_notes(notes:Array[Note]):
-	var node_name = ""
-	var last_node_data = ""
-	while parser.read() != ERR_FILE_EOF:
-		if parser.get_node_type() == XMLParser.NODE_ELEMENT:
-			node_name = parser.get_node_name()
-		elif parser.get_node_type() == XMLParser.NODE_TEXT:
-			last_node_data = parser.get_node_data()
-			
-#		print(node_name, ": ", last_node_data)
-		if parser.get_node_type() == parser.NODE_ELEMENT && node_name == "notes":
-			var count = parser.get_named_attribute_value_safe("count")
-			current_song.levels_count = count
-		elif parser.get_node_type() == parser.NODE_ELEMENT && node_name == "note":
-			var note:Note = Note.new() 
-			parser_note(note)
-			notes.append(note)
-		elif node_name == "notes" && parser.get_node_type() == parser.NODE_ELEMENT_END:
-			break
-	print("final - notes size- " + str(len(notes)))			
-	return
-
-func parser_levels():
-	print("levels")
-	var count = parser.get_named_attribute_value_safe("count")
-	current_song.levels_count = count
-	var node_name = ""
-	var last_node_data = ""
-	while parser.read() != ERR_FILE_EOF:
-		if parser.get_node_type() == XMLParser.NODE_ELEMENT:
-			node_name = parser.get_node_name()
-		elif parser.get_node_type() == XMLParser.NODE_TEXT:
-			last_node_data = parser.get_node_data()
-
-		#print(node_name, ": ", last_node_data)
-		if parser.get_node_type() == parser.NODE_ELEMENT && node_name == "level":
-			var difficulty = parser.get_named_attribute_value_safe("difficulty")
-			if difficulty.to_int() > 0:
-				print("weee debug")
-
-			var level = Level.new()
-			parser_notes(level.notes)
-			current_song.levels.append(level)
-			node_name = ""
-		elif node_name == "levels"	 && parser.get_node_type() == parser.NODE_ELEMENT_END:
-			return #ok done
-
-	
-func parser_ebeats():
-	var count = parser.get_named_attribute_value_safe("count")
-	current_song.ebeats.count = count
-
-	var node_name = ""
-	var last_node_data = ""
-	while parser.read() != ERR_FILE_EOF:
-		if parser.get_node_type() == XMLParser.NODE_ELEMENT:
-			node_name = parser.get_node_name()
-		elif parser.get_node_type() == XMLParser.NODE_TEXT:
-			last_node_data = parser.get_node_data()
-
-		#print(node_name, ": ", last_node_data)
-		if parser.get_node_type() == parser.NODE_ELEMENT && node_name == "ebeat":
-			var time = parser.get_named_attribute_value_safe("time").to_float()
-			var measure = parser.get_named_attribute_value_safe("measure").to_int()
-			current_song.ebeats.add_beat(measure, time)
-		elif node_name != "ebeat" && parser.get_node_type() == parser.NODE_ELEMENT_END:
-			return #ok done
-
-			
-
-# Extracts a xml element and reads the text 
-# for examle <bob a="123">test</bob> would return "test"
-func xml_read_text():
-	if parser.get_node_type() == parser.NODE_ELEMENT:
-		var err = parser.read()
-		if errorCode != OK:
-			return "Errror!"
-		var text = parser.get_node_data()
-		err = parser.read()
-		#if parser.get_node_type() == NODE_ELEMENT_END:
-		#TODO check
-		return text
-	return ""
 
 
 func parse_xml_from_file(filename: String, song: Song):
@@ -136,19 +30,91 @@ func parse_xml_from_buffer(buffer: PackedByteArray, song: Song):
 
 
 func _parse_xml(parser: XMLParser):
-	var node_name = ""
-	var last_node_data = ""
+	# First, use the parser to create some generic objects with a parent/child structure
+	var document := _parse_xml_into_data(parser)
+	
+	print(document.get_elements_by_name("level").size(), " level tags")
+
+
+func _parse_xml_into_data(parser: XMLParser) -> XmlElementBase:
+	var document := XmlElementBase.new()
+	var current_element = document
+	
 	while parser.read() != ERR_FILE_EOF:
-		if parser.get_node_type() == XMLParser.NODE_ELEMENT:
-			node_name = parser.get_node_name()
-		elif parser.get_node_type() == XMLParser.NODE_TEXT:
-			last_node_data = parser.get_node_data()
-		
-		if customParser.has(node_name):
-			call("parser_"+node_name)
-			node_name = ""
-		if extractNodes.has(node_name):
-			var data = xml_read_text()
-			if data != "":
-				current_song.set(node_name, data)
-			node_name = ""
+		match parser.get_node_type():
+			XMLParser.NODE_ELEMENT:
+				var element := XmlElement.new()
+				current_element.add_child(element)
+				
+				element.name = parser.get_node_name()
+				
+				for i in parser.get_attribute_count():
+					element.attributes[parser.get_attribute_name(i)] = parser.get_attribute_value(i)
+				
+				if not parser.is_empty():
+					current_element = element
+			XMLParser.NODE_ELEMENT_END:
+				current_element = current_element.parent
+			XMLParser.NODE_TEXT:
+				var element := XmlText.new()
+				element.text = parser.get_node_data()
+				current_element.add_child(element)
+	
+	assert(current_element == document, "The number of opening and closing tags doesn't match")
+	
+	return document
+
+
+class XmlElementBase:
+	var parent: XmlElementBase
+	var children: Array[XmlElementBase]
+	
+	
+	func add_child(child: XmlElementBase):
+		child.parent = self
+		children.append(child)
+	
+	
+	# Returns the first element with this name
+	func get_element_by_name(name: String) -> XmlElement:
+		for child in children:
+			if child.get("name") == name:
+				return child
+		return null
+	
+	
+	# Returns all elements with this name
+	func get_elements_by_name(name: String) -> Array[XmlElement]:
+		var elements: Array[XmlElement] = []
+		for child in children:
+			if child.get("name") == name:
+				elements.append(child)
+			elements.append_array(child.get_elements_by_name(name))
+		return elements
+	
+	
+	# Returns the text of the first text element
+	func get_text() -> String:
+		for child in children:
+			if child is XmlText:
+				return child.text
+		return ""
+	
+	
+	# Returns the text of all text elements
+	func get_texts() -> Array[String]:
+		var texts: Array[String] = []
+		for child in children:
+			if child is XmlText:
+				texts.append(child.text)
+			texts.append_array(child.get_texts())
+		return texts
+
+
+class XmlElement extends XmlElementBase:
+	var name: String
+	var attributes: Dictionary
+
+
+class XmlText extends XmlElementBase:
+	var text: String
