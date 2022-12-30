@@ -263,6 +263,7 @@ offset_left = 80.0
 offset_top = 25.0
 offset_right = 80.0
 offset_bottom = 1055.0
+grow_vertical = 1
 
 [node name="BackButton" type="Button" parent="."]
 anchors_preset = 2

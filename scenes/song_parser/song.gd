@@ -6,7 +6,7 @@ var title: String
 var arrangement: String
 var part: int
 var offset: float
-var cent_offset: float
+var cent_offset: float # TODO: investigate whether this might be an int, if cent refers to tuning
 var song_length: float
 var song_name_sort: String
 var start_beat: float
@@ -16,6 +16,7 @@ var capo: int
 var artist_name: String
 var artist_name_sort: String
 var album_name: String
+var album_name_sort: String
 var album_year: int
 var album_art: String # TODO: figure out what this weird string is
 var crowd_speed: int
@@ -28,7 +29,7 @@ var linked_diffs: Array[Dictionary] # TODO: xml has none of these, figure out wh
 var phrase_properties: Array[Dictionary] # TODO: xml has none of these, figure out what it is
 var chord_templates: Array[SongChordTemplate]
 var fret_hand_mute_templates: Array[Dictionary] # TODO: xml has none of these, figure out what it is
-var ebeats: Array[SongEBeat]
+var ebeats: Array[SongEbeat]
 var tonebase: String
 var tone_a: String
 var tone_b: String
@@ -84,7 +85,7 @@ class SongChordTemplate:
 	var finger_5: int
 
 
-class SongEBeat:
+class SongEbeat:
 	var time: float
 	var measure: int
 
@@ -135,7 +136,7 @@ class SongLevel:
 		var hopo: bool
 		var ignore: bool
 		var left_hand: int
-		var mote: bool
+		var mute: bool
 		var palm_mute: bool
 		var pluck: int
 		var pull_off: bool
