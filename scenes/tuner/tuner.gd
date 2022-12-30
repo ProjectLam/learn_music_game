@@ -3,7 +3,7 @@ extends Control
 var cNotesItem = preload("res://scenes/tuner/notes_item.tscn")
 
 @export var pitch_freq: float = 440
-@export var sub_steps: int = 9
+@export var sub_steps: int = 10
 @export var energy_threshold: float = -60
 @export var freq_start_div: float = 2.0
 @export var freq_end_div: float = 2.0
@@ -47,6 +47,10 @@ var nonsensitive_sub_freq_ratio = 0.5
 var nonsensitive_sub_freq_total = 0
 var nonsensitive_sub_freq_count = 0
 var nonsensitive_sub_freqs = {}
+
+var resultant_sensitive_total: float
+var resultant_sensitive_count: int
+var resultant_sensitive_ratio: float
 
 var stick_start = -60
 var stick_end = 60
@@ -138,10 +142,10 @@ func _process(delta):
 			sub_range_end = sub_range_start + sub_step_freq
 			
 			var sfreq = (sub_range_start + sub_range_end) / 2.0
-			var smagnitude = spectrum.get_magnitude_for_frequency_range(sub_range_start, sub_range_end, spectrum.MAGNITUDE_AVERAGE)
+			var smagnitude = spectrum.get_magnitude_for_frequency_range(sub_range_start, sub_range_end, spectrum.MAGNITUDE_MAX)
 			var senergy = linear_to_db(smagnitude.x)
 			
-			if senergy > sub_max_energy:
+			if senergy > -INF:
 				sub_freq_ratio = float(j) / sub_steps
 				sub_res_freq = sfreq
 				sub_max_energy = senergy
@@ -157,15 +161,26 @@ func _process(delta):
 		var note_i = (69 + int(round(12 * log(res_freq / pitch_freq) / log(2)))) % 12
 		
 		if diff >= sensitivity_interpolation_delay:
+			resultant_sensitive_total = 0
+			resultant_sensitive_count = 1
+			
 #			nonsensitive_sub_freq_ratio = 0
 			var t = 0
 			for k in nonsensitive_sub_freqs.keys():
 				var c = nonsensitive_sub_freqs[k]
-				if c > t:
-					nonsensitive_sub_freq_ratio = k
+				if c >= t:
+					if c > t:
+						resultant_sensitive_total = float(k)
+						resultant_sensitive_count = 1
+					else:
+						resultant_sensitive_total += float(k)
+						resultant_sensitive_count += 1
+						nonsensitive_sub_freq_ratio = k
 				t = c
 			nonsensitive_sub_freqs = {}
 #			nonsensitive_sub_freq_ratio = float(nonsensitive_sub_freq_total) / nonsensitive_sub_freq_count
+		
+		resultant_sensitive_ratio = resultant_sensitive_total / resultant_sensitive_count
 		
 		var note = mnemonics[note_i]
 		nFreqLabel.text = note
@@ -189,11 +204,9 @@ func _process(delta):
 		
 		tween.tween_property(nItems.get_child(note_i).find_child("MnemonicLabel").label_settings, "font_color", Color.WHITE, 0.25)
 		
-		var stick_angle = stick_start + (stick_range * float(nonsensitive_sub_freq_ratio))
+		var stick_angle = stick_start + (stick_range * resultant_sensitive_ratio)
 		var stick_radians = deg_to_rad(stick_angle)
 		tween.tween_property(nStick, "rotation", stick_radians, 0.25)
-		
-		print("nonsensitive_sub_freq_ratio: ", nonsensitive_sub_freq_ratio , " - ratio: ", sub_freq_ratio)
 	
 	if diff >= sensitivity_interpolation_delay:
 		sensitivity_interpolation_time = Time.get_ticks_msec()
