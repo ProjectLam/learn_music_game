@@ -1,7 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://cr7k8bhc0qj8l"]
+[gd_scene load_steps=7 format=3 uid="uid://bue1l0kvc2bqg"]
 
 [ext_resource type="Texture2D" uid="uid://cg02jwx5fxg4r" path="res://assets/gui/tuner/circle.png" id="1_d4886"]
-[ext_resource type="Script" path="res://scenes/tuner/tuner.gd" id="1_h3jte"]
+[ext_resource type="Script" path="res://scenes/tuner/tuner_pitch.gd" id="1_o047u"]
 [ext_resource type="Texture2D" uid="uid://dc5drx1lt0y1c" path="res://assets/gui/tuner/needle.png" id="3_dm1ag"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_er2hv"]
@@ -18,15 +18,11 @@ corner_radius_bottom_left = 200
 shadow_color = Color(0.996078, 0.486275, 1, 0.164706)
 shadow_size = 10
 
-[sub_resource type="AudioStreamMicrophone" id="AudioStreamMicrophone_5eamf"]
+[sub_resource type="AudioStreamMicrophone" id="AudioStreamMicrophone_akeso"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_2j55o"]
 line_spacing = 0.0
 font_size = 120
-
-[sub_resource type="LabelSettings" id="LabelSettings_sbio8"]
-line_spacing = 0.0
-font_size = 25
 
 [node name="Tuner" type="Control"]
 layout_mode = 3
@@ -35,7 +31,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_h3jte")
+script = ExtResource("1_o047u")
 
 [node name="Circle" type="Control" parent="."]
 layout_mode = 1
@@ -123,8 +119,8 @@ theme_override_constants/separation = 0
 alignment = 1
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = SubResource("AudioStreamMicrophone_5eamf")
-bus = &"Input"
+stream = SubResource("AudioStreamMicrophone_akeso")
+bus = &"NoteDetection"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -142,113 +138,3 @@ layout_mode = 2
 [node name="FreqLabel" type="Label" parent="CanvasLayer/FreqInfo"]
 layout_mode = 2
 label_settings = SubResource("LabelSettings_2j55o")
-
-[node name="NoteInfos" type="VBoxContainer" parent="."]
-visible = false
-layout_mode = 0
-offset_left = 5.0
-offset_top = 62.0
-offset_right = 870.0
-offset_bottom = 862.0
-
-[node name="EB" type="HBoxContainer" parent="NoteInfos"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="NoteInfos/EB"]
-layout_mode = 2
-text = "EB"
-label_settings = SubResource("LabelSettings_sbio8")
-
-[node name="Spacer" type="Control" parent="NoteInfos/EB"]
-custom_minimum_size = Vector2(15, 0)
-layout_mode = 2
-
-[node name="Value" type="Label" parent="NoteInfos/EB"]
-layout_mode = 2
-text = "EB"
-label_settings = SubResource("LabelSettings_sbio8")
-
-[node name="B" type="HBoxContainer" parent="NoteInfos"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="NoteInfos/B"]
-layout_mode = 2
-text = "B"
-label_settings = SubResource("LabelSettings_sbio8")
-
-[node name="Spacer" type="Control" parent="NoteInfos/B"]
-custom_minimum_size = Vector2(15, 0)
-layout_mode = 2
-
-[node name="Value" type="Label" parent="NoteInfos/B"]
-layout_mode = 2
-text = "EB"
-label_settings = SubResource("LabelSettings_sbio8")
-
-[node name="G" type="HBoxContainer" parent="NoteInfos"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="NoteInfos/G"]
-layout_mode = 2
-text = "G"
-label_settings = SubResource("LabelSettings_sbio8")
-
-[node name="Spacer" type="Control" parent="NoteInfos/G"]
-custom_minimum_size = Vector2(15, 0)
-layout_mode = 2
-
-[node name="Value" type="Label" parent="NoteInfos/G"]
-layout_mode = 2
-text = "EB"
-label_settings = SubResource("LabelSettings_sbio8")
-
-[node name="D" type="HBoxContainer" parent="NoteInfos"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="NoteInfos/D"]
-layout_mode = 2
-text = "D"
-label_settings = SubResource("LabelSettings_sbio8")
-
-[node name="Spacer" type="Control" parent="NoteInfos/D"]
-custom_minimum_size = Vector2(15, 0)
-layout_mode = 2
-
-[node name="Value" type="Label" parent="NoteInfos/D"]
-layout_mode = 2
-text = "EB"
-label_settings = SubResource("LabelSettings_sbio8")
-
-[node name="A" type="HBoxContainer" parent="NoteInfos"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="NoteInfos/A"]
-layout_mode = 2
-text = "A"
-label_settings = SubResource("LabelSettings_sbio8")
-
-[node name="Spacer" type="Control" parent="NoteInfos/A"]
-custom_minimum_size = Vector2(15, 0)
-layout_mode = 2
-
-[node name="Value" type="Label" parent="NoteInfos/A"]
-layout_mode = 2
-text = "EB"
-label_settings = SubResource("LabelSettings_sbio8")
-
-[node name="ET" type="HBoxContainer" parent="NoteInfos"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="NoteInfos/ET"]
-layout_mode = 2
-text = "ET"
-label_settings = SubResource("LabelSettings_sbio8")
-
-[node name="Spacer" type="Control" parent="NoteInfos/ET"]
-custom_minimum_size = Vector2(15, 0)
-layout_mode = 2
-
-[node name="Value" type="Label" parent="NoteInfos/ET"]
-layout_mode = 2
-text = "EB"
-label_settings = SubResource("LabelSettings_sbio8")
