@@ -13,11 +13,11 @@ func _ready():
 			push_error("Failed to parse the json file at ", json_path)
 			return
 		
-		print(json_data.songs[0])
-		
 		var xml: PackedByteArray = _get_lead_xml(songs_path.path_join(json_data.songs[0]))
 		var parser := SongParser.new()
-		parser.parse_xml_from_buffer(xml, Song.new())
+		var song := Song.new()
+		parser.parse_xml_from_buffer(xml, song)
+		song.get_notes_and_chords_for_difficulty(10)
 
 
 func _get_lead_xml(path: String) -> PackedByteArray:
