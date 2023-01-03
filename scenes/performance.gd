@@ -91,7 +91,7 @@ func _ready():
 				pass
 		
 		add_child(performance_instrument)
-		performance_instrument.start_game(current_song.levels[0])
+		performance_instrument.start_game(current_song)
 	
 	audio_stream.stream = current_stream
 	audio_stream.play()

@@ -191,7 +191,7 @@ func _parse_xml(parser: XMLParser):
 			note.slap = note_tag.attributes["slap"].to_int()
 			note.slide_to = note_tag.attributes["slideTo"].to_int()
 			note.string = note_tag.attributes["string"].to_int()
-			note.sustain = note_tag.attributes["sustain"] == "1"
+			note.sustain = note_tag.attributes["sustain"].to_float()
 			note.tremolo = note_tag.attributes["tremolo"] == "1"
 			note.harmonic_pinch = note_tag.attributes["harmonicPinch"] == "1"
 			note.pick_direction = note_tag.attributes["pickDirection"] == "1"

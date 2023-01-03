@@ -240,7 +240,7 @@ class SongLevel:
 		var slap: int
 		var slide_to: int
 		var string: int
-		var sustain: bool
+		var sustain: float
 		var tremolo: bool
 		var harmonic_pinch: bool
 		var pick_direction: bool
@@ -281,7 +281,7 @@ class SongLevel:
 			var slap: int
 			var slide_to: int
 			var string: int
-			var sustain: bool
+			var sustain: float
 			var tremolo: bool
 			var harmonic_pinch: bool
 			var pick_direction: bool

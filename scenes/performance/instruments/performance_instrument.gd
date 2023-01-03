@@ -6,11 +6,11 @@ signal note_started(note_data)
 signal note_ended(note_data)
 
 
-func start_game(level_data: Level):
+func start_game(song_data: Song):
 	$Notes.note_started.connect(on_note_started)
 	$Notes.note_ended.connect(on_note_ended)
 	
-	$Notes.start_game(level_data)
+	$Notes.start_game(song_data)
 
 
 func on_note_started(note_data):

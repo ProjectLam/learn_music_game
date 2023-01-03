@@ -30,6 +30,22 @@ func spawn_note(note_data: Note, note_index: int):
 	note.index = note_index
 
 
+# TODO: spawn chords instead of notes
+func spawn_chord(chord_data: Chord, note_index: int):
+	super.spawn_chord(chord_data, note_index)
+	
+	var note = note_scene.instantiate()
+	note.speed = note_speed
+	add_child(note)
+	note.position = Vector3(
+		fret_offset + fret_spacing * chord_data.fret,
+		_get_string_y(chord_data.string),
+		-note_speed * (chord_data.time - time)
+	)
+	note.color = string_colors[chord_data.string]
+	note.duration = chord_data.sustain
+	note.index = note_index
+
 
 func _get_string_y(string_index):
 	# Strings start at index 0, 0 being the low E (top string)
