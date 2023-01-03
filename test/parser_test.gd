@@ -15,9 +15,11 @@ func _ready():
 		
 		var xml: PackedByteArray = _get_lead_xml(songs_path.path_join(json_data.songs[0]))
 		var parser := SongParser.new()
-		var song := Song.new()
-		parser.parse_xml_from_buffer(xml, song)
-		song.get_notes_and_chords_for_difficulty(10)
+		var song: Song
+		song = parser.parse_xml_from_buffer(xml)
+		print(song.levels.size())
+		var notes = song.get_notes_and_chords_for_difficulty()
+		print(notes.size(), " notes found")
 
 
 func _get_lead_xml(path: String) -> PackedByteArray:

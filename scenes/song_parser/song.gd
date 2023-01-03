@@ -1,6 +1,10 @@
 class_name Song
 
 
+var song_music_file: String
+var song_music_buffer: PackedByteArray
+
+
 var version: int
 var title: String
 var arrangement: String
@@ -58,54 +62,9 @@ func get_notes_and_chords_for_difficulty(difficulty: int = -1) -> Array:
 		var level: int = difficulty if difficulty > -1 and difficulty < phrase.max_difficulty else phrase.max_difficulty
 		
 		for song_note in levels[level].notes:
-			if song_note.time < pi.time or song_note.time > pi.end_time:
+			if song_note.time < pi.time or song_note.time > end_time:
 				continue
 			
-			if song_note.chord_id >= 0:
-				var chord_template := chord_templates[song_note.chord_id]
-				var chord := Chord.new()
-				chord.display_name = chord_template.display_name
-				chord.chord_name = chord_template.chord_name
-				chord.fret_0 = chord_template.fret_0
-				chord.fret_1 = chord_template.fret_1
-				chord.fret_2 = chord_template.fret_2
-				chord.fret_3 = chord_template.fret_3
-				chord.fret_4 = chord_template.fret_4
-				chord.fret_5 = chord_template.fret_5
-				chord.finger_0 = chord_template.finger_0
-				chord.finger_1 = chord_template.finger_1
-				chord.finger_2 = chord_template.finger_2
-				chord.finger_3 = chord_template.finger_3
-				chord.finger_4 = chord_template.finger_4
-				chord.finger_5 = chord_template.finger_5
-				
-				chord.time = song_note.time
-				chord.link_next = song_note.link_next
-				chord.accent = song_note.accent
-				chord.bend = song_note.bend
-				chord.fret = song_note.fret
-				chord.hammer_on = song_note.hammer_on
-				chord.harmonic = song_note.harmonic
-				chord.hopo = song_note.hopo
-				chord.ignore = song_note.ignore
-				chord.left_hand = song_note.left_hand
-				chord.mute = song_note.mute
-				chord.palm_mute = song_note.palm_mute
-				chord.pluck = song_note.pluck
-				chord.pull_off = song_note.pull_off
-				chord.slap = song_note.slap
-				chord.slide_to = song_note.slide_to
-				chord.string = song_note.string
-				chord.sustain = song_note.sustain
-				chord.tremolo = song_note.tremolo
-				chord.harmonic_pinch = song_note.harmonic_pinch
-				chord.pick_direction = song_note.pick_direction
-				chord.right_hand = song_note.right_hand
-				chord.slide_unpitch_to = song_note.slide_unpitch_to
-				chord.tap = song_note.tap
-				chord.vibrato = song_note.vibrato
-				
-				notes_and_chords.append(chord)
 			else:
 				var note := Note.new()
 				note.time = song_note.time
@@ -135,6 +94,30 @@ func get_notes_and_chords_for_difficulty(difficulty: int = -1) -> Array:
 				note.vibrato = song_note.vibrato
 				
 				notes_and_chords.append(note)
+		
+		for song_note in levels[level].chords:
+			var chord_template := chord_templates[song_note.chord_id]
+			var chord := Chord.new()
+			chord.display_name = chord_template.display_name
+			chord.chord_name = chord_template.chord_name
+			chord.fret_0 = chord_template.fret_0
+			chord.fret_1 = chord_template.fret_1
+			chord.fret_2 = chord_template.fret_2
+			chord.fret_3 = chord_template.fret_3
+			chord.fret_4 = chord_template.fret_4
+			chord.fret_5 = chord_template.fret_5
+			chord.finger_0 = chord_template.finger_0
+			chord.finger_1 = chord_template.finger_1
+			chord.finger_2 = chord_template.finger_2
+			chord.finger_3 = chord_template.finger_3
+			chord.finger_4 = chord_template.finger_4
+			chord.finger_5 = chord_template.finger_5
+			
+			chord.time = song_note.time
+			chord.link_next = song_note.link_next
+			chord.accent = song_note.accent
+			
+			notes_and_chords.append(chord)
 	
 	return notes_and_chords
 
@@ -261,6 +244,7 @@ class SongLevel:
 		var palm_mute: bool
 		var hopo: bool
 		var strum: String # Guessing this is actually an enum containing strum directions
+		var chord_notes: Array[SongLevelChordNote]
 		
 		# Below looks idential to basic note
 		class SongLevelChordNote:

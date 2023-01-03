@@ -6,30 +6,28 @@ var parser = XMLParser.new()
 var current_song:Song
 
 
-func parse_xml_from_file(filename: String, song: Song):
+func parse_xml_from_file(filename: String) -> Song:
 	parser = XMLParser.new()
-	current_song = song
 	var error_code = parser.open(filename)
 	if error_code != OK:
 		push_error("Something went wrong when trying to parse this file as XML")
-		return
+		return null
 	
-	_parse_xml(parser)
+	return _parse_xml(parser)
 
 
-func parse_xml_from_buffer(buffer: PackedByteArray, song: Song):
+func parse_xml_from_buffer(buffer: PackedByteArray) -> Song:
 	parser = XMLParser.new()
-	current_song = song
 	
 	var error_code = parser.open_buffer(buffer)
 	if error_code != OK:
 		push_error("Something went wrong when trying to read this as XML")
-		return
+		return null
 	
-	_parse_xml(parser)
+	return _parse_xml(parser)
 
 
-func _parse_xml(parser: XMLParser):
+func _parse_xml(parser: XMLParser) -> Song:
 	# First, use the parser to create some generic objects with a parent/child structure
 	var document: XmlElementBase = _parse_xml_into_data(parser)
 	
@@ -200,6 +198,52 @@ func _parse_xml(parser: XMLParser):
 			note.tap = note_tag.attributes["tap"] == "1"
 			note.vibrato = note_tag.attributes["vibrato"] == "1"
 			level.notes.append(note)
+		level.chords = []
+		for chord_tag in level_tag.get_element_by_name("chords").get_elements_by_name("chord"):
+			var chord := Song.SongLevel.SongLevelChord.new()
+			chord.time = chord_tag.attributes["time"].to_float()
+			chord.link_next = chord_tag.attributes["linkNext"] == "1"
+			chord.accent = chord_tag.attributes["accent"] == "1"
+			chord.chord_id = chord_tag.attributes["chordId"].to_int()
+			chord.fret_hand_mute = chord_tag.attributes["fretHandMute"] == "1"
+			chord.high_density = chord_tag.attributes["highDensity"] == "1"
+			chord.ignore = chord_tag.attributes["ignore"] == "1"
+			chord.palm_mute = chord_tag.attributes["palmMute"] == "1"
+			chord.hopo = chord_tag.attributes["hopo"] == "1"
+			chord.strum = chord_tag.attributes["strum"]
+			chord.chord_notes = []
+			for chord_note_tag in chord_tag.get_elements_by_name("chordNote"):
+				var chord_note := Song.SongLevel.SongLevelChord.SongLevelChordNote.new()
+				chord_note.time = chord_note_tag.attributes["time"].to_float()
+				chord_note.link_next = chord_note_tag.attributes["linkNext"] == "1"
+				chord_note.accent = chord_note_tag.attributes["accent"] == "1"
+				chord_note.bend = chord_note_tag.attributes["bend"] == "1"
+				chord_note.fret = chord_note_tag.attributes["fret"].to_int()
+				chord_note.hammer_on = chord_note_tag.attributes["hammerOn"] == "1"
+				chord_note.harmonic = chord_note_tag.attributes["harmonic"] == "1"
+				chord_note.hopo = chord_note_tag.attributes["hopo"] == "1"
+				chord_note.ignore = chord_note_tag.attributes["ignore"] == "1"
+				chord_note.left_hand = chord_note_tag.attributes["leftHand"].to_int()
+				chord_note.mute = chord_note_tag.attributes["mute"] == "1"
+				chord_note.palm_mute = chord_note_tag.attributes["palmMute"] == "1"
+				chord_note.pluck = chord_note_tag.attributes["pluck"].to_int()
+				chord_note.pull_off = chord_note_tag.attributes["pullOff"] == "1"
+				chord_note.slap = chord_note_tag.attributes["slap"].to_int()
+				chord_note.slide_to = chord_note_tag.attributes["slideTo"].to_int()
+				chord_note.string = chord_note_tag.attributes["string"].to_int()
+				chord_note.sustain = chord_note_tag.attributes["sustain"].to_float()
+				chord_note.tremolo = chord_note_tag.attributes["tremolo"] == "1"
+				chord_note.harmonic_pinch = chord_note_tag.attributes["harmonicPinch"] == "1"
+				chord_note.pick_direction = chord_note_tag.attributes["pickDirection"] == "1"
+				chord_note.right_hand = chord_note_tag.attributes["rightHand"].to_int()
+				chord_note.slide_unpitch_to = chord_note_tag.attributes["slideUnpitchTo"].to_int()
+				chord_note.tap = chord_note_tag.attributes["tap"] == "1"
+				chord_note.vibrato = chord_note_tag.attributes["vibrato"] == "1"
+				chord.chord_notes.append(chord_note)
+			level.chords.append(chord)
+		song.levels.append(level)
+	
+	return song
 
 
 func _parse_xml_into_data(parser: XMLParser) -> XmlElementBase:

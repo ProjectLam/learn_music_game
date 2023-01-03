@@ -82,8 +82,7 @@ func _handle_song_dir(songFile:String, curPath:String):
 	var dir =  DirAccess.open(curPath)
 	
 	print("handle_song_dir-" + songFile)
-	var song:Song = Song.new()
-	PlayerVariables.songs.append(song)
+	var song: Song
 	
 	dir.list_dir_begin()
 	while true:
@@ -114,7 +113,7 @@ func _handle_song_dir(songFile:String, curPath:String):
 			var full_xml =  dir.get_current_dir() + "/" + iFile
 			print("got xml - " + full_xml)
 			var sp:SongParser = SongParser.new()
-			sp.parse_xml_from_file(full_xml, song)
+			song = sp.parse_xml_from_file(full_xml)
 			#NOTE  TODO this is the lead guitar Xml File, there are up to 4 other ones, including vocals
 	
 	dir.list_dir_end()
@@ -141,6 +140,8 @@ func _handle_song_dir(songFile:String, curPath:String):
 	
 	dir.change_dir("..")
 	dir.change_dir("..")
+	
+	PlayerVariables.songs.append(song)
 
 
 func _add_song_select_items():
@@ -160,8 +161,8 @@ func _handle_song_zip(path: String):
 		push_error("This ZIP file at path ", path, " couldn't be opened")
 		return
 	
-	var song := Song.new()
-	PlayerVariables.songs.append(song)
+	var song: Song
+	var song_music_buffer: PackedByteArray
 	
 	# Returns a PoolStringArray of all files in all directories
 	var files := reader.get_files()
@@ -169,9 +170,13 @@ func _handle_song_zip(path: String):
 	for file in files:
 		if file.ends_with("_lead.xml"):
 			var song_parser := SongParser.new()
-			song_parser.parse_xml_from_buffer(reader.read_file(file), song)
+			song = song_parser.parse_xml_from_buffer(reader.read_file(file))
 		if file.ends_with(".mp3") and not "preview" in file:
-			song.song_music_buffer = reader.read_file(file)
+			song_music_buffer = reader.read_file(file)
+	
+	if song:
+		song.song_music_buffer = song_music_buffer
+		PlayerVariables.songs.append(song)
 
 
 func select_item(p_index: int, p_is_internal: bool = false) -> void:

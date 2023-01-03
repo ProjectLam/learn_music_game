@@ -51,13 +51,13 @@ func _ready():
 		# just for quick debugging
 		current_stream = load_mp3_from_path("res://Arlow - How Do You Know [NCS Release].mp3")
 	else:
-		print_song_loading_debug(current_song.songMusicFile)
+		print_song_loading_debug(current_song.song_music_file)
 		#TODO determine file type and handle ogg in future also
 		
-		if current_song.songMusicFile == "":
+		if current_song.song_music_file == "":
 			current_stream = load_mp3_from_buffer(current_song.song_music_buffer)
 		else:
-			current_stream = load_mp3_from_path(current_song.songMusicFile)
+			current_stream = load_mp3_from_path(current_song.song_music_file)
 		
 		print_song_loading_debug("Title of song from Meta Data-"+ current_song.title)
 		#print("Ebeat data ----")
@@ -67,17 +67,17 @@ func _ready():
 		#print("--- end Ebeat data ----")
 		
 		
-		print_song_loading_debug("Levels data ----")
-		print_song_loading_debug("count-"+ current_song.levels_count)
-		for level in current_song.levels:
-			print_song_loading_debug("level(difficulty"+ str(level.difficulty)+ " )")
-			print_song_loading_debug("notes data ----")
-			for note in level.notes:
-				print_song_loading_debug("---note -" + str(note)  + "- time-" + str(note.time)) #TODO expand
-			
-			print_song_loading_debug("--- end notes data ----")
-			
-		print_song_loading_debug("--- end level data ----")
+#		print_song_loading_debug("Levels data ----")
+#		print_song_loading_debug("count-"+ current_song.levels_count)
+#		for level in current_song.levels:
+#			print_song_loading_debug("level(difficulty"+ str(level.difficulty)+ " )")
+#			print_song_loading_debug("notes data ----")
+#			for note in level.notes:
+#				print_song_loading_debug("---note -" + str(note)  + "- time-" + str(note.time)) #TODO expand
+#
+#			print_song_loading_debug("--- end notes data ----")
+#
+#		print_song_loading_debug("--- end level data ----")
 		
 #		var tab_creator = preload("res://scenes/tab_creator/tab_creator.gd").new()
 #		tab_creator.create_tabs(current_song)
