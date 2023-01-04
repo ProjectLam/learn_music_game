@@ -1,31 +1,31 @@
 class_name Note
 
 
-var time: float = 0 
-var linkNext: int
-var accent: int
-var bend: int
+var time: float
+var link_next: bool
+var accent: bool
+var bend: bool
 var fret: int
-var hammerOn: int
-var harmonic: int
-var hopo: int
-var ignore: int
-var leftHand: int
-var mute: int
-var palmMute: int
+var hammer_on: bool
+var harmonic: bool
+var hopo: bool
+var ignore: bool
+var left_hand: int
+var mute: bool
+var palm_mute: bool
 var pluck: int
-var pullOff: int
+var pull_off: bool
 var slap: int
-var slideTo: int
+var slide_to: int
 var string: int
 var sustain: float
-var tremolo: int
-var harmonicPinch: int
-var pickDirection: int
-var rightHand: int
-var slideUnpitchTo: int
-var tap: int
-var vibrato: int
+var tremolo: bool
+var harmonic_pinch: bool
+var pick_direction: bool
+var right_hand: int
+var slide_unpitch_to: int
+var tap: bool
+var vibrato: bool
 
 
 func get_pitch()->float:
@@ -38,7 +38,6 @@ func get_pitch()->float:
 		NoteFrequency.CHROMATIC.find(NoteFrequency.E4),
 	]
 	
-	# Adding 1 because fret 1 is at index 0.
-	var index = string_chromatic_indices[string] + fret + 1
+	var index = string_chromatic_indices[string] + fret
 	
 	return NoteFrequency.CHROMATIC[index]
