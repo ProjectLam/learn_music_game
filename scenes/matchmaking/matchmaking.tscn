@@ -19,10 +19,10 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_y6ivb"]
 shader = ExtResource("3_11mtd")
 shader_parameter/indicate = true
-shader_parameter/indicating_power = 1.0
-shader_parameter/lighting_point = Vector2(0.5, 0.5)
-shader_parameter/radius_base = 0.5
 shader_parameter/size = null
+shader_parameter/lighting_point = Vector2(0.5, 0.5)
+shader_parameter/indicating_power = 1.0
+shader_parameter/radius_base = 0.5
 shader_parameter/static_power = 0.4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_utcdj"]
@@ -112,15 +112,15 @@ _data = {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yxg63"]
 shader = ExtResource("13_iscuv")
-shader_parameter/albedo = Color(0.968627, 0, 0.8, 0.458824)
-shader_parameter/animate = false
-shader_parameter/indicate = false
-shader_parameter/indicating_power = 1.0
-shader_parameter/lighting_point = Vector2(0.5, 0.5)
 shader_parameter/radius = 1.0
-shader_parameter/radius_base = 0.5
-shader_parameter/size = Vector2(600, 600)
+shader_parameter/animate = false
 shader_parameter/square_scale = 0.509
+shader_parameter/albedo = Color(0.968627, 0, 0.8, 0.458824)
+shader_parameter/indicate = false
+shader_parameter/size = Vector2(600, 600)
+shader_parameter/lighting_point = Vector2(0.5, 0.5)
+shader_parameter/indicating_power = 1.0
+shader_parameter/radius_base = 0.5
 shader_parameter/static_power = 0.5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pcstd"]
@@ -363,37 +363,22 @@ offset_bottom = 400.0
 
 [node name="WaitingOpponent" type="PanelContainer" parent="Right/Left/VBoxContainer"]
 visible = false
-offset_top = 404.0
-offset_right = 686.0
-offset_bottom = 713.0
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_qsdl1")
 
 [node name="Background" type="TextureRect" parent="Right/Left/VBoxContainer/WaitingOpponent"]
 self_modulate = Color(1, 1, 1, 0.156863)
-offset_left = 1.0
-offset_top = 1.0
-offset_right = 685.0
-offset_bottom = 308.0
 texture = ExtResource("9_bqm6e")
 ignore_texture_size = true
 stretch_mode = 6
 
 [node name="CenterContainer" type="CenterContainer" parent="Right/Left/VBoxContainer/WaitingOpponent"]
-offset_left = 1.0
-offset_top = 1.0
-offset_right = 685.0
-offset_bottom = 308.0
 
 [node name="Text" type="VBoxContainer" parent="Right/Left/VBoxContainer/WaitingOpponent/CenterContainer"]
-offset_left = 129.0
-offset_top = 84.0
-offset_right = 554.0
-offset_bottom = 223.0
+offset_right = 425.0
+offset_bottom = 139.0
 
 [node name="Label" type="Label" parent="Right/Left/VBoxContainer/WaitingOpponent/CenterContainer/Text"]
-offset_right = 425.0
-offset_bottom = 40.0
 text = "Waiting for opponent"
 label_settings = SubResource("LabelSettings_dgac7")
 script = SubResource("GDScript_40e5y")
@@ -402,15 +387,8 @@ script = SubResource("GDScript_40e5y")
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 3
 anchors_preset = 0
-offset_top = 44.0
-offset_right = 425.0
-offset_bottom = 69.0
 
 [node name="CancelBtn" type="Button" parent="Right/Left/VBoxContainer/WaitingOpponent/CenterContainer/Text"]
-offset_left = 130.0
-offset_top = 73.0
-offset_right = 295.0
-offset_bottom = 139.0
 size_flags_horizontal = 4
 theme_override_fonts/font = ExtResource("10_1qgjq")
 theme_override_font_sizes/font_size = 18
