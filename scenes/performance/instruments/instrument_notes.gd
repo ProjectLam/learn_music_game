@@ -54,10 +54,14 @@ func _process(delta):
 		else:
 			spawn_note(note_data, _spawned_notes.size() - 1)
 	
-	while _performance_notes[_performance_note_index].time + _performance_notes[_performance_note_index].sustain < time - missed_max_error:
+	while _performance_note_index < _performance_notes.size() and _performance_notes[_performance_note_index].time + _performance_notes[_performance_note_index].sustain < time - missed_max_error:
 		_on_missed_note(_performance_note_index)
 		_destroy_note(_performance_note_index)
 		_performance_note_index += 1
+	
+	if _notes.size() == 0 and _performance_notes.size() == _performance_note_index:
+		print("game finished!")
+		set_process(false)
 
 
 # Abstract, override in child class

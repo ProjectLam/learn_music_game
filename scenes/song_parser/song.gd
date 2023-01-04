@@ -119,6 +119,11 @@ func get_notes_and_chords_for_difficulty(difficulty: int = -1) -> Array:
 			
 			notes_and_chords.append(chord)
 	
+	notes_and_chords.sort_custom(
+		func sort_notes_and_chords(note_a, note_b):
+			return note_a.time < note_b.time
+	)
+	
 	return notes_and_chords
 
 
