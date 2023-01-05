@@ -12,7 +12,7 @@ signal note_ended(note_data)
 @export var note_speed: float = 10.0
 
 
-var _level_data: Level
+var _song_data: Song
 # The notes you see on screen
 var _notes: Array[Note]
 var _spawned_notes: Array[Note]
@@ -31,11 +31,11 @@ var missed_max_error: float = 0.5
 var early_max_error: float = 0.5
 
 
-func start_game(level_data: Level):
-	_level_data = level_data
-	_notes = level_data.notes.duplicate()
+func start_game(song_data: Song):
+	_song_data = song_data
+	_notes = song_data.get_notes_and_chords_for_difficulty()
 	_spawned_notes = []
-	_performance_notes = level_data.notes.duplicate()
+	_performance_notes = _notes.duplicate()
 	_performance_note_index = 0
 	time = 0.0
 	
@@ -49,16 +49,28 @@ func _process(delta):
 		var note_data: Note = _notes.pop_front()
 		_spawned_notes.append(note_data)
 		
-		spawn_note(note_data, _spawned_notes.size() - 1)
+		if note_data.get("chord_id") != null and note_data.chord_id >= 0:
+			spawn_chord(note_data as Chord, _spawned_notes.size() - 1)
+		else:
+			spawn_note(note_data, _spawned_notes.size() - 1)
 	
-	while _performance_notes[_performance_note_index].time + _performance_notes[_performance_note_index].sustain < time - missed_max_error:
+	while _performance_note_index < _performance_notes.size() and _performance_notes[_performance_note_index].time + _performance_notes[_performance_note_index].sustain < time - missed_max_error:
 		_on_missed_note(_performance_note_index)
 		_destroy_note(_performance_note_index)
 		_performance_note_index += 1
+	
+	if _notes.size() == 0 and _performance_notes.size() == _performance_note_index:
+		print("game finished!")
+		set_process(false)
 
 
 # Abstract, override in child class
 func spawn_note(note_data: Note, note_index: int):
+	pass
+
+
+# Abstract, override in child class
+func spawn_chord(chord_data: Chord, note_index: int):
 	pass
 
 
