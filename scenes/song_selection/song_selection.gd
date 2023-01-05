@@ -91,7 +91,7 @@ func _handle_song_dir(songFile:String, curPath:String):
 			break
 		elif iFile.ends_with(".xml"):
 			var full_xml =  dir.get_current_dir() + "/" + iFile
-			print("got xml - " + full_xml)
+			print("got song data xml - " + full_xml)
 			var sp:SongParser = SongParser.new()
 			#sp.parse_xml_from_file(full_xml, song)
 			#NOTE this is the core Xml File, there are up to 4 other ones
@@ -111,7 +111,7 @@ func _handle_song_dir(songFile:String, curPath:String):
 			break
 		elif iFile.ends_with("_lead.xml"):
 			var full_xml =  dir.get_current_dir() + "/" + iFile
-			print("got xml - " + full_xml)
+			print("got lead xml - " + full_xml)
 			var sp:SongParser = SongParser.new()
 			song = sp.parse_xml_from_file(full_xml)
 			#NOTE  TODO this is the lead guitar Xml File, there are up to 4 other ones, including vocals
@@ -133,15 +133,17 @@ func _handle_song_dir(songFile:String, curPath:String):
 		if iFile == "": 
 			break
 		elif iFile.ends_with(".mp3") && !("preview" in iFile):
-			song.songMusicFile = dir.get_current_dir() + "/" + iFile
-			print(song.songMusicFile)
+			if song:
+				song.song_music_file = dir.get_current_dir() + "/" + iFile
+				print(song.song_music_file)
 	
 	dir.list_dir_end()
 	
 	dir.change_dir("..")
 	dir.change_dir("..")
 	
-	PlayerVariables.songs.append(song)
+	if song:
+		PlayerVariables.songs.append(song)
 
 
 func _add_song_select_items():
