@@ -2,7 +2,7 @@ extends Control
 class_name SongSelection
 
 signal item_selected
-
+signal item_played
 
 var cSongSelectionItem = preload("res://scenes/song_selection/song_selection_item.tscn")
 
@@ -11,6 +11,13 @@ var cSongSelectionItem = preload("res://scenes/song_selection/song_selection_ite
 @export var items_number = 7
 @export var middle_i = 3
 @export var animation_duration = 0.15
+
+enum SELECTION_MODE {
+	PLAY,
+	SELECT
+}
+
+@export var selection_mode: SELECTION_MODE = SELECTION_MODE.PLAY
 
 var item_height: float
 var middle_y: float
@@ -352,15 +359,17 @@ func _on_Songs_item_rect_changed():
 
 func _on_Item_selected(p_nItem: SongSelectionItem):
 	var item_index = p_nItem.get_index()
+	var song_index = item_index % PlayerVariables.songs.size()
 	
 	if item_index != selected_index:
 		selected_index = item_index
 		select_item(item_index)
 		emit_signal("item_selected", p_nItem, item_index)
 	else:
-		var song_index = item_index % PlayerVariables.songs.size()
-		PlayerVariables.current_song = PlayerVariables.songs[song_index]
-		get_tree().change_scene_to_file("res://scenes/performance.tscn")
+		emit_signal("item_played", p_nItem, song_index)
+		if selection_mode == SELECTION_MODE.PLAY:
+			PlayerVariables.current_song = PlayerVariables.songs[song_index]
+			get_tree().change_scene_to_file("res://scenes/performance.tscn")
 
 func _on_DownBtn_pressed():
 	go_down()
