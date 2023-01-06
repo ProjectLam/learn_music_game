@@ -32,13 +32,11 @@ var selected_index: int
 
 func _ready():
 	load_songs()
-	if PlayerVariables.songs.size() > 0:
-		while items_count < items_number:
-			_add_song_select_items()
-			items_count = nItems.get_child_count()
+	load_items()
 	
 	index = 3
 	offset = index - middle_i
+	selected_index = index
 	
 	_process_items_vertically()
 	_process_items()
@@ -76,6 +74,25 @@ func load_songs():
 				_handle_song_zip(dir.get_current_dir() + "/" + songFile)
 				print("Found zip - " + songFile)
 		dir.list_dir_end()
+
+
+func load_items():
+	items_count = 0
+	
+	for n in nItems.get_children():
+		n.queue_free()
+	
+	if PlayerVariables.songs.size():
+		while items_count < items_number:
+			for song in PlayerVariables.songs:
+				print("Added song: ", song.title)
+				var nItem: SongSelectionItem = cSongSelectionItem.instantiate()
+				nItems.add_child(nItem)
+				nItem.connect("selected", _on_Item_selected)
+				nItem.find_child("NameLabel").text = song.title
+				nItem.song = TSong.new()
+				nItem.song.file_name = song.title
+				items_count += 1
 
 
 func _handle_song_dir(songFile:String, curPath:String):
@@ -144,16 +161,6 @@ func _handle_song_dir(songFile:String, curPath:String):
 	
 	if song:
 		PlayerVariables.songs.append(song)
-
-
-func _add_song_select_items():
-	for song in PlayerVariables.songs:
-		var nItem: SongSelectionItem = cSongSelectionItem.instantiate()
-		nItems.add_child(nItem)
-		nItem.connect("selected", _on_Item_selected)
-		nItem.find_child("NameLabel").text = song.title
-		nItem.song = TSong.new()
-		nItem.song.file_name = song.title
 
 
 func _handle_song_zip(path: String):
@@ -320,9 +327,13 @@ func _process_items() -> void:
 		j += 1
 
 func go_down():
+	selected_index = (selected_index+1) % items_count
 	select_item((index+1) % items_count)
 
 func go_up():
+	selected_index -= 1
+	if selected_index < 0:
+		selected_index = items_count-1
 	select_item((index-1) % items_count)
 
 func get_song(p_index: int) -> SongSelectionItem:
@@ -340,13 +351,14 @@ func _on_Songs_item_rect_changed():
 	select_item(index, true)
 
 func _on_Item_selected(p_nItem: SongSelectionItem):
-	var song_index = p_nItem.get_index()
+	var item_index = p_nItem.get_index()
 	
-	if song_index != selected_index:
-		selected_index = song_index
-		select_item(song_index)
-		emit_signal("item_selected", p_nItem, song_index)
+	if item_index != selected_index:
+		selected_index = item_index
+		select_item(item_index)
+		emit_signal("item_selected", p_nItem, item_index)
 	else:
+		var song_index = item_index % PlayerVariables.songs.size()
 		PlayerVariables.current_song = PlayerVariables.songs[song_index]
 		get_tree().change_scene_to_file("res://scenes/performance.tscn")
 
