@@ -343,6 +343,7 @@ GRegisterDialog="*res://scenes/register_dialog/register_dialog.tscn"
 GDialogs="*res://scenes/dialogs/dialogs.tscn"
 GGoogleAuth="*res://scenes/google_auth/google_auth.tscn"
 GBackend="*res://scenes/backend/backend.tscn"
+GAudioServerManager="*res://autoload/audio_server_manager.gd"
 
 [debug]
 

@@ -12,10 +12,10 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_y6ivb"]
 shader = ExtResource("3_hqkqb")
 shader_parameter/indicate = true
-shader_parameter/indicating_power = 1.0
-shader_parameter/lighting_point = Vector2(0.5, 0.5)
-shader_parameter/radius_base = 0.5
 shader_parameter/size = null
+shader_parameter/lighting_point = Vector2(0.5, 0.5)
+shader_parameter/indicating_power = 1.0
+shader_parameter/radius_base = 0.5
 shader_parameter/static_power = 0.4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_utcdj"]

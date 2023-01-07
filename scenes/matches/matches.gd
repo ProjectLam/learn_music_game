@@ -8,7 +8,7 @@ class_name Matches
 @export var style_mine: StyleBox
 
 @export var min_players = 0
-@export var max_players = 10
+@export var max_players = 1
 @export var limit = 10
 @export var authoritative = false
 @export var label = ""
@@ -68,6 +68,13 @@ func load_items() -> void:
 	
 	for m in result.matches:
 		var game_match: NakamaAPI.ApiMatch = m
+		
+		if game_match.size > max_players:
+			var node_name = game_match.match_id.replace(".", "")
+			var nExisting = nItems.get_node_or_null(node_name)
+			if nExisting:
+				nExisting.queue_free()
+		
 		var item: TMatchesItem = await TMatchesItem.new()
 		await item.set_nakama_object(game_match)
 		add_item(item)
