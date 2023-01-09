@@ -56,6 +56,14 @@ func get_pitches() -> Array[float]:
 	return pitches
 
 
+func get_frets() -> Array[int]:
+	return [fret_0, fret_1, fret_2, fret_3, fret_4, fret_5]
+
+
+func get_fingers() -> Array[int]:
+	return [finger_0, finger_1, finger_2, finger_3, finger_4, finger_5]
+
+
 func is_barre_chord() -> bool:
 	return finger_0 >= 0 and (
 		finger_0 == finger_1 \
