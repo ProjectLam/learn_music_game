@@ -16,7 +16,7 @@ func _on_Settings_selected() -> void:
 	get_tree().change_scene_to_file("res://scenes/song_selection/song_selection.tscn")
 
 func _on_Tuning_selected() -> void:
-	get_tree().change_scene_to_file("res://scenes/tuner.tscn")
+	get_tree().change_scene_to_file("res://scenes/tuner/tuner.tscn")
 
 func _on_Quit_selected() -> void:
 	get_tree().change_scene_to_file("res://scenes/instrument_selection/instrument_selection.tscn")
