@@ -692,7 +692,7 @@ func _wait_for_done(result):
 	var dots = ''
 
 	while(_waiting):
-		await get_tree().idle_frame
+		await get_tree().process_frame
 		cycles += 1
 
 		if(cycles >= cycles_per_dot):

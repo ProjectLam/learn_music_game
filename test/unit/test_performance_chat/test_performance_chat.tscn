@@ -1,0 +1,50 @@
+[gd_scene load_steps=4 format=3 uid="uid://bojhvh5gk7m1v"]
+
+[ext_resource type="PackedScene" uid="uid://brppj3a5ftaap" path="res://scenes/performance.tscn" id="1_p2sio"]
+[ext_resource type="Script" path="res://test/unit/test_performance_chat/test_performance_chat.gd" id="1_texl0"]
+[ext_resource type="PackedScene" uid="uid://c0j00rp8gumnp" path="res://scenes/performance/performance_ui.tscn" id="2_bxmgl"]
+
+[node name="test_performance_chat" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_texl0")
+
+[node name="Performance" parent="." instance=ExtResource("1_p2sio")]
+
+[node name="performance_ui" parent="." instance=ExtResource("2_bxmgl")]
+layout_mode = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 30
+
+[node name="JoinStudent" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 30
+text = "Join Student"
+
+[node name="JoinTeacher" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 30
+text = "Join Teacher"
+
+[connection signal="pressed" from="VBoxContainer/JoinStudent" to="." method="_on_join_student_pressed"]
+[connection signal="pressed" from="VBoxContainer/JoinTeacher" to="." method="_on_join_teacher_pressed"]

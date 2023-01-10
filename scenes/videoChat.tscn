@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://c5mxhufkeyen5"]
+
+[node name="videoChat" type="Node"]
+editor_description = "Initiates video chat.
+video chat will be closed when this is destroyed."

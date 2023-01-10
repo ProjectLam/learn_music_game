@@ -1,0 +1,386 @@
+[gd_scene load_steps=2 format=3 uid="uid://cc5vx0tguio8v"]
+
+[ext_resource type="PackedScene" uid="uid://bobtxjwfyk037" path="res://scenes/ChatUI/ChatMessageView/ChatMessageView.tscn" id="1_kghph"]
+
+[node name="TextChat" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_top = 7.0
+offset_right = 5.0
+offset_bottom = 7.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="ScrollContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer"]
+offset_right = 124.0
+offset_bottom = 1706.0
+
+[node name="ChatMessageView" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_right = 124.0
+offset_bottom = 34.0
+grow_horizontal = 1
+
+[node name="ChatMessageView2" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 38.0
+offset_right = 124.0
+offset_bottom = 72.0
+grow_horizontal = 1
+
+[node name="ChatMessageView3" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 76.0
+offset_right = 124.0
+offset_bottom = 110.0
+grow_horizontal = 1
+
+[node name="ChatMessageView4" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 114.0
+offset_right = 124.0
+offset_bottom = 148.0
+grow_horizontal = 1
+
+[node name="ChatMessageView5" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 152.0
+offset_right = 124.0
+offset_bottom = 186.0
+grow_horizontal = 1
+
+[node name="ChatMessageView6" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 190.0
+offset_right = 124.0
+offset_bottom = 224.0
+grow_horizontal = 1
+
+[node name="ChatMessageView7" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 228.0
+offset_right = 124.0
+offset_bottom = 262.0
+grow_horizontal = 1
+
+[node name="ChatMessageView8" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 266.0
+offset_right = 124.0
+offset_bottom = 300.0
+grow_horizontal = 1
+
+[node name="ChatMessageView9" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 304.0
+offset_right = 124.0
+offset_bottom = 338.0
+grow_horizontal = 1
+
+[node name="ChatMessageView10" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 342.0
+offset_right = 124.0
+offset_bottom = 376.0
+grow_horizontal = 1
+
+[node name="ChatMessageView11" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 380.0
+offset_right = 124.0
+offset_bottom = 414.0
+grow_horizontal = 1
+
+[node name="ChatMessageView12" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 418.0
+offset_right = 124.0
+offset_bottom = 452.0
+grow_horizontal = 1
+
+[node name="ChatMessageView13" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 456.0
+offset_right = 124.0
+offset_bottom = 490.0
+grow_horizontal = 1
+
+[node name="ChatMessageView14" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 494.0
+offset_right = 124.0
+offset_bottom = 528.0
+grow_horizontal = 1
+
+[node name="ChatMessageView15" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 532.0
+offset_right = 124.0
+offset_bottom = 566.0
+grow_horizontal = 1
+
+[node name="ChatMessageView16" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 570.0
+offset_right = 124.0
+offset_bottom = 604.0
+grow_horizontal = 1
+
+[node name="ChatMessageView17" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 608.0
+offset_right = 124.0
+offset_bottom = 642.0
+grow_horizontal = 1
+
+[node name="ChatMessageView18" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 646.0
+offset_right = 124.0
+offset_bottom = 680.0
+grow_horizontal = 1
+
+[node name="ChatMessageView19" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 684.0
+offset_right = 124.0
+offset_bottom = 718.0
+grow_horizontal = 1
+
+[node name="ChatMessageView20" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 722.0
+offset_right = 124.0
+offset_bottom = 756.0
+grow_horizontal = 1
+
+[node name="ChatMessageView21" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 760.0
+offset_right = 124.0
+offset_bottom = 794.0
+grow_horizontal = 1
+
+[node name="ChatMessageView22" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 798.0
+offset_right = 124.0
+offset_bottom = 832.0
+grow_horizontal = 1
+
+[node name="ChatMessageView23" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 836.0
+offset_right = 124.0
+offset_bottom = 870.0
+grow_horizontal = 1
+
+[node name="ChatMessageView24" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 874.0
+offset_right = 124.0
+offset_bottom = 908.0
+grow_horizontal = 1
+
+[node name="ChatMessageView25" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 912.0
+offset_right = 124.0
+offset_bottom = 946.0
+grow_horizontal = 1
+
+[node name="ChatMessageView26" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 950.0
+offset_right = 124.0
+offset_bottom = 984.0
+grow_horizontal = 1
+
+[node name="ChatMessageView27" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 988.0
+offset_right = 124.0
+offset_bottom = 1022.0
+grow_horizontal = 1
+
+[node name="ChatMessageView28" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 1026.0
+offset_right = 124.0
+offset_bottom = 1060.0
+grow_horizontal = 1
+
+[node name="ChatMessageView29" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 1064.0
+offset_right = 124.0
+offset_bottom = 1098.0
+grow_horizontal = 1
+
+[node name="ChatMessageView30" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 1102.0
+offset_right = 124.0
+offset_bottom = 1136.0
+grow_horizontal = 1
+
+[node name="ChatMessageView31" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 1140.0
+offset_right = 124.0
+offset_bottom = 1174.0
+grow_horizontal = 1
+
+[node name="ChatMessageView32" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 1178.0
+offset_right = 124.0
+offset_bottom = 1212.0
+grow_horizontal = 1
+
+[node name="ChatMessageView33" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 1216.0
+offset_right = 124.0
+offset_bottom = 1250.0
+grow_horizontal = 1
+
+[node name="ChatMessageView34" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 1254.0
+offset_right = 124.0
+offset_bottom = 1288.0
+grow_horizontal = 1
+
+[node name="ChatMessageView35" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 1292.0
+offset_right = 124.0
+offset_bottom = 1326.0
+grow_horizontal = 1
+
+[node name="ChatMessageView36" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 1330.0
+offset_right = 124.0
+offset_bottom = 1364.0
+grow_horizontal = 1
+
+[node name="ChatMessageView37" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 1368.0
+offset_right = 124.0
+offset_bottom = 1402.0
+grow_horizontal = 1
+
+[node name="ChatMessageView38" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 1406.0
+offset_right = 124.0
+offset_bottom = 1440.0
+grow_horizontal = 1
+
+[node name="ChatMessageView39" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 1444.0
+offset_right = 124.0
+offset_bottom = 1478.0
+grow_horizontal = 1
+
+[node name="ChatMessageView40" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 1482.0
+offset_right = 124.0
+offset_bottom = 1516.0
+grow_horizontal = 1
+
+[node name="ChatMessageView41" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 1520.0
+offset_right = 124.0
+offset_bottom = 1554.0
+grow_horizontal = 1
+
+[node name="ChatMessageView42" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 1558.0
+offset_right = 124.0
+offset_bottom = 1592.0
+grow_horizontal = 1
+
+[node name="ChatMessageView43" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 1596.0
+offset_right = 124.0
+offset_bottom = 1630.0
+grow_horizontal = 1
+
+[node name="ChatMessageView44" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 1634.0
+offset_right = 124.0
+offset_bottom = 1668.0
+grow_horizontal = 1
+
+[node name="ChatMessageView45" parent="VBoxContainer/VBoxContainer" instance=ExtResource("1_kghph")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 1672.0
+offset_right = 124.0
+offset_bottom = 1706.0
+grow_horizontal = 1

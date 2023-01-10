@@ -1,0 +1,3 @@
+[submodule "android/plugins/goomsdk/TestGoomSDKBackend/videosdk-sample-signature-node.js"]
+	path = android/plugins/goomsdk/TestGoomSDKBackend/videosdk-sample-signature-node.js
+	url = https://github.com/darthLeviN/videosdk-sample-signature-node.js.git

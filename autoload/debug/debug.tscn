@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://bbngu4glgwvdx"]
+[gd_scene load_steps=3 format=3 uid="uid://bbngu4glgwvdx"]
 
 [ext_resource type="Script" path="res://autoload/debug/debug.gd" id="1_xj67j"]
+[ext_resource type="PackedScene" uid="uid://bgm0qbf7tnxqd" path="res://autoload/debug/debugFPS.tscn" id="2_byh0c"]
 
 [node name="Debug" type="CanvasLayer"]
 layer = 100
@@ -13,3 +14,5 @@ anchor_bottom = 1.0
 offset_top = -40.0
 offset_right = 40.0
 grow_vertical = 0
+
+[node name="debugUI" parent="." instance=ExtResource("2_byh0c")]

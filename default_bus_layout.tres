@@ -12,6 +12,7 @@ buffer_length = 0.5
 
 [sub_resource type="AudioEffectPitchAnalyzer" id="AudioEffectPitchAnalyzer_y6tpr"]
 resource_name = "PitchAnalyzer"
+clarity_threshold = 4.48416e-44
 
 [resource]
 bus/0/effect/0/effect = SubResource("AudioEffectSpectrumAnalyzer_f6eak")
