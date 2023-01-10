@@ -1,0 +1,103 @@
+[gd_scene load_steps=9 format=3 uid="uid://c0j00rp8gumnp"]
+
+[ext_resource type="Script" path="res://scenes/performance/performance_ui.gd" id="1_25a6h"]
+[ext_resource type="PackedScene" uid="uid://cc5vx0tguio8v" path="res://scenes/ChatUI/TextChat.tscn" id="1_pu2i3"]
+[ext_resource type="PackedScene" uid="uid://cixfqrr6em05f" path="res://scenes/videoChat/CamViewer.tscn" id="2_10f4v"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mdcnf"]
+bg_color = Color(0.160784, 0.211765, 0.376471, 0)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7bpvm"]
+resource_local_to_scene = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rvjrp"]
+bg_color = Color(0.160784, 0.211765, 0.376471, 0.596078)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_i1ndp"]
+resource_local_to_scene = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ojl26"]
+bg_color = Color(0, 0, 0, 1)
+border_width_bottom = 5
+border_blend = true
+
+[node name="performance_ui" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_25a6h")
+
+[node name="TopPanel" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(0, 200)
+anchors_preset = -1
+anchor_right = 0.2
+anchor_bottom = 0.2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_mdcnf")
+
+[node name="CamViewer" parent="TopPanel" instance=ExtResource("2_10f4v")]
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 384.0
+offset_bottom = 216.0
+grow_horizontal = 1
+grow_vertical = 1
+theme_override_styles/panel = SubResource("StyleBoxEmpty_7bpvm")
+target_id = "studentStack"
+type = 0
+
+[node name="RightPanel" type="PanelContainer" parent="."]
+anchors_preset = -1
+anchor_left = 0.7
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_rvjrp")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RightPanel"]
+offset_right = 576.0
+offset_bottom = 1080.0
+
+[node name="FocusCam" parent="RightPanel/VBoxContainer" instance=ExtResource("2_10f4v")]
+custom_minimum_size = Vector2(0, 300)
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 576.0
+offset_bottom = 300.0
+grow_horizontal = 1
+grow_vertical = 1
+theme_override_styles/panel = SubResource("StyleBoxEmpty_i1ndp")
+target_id = "teacherFrame"
+type = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="RightPanel/VBoxContainer"]
+offset_top = 304.0
+offset_right = 576.0
+offset_bottom = 309.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ojl26")
+
+[node name="TextChat" parent="RightPanel/VBoxContainer" instance=ExtResource("1_pu2i3")]
+custom_minimum_size = Vector2(550, 0)
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 0.0
+offset_top = 313.0
+offset_right = 576.0
+offset_bottom = 1080.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+alignment = 2

@@ -5,6 +5,7 @@ var sound_effect_scene: PackedScene = preload("res://scenes/performance/speaker_
 
 func _ready():
 	await get_tree().process_frame
+	# TODO : node_started was null when testing.
 	get_parent().performance_instrument.note_started.connect(on_note_started)
 
 

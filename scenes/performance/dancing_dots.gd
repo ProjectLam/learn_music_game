@@ -44,5 +44,5 @@ func _process(delta):
 					Vector3(x, 0, z) * spacing + Vector3.UP * noise_strength * noise.get_noise_2d(noise_offset + x * noise_frequency, z * noise_frequency)
 					)
 				)
-	
+
 	noise_offset += delta * noise_speed

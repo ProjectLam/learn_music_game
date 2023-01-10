@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://dfvrself7mjfx"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_el7cm"]
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ofh8j"]
+
+[sub_resource type="Environment" id="Environment_rx71b"]
+
+[node name="test_3d_rendering" type="Node2D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_el7cm")
+mesh = SubResource("BoxMesh_ofh8j")
+skeleton = NodePath("../Camera3D")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.844543, -0.206993, 0.493863, 0, 0.922268, 0.38655, -0.535488, -0.326458, 0.778895, 1.85302, 1.24603, 3.03637)
+current = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_rx71b")

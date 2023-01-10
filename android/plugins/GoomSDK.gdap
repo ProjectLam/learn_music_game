@@ -1,0 +1,11 @@
+[config]
+
+name="GoomSDKVideoPlugin"
+binary_type="local"
+binary="goomsdk/GoomSDKVideoPlugin-debug.aar"
+
+
+[dependencies]
+
+local=["goomsdk/mobilertc.aar"]
+remote=["com.google.crypto.tink:tink-android:1.5.0","androidx.security:security-crypto:1.1.0-alpha03","androidx.constraintlayout:constraintlayout:2.2.0-alpha04"]

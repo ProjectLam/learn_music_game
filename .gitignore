@@ -3,3 +3,6 @@
 .godot/
 export-html
 export-windows
+# android binaries.
+*.aar
+*.apk

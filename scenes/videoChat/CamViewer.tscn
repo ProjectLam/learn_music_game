@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://cixfqrr6em05f"]
+
+[ext_resource type="Script" path="res://scenes/videoChat/CamViewer.gd" id="1_l8666"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rvr8c"]
+resource_local_to_scene = true
+
+[node name="CamViewer" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_rvr8c")
+script = ExtResource("1_l8666")
+type = null

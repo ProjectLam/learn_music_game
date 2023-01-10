@@ -9,6 +9,11 @@
 config_version=5
 
 _global_script_classes=[{
+"base": "Resource",
+"class": &"ChatMessageData",
+"language": &"GDScript",
+"path": "res://scenes/ChatUI/ChatMessageData/ChatMessageData.gd"
+}, {
 "base": "Note",
 "class": &"Chord",
 "language": &"GDScript",
@@ -28,6 +33,11 @@ _global_script_classes=[{
 "class": &"Ebeats",
 "language": &"GDScript",
 "path": "res://scenes/song_parser/ebeats.gd"
+}, {
+"base": "PanelContainer",
+"class": &"GoomContainer",
+"language": &"GDScript",
+"path": "res://android/plugins/goomsdk/GoomContainer.gd"
 }, {
 "base": "RefCounted",
 "class": &"GutHookScript",
@@ -93,6 +103,11 @@ _global_script_classes=[{
 "class": &"MatchesItem",
 "language": &"GDScript",
 "path": "res://scenes/matches/matches_item.gd"
+}, {
+"base": "Control",
+"class": &"Matchmaking",
+"language": &"GDScript",
+"path": "res://scenes/matchmaking/matchmaking.gd"
 }, {
 "base": "RefCounted",
 "class": &"NakamaAPI",
@@ -265,10 +280,12 @@ _global_script_classes=[{
 "path": "res://compat/WebSocketServer.gd"
 }]
 _global_script_class_icons={
+"ChatMessageData": "",
 "Chord": "",
 "Courses": "",
 "CoursesItem": "",
 "Ebeats": "",
+"GoomContainer": "",
 "GutHookScript": "",
 "GutStringUtils": "",
 "GutTest": "",
@@ -282,6 +299,7 @@ _global_script_class_icons={
 "Level": "",
 "Matches": "",
 "MatchesItem": "",
+"Matchmaking": "",
 "NakamaAPI": "",
 "NakamaAsyncResult": "",
 "NakamaClient": "",
@@ -343,10 +361,11 @@ GRegisterDialog="*res://scenes/register_dialog/register_dialog.tscn"
 GDialogs="*res://scenes/dialogs/dialogs.tscn"
 GGoogleAuth="*res://scenes/google_auth/google_auth.tscn"
 GBackend="*res://scenes/backend/backend.tscn"
-GAudioServerManager="*res://autoload/audio_server_manager.gd"
+GoomSdk="*res://android/plugins/goomsdk/goom_sdk_autoload.gd"
 
 [debug]
 
+settings/stdout/print_fps=true
 gdscript/warnings/enable=false
 
 [display]
@@ -374,5 +393,5 @@ test={
 [rendering]
 
 renderer/rendering_method="mobile"
-anti_aliasing/quality/msaa_3d=2
+driver/depth_prepass/enable=false
 mesh_lod/lod_change/threshold_pixels=0.0
