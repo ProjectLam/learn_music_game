@@ -49,7 +49,7 @@ func _process(delta):
 		var note_data: Note = _notes.pop_front()
 		_spawned_notes.append(note_data)
 		
-		if note_data.get("chord_id") != null and note_data.chord_id >= 0:
+		if note_data is Chord:
 			spawn_chord(note_data as Chord, _spawned_notes.size() - 1)
 		else:
 			spawn_note(note_data, _spawned_notes.size() - 1)

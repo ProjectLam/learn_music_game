@@ -32,22 +32,23 @@ func spawn_note(note_data: Note, note_index: int):
 func spawn_chord(chord_data: Chord, note_index: int):
 	super.spawn_chord(chord_data, note_index)
 	
-	var note = note_scene.instantiate()
-	note.speed = note_speed
-	add_child(note)
-	
-	var position_index: int = NoteFrequency.CHROMATIC.find(chord_data.get_pitch())
-	note.position = $"../SpawnPositions".get_child(position_index).position
-	
-	note.position.z = -note_speed * (chord_data.time - time)
-	
-	note.color = Color.from_string("#35819d", Color.LIGHT_SKY_BLUE)
-	note.duration = chord_data.sustain
-	note.index = note_index
-	
-	# Signals
-	note.tree_exited.connect(on_note_destroyed)
-	note_spawned.emit()
+	for pitch in chord_data.get_pitches():
+		var note = note_scene.instantiate()
+		note.speed = note_speed
+		add_child(note)
+		
+		var position_index: int = NoteFrequency.CHROMATIC.find(pitch)
+		note.position = $"../SpawnPositions".get_child(position_index).position
+		
+		note.position.z = -note_speed * (chord_data.time - time)
+		
+		note.color = Color.from_string("#35819d", Color.LIGHT_SKY_BLUE)
+		note.duration = chord_data.sustain
+		note.index = note_index
+		
+		# Signals
+		note.tree_exited.connect(on_note_destroyed)
+		note_spawned.emit()
 
 
 func get_notes_center_x():

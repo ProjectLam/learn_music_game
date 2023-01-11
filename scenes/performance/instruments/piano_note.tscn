@@ -1,29 +1,31 @@
 [gd_scene load_steps=6 format=3 uid="uid://cwnmxqldm8kpr"]
 
-[ext_resource type="Script" path="res://scenes/performance/instruments/guitar_note.gd" id="1_r574h"]
+[ext_resource type="Script" path="res://scenes/performance/instruments/piano_note.gd" id="1_mpp75"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w8le8"]
 shading_mode = 0
-albedo_color = Color(0, 0, 0, 1)
+albedo_color = Color(0, 0.682353, 0.803922, 1)
 
-[sub_resource type="BoxMesh" id="BoxMesh_dvf6k"]
-size = Vector3(1.5, 0.4, 0.2)
+[sub_resource type="BoxMesh" id="BoxMesh_jvrc4"]
+size = Vector3(0.6, 0.4, 0.2)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_il3f5"]
 shading_mode = 0
+albedo_color = Color(0, 0.266667, 0.313726, 1)
 
-[sub_resource type="QuadMesh" id="QuadMesh_0mjjq"]
+[sub_resource type="QuadMesh" id="QuadMesh_wko5a"]
+size = Vector2(0.4, 1)
 
 [node name="PianoNote" type="Node3D"]
-script = ExtResource("1_r574h")
+script = ExtResource("1_mpp75")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 material_override = SubResource("StandardMaterial3D_w8le8")
-mesh = SubResource("BoxMesh_dvf6k")
+mesh = SubResource("BoxMesh_jvrc4")
 
 [node name="DurationTail" type="Node3D" parent="."]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="DurationTail"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, -0.5)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.1, -0.5)
 material_override = SubResource("StandardMaterial3D_il3f5")
-mesh = SubResource("QuadMesh_0mjjq")
+mesh = SubResource("QuadMesh_wko5a")

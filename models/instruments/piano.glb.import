@@ -3,7 +3,7 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://mwx86ddyshyt"
+uid="uid://beupsbquc3ecv"
 path="res://.godot/imported/piano.glb-888cceaeadad3e92877cec24a4d00ac3.scn"
 
 [deps]
@@ -25,6 +25,7 @@ meshes/lightmap_texel_size=0.2
 skins/use_named_skins=true
 animation/import=true
 animation/fps=30
+animation/trimming=false
 import_script/path=""
 _subresources={
 "meshes": {

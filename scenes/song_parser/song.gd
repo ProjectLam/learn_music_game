@@ -97,6 +97,7 @@ func get_notes_and_chords_for_difficulty(difficulty: int = -1) -> Array:
 		
 		for song_note in levels[level].chords:
 			var chord_template := chord_templates[song_note.chord_id]
+			#@TODO We're not doing anything with chord notes here yet, which are a separate list in XML that only some chords have.
 			var chord := Chord.new()
 			chord.display_name = chord_template.display_name
 			chord.chord_name = chord_template.chord_name
@@ -116,6 +117,10 @@ func get_notes_and_chords_for_difficulty(difficulty: int = -1) -> Array:
 			chord.time = song_note.time
 			chord.link_next = song_note.link_next
 			chord.accent = song_note.accent
+			# Up and down seem to be the only options in the songs we have, but we might need to support other "strum" types (plucking comes to mind)
+			chord.strum = Chord.Strum.UP if song_note.strum == "up" else Chord.Strum.DOWN
+			chord.high_density = song_note.high_density
+			chord.fret_hand_mute = song_note.fret_hand_mute
 			
 			notes_and_chords.append(chord)
 	
