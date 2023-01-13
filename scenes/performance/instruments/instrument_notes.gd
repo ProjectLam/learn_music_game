@@ -7,6 +7,7 @@ signal note_ended(note_data)
 
 
 @export var note_scene: PackedScene
+@export var chord_scene: PackedScene
 # How far back from the world origin notes should be spawned
 @export var spawn_distance: float = 48
 @export var note_speed: float = 10.0

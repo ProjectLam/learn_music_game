@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://d1j5vy3wif4qo"]
+
+[ext_resource type="Script" path="res://scenes/performance/instruments/guitar_chord.gd" id="1_e26q6"]
+
+[node name="GuitarChord" type="Node3D"]
+script = ExtResource("1_e26q6")

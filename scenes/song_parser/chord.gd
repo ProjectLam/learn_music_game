@@ -65,6 +65,7 @@ func get_fingers() -> Array[int]:
 
 
 func is_barre_chord() -> bool:
+	# True when the same finger is used on more than one string
 	return finger_0 >= 0 and (
 		finger_0 == finger_1 \
 		or finger_0 == finger_2 \
@@ -88,3 +89,45 @@ func is_barre_chord() -> bool:
 		or finger_3 == finger_5
 	) or \
 	finger_4 >= 0 and finger_4 == finger_5
+
+
+func get_barre_frets() -> Array[int]:
+	# This returns an array because there's always a chance that a chord has a "main" barre finger
+	# and an additional one - a potential example would be a Dmaj7/A shape moved up.
+	# These are edge cases though, you should usually get a single fret from this function.
+	var barre_frets: Array[int]
+	
+	if finger_0 >= 0 and (
+		finger_0 == finger_1 \
+		or finger_0 == finger_2 \
+		or finger_0 == finger_3 \
+		or finger_0 == finger_4 \
+		or finger_0 == finger_5
+	):
+		barre_frets.append(fret_0)
+	
+	if finger_1 >= 0 and (
+		finger_1 == finger_2 \
+		or finger_1 == finger_3 \
+		or finger_1 == finger_4 \
+		or finger_1 == finger_5
+	) and finger_1 != finger_0:
+		barre_frets.append(fret_1)
+	
+	if finger_2 >= 0 and (
+		finger_2 == finger_3 \
+		or finger_2 == finger_4 \
+		or finger_2 == finger_5
+	) and finger_2 != finger_1 and finger_2 != finger_0:
+		barre_frets.append(fret_2)
+	
+	if finger_3 >= 0 and (
+		finger_3 == finger_4 \
+		or finger_3 == finger_5
+	) and finger_3 != finger_2 and finger_2 != finger_1 and finger_3 != finger_0:
+		barre_frets.append(fret_3)
+	
+	if finger_4 >= 0 and finger_4 == finger_5 and finger_4 != finger_0 and finger_4 != finger_1 and finger_4 != finger_2 and finger_4 != finger_3:
+		barre_frets.append(fret_4)
+	
+	return barre_frets

@@ -49,6 +49,11 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://autoload/instrument_input/input_instrument.gd"
 }, {
+"base": "InstrumentNote",
+"class": &"InstrumentChord",
+"language": &"GDScript",
+"path": "res://scenes/performance/instruments/instrument_chord.gd"
+}, {
 "base": "Resource",
 "class": &"InstrumentData",
 "language": &"GDScript",
@@ -278,6 +283,7 @@ _global_script_class_icons={
 "GutStringUtils": "",
 "GutTest": "",
 "InputInstrument": "",
+"InstrumentChord": "",
 "InstrumentData": "",
 "InstrumentNote": "",
 "InstrumentNotes": "",

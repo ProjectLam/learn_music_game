@@ -8,4 +8,4 @@ enum Instrument {
 }
 
 
-var instrument: Instrument = Instrument.PIANO
+var instrument: Instrument = Instrument.GUITAR
