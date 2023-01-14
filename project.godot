@@ -245,11 +245,6 @@ _global_script_classes=[{
 "path": "res://scenes/matches/t_matches_item.gd"
 }, {
 "base": "Object",
-"class": &"TSong",
-"language": &"GDScript",
-"path": "res://scenes/song_selection/t_song.gd"
-}, {
-"base": "Object",
 "class": &"TUser",
 "language": &"GDScript",
 "path": "res://types/t_user.gd"
@@ -317,7 +312,6 @@ _global_script_class_icons={
 "TInstrumentSelectionItems": "",
 "TLeaderboardItem": "",
 "TMatchesItem": "",
-"TSong": "",
 "TUser": "",
 "Utils": "",
 "WebSocketClient": "",
@@ -372,9 +366,10 @@ theme/custom="res://ui_theme.tres"
 
 [input]
 
-test={
+media_pause_play={
 "deadzone": 0.5,
-"events": []
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":32,"unicode":0,"echo":false,"script":null)
+]
 }
 
 [rendering]

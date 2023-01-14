@@ -16,12 +16,25 @@ class_name Matches
 
 @onready var nItems = find_child("Items")
 
+signal full_initialization
+
+# use 'await await_finit()' to wait for full initialization.
+func await_finit():
+	if _is_fully_initialized:
+		return
+	await full_initialization
+
+var _is_fully_initialized = false
+
 func _ready():
 	_update_style()
+	await GBackend.await_finit()
 	await load_items()
+	_is_fully_initialized = true
+	emit_signal("full_initialization")
 
-func add_test_record():
-	var game_match: NakamaRTAPI.Match = await GBackend.socket.create_match_async("Meowing Cats Room")
+func add_test_record() -> void:
+	var game_match: NakamaRTAPI.Match = await GBackend.create_match_async("Meowing Cats Room")
 	print("Match created: #%s - %s" % [game_match.match_id, game_match.label])
 	return game_match
 
@@ -58,6 +71,8 @@ func get_item(p_index: int) -> MatchesItem:
 	return nItems.get_child(p_index)
 
 func load_items() -> void:
+	if(!GBackend.is_fully_initialized()):
+		return
 	print("Loading matches...")
 	
 	var result = await GBackend.client.list_matches_async(GBackend.session, min_players, max_players, limit, authoritative, label, query)
@@ -92,5 +107,5 @@ func _on_RefreshTimer_timeout() -> void:
 
 func _on_Item_selected(p_nItem: MatchesItem) -> void:
 	print("Match selected: ", p_nItem.item.nakama_object.match_id)
-	await GBackend.socket.join_match_async(p_nItem.item.nakama_object.match_id)
+	await GBackend.join_match_async(p_nItem.item.nakama_object.match_id)
 	get_tree().change_scene_to_file("res://scenes/performance.tscn")

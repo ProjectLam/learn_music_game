@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://brppj3a5ftaap"]
+[gd_scene load_steps=22 format=3 uid="uid://brppj3a5ftaap"]
 
 [ext_resource type="Script" path="res://scenes/performance.gd" id="1_2i2o3"]
 [ext_resource type="Script" path="res://scenes/performance/dancing_dots.gd" id="2_kgtlr"]
@@ -6,6 +6,7 @@
 [ext_resource type="Shader" path="res://scenes/performance/tunnel.gdshader" id="3_30o2r"]
 [ext_resource type="Script" path="res://scenes/performance/speaker.gd" id="5_5sxnp"]
 [ext_resource type="Texture2D" uid="uid://de686ygqs5poa" path="res://assets/gui/icons/logout.png" id="6_d47nm"]
+[ext_resource type="Texture2D" uid="uid://cr6tvdv0ve6cv" path="res://addons/gut/gui/play.png" id="7_28teg"]
 
 [sub_resource type="Environment" id="Environment_n4e55"]
 background_mode = 1
@@ -160,6 +161,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="QuitBtn" type="Button" parent="CanvasLayer/UI"]
 layout_mode = 1
@@ -175,4 +177,25 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_0wdux")
 icon = ExtResource("6_d47nm")
 icon_alignment = 1
 
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/UI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 20
+
+[node name="PausePlayButton" type="Button" parent="CanvasLayer/UI/MarginContainer"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+focus_mode = 0
+icon = ExtResource("7_28teg")
+icon_alignment = 1
+
 [connection signal="pressed" from="CanvasLayer/UI/QuitBtn" to="." method="_on_QuitBtn_pressed"]
+[connection signal="pressed" from="CanvasLayer/UI/MarginContainer/PausePlayButton" to="." method="_on_pause_play_button_pressed"]
