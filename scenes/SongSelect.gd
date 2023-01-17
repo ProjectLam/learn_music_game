@@ -28,7 +28,6 @@ func handle_song_dir(songFile:String, curPath:String):
 	
 	print("handle_song_dir-" + songFile)
 	var song:Song = Song.new()
-	PlayerVariables.songs.append(song)
 
 	dir.list_dir_begin()
 	while true:
@@ -88,6 +87,7 @@ func handle_song_dir(songFile:String, curPath:String):
 	item_list.add_item(songFile)
 	dir.change_dir("..")
 	dir.change_dir("..")
+	PlayerVariables.songs[song.get_identifier()] = song
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -109,7 +109,7 @@ func _on_select_btn_pressed():
 
 	print(selected_song)
 	print(selected_song_id)
-	PlayerVariables.current_song = PlayerVariables.songs[selected[0]]
-#	PlayerVariables.current_song = "user://song_knbeegelovey_fixed.mp3"
+	SessionVariables.current_song = PlayerVariables.songs[selected[0]]
+#	SessionVariables.current_song = "user://song_knbeegelovey_fixed.mp3"
 
 	get_tree().change_scene_to_file("res://scenes/performance.tscn")

@@ -91,14 +91,14 @@ func load_items():
 	
 	if PlayerVariables.songs.size():
 		while items_count < items_number:
-			for song in PlayerVariables.songs:
+			for songid in PlayerVariables.songs:
+				var song : Song = PlayerVariables.songs[songid]
 				print("Added song: ", song.title)
 				var nItem: SongSelectionItem = cSongSelectionItem.instantiate()
 				nItems.add_child(nItem)
 				nItem.connect("selected", _on_Item_selected)
 				nItem.find_child("NameLabel").text = song.title
-				nItem.song = TSong.new()
-				nItem.song.file_name = song.title
+				nItem.song = song
 				items_count += 1
 
 
@@ -167,7 +167,7 @@ func _handle_song_dir(songFile:String, curPath:String):
 	dir.change_dir("..")
 	
 	if song:
-		PlayerVariables.songs.append(song)
+		PlayerVariables.songs[song.get_identifier()] = song
 
 
 func _handle_song_zip(path: String):
@@ -192,7 +192,7 @@ func _handle_song_zip(path: String):
 	
 	if song:
 		song.song_music_buffer = song_music_buffer
-		PlayerVariables.songs.append(song)
+		PlayerVariables.songs[song.get_identifier()] = song
 
 
 func select_item(p_index: int, p_is_internal: bool = false) -> void:
@@ -364,11 +364,11 @@ func _on_Item_selected(p_nItem: SongSelectionItem):
 	if item_index != selected_index:
 		selected_index = item_index
 		select_item(item_index)
-		emit_signal("item_selected", p_nItem, item_index)
+		item_selected.emit(p_nItem)
 	else:
-		emit_signal("item_played", p_nItem, song_index)
+		item_played.emit(p_nItem)
 		if selection_mode == SELECTION_MODE.PLAY:
-			PlayerVariables.current_song = PlayerVariables.songs[song_index]
+			SessionVariables.current_song = PlayerVariables.songs[song_index]
 			get_tree().change_scene_to_file("res://scenes/performance.tscn")
 
 func _on_DownBtn_pressed():

@@ -21,6 +21,30 @@ var server_key = "projectlam"
 @onready var nLoginFailedDialog: Control = find_child("LoginFailedDialog")
 @onready var nLoginFailedDialog_AnimationPlayer: AnimationPlayer = nLoginFailedDialog.get_node("AnimationPlayer")
 
+signal full_initialization
+signal received_match_presence(p_presence: NakamaRTAPI.MatchPresenceEvent)
+signal received_match_state(p_state)
+signal peer_connected(id : int)
+
+# use 'await await_finit()' to wait for full initialization.
+func await_finit():
+	if _is_fully_initialized:
+		return
+	await full_initialization
+
+func await_connection():
+	await await_finit()
+	while(
+		(socket.is_connected_to_host() || socket.is_connecting_to_host()) &&
+		multiplayer.multiplayer_peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTING):
+		
+		await get_tree().process_frame
+
+var _is_fully_initialized = false
+
+func is_fully_initialized() -> bool:
+	return _is_fully_initialized
+
 func _ready():
 	nConnectionFailedDialog.hide()
 	nLoginFailedDialog.hide()
@@ -32,16 +56,23 @@ func _ready():
 	await login_password(test_email, test_password)
 	
 	socket = Nakama.create_socket_from(client)
+	socket.received_match_presence.connect(_on_received_match_presence)
+	socket.received_match_state.connect(_on_received_match_state)
 	socket.connected.connect(_on_socket_connected)
 	socket.closed.connect(_on_socket_closed)
 	socket.received_error.connect(_on_socket_error)
-	if session:
-		await socket.connect_async(session)
-	
+#	if session:
+#		await 
+	socket.connect_async(session)
 	multiplayer_bridge = NakamaMultiplayerBridge.new(socket)
 	multiplayer_bridge.match_join_error.connect(_on_match_join_error)
 	multiplayer_bridge.match_joined.connect(_on_match_joined)
 	get_tree().get_multiplayer().set_multiplayer_peer(multiplayer_bridge.multiplayer_peer)
+	
+	multiplayer.peer_connected.connect(_on_peer_connected)
+	
+	_is_fully_initialized = true
+	emit_signal("full_initialization")
 
 func _process(delta: float) -> void:
 	nLoginFailedDialog.pivot_offset.x = nLoginFailedDialog.get_rect().size.x/2
@@ -130,3 +161,27 @@ func _on_LoginFailedDialog_CloseBtn_pressed() -> void:
 
 func _on_LoginFailedDialog_OkBtn_pressed() -> void:
 	close_login_failed_dialog()
+
+func _on_received_match_state(p_state) -> void:
+	print("Received match state: ", p_state)
+	received_match_state.emit(p_state)
+
+func _on_received_match_presence(p_presence: NakamaRTAPI.MatchPresenceEvent) -> void:
+	received_match_presence.emit(p_presence)
+
+func create_match_async(match_name = "") -> void:
+	await await_finit()
+	# TODO : add match naming. create_match_async should not be called on socket without
+	#  taking care of additional logic implemented in create_match()
+	await multiplayer_bridge.create_match()
+
+func leave_async() -> void:
+	await await_finit()
+	await multiplayer_bridge.leave()
+
+func join_match_async(p_match_id: String) -> void:
+	await await_finit()
+	await multiplayer_bridge.join_match(p_match_id)
+
+func _on_peer_connected(id : int) -> void:
+	peer_connected.emit(id)
