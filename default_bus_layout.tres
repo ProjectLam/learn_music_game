@@ -9,6 +9,7 @@ resource_name = "Record"
 [sub_resource type="AudioEffectSpectrumAnalyzer" id="AudioEffectSpectrumAnalyzer_1rv82"]
 resource_name = "SpectrumAnalyzer"
 buffer_length = 0.5
+fft_size = 4
 
 [resource]
 bus/0/effect/0/effect = SubResource("AudioEffectSpectrumAnalyzer_f6eak")

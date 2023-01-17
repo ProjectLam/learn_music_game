@@ -5,7 +5,7 @@ extends Node3D
 # This note's index in level.notes[]. Will be used to delete it when the player plays it.
 var index: int = -1
 var speed: float = 10.0
-var is_playing: bool = false
+var is_playing: bool = false: set = set_is_playing, get = get_is_playing
 
 
 var color: Color: set = set_color
@@ -45,3 +45,11 @@ func set_color(value: Color):
 # Abstract, use to update the visuals (like a "tail") to depict duration
 func set_duration(value: float):
 	pass
+
+
+func set_is_playing(value: bool):
+	is_playing = value
+
+
+func get_is_playing() -> bool:
+	return is_playing

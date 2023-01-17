@@ -65,37 +65,39 @@ func get_notes_and_chords_for_difficulty(difficulty: int = -1) -> Array:
 			if song_note.time < pi.time or song_note.time > end_time:
 				continue
 			
-			else:
-				var note := Note.new()
-				note.time = song_note.time
-				note.link_next = song_note.link_next
-				note.accent = song_note.accent
-				note.bend = song_note.bend
-				note.fret = song_note.fret
-				note.hammer_on = song_note.hammer_on
-				note.harmonic = song_note.harmonic
-				note.hopo = song_note.hopo
-				note.ignore = song_note.ignore
-				note.left_hand = song_note.left_hand
-				note.mute = song_note.mute
-				note.palm_mute = song_note.palm_mute
-				note.pluck = song_note.pluck
-				note.pull_off = song_note.pull_off
-				note.slap = song_note.slap
-				note.slide_to = song_note.slide_to
-				note.string = song_note.string
-				note.sustain = song_note.sustain
-				note.tremolo = song_note.tremolo
-				note.harmonic_pinch = song_note.harmonic_pinch
-				note.pick_direction = song_note.pick_direction
-				note.right_hand = song_note.right_hand
-				note.slide_unpitch_to = song_note.slide_unpitch_to
-				note.tap = song_note.tap
-				note.vibrato = song_note.vibrato
-				
-				notes_and_chords.append(note)
+			var note := Note.new()
+			note.time = song_note.time
+			note.link_next = song_note.link_next
+			note.accent = song_note.accent
+			note.bend = song_note.bend
+			note.fret = song_note.fret
+			note.hammer_on = song_note.hammer_on
+			note.harmonic = song_note.harmonic
+			note.hopo = song_note.hopo
+			note.ignore = song_note.ignore
+			note.left_hand = song_note.left_hand
+			note.mute = song_note.mute
+			note.palm_mute = song_note.palm_mute
+			note.pluck = song_note.pluck
+			note.pull_off = song_note.pull_off
+			note.slap = song_note.slap
+			note.slide_to = song_note.slide_to
+			note.string = song_note.string
+			note.sustain = song_note.sustain
+			note.tremolo = song_note.tremolo
+			note.harmonic_pinch = song_note.harmonic_pinch
+			note.pick_direction = song_note.pick_direction
+			note.right_hand = song_note.right_hand
+			note.slide_unpitch_to = song_note.slide_unpitch_to
+			note.tap = song_note.tap
+			note.vibrato = song_note.vibrato
+			
+			notes_and_chords.append(note)
 		
 		for song_note in levels[level].chords:
+			if song_note.time < pi.time or song_note.time > end_time:
+				continue
+			
 			var chord_template := chord_templates[song_note.chord_id]
 			#@TODO We're not doing anything with chord notes here yet, which are a separate list in XML that only some chords have.
 			var chord := Chord.new()

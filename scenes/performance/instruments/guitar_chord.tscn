@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://d1j5vy3wif4qo"]
+[gd_scene load_steps=3 format=3 uid="uid://d1j5vy3wif4qo"]
 
 [ext_resource type="Script" path="res://scenes/performance/instruments/guitar_chord.gd" id="1_e26q6"]
+[ext_resource type="PackedScene" uid="uid://dcuwq2podueh" path="res://scenes/performance/instruments/guitar_chord_tone.tscn" id="2_kn4ib"]
 
 [node name="GuitarChord" type="Node3D"]
 script = ExtResource("1_e26q6")
+chord_tone_scene = ExtResource("2_kn4ib")

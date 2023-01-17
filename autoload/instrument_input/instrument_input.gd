@@ -3,6 +3,8 @@ extends Node
 
 signal note_started(frequency)
 signal note_ended(frequency)
+signal chord_started(frequencies)
+signal chord_ended(frequencies)
 
 
 var current_instrument := 0

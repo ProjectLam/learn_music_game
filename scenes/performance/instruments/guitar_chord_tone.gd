@@ -1,14 +1,13 @@
-extends InstrumentNote
+extends Node3D
 
 
-func set_color(value):
-	$MeshInstance3D.material_override.albedo_color = value
-	$DurationTail/MeshInstance3D.material_override.albedo_color = Color(value.r, value.g, value.b, 0.5)
+var color: Color: set = set_color
 
 
-func set_duration(value):
-	duration = value
-	$DurationTail.scale.z = value * speed
+func set_color(new_color: Color):
+	color = new_color
+	$MeshInstance3D.material_override.albedo_color = new_color
+	$DurationTail/MeshInstance3D.material_override.albedo_color = Color(new_color.r, new_color.g, new_color.b, 0.5)
 
 
 func _ready():

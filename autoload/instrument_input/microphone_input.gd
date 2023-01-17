@@ -20,7 +20,6 @@ func _process(delta):
 	var max_frequency: float
 	var volume: float
 	
-	
 	var previous_inputs = inputs.duplicate()
 	inputs = []
 	for note in NoteFrequency.CHROMATIC:

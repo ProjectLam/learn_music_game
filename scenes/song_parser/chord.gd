@@ -28,17 +28,18 @@ var fret_hand_mute: bool
 var high_density: bool
 
 
+var string_chromatic_indices = [
+	NoteFrequency.CHROMATIC.find(NoteFrequency.E2),
+	NoteFrequency.CHROMATIC.find(NoteFrequency.A2),
+	NoteFrequency.CHROMATIC.find(NoteFrequency.D3),
+	NoteFrequency.CHROMATIC.find(NoteFrequency.G3),
+	NoteFrequency.CHROMATIC.find(NoteFrequency.B3),
+	NoteFrequency.CHROMATIC.find(NoteFrequency.E4),
+]
+
+
 func get_pitches() -> Array[float]:
 	var pitches: Array[float] = []
-	
-	var string_chromatic_indices = [
-		NoteFrequency.CHROMATIC.find(NoteFrequency.E2),
-		NoteFrequency.CHROMATIC.find(NoteFrequency.A2),
-		NoteFrequency.CHROMATIC.find(NoteFrequency.D3),
-		NoteFrequency.CHROMATIC.find(NoteFrequency.G3),
-		NoteFrequency.CHROMATIC.find(NoteFrequency.B3),
-		NoteFrequency.CHROMATIC.find(NoteFrequency.E4),
-	]
 	
 	if fret_0 >= 0:
 		pitches.append(NoteFrequency.CHROMATIC[string_chromatic_indices[0] + fret_0])
@@ -54,6 +55,28 @@ func get_pitches() -> Array[float]:
 		pitches.append(NoteFrequency.CHROMATIC[string_chromatic_indices[5] + fret_5])
 	
 	return pitches
+
+
+func get_pitch_for_string(string_index: int) -> float:
+	match string_index:
+		0:
+			return NoteFrequency.CHROMATIC[string_chromatic_indices[0] + fret_0]
+		1:
+			return NoteFrequency.CHROMATIC[string_chromatic_indices[1] + fret_1]
+		2:
+			return NoteFrequency.CHROMATIC[string_chromatic_indices[2] + fret_2]
+		3:
+			return NoteFrequency.CHROMATIC[string_chromatic_indices[3] + fret_3]
+		4:
+			return NoteFrequency.CHROMATIC[string_chromatic_indices[4] + fret_4]
+		5:
+			return NoteFrequency.CHROMATIC[string_chromatic_indices[5] + fret_5]
+		_:
+			return -1.0
+
+
+func has_pitch(pitch: float) -> bool:
+	return get_pitches().has(pitch)
 
 
 func get_frets() -> Array[int]:

@@ -55,7 +55,7 @@ func _process(delta):
 		else:
 			spawn_note(note_data, _spawned_notes.size() - 1)
 	
-	while _performance_note_index < _performance_notes.size() and _performance_notes[_performance_note_index].time + _performance_notes[_performance_note_index].sustain < time - missed_max_error:
+	while _is_missed_note(_performance_note_index):
 		_on_missed_note(_performance_note_index)
 		_destroy_note(_performance_note_index)
 		_performance_note_index += 1
@@ -63,6 +63,17 @@ func _process(delta):
 	if _notes.size() == 0 and _performance_notes.size() == _performance_note_index:
 		print("game finished!")
 		set_process(false)
+
+
+func _is_missed_note(note_index: int):
+	if note_index >= _performance_notes.size():
+		return false
+	
+	if _performance_notes[note_index] is Chord:
+		# For now let's return the same as when it isn't a chord, but I think this might need different checks
+		return _performance_notes[note_index].time + _performance_notes[note_index].sustain < time - missed_max_error
+	else:
+		return _performance_notes[note_index].time + _performance_notes[note_index].sustain < time - missed_max_error
 
 
 # Abstract, override in child class
@@ -87,16 +98,30 @@ func _on_input_note_started(pitch: float):
 	
 	var timing_error = abs(time_difference) / missed_max_error if time_difference < 0 else time_difference / early_max_error
 	
-	if pitch == expected.get_pitch():
-		_on_good_note_start(_performance_note_index, timing_error)
-		_current_note_indices.append(_performance_note_index)
-		_play_note(_performance_note_index)
-		note_started.emit(expected)
+	if expected is Chord:
+		# This means we're using either MIDI or keyboard input and the notes come in separately
+		if expected.has_pitch(pitch):
+			# This is a good note
+			expected.play_pitch(pitch)
+			if expected.num_notes_remaining() == 0:
+				_on_good_note_start(_performance_note_index, timing_error)
+				_current_note_indices.append(_performance_note_index)
+				_play_note(_performance_note_index)
+				note_started.emit(expected)
+			else:
+				_on_wrong_pitch(_performance_note_index, timing_error)
+				_destroy_note(_performance_note_index)
 	else:
-		_on_wrong_pitch(_performance_note_index, timing_error)
-		_destroy_note(_performance_note_index)
-	
-	_performance_note_index += 1
+		if pitch == expected.get_pitch():
+			_on_good_note_start(_performance_note_index, timing_error)
+			_current_note_indices.append(_performance_note_index)
+			_play_note(_performance_note_index)
+			note_started.emit(expected)
+		else:
+			_on_wrong_pitch(_performance_note_index, timing_error)
+			_destroy_note(_performance_note_index)
+		
+		_performance_note_index += 1
 
 
 func _on_input_note_ended(pitch: float):
