@@ -358,6 +358,7 @@ custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 
 [node name="WaitingOpponent" type="PanelContainer" parent="Right/Left/VBoxContainer"]
+unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
@@ -399,11 +400,13 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_byefl")
 text = "Cancel"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Right/Left/VBoxContainer/WaitingOpponent"]
+unique_name_in_owner = true
 libraries = {
 "": SubResource("AnimationLibrary_b00j2")
 }
 
 [node name="Matches" parent="Right/Left/VBoxContainer" instance=ExtResource("10_o03mo")]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -420,6 +423,7 @@ grow_horizontal = 0
 grow_vertical = 2
 
 [node name="InstrumentBox" type="Control" parent="Right/Right"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -474,6 +478,7 @@ grow_vertical = 2
 texture = ExtResource("14_nk32l")
 
 [node name="SongSelection" parent="." instance=ExtResource("13_tr8mu")]
+unique_name_in_owner = true
 visible = false
 layout_mode = 1
 selection_mode = 1

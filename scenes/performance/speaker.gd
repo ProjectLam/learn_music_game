@@ -4,8 +4,10 @@ extends MeshInstance3D
 var sound_effect_scene: PackedScene = preload("res://scenes/performance/speaker_sound.tscn")
 
 func _ready():
-	await get_tree().process_frame
-	get_parent().performance_instrument.note_started.connect(on_note_started)
+	# this is better than waiting for process frame.
+	await owner.ready
+	if(is_instance_valid(get_parent().performance_instrument)):
+		get_parent().performance_instrument.note_started.connect(on_note_started)
 
 
 func on_note_started(_note_data):

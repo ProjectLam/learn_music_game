@@ -3,8 +3,7 @@ extends Node
 
 const CFG_FILENAME = "user://player.cfg"
 
-var current_song:Song
-var songs:Array[Song] = []
+var songs := {}
 
 var selected_output_device = ""
 var selected_input_device = ""

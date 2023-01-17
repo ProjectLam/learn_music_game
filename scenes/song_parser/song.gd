@@ -131,6 +131,8 @@ func get_notes_and_chords_for_difficulty(difficulty: int = -1) -> Array:
 	
 	return notes_and_chords
 
+func get_identifier() -> String:
+	return title
 
 class SongPhrase:
 	var disparity: bool

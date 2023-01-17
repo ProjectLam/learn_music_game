@@ -31,6 +31,8 @@ func _ready():
 
 
 func _process(delta):
+	if(Engine.is_editor_hint()):
+		return
 	# Scroll through the noise, using it as an offset for the dots
 	# This should probably be replaced with data coming from the audio stream
 	for z in num_dots_z:
