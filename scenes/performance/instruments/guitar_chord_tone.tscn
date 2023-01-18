@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dcuwq2podueh"]
+[gd_scene load_steps=5 format=3 uid="uid://dcuwq2podueh"]
 
 [ext_resource type="Script" path="res://scenes/performance/instruments/guitar_chord_tone.gd" id="1_eprv4"]
 
@@ -9,20 +9,10 @@ albedo_color = Color(0, 0, 0, 1)
 [sub_resource type="BoxMesh" id="BoxMesh_dvf6k"]
 size = Vector3(1.5, 0.4, 0.2)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aqcv1"]
-transparency = 1
-shading_mode = 0
-albedo_color = Color(1, 1, 1, 0.0901961)
-
-[sub_resource type="QuadMesh" id="QuadMesh_0mjjq"]
-
-[sub_resource type="QuadMesh" id="QuadMesh_p2080"]
-size = Vector2(20, 1)
-
 [sub_resource type="CylinderMesh" id="CylinderMesh_wcfsj"]
 top_radius = 0.05
 bottom_radius = 0.05
-height = 20.0
+height = 8.0
 
 [node name="GuitarChordTone" type="Node3D"]
 script = ExtResource("1_eprv4")
@@ -31,19 +21,7 @@ script = ExtResource("1_eprv4")
 material_override = SubResource("StandardMaterial3D_w8le8")
 mesh = SubResource("BoxMesh_dvf6k")
 
-[node name="DurationTail" type="Node3D" parent="."]
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="DurationTail"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, -0.5)
-material_override = SubResource("StandardMaterial3D_aqcv1")
-mesh = SubResource("QuadMesh_0mjjq")
-
-[node name="OpenStringTail" type="MeshInstance3D" parent="DurationTail"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 11, 0, -0.5)
-visible = false
-mesh = SubResource("QuadMesh_p2080")
-
 [node name="OpenString" type="MeshInstance3D" parent="."]
-transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 11, 0, 0)
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 4, 0, 0)
 visible = false
 mesh = SubResource("CylinderMesh_wcfsj")

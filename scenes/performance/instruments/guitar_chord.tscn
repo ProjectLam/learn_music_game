@@ -1,8 +1,46 @@
-[gd_scene load_steps=3 format=3 uid="uid://d1j5vy3wif4qo"]
+[gd_scene load_steps=8 format=3 uid="uid://d1j5vy3wif4qo"]
 
 [ext_resource type="Script" path="res://scenes/performance/instruments/guitar_chord.gd" id="1_e26q6"]
 [ext_resource type="PackedScene" uid="uid://dcuwq2podueh" path="res://scenes/performance/instruments/guitar_chord_tone.tscn" id="2_kn4ib"]
+[ext_resource type="Texture2D" uid="uid://lxyu6gb4td36" path="res://assets/textures/chord_box.png" id="3_inn8k"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0pvch"]
+transparency = 1
+shading_mode = 0
+albedo_texture = ExtResource("3_inn8k")
+
+[sub_resource type="QuadMesh" id="QuadMesh_mss1f"]
+size = Vector2(8, 4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1swjb"]
+shading_mode = 0
+albedo_color = Color(0.645326, 1, 0.955106, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_aaif3"]
+size = Vector2(0.2, 1)
 
 [node name="GuitarChord" type="Node3D"]
 script = ExtResource("1_e26q6")
 chord_tone_scene = ExtResource("2_kn4ib")
+
+[node name="ChordBox" type="Node3D" parent="."]
+
+[node name="ChordBox" type="MeshInstance3D" parent="ChordBox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 2, 0)
+material_override = SubResource("StandardMaterial3D_0pvch")
+mesh = SubResource("QuadMesh_mss1f")
+skeleton = NodePath("../..")
+
+[node name="DurationTail" type="Node3D" parent="ChordBox"]
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="ChordBox/DurationTail"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0.1, 0, -0.5)
+material_override = SubResource("StandardMaterial3D_1swjb")
+mesh = SubResource("QuadMesh_aaif3")
+skeleton = NodePath("../../..")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="ChordBox/DurationTail"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 7.9, 0, -0.5)
+material_override = SubResource("StandardMaterial3D_1swjb")
+mesh = SubResource("QuadMesh_aaif3")
+skeleton = NodePath("../../..")
