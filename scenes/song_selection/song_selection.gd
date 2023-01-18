@@ -359,7 +359,6 @@ func _on_Songs_item_rect_changed():
 
 func _on_Item_selected(p_nItem: SongSelectionItem):
 	var item_index = p_nItem.get_index()
-	var song_index = item_index % PlayerVariables.songs.size()
 	
 	if item_index != selected_index:
 		selected_index = item_index
@@ -368,7 +367,7 @@ func _on_Item_selected(p_nItem: SongSelectionItem):
 	else:
 		item_played.emit(p_nItem)
 		if selection_mode == SELECTION_MODE.PLAY:
-			SessionVariables.current_song = PlayerVariables.songs[PlayerVariables.songs.keys()[song_index]]
+			SessionVariables.current_song = PlayerVariables.songs[p_nItem.song.get_identifier()]
 			get_tree().change_scene_to_file("res://scenes/performance.tscn")
 
 func _on_DownBtn_pressed():
