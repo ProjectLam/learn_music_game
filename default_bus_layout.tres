@@ -9,6 +9,7 @@ resource_name = "Record"
 [sub_resource type="AudioEffectSpectrumAnalyzer" id="AudioEffectSpectrumAnalyzer_1rv82"]
 resource_name = "SpectrumAnalyzer"
 buffer_length = 0.5
+fft_size = 4
 
 [resource]
 bus/0/effect/0/effect = SubResource("AudioEffectSpectrumAnalyzer_f6eak")
@@ -29,4 +30,3 @@ bus/2/mute = true
 bus/2/bypass_fx = false
 bus/2/volume_db = 0.0
 bus/2/send = &"Master"
-bus/2/effect/0/enabled = true

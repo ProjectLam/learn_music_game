@@ -4,6 +4,9 @@ extends InputInstrument
 var spectrum_analyzer: AudioEffectSpectrumAnalyzerInstance
 var inputs: Array
 
+var threshold := -40.0
+var pitch_accuracy: float = 0.1
+
 
 func _ready():
 	spectrum_analyzer = AudioServer.get_bus_effect_instance(
@@ -17,14 +20,11 @@ func _process(delta):
 	var max_frequency: float
 	var volume: float
 	
-	var threshold = -40
-	var pitch_accuracy: float = 0.5
-	
 	var previous_inputs = inputs.duplicate()
 	inputs = []
 	for note in NoteFrequency.CHROMATIC:
-		min_frequency = 0.5 * note * pow(2, (23 + pitch_accuracy)/24.0)
-		max_frequency = note * pow(2, (1 - pitch_accuracy)/24.0)
+		min_frequency = note * pow(2, -pitch_accuracy/12)
+		max_frequency = note * pow(2, pitch_accuracy/12)
 		volume = linear_to_db(spectrum_analyzer.get_magnitude_for_frequency_range(min_frequency, max_frequency).x)
 		if volume >= threshold:
 			inputs.append(note)

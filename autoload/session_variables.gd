@@ -9,7 +9,7 @@ enum Instrument {
 
 var load_test_song := true
 
-var instrument: Instrument = Instrument.PIANO
+var instrument: Instrument = Instrument.GUITAR
 
 var current_song :Song
 

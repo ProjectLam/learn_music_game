@@ -28,28 +28,29 @@ func spawn_note(note_data: Note, note_index: int):
 	note.color = string_colors[note_data.string]
 	note.duration = note_data.sustain
 	note.index = note_index
+	
+	if note_data.fret == 0:
+		# Open string
+		note.switch_to_open()
 
 
-# TODO: spawn chords instead of notes
 func spawn_chord(chord_data: Chord, note_index: int):
 	super.spawn_chord(chord_data, note_index)
+	
+	var chord = chord_scene.instantiate()
+	chord.speed = note_speed
+	add_child(chord)
+	chord.position = Vector3(0, 0, -note_speed * (chord_data.time - time))
 	
 	var frets := chord_data.get_frets()
 	for string in frets.size():
 		if frets[string] == -1:
 			continue
 		
-		var note = note_scene.instantiate()
-		note.speed = note_speed
-		add_child(note)
-		note.position = Vector3(
-			fret_offset + fret_spacing * frets[string],
-			_get_string_y(string),
-			-note_speed * (chord_data.time - time)
-		)
-		note.color = string_colors[string]
-		note.duration = chord_data.sustain
-		note.index = note_index
+		var pitch := chord_data.get_pitch_for_string(string)
+		chord.add_note(Vector3(fret_offset + fret_spacing * frets[string], _get_string_y(string), 0), string_colors[string], pitch)
+		if frets[string] == 0:
+			chord.switch_to_open(pitch)
 
 
 func _get_string_y(string_index):
