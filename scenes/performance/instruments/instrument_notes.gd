@@ -4,6 +4,7 @@ extends Node3D
 
 signal note_started(note_data)
 signal note_ended(note_data)
+signal good_note_started(note_index: int, timing_error: float)
 
 
 @export var note_scene: PackedScene
@@ -42,6 +43,7 @@ func start_game(song_data: Song):
 	
 	InstrumentInput.note_started.connect(_on_input_note_started)
 	InstrumentInput.note_ended.connect(_on_input_note_ended)
+	set_process(true)
 
 
 func _process(delta):
@@ -179,6 +181,7 @@ func _on_good_note_start(note_index: int, timing_error: float):
 	# but was played very late.
 	
 	print("Good note started with an index of ", note_index, " and a timing error of ", timing_error)
+	good_note_started.emit(note_index, timing_error)
 
 
 func _on_good_note_end(note_index: int, timing_error: float):

@@ -24,9 +24,9 @@ func _ready():
 		print("Couldn't load config creating new one")
 		save()
 	else:
-		selected_output_device = config.get_value("hardware", "selected_output_device")
-		selected_input_device = config.get_value("hardware", "selected_input_device")
-		selected_instrument = config.get_value("hardware", "selected_instrument")
+		selected_output_device = config.get_value("hardware", "selected_output_device", selected_output_device)
+		selected_input_device = config.get_value("hardware", "selected_input_device", selected_input_device)
+		selected_instrument = config.get_value("hardware", "selected_instrument", selected_instrument)
 		print("finished loading config")
 
 

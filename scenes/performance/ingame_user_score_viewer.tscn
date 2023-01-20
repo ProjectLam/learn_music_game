@@ -1,0 +1,34 @@
+[gd_scene load_steps=3 format=3 uid="uid://brlxge7gh8gl7"]
+
+[ext_resource type="Script" path="res://scenes/performance/ingame_user_score_viewer.gd" id="1_5tv66"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ne6nm"]
+
+[node name="ingame_user_status_viewer" type="PanelContainer"]
+anchors_preset = 9
+anchor_bottom = 1.0
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_ne6nm")
+script = ExtResource("1_5tv66")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="uname_label" type="Label" parent="HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+clip_text = true
+
+[node name="separator label" type="Label" parent="HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = ":"
+clip_text = true
+
+[node name="uscore_label" type="Label" parent="HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+horizontal_alignment = 2

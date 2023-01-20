@@ -5,6 +5,7 @@ extends Node3D
 signal note_started(note_data)
 signal note_ended(note_data)
 
+@onready var notes = $Notes
 
 func start_game(song_data: Song):
 	$Notes.note_started.connect(on_note_started)
