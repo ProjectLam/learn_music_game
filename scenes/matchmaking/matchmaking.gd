@@ -1,7 +1,7 @@
 extends Control
 class_name Matchmaking
 
-@onready var nInstrumentBox_Image = %InstrumentBox/Image
+@onready var instrument_box := %InstrumentBox
 @onready var nWaitingOpponent = %WaitingOpponent
 @onready var nWaitingOpponent_AnimationPlayer = %AnimationPlayer
 @onready var nSongSelection: SongSelection = %SongSelection
@@ -14,6 +14,7 @@ func _ready():
 	GBackend.received_match_state.connect(_on_received_match_state)
 	GBackend.peer_connected.connect(_on_peer_connected)
 	SessionVariables.load_test_song = false
+	instrument_box.instrument_data = PlayerVariables.gameplay_instrument_data
 
 func _on_Create_selected() -> void:
 	nSongSelection.show()
@@ -38,6 +39,7 @@ func _on_peer_connected(peer_id : int):
 	# Client Relayed Multiplayer, not data maintained on the backend.
 	# Note : multiplayer api calls should not be called during 'received_match_presence'. But they 
 	# can be called during 'peer_connected'.
+	SessionVariables.instrument = PlayerVariables.gameplay_instrument_name
 	get_tree().change_scene_to_file("res://scenes/performance.tscn")
 	SessionVariables.sync_remote()
 	

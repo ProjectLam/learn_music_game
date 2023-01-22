@@ -1,27 +1,25 @@
-[gd_scene load_steps=20 format=3 uid="uid://chhf5tjr2l5py"]
+[gd_scene load_steps=16 format=3 uid="uid://chhf5tjr2l5py"]
 
 [ext_resource type="Script" path="res://scenes/instrument_menu/instrument_menu.gd" id="1_66tmw"]
 [ext_resource type="Texture2D" uid="uid://dxcxogdwflpig" path="res://assets/gui/main/background.png" id="2_hvina"]
 [ext_resource type="Shader" path="res://shaders/LightingBackground.gdshader" id="3_f3xdb"]
 [ext_resource type="PackedScene" uid="uid://drhti1f6dfqep" path="res://scenes/left_bar/left_bar.tscn" id="4_jve2t"]
 [ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="5_bh1g2"]
-[ext_resource type="Script" path="res://scenes/instrument_selection/instrument_selection_item.gd" id="5_n81pi"]
 [ext_resource type="Texture2D" uid="uid://bcyql8pbvs5yj" path="res://assets/gui/icons/song.png" id="6_rhfwd"]
-[ext_resource type="Shader" path="res://scenes/instrument_selection/item_circle.gdshader" id="6_rmx6f"]
-[ext_resource type="Texture2D" uid="uid://bludcfr13nglg" path="res://assets/gui/main/mandoline.png" id="7_cgjnb"]
 [ext_resource type="Texture2D" uid="uid://cmdd61q57jiu" path="res://assets/gui/icons/course.png" id="7_o5ydg"]
 [ext_resource type="PackedScene" uid="uid://bvqgs74gtjvsj" path="res://scenes/instrument_menu/instrument_menu_action.tscn" id="8_88a38"]
 [ext_resource type="Texture2D" uid="uid://cxpbdejhyhyxu" path="res://assets/gui/icons/lyrics.png" id="9_mhjhx"]
 [ext_resource type="Texture2D" uid="uid://drypojyiolrwq" path="res://assets/gui/icons/settings.png" id="10_oow68"]
 [ext_resource type="Texture2D" uid="uid://de686ygqs5poa" path="res://assets/gui/icons/logout.png" id="11_quq3v"]
+[ext_resource type="PackedScene" uid="uid://b2ew1c3swawaj" path="res://scenes/instrument_selection/instrument_selection_item.tscn" id="12_p1ru3"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_y6ivb"]
 shader = ExtResource("3_f3xdb")
 shader_parameter/indicate = true
-shader_parameter/indicating_power = 1.0
-shader_parameter/lighting_point = Vector2(0.5, 0.5)
-shader_parameter/radius_base = 0.5
 shader_parameter/size = null
+shader_parameter/lighting_point = Vector2(0.5, 0.5)
+shader_parameter/indicating_power = 1.0
+shader_parameter/radius_base = 0.5
 shader_parameter/static_power = 0.4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_utcdj"]
@@ -31,22 +29,6 @@ bg_color = Color(0.0862745, 0.0313726, 0.176471, 1)
 line_spacing = 0.0
 font = ExtResource("5_bh1g2")
 font_size = 90
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_yxg63"]
-shader = ExtResource("6_rmx6f")
-shader_parameter/albedo = Color(0.968627, 0, 0.8, 0.458824)
-shader_parameter/animate = false
-shader_parameter/indicate = false
-shader_parameter/indicating_power = 1.0
-shader_parameter/lighting_point = Vector2(0.5, 0.5)
-shader_parameter/radius = 1.0
-shader_parameter/radius_base = 0.5
-shader_parameter/size = Vector2(600, 600)
-shader_parameter/square_scale = 0.509
-shader_parameter/static_power = 0.5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pcstd"]
-bg_color = Color(0.145098, 0.462745, 1, 1)
 
 [node name="InstrumentMenu" type="Control"]
 layout_mode = 3
@@ -126,6 +108,7 @@ flat = true
 alignment = 0
 
 [node name="InstrumentTitle" type="Label" parent="Right/Left/VBoxContainer"]
+unique_name_in_owner = true
 offset_top = 89.0
 offset_right = 686.0
 offset_bottom = 180.0
@@ -152,7 +135,8 @@ texture = ExtResource("6_rhfwd")
 ignore_texture_size = true
 stretch_mode = 5
 
-[node name="Number" type="Label" parent="Right/Left/VBoxContainer/Details/Songs"]
+[node name="SongsNumber" type="Label" parent="Right/Left/VBoxContainer/Details/Songs"]
+unique_name_in_owner = true
 offset_left = 34.0
 offset_right = 45.0
 offset_bottom = 24.0
@@ -180,7 +164,8 @@ texture = ExtResource("7_o5ydg")
 ignore_texture_size = true
 stretch_mode = 5
 
-[node name="Number" type="Label" parent="Right/Left/VBoxContainer/Details/Courses"]
+[node name="CoursesNumber" type="Label" parent="Right/Left/VBoxContainer/Details/Courses"]
+unique_name_in_owner = true
 offset_left = 34.0
 offset_right = 45.0
 offset_bottom = 24.0
@@ -386,8 +371,8 @@ anchor_bottom = 1.0
 grow_horizontal = 0
 grow_vertical = 2
 
-[node name="InstrumentBox" type="Control" parent="Right/Right"]
-layout_mode = 3
+[node name="InstrumentBox" parent="Right/Right" instance=ExtResource("12_p1ru3")]
+unique_name_in_owner = true
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -397,46 +382,6 @@ offset_left = -254.5
 offset_top = -254.5
 offset_right = 254.5
 offset_bottom = 254.5
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 4
-script = ExtResource("5_n81pi")
-metadata/_edit_group_ = true
-
-[node name="Circle" type="Control" parent="Right/Right/InstrumentBox"]
-material = SubResource("ShaderMaterial_yxg63")
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(260, 260)
-mouse_filter = 1
-
-[node name="Layer" type="Panel" parent="Right/Right/InstrumentBox/Circle"]
-use_parent_material = true
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 1
-theme_override_styles/panel = SubResource("StyleBoxFlat_pcstd")
-
-[node name="Image" type="TextureRect" parent="Right/Right/InstrumentBox"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -281.5
-offset_top = -255.5
-offset_right = 280.5
-offset_bottom = 256.5
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("7_cgjnb")
 
 [connection signal="script_changed" from="." to="." method="_on_script_changed"]
 [connection signal="pressed" from="Right/Left/VBoxContainer/BackBtn" to="." method="_on_BackBtn_pressed"]
@@ -446,8 +391,6 @@ texture = ExtResource("7_cgjnb")
 [connection signal="selected" from="Right/Left/VBoxContainer/Actions/Tuning" to="." method="_on_Tuning_selected"]
 [connection signal="selected" from="Right/Left/VBoxContainer/Actions/Settings" to="." method="_on_Settings_selected"]
 [connection signal="selected" from="Right/Left/VBoxContainer/Actions/Quit" to="." method="_on_Quit_selected"]
-[connection signal="mouse_entered" from="Right/Right/InstrumentBox" to="Right/Right/InstrumentBox" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="Right/Right/InstrumentBox" to="Right/Right/InstrumentBox" method="_on_mouse_exited"]
 
 [editable path="Right/Left/VBoxContainer/Actions/Play"]
 [editable path="Right/Left/VBoxContainer/Actions/Matches"]

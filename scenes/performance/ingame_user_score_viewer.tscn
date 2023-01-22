@@ -2,33 +2,42 @@
 
 [ext_resource type="Script" path="res://scenes/performance/ingame_user_score_viewer.gd" id="1_5tv66"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ne6nm"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dl5kw"]
 
 [node name="ingame_user_status_viewer" type="PanelContainer"]
 anchors_preset = 9
 anchor_bottom = 1.0
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxEmpty_ne6nm")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_dl5kw")
 script = ExtResource("1_5tv66")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
-layout_mode = 2
+offset_right = 258.0
+offset_bottom = 1080.0
 
 [node name="uname_label" type="Label" parent="HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
-layout_mode = 2
+offset_top = 529.0
+offset_right = 100.0
+offset_bottom = 550.0
 clip_text = true
 
 [node name="separator label" type="Label" parent="HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
-layout_mode = 2
+offset_left = 104.0
+offset_top = 528.0
+offset_right = 204.0
+offset_bottom = 552.0
 text = ":"
 clip_text = true
 
 [node name="uscore_label" type="Label" parent="HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 0)
-layout_mode = 2
+offset_left = 208.0
+offset_top = 529.0
+offset_right = 258.0
+offset_bottom = 550.0
 horizontal_alignment = 2

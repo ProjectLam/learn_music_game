@@ -1,12 +1,25 @@
 extends Control
 class_name InstrumentSelectionItem
 
-var item: TInstrumentSelectionItem: set = set_item
+var instrument_data: InstrumentData: set = set_instrument_data
 
-@onready var nImage = find_child("Image")
+@onready var icon := %Icon
+@onready var name_label := %NameLabel
+@onready var songs_number = %SongsNumber
+@onready var courses_number = %CoursesNumber
+@onready var info = %Info
+
+var is_ready:= false
+
+var _info_visible := true
+var info_visible: bool :
+	set = set_info_visible,
+	get = get_info_visible
 
 func _ready():
-	pass
+	is_ready = true
+	reload()
+
 
 func _process(delta):
 	var x = get_viewport().get_mouse_position().x / get_viewport_rect().size.x
@@ -17,11 +30,35 @@ func _process(delta):
 	
 	$Circle.material.set_shader_parameter("lighting_point", pos)
 
-func set_item(p_item: TInstrumentSelectionItem):
-	item = p_item
+
+func set_instrument_data(ndata: InstrumentData):
+	if instrument_data != ndata:
+		instrument_data = ndata
+		reload()
+
+
+func reload():
+	if not is_ready or not instrument_data:
+		return
+	icon.texture = instrument_data.icon
+	name_label.text = instrument_data.instrument_label
+	courses_number.text = str(InstrumentDetails.get_courses_number(instrument_data))
+	songs_number.text = str(InstrumentDetails.get_songs_number(instrument_data))
+	info.visible = _info_visible
+
+
+func set_info_visible(vis: bool) -> void:
+	_info_visible = vis
+	reload()
+
+
+func get_info_visible() -> bool:
+	return _info_visible
+
 
 func _on_mouse_entered():
 	$Circle.material.set_shader_parameter("indicate", true)
+
 
 func _on_mouse_exited():
 	$Circle.material.set_shader_parameter("indicate", false)

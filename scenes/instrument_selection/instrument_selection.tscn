@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://cr2hwlak7qku5"]
+[gd_scene load_steps=18 format=3 uid="uid://cr2hwlak7qku5"]
 
 [ext_resource type="Script" path="res://scenes/instrument_selection/instrument_selection.gd" id="1_wh42a"]
 [ext_resource type="Texture2D" uid="uid://dxcxogdwflpig" path="res://assets/gui/main/background.png" id="2_i41le"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://drhti1f6dfqep" path="res://scenes/left_bar/left_bar.tscn" id="4_qvqqh"]
 [ext_resource type="Texture2D" uid="uid://ixiw3q117w38" path="res://assets/gui/main/txt-choose-instrument.png" id="6_nrcw0"]
 [ext_resource type="Texture2D" uid="uid://cewj8er7rgjhq" path="res://assets/gui/icons/left.png" id="7_572yt"]
+[ext_resource type="PackedScene" uid="uid://cc35yv0evrob7" path="res://scenes/instrument_selection/instrument_selection_box.tscn" id="7_aayu2"]
 [ext_resource type="Texture2D" uid="uid://dfxg2q3m2tb8m" path="res://assets/gui/icons/right.png" id="8_j2st0"]
 [ext_resource type="FontFile" uid="uid://df06bw7a1s1u7" path="res://fonts/Montserrat-Bold.ttf" id="9_uttt2"]
 
@@ -86,7 +87,7 @@ pivot_offset = Vector2(-149, 500)
 script = ExtResource("1_wh42a")
 
 [node name="Background" type="Control" parent="."]
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -94,7 +95,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="TextureRect" type="TextureRect" parent="Background"]
-layout_mode = 0
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -104,7 +105,7 @@ stretch_mode = 6
 
 [node name="Layer" type="Panel" parent="Background"]
 material = SubResource("ShaderMaterial_y6ivb")
-layout_mode = 0
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -112,10 +113,9 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_utcdj")
 
 [node name="LeftBar" parent="." instance=ExtResource("4_qvqqh")]
-layout_mode = 1
 
 [node name="Right" type="Control" parent="."]
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -124,7 +124,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Title" type="Control" parent="Right"]
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 308.0
@@ -132,7 +132,7 @@ grow_horizontal = 2
 
 [node name="Text" type="TextureRect" parent="Right/Title"]
 material = SubResource("ShaderMaterial_0vvxe")
-layout_mode = 0
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -141,7 +141,7 @@ texture = ExtResource("6_nrcw0")
 stretch_mode = 3
 
 [node name="InstrumentMenu" type="Control" parent="Right"]
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -152,7 +152,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Right/InstrumentMenu"]
-layout_mode = 0
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -160,11 +160,14 @@ grow_vertical = 2
 
 [node name="Left" type="Control" parent="Right/InstrumentMenu/HBoxContainer"]
 custom_minimum_size = Vector2(80, 0)
-layout_mode = 2
+layout_mode = 3
+anchors_preset = 0
+offset_right = 80.0
+offset_bottom = 897.0
 
 [node name="LeftBtn" type="Button" parent="Right/InstrumentMenu/HBoxContainer/Left"]
 custom_minimum_size = Vector2(65, 65)
-layout_mode = 0
+anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -187,28 +190,27 @@ icon_alignment = 1
 
 [node name="Middle" type="Control" parent="Right/InstrumentMenu/HBoxContainer"]
 clip_contents = true
-layout_mode = 2
+layout_mode = 3
+anchors_preset = 0
+offset_left = 84.0
+offset_right = 1551.0
+offset_bottom = 897.0
 size_flags_horizontal = 3
 
-[node name="Items" type="Control" parent="Right/InstrumentMenu/HBoxContainer/Middle"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 18.0
-offset_top = 47.0
-offset_right = 18.0
-offset_bottom = 47.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="InstrumentSelectionBox" parent="Right/InstrumentMenu/HBoxContainer/Middle" instance=ExtResource("7_aayu2")]
+unique_name_in_owner = true
 
 [node name="Right" type="Control" parent="Right/InstrumentMenu/HBoxContainer"]
 custom_minimum_size = Vector2(80, 0)
-layout_mode = 2
+layout_mode = 3
+anchors_preset = 0
+offset_left = 1555.0
+offset_right = 1635.0
+offset_bottom = 897.0
 
 [node name="RightBtn" type="Button" parent="Right/InstrumentMenu/HBoxContainer/Right"]
 custom_minimum_size = Vector2(65, 65)
-layout_mode = 0
+anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -230,7 +232,7 @@ icon = ExtResource("8_j2st0")
 icon_alignment = 1
 
 [node name="SelectBtn" type="Button" parent="Right"]
-layout_mode = 0
+anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
@@ -252,6 +254,5 @@ text = "Get that"
 
 [connection signal="script_changed" from="." to="." method="_on_script_changed"]
 [connection signal="pressed" from="Right/InstrumentMenu/HBoxContainer/Left/LeftBtn" to="." method="_on_left_btn_pressed"]
-[connection signal="item_rect_changed" from="Right/InstrumentMenu/HBoxContainer/Middle/Items" to="." method="_on_Items_item_rect_changed"]
 [connection signal="pressed" from="Right/InstrumentMenu/HBoxContainer/Right/RightBtn" to="." method="_on_right_btn_pressed"]
 [connection signal="pressed" from="Right/SelectBtn" to="." method="_on_SelectBtn_pressed"]

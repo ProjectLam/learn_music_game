@@ -11,6 +11,8 @@ var ingame_users := {}
 
 var performance_instrument: PerformanceInstrument
 
+var is_ready := false
+
 # You can load a file without having to import it beforehand using the code snippet below. Keep in mind that this snippet loads the whole file into memory and may not be ideal for huge files (hundreds of megabytes or more).
 func load_mp3_from_path(path):
 	var file = FileAccess.open(path, FileAccess.READ)
@@ -105,6 +107,7 @@ func _ready():
 			reload_network_users()
 	
 	SessionVariables.song_changed.connect(_on_song_changed)
+	SessionVariables.instrument_changed.connect(_on_instrument_changed)
 	
 	current_song = SessionVariables.current_song
 	print_song_loading_debug(current_song)
@@ -114,14 +117,10 @@ func _ready():
 		audio_stream.stream = current_stream
 		audio_stream.play()
 	
-	print_debug(PlayerVariables.selected_instrument)
-	match SessionVariables.instrument:
-		SessionVariables.Instrument.GUITAR:
-			performance_instrument = preload("res://scenes/performance/instruments/performance_guitar.tscn").instantiate()
-		SessionVariables.Instrument.PIANO:
-			performance_instrument = preload("res://scenes/performance/instruments/performance_piano.tscn").instantiate()
-		SessionVariables.Instrument.PHIN:
-			pass
+	if SessionVariables.instrument != "":
+		var instrument_data := InstrumentList.get_instrument_by_name(SessionVariables.instrument)
+		performance_instrument = instrument_data.performance_scene.instantiate()
+
 	
 	if !is_instance_valid(performance_instrument):
 		push_error("Invalid performance instrument")
@@ -130,6 +129,22 @@ func _ready():
 	_on_connect_instrument()
 	
 	_on_song_changed()
+	
+	is_ready = true
+
+
+func _on_instrument_changed():
+	if performance_instrument:
+		push_error("Changing performance instrument mid game is unsupported")
+		return
+	
+	if not is_ready:
+		return
+	
+	var instrument_data := InstrumentList.get_instrument_by_name(SessionVariables.instrument)
+	performance_instrument = instrument_data.performance_scene.instantiate()
+	add_child(performance_instrument)
+	_on_connect_instrument()
 
 
 func is_playing() -> bool:
@@ -284,8 +299,8 @@ func broadcast_all_user_data() -> void:
 
 
 func _on_connect_instrument() -> void:
-	print_debug(performance_instrument)
-	performance_instrument.notes.good_note_started.connect(_on_good_note_started)
+	if performance_instrument:
+		performance_instrument.notes.good_note_started.connect(_on_good_note_started)
 
 
 func _on_good_note_started(note_index: int, time_error: float) -> void:
