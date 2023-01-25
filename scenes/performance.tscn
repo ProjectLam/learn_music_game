@@ -174,6 +174,7 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="QuitBtn" type="Button" parent="CanvasLayer/UI"]
+layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -187,6 +188,7 @@ icon = ExtResource("6_d47nm")
 icon_alignment = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/UI"]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -198,10 +200,7 @@ theme_override_constants/margin_top = 20
 
 [node name="PausePlayButton" type="Button" parent="CanvasLayer/UI/MarginContainer"]
 custom_minimum_size = Vector2(60, 60)
-offset_left = 50.0
-offset_top = 20.0
-offset_right = 110.0
-offset_bottom = 80.0
+layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 focus_mode = 0
@@ -210,6 +209,7 @@ icon_alignment = 1
 
 [node name="IngameUsersPanel" type="PanelContainer" parent="CanvasLayer/UI"]
 modulate = Color(1, 1, 1, 0.431373)
+layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.2
 anchor_bottom = 0.2
@@ -218,10 +218,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_00niy")
 
 [node name="IngameScores" type="VBoxContainer" parent="CanvasLayer/UI/IngameUsersPanel"]
 unique_name_in_owner = true
-offset_left = 20.0
-offset_top = 20.0
-offset_right = 20.0
-offset_bottom = 20.0
+layout_mode = 2
 script = ExtResource("8_npdy5")
 
 [connection signal="pressed" from="CanvasLayer/UI/QuitBtn" to="." method="_on_QuitBtn_pressed"]
