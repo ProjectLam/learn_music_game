@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cc35yv0evrob7"]
 
-[ext_resource type="Script" path="res://scenes/instrument_selection/InstrumentSelectionBox.gd" id="1_8hjev"]
+[ext_resource type="Script" path="res://scenes/instrument_selection/instrument_selection_box.gd" id="1_gu1mu"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ippqf"]
 
@@ -11,13 +11,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_ippqf")
-script = ExtResource("1_8hjev")
+script = ExtResource("1_gu1mu")
 
 [node name="ItemsContainer" type="Control" parent="."]
 unique_name_in_owner = true
-layout_mode = 3
-anchors_preset = 0
-offset_right = 1920.0
-offset_bottom = 1080.0
+layout_mode = 2
 
 [connection signal="item_rect_changed" from="ItemsContainer" to="." method="_on_items_container_item_rect_changed"]

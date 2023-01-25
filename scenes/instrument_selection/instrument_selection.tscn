@@ -87,7 +87,7 @@ pivot_offset = Vector2(-149, 500)
 script = ExtResource("1_wh42a")
 
 [node name="Background" type="Control" parent="."]
-layout_mode = 3
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -95,7 +95,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="TextureRect" type="TextureRect" parent="Background"]
-anchors_preset = 15
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -105,7 +105,7 @@ stretch_mode = 6
 
 [node name="Layer" type="Panel" parent="Background"]
 material = SubResource("ShaderMaterial_y6ivb")
-anchors_preset = 15
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -113,9 +113,10 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_utcdj")
 
 [node name="LeftBar" parent="." instance=ExtResource("4_qvqqh")]
+layout_mode = 1
 
 [node name="Right" type="Control" parent="."]
-layout_mode = 3
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -124,7 +125,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Title" type="Control" parent="Right"]
-layout_mode = 3
+layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 308.0
@@ -132,7 +133,7 @@ grow_horizontal = 2
 
 [node name="Text" type="TextureRect" parent="Right/Title"]
 material = SubResource("ShaderMaterial_0vvxe")
-anchors_preset = 15
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -141,7 +142,7 @@ texture = ExtResource("6_nrcw0")
 stretch_mode = 3
 
 [node name="InstrumentMenu" type="Control" parent="Right"]
-layout_mode = 3
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -152,7 +153,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Right/InstrumentMenu"]
-anchors_preset = 15
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -160,14 +161,11 @@ grow_vertical = 2
 
 [node name="Left" type="Control" parent="Right/InstrumentMenu/HBoxContainer"]
 custom_minimum_size = Vector2(80, 0)
-layout_mode = 3
-anchors_preset = 0
-offset_right = 80.0
-offset_bottom = 897.0
+layout_mode = 2
 
 [node name="LeftBtn" type="Button" parent="Right/InstrumentMenu/HBoxContainer/Left"]
 custom_minimum_size = Vector2(65, 65)
-anchors_preset = 8
+layout_mode = 0
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -190,27 +188,20 @@ icon_alignment = 1
 
 [node name="Middle" type="Control" parent="Right/InstrumentMenu/HBoxContainer"]
 clip_contents = true
-layout_mode = 3
-anchors_preset = 0
-offset_left = 84.0
-offset_right = 1551.0
-offset_bottom = 897.0
+layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="InstrumentSelectionBox" parent="Right/InstrumentMenu/HBoxContainer/Middle" instance=ExtResource("7_aayu2")]
 unique_name_in_owner = true
+layout_mode = 1
 
 [node name="Right" type="Control" parent="Right/InstrumentMenu/HBoxContainer"]
 custom_minimum_size = Vector2(80, 0)
-layout_mode = 3
-anchors_preset = 0
-offset_left = 1555.0
-offset_right = 1635.0
-offset_bottom = 897.0
+layout_mode = 2
 
 [node name="RightBtn" type="Button" parent="Right/InstrumentMenu/HBoxContainer/Right"]
 custom_minimum_size = Vector2(65, 65)
-anchors_preset = 8
+layout_mode = 0
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -232,7 +223,7 @@ icon = ExtResource("8_j2st0")
 icon_alignment = 1
 
 [node name="SelectBtn" type="Button" parent="Right"]
-anchors_preset = 7
+layout_mode = 0
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5

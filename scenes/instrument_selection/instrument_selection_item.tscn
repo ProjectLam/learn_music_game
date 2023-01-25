@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://bcyql8pbvs5yj" path="res://assets/gui/icons/song.png" id="5_v7lu5"]
 [ext_resource type="Texture2D" uid="uid://cmdd61q57jiu" path="res://assets/gui/icons/course.png" id="6_sdkno"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_rotbm"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ue7gu"]
 shader = ExtResource("2_tm0hu")
 shader_parameter/radius = 1.0
 shader_parameter/animate = false
@@ -20,10 +20,10 @@ shader_parameter/indicating_power = 1.0
 shader_parameter/radius_base = 0.5
 shader_parameter/static_power = 0.5
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2mibq"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8v3wu"]
 bg_color = Color(0.145098, 0.462745, 1, 1)
 
-[sub_resource type="LabelSettings" id="LabelSettings_ablkt"]
+[sub_resource type="LabelSettings" id="LabelSettings_lvjx4"]
 font = ExtResource("4_e8mw7")
 font_size = 40
 
@@ -39,7 +39,7 @@ script = ExtResource("1_g0eae")
 metadata/_edit_group_ = true
 
 [node name="Circle" type="Control" parent="."]
-material = SubResource("ShaderMaterial_rotbm")
+material = SubResource("ShaderMaterial_ue7gu")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -51,19 +51,17 @@ mouse_filter = 1
 
 [node name="Layer" type="Panel" parent="Circle"]
 use_parent_material = true
-layout_mode = 1
-anchors_preset = 15
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
-theme_override_styles/panel = SubResource("StyleBoxFlat_2mibq")
+theme_override_styles/panel = SubResource("StyleBoxFlat_8v3wu")
 
 [node name="Icon" type="TextureRect" parent="."]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = -1
+layout_mode = 0
 anchor_left = 0.1
 anchor_top = 0.1
 anchor_right = 0.9
@@ -71,13 +69,12 @@ anchor_bottom = 0.9
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("3_s8f7b")
-ignore_texture_size = true
+expand_mode = 1
 stretch_mode = 4
 
 [node name="Info" type="VBoxContainer" parent="."]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = -1
+layout_mode = 0
 anchor_left = 0.3
 anchor_top = 0.608
 anchor_right = 0.3
@@ -90,7 +87,7 @@ unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1
 text = "MANDOLINE"
-label_settings = SubResource("LabelSettings_ablkt")
+label_settings = SubResource("LabelSettings_lvjx4")
 
 [node name="Songs" type="HBoxContainer" parent="Info"]
 layout_mode = 2
