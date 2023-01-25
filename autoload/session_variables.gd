@@ -27,7 +27,7 @@ var song_identifier : String :
 			return "invalid_song"
 
 const synch_variables := {
-	"song_identifier" : true,
+	"song_identifier": true,
 }
 
 signal song_changed
