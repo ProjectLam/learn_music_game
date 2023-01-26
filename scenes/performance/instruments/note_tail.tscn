@@ -1,6 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://cy5bnnbetxdq5"]
+[gd_scene load_steps=3 format=3 uid="uid://c4jovrh405717"]
 
 [ext_resource type="Script" path="res://scenes/performance/instruments/note_tail.gd" id="1_72j4y"]
 
-[node name="note_tail" type="Node3D"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lee8r"]
+vertex_color_use_as_albedo = true
+
+[node name="note_tail" type="MeshInstance3D"]
+material_override = SubResource("StandardMaterial3D_lee8r")
 script = ExtResource("1_72j4y")

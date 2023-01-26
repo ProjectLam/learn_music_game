@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://sba2v0m8a014"]
+[gd_resource type="Resource" script_class="InstrumentData" load_steps=2 format=3 uid="uid://sba2v0m8a014"]
 
 [ext_resource type="Script" path="res://instruments/instrument_data.gd" id="1_vwkxp"]
 
