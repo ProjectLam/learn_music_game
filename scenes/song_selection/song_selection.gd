@@ -50,37 +50,40 @@ func _ready():
 
 
 func load_songs():
-	var dir =  DirAccess.open(songs_path)
-	dir.list_dir_begin()
-	
+	var json_path := songs_path.path_join(songs_path)
 	# check for songs.json
-	if dir.file_exists(songs_json_file):
-		var json_path: String = songs_path + "/" + songs_json_file
+	if FileAccess.file_exists(json_path):
 		var json_string = FileAccess.get_file_as_string(json_path)
 		var json_data = JSON.parse_string(json_string)
 		if json_data == null or not json_data.has("songs"):
 			push_error("Failed to parse the json file at ", json_path)
 			return
-		for song in json_data.songs:
-			_handle_song_zip(songs_path + "/" + song)
+		for song in json_data.songs as String:
+			_handle_song_zip(songs_path.path_join(song))
 	
 	else:
 		# else check for files
-		while true:
-			var songFile = dir.get_next()
-			
-			#Assume each directory is 1 song
-			#TODO in future allow a JSON file that has direct links to song zip or directories
-			if songFile == "": 
-				break
-			elif !songFile.begins_with(".") && dir.current_is_dir():
-				print("Found directory - " + songFile)
-				_handle_song_dir(songFile,dir.get_current_dir() + "/"+ songFile) # ugly, why isn't there any easier way to do this
-			elif songFile.ends_with(".zip"):
-				#TODO in future allow songs to be .zip files
-				_handle_song_zip(dir.get_current_dir() + "/" + songFile)
-				print("Found zip - " + songFile)
-		dir.list_dir_end()
+		
+		# processing directories
+		#Assume each directory is 1 song
+		#TODO in future allow a JSON file that has direct links to song zip or directories
+		var song_dirs := DirAccess.get_directories_at(songs_path)
+		for song_dir in song_dirs:
+			if song_dir.begins_with("."):
+				continue
+			var song_dpath = songs_path.path_join(song_dir)
+			print("Found directory - " + song_dpath)
+			_handle_song_dir(song_dpath)
+		
+		# Assume each zip file is 1 song.
+		var song_files := DirAccess.get_files_at(songs_path)
+		for sfile in song_files:
+			if sfile.begins_with(".") or sfile.get_extension() != "zip":
+				continue
+			var sfile_path := songs_path.path_join(sfile)
+			#TODO in future allow songs to be .zip files
+			print("Found zip - " + sfile_path)
+			_handle_song_zip(sfile_path)
 
 
 func load_items():
@@ -102,70 +105,48 @@ func load_items():
 				items_count += 1
 
 
-func _handle_song_dir(songFile:String, curPath:String):
-	var dir =  DirAccess.open(curPath)
+func _handle_song_dir(song_dpath: String):
+	print("handle_song_dir-" + song_dpath)
 	
-	print("handle_song_dir-" + songFile)
 	var song: Song
 	
-	dir.list_dir_begin()
-	while true:
-		var iFile = dir.get_next()
-		if iFile == "": 
-			break
-		elif iFile.ends_with(".xml"):
-			var full_xml =  dir.get_current_dir() + "/" + iFile
-			print("got song data xml - " + full_xml)
-			var sp:SongParser = SongParser.new()
-			#sp.parse_xml_from_file(full_xml, song)
-			#NOTE this is the core Xml File, there are up to 4 other ones
+	var files := DirAccess.get_files_at(song_dpath)
 	
-	dir.list_dir_end()
+	for file in files:
+		if file.begins_with(".") or file.get_extension() != "xml":
+			continue
+		var fpath := song_dpath.path_join(file)
+		print("got song data xml - " + fpath)
+		var sp:SongParser = SongParser.new()
+		#sp.parse_xml_from_file(full_xml, song)
+		#NOTE this is the core Xml File, there are up to 4 other ones
 	
+	var sarr_path := song_dpath.path_join("songs/arr")
+	var arrfiles := DirAccess.get_files_at(sarr_path)
 	#Find the instrument specific ones, for now we are only going to look for lead guitair
-	var err = dir.change_dir("songs/arr")
-	if err != OK:
-		print("error2 - " + err)
-		return
-	
-	dir.list_dir_begin()
-	while true:
-		var iFile = dir.get_next()
-		if iFile == "": 
-			break
-		elif iFile.ends_with("_lead.xml"):
-			var full_xml =  dir.get_current_dir() + "/" + iFile
-			print("got lead xml - " + full_xml)
+	for file in arrfiles:
+		if file.begins_with(".") or file.get_extension() != "xml":
+			continue
+		var fpath := sarr_path.path_join(file)
+		if file.ends_with("_lead.xml"):
+			print("got lead xml - " + fpath)
 			var sp:SongParser = SongParser.new()
-			song = sp.parse_xml_from_file(full_xml)
+			song = sp.parse_xml_from_file(fpath)
 			#NOTE  TODO this is the lead guitar Xml File, there are up to 4 other ones, including vocals
-	
-	dir.list_dir_end()
-	dir.change_dir("..")
-	dir.change_dir("..")
 	
 	# Find the first .mp3 file that doesn't include _preview in audio/windows for now
 	# TODO in future do full directory traversal
-	err = dir.change_dir("audio/windows/")
-	if err != OK:
-		print("error2 - " + err)
-		return
-		
-	dir.list_dir_begin()
-	while true: 
-		var iFile = dir.get_next()
-		if iFile == "": 
-			break
-		elif iFile.ends_with(".mp3") && !("preview" in iFile):
+	var windows_path := song_dpath.path_join("audio/windows")
+	var wfiles := DirAccess.get_files_at(windows_path)
+	for file in wfiles:
+		if file.begins_with("."):
+			continue
+		var fpath := windows_path.path_join(file)
+		if file.get_extension() == "mp3" and not file.contains("preview"):
 			if song:
-				song.song_music_file = dir.get_current_dir() + "/" + iFile
-				print(song.song_music_file)
-	
-	dir.list_dir_end()
-	
-	dir.change_dir("..")
-	dir.change_dir("..")
-	
+				song.song_music_file = fpath
+				print("song file found : ", song.song_music_file)
+	print_debug(arrfiles, wfiles)
 	if song:
 		PlayerVariables.songs[song.get_identifier()] = song
 
