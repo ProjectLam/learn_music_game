@@ -30,28 +30,6 @@ func print_notes(notes: Array):
 		var note = notes[i]
 		if (not note is Chord) and note.slide_unpitch_to >= 0:
 			print("note ", i, " at string ", note.string, " and fret ", note.fret, " has an unpitched slide to fret ", note.slide_unpitch_to, " and should sustain for ", note.sustain, " seconds.")
-		if note.link_next:
-			return
-			if note is Chord:
-				var chord_tone_string := ""
-				if note.fret_0 >= 0:
-					chord_tone_string += " string 0 fret " + str(note.fret_0) + ","
-				if note.fret_1 >= 0:
-					chord_tone_string += " string 1 fret " + str(note.fret_1) + ","
-				if note.fret_2 >= 0:
-					chord_tone_string += " string 2 fret " + str(note.fret_2) + ","
-				if note.fret_3 >= 0:
-					chord_tone_string += " string 3 fret " + str(note.fret_3) + ","
-				if note.fret_4 >= 0:
-					chord_tone_string += " string 4 fret " + str(note.fret_4) + ","
-				if note.fret_5 >= 0:
-					chord_tone_string += " string 5 fret " + str(note.fret_5) + ","
-				
-				print("note ", i, ", which is a chord with notes", chord_tone_string, " should be linked to the next notes")
-			else:
-				if notes[i].fret != notes[i+1].fret:
-					print("note ", i, " at string ", note.string, " fret ", note.fret, " should be linked to the next note")
-					print("The next note is ", i, " at string ", note.string, " fret ", note.fret)
 
 
 func print_chords(notes: Array):

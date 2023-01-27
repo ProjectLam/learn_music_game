@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://dbmsu8ssa6w6j"]
+[gd_scene load_steps=9 format=3 uid="uid://7wmbsua6umrl"]
 
 [ext_resource type="Script" path="res://scenes/performance/instruments/guitar_note.gd" id="1_p8yhw"]
 [ext_resource type="PackedScene" uid="uid://c4jovrh405717" path="res://scenes/performance/instruments/note_tail.tscn" id="2_mji1f"]
+[ext_resource type="Shader" path="res://shaders/guitar_note.gdshader" id="3_ao6j0"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w8le8"]
 shading_mode = 0
@@ -10,10 +11,19 @@ albedo_color = Color(0, 0, 0, 1)
 [sub_resource type="BoxMesh" id="BoxMesh_dvf6k"]
 size = Vector3(1.5, 0.4, 0.2)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_il3f5"]
-transparency = 1
-shading_mode = 0
-albedo_color = Color(1, 1, 1, 0.0901961)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dfs5u"]
+render_priority = 0
+shader = ExtResource("3_ao6j0")
+shader_parameter/albedo = null
+shader_parameter/point_size = null
+shader_parameter/roughness = null
+shader_parameter/metallic_texture_channel = null
+shader_parameter/specular = null
+shader_parameter/metallic = null
+shader_parameter/uv1_scale = null
+shader_parameter/uv1_offset = null
+shader_parameter/uv2_scale = null
+shader_parameter/uv2_offset = null
 
 [sub_resource type="QuadMesh" id="QuadMesh_5xdc7"]
 size = Vector2(20, 1)
@@ -31,6 +41,7 @@ material_override = SubResource("StandardMaterial3D_w8le8")
 mesh = SubResource("BoxMesh_dvf6k")
 
 [node name="NoteTail" parent="." instance=ExtResource("2_mji1f")]
+material_override = SubResource("ShaderMaterial_dfs5u")
 skeleton = NodePath("../DurationTail")
 
 [node name="DurationTail" type="Node3D" parent="."]
@@ -38,7 +49,7 @@ skeleton = NodePath("../DurationTail")
 [node name="OpenStringTail" type="MeshInstance3D" parent="DurationTail"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 11, 0, -0.5)
 visible = false
-material_override = SubResource("StandardMaterial3D_il3f5")
+material_override = SubResource("ShaderMaterial_dfs5u")
 mesh = SubResource("QuadMesh_5xdc7")
 
 [node name="OpenString" type="MeshInstance3D" parent="."]

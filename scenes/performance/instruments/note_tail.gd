@@ -120,7 +120,7 @@ func _draw_unpitched_tail():
 	
 	var start_point := Vector3.ZERO
 	var end_point := Vector3(end_x_offset, 0, -length)
-	var control_point := Vector3(0, 0, 0.5 * -length)
+	var control_point := Vector3(0, 0, 0.7 * -length)
 	
 	for i in NUM_FACES_SLIDE + 1:
 		var t := float(i) / NUM_FACES_SLIDE
