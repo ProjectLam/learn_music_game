@@ -7,6 +7,6 @@ transparency = 1
 shading_mode = 0
 albedo_color = Color(1, 1, 1, 0.0901961)
 
-[node name="note_tail" type="MeshInstance3D"]
+[node name="NoteTail" type="MeshInstance3D"]
 material_override = SubResource("StandardMaterial3D_mp5ga")
 script = ExtResource("1_72j4y")

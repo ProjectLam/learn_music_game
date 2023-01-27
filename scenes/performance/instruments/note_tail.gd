@@ -1,3 +1,4 @@
+class_name NoteTail
 extends MeshInstance3D
 
 
@@ -32,7 +33,7 @@ var slide_type: SlideType  = SlideType.NONE
 var has_vibrato: bool = false
 
 
-func _ready():
+func render():
 	match slide_type:
 		SlideType.NONE:
 			if has_vibrato:

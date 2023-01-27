@@ -32,6 +32,17 @@ func spawn_note(note_data: Note, note_index: int):
 	if note_data.fret == 0:
 		# Open string
 		note.switch_to_open()
+	
+	if note_data.vibrato:
+		note.set_vibrato()
+	
+	if note_data.slide_to > -1:
+		note.set_slide_pitched(fret_spacing * (note_data.fret - note_data.slide_to))
+	
+	if note_data.slide_unpitch_to > -1:
+		note.set_slide_unpitched(fret_spacing * (note_data.fret - note_data.slide_to))
+	
+	note.render()
 
 
 func spawn_chord(chord_data: Chord, note_index: int):
