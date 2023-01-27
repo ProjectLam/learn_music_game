@@ -2,9 +2,11 @@
 
 [ext_resource type="Script" path="res://scenes/performance/instruments/note_tail.gd" id="1_72j4y"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lee8r"]
-vertex_color_use_as_albedo = true
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mp5ga"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(1, 1, 1, 0.0901961)
 
 [node name="note_tail" type="MeshInstance3D"]
-material_override = SubResource("StandardMaterial3D_lee8r")
+material_override = SubResource("StandardMaterial3D_mp5ga")
 script = ExtResource("1_72j4y")

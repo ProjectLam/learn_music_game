@@ -1,13 +1,16 @@
 extends MeshInstance3D
 
 
-enum BendType {
+enum SlideType {
 	NONE,
 	PITCHED,
 	UNPITCHED
 }
 
-const NUM_FACES: int = 10
+const NUM_FACES_SLIDE: int = 10
+const NUM_FACES_VIBRATO: int = 8 # The number of faces in a single period of sine wave
+const VIBRATO_SCALE: float = 0.2
+const VIBRATO_AMPLITUDE: float = 0.5
 
 var width: float = 1:
 	set(value):
@@ -25,16 +28,20 @@ var length: float = 5:
 
 var tail_width: float = 1
 var end_x_offset: float = -4
-var bend_type: BendType  = BendType.NONE
+var slide_type: SlideType  = SlideType.NONE
+var has_vibrato: bool = false
 
 
 func _ready():
-	match bend_type:
-		BendType.NONE:
-			_draw_straight_tail()
-		BendType.PITCHED:
+	match slide_type:
+		SlideType.NONE:
+			if has_vibrato:
+				_draw_vibrato()
+			else:
+				_draw_straight_tail()
+		SlideType.PITCHED:
 			_draw_pitched_tail()
-		BendType.UNPITCHED:
+		SlideType.UNPITCHED:
 			_draw_unpitched_tail()
 
 
@@ -50,6 +57,35 @@ func _draw_straight_tail():
 	_draw_quad_chain(vertices)
 
 
+func _draw_vibrato():
+	var vertices: PackedVector3Array
+	var normals: PackedVector3Array
+	
+	var period: float = VIBRATO_SCALE * TAU
+	var test: float = TAU
+	var num_periods: int = round(length / period)
+	num_periods = max(1, num_periods)
+	period = length / num_periods # Adjust for rounding above
+	var vibrato_scale = period / TAU # VIBRATO_SCALE after adjustment
+	var amplitude: float = VIBRATO_AMPLITUDE * vibrato_scale
+	
+	var num_faces = NUM_FACES_VIBRATO * num_periods
+	
+	for i in num_faces + 1:
+		var t = length * float(i) / num_faces
+		var sine = sin(TAU * t / period)
+		var cosine = cos(TAU * t / period)
+		var center_point := Vector3(0, amplitude * sine, -t)
+		var normal := Vector3(0, 1 / amplitude, cosine).normalized()
+		
+		vertices.append(center_point + Vector3.RIGHT * width * 0.5)
+		vertices.append(center_point + Vector3.LEFT * width * 0.5)
+		normals.append(normal)
+		normals.append(normal)
+	
+	_draw_quad_chain(vertices, normals)
+
+
 func _draw_pitched_tail():
 	var vertices: PackedVector3Array
 	
@@ -63,8 +99,8 @@ func _draw_pitched_tail():
 	var start_control := Vector3(0, 0, control_point_distance * -length)
 	var end_control := Vector3(end_x_offset, 0, (1 - control_point_distance) * -length)
 	
-	for i in NUM_FACES + 1:
-		var t := float(i) / NUM_FACES
+	for i in NUM_FACES_SLIDE + 1:
+		var t := float(i) / NUM_FACES_SLIDE
 		var center_point = _get_point_cubic(start_point, start_control, end_control, end_point, t)
 		var tangent = _get_tangent_cubic(start_point, start_control, end_control, end_point, t).normalized()
 		var normal := Vector3(-tangent.z, 0, tangent.x)
@@ -85,21 +121,21 @@ func _draw_unpitched_tail():
 	var end_point := Vector3(end_x_offset, 0, -length)
 	var control_point := Vector3(0, 0, 0.5 * -length)
 	
-	for i in NUM_FACES + 1:
-		var t := float(i) / NUM_FACES
+	for i in NUM_FACES_SLIDE + 1:
+		var t := float(i) / NUM_FACES_SLIDE
 		var center_point = _get_point_quadratic(start_point, control_point, end_point, t)
 		var tangent = _get_tangent_quadratic(start_point, control_point, end_point, t).normalized()
-		var normal := Vector3(-tangent.z, 0, tangent.x)
-		vertices.append(center_point + max_x * normal)
-		vertices.append(center_point + min_x * normal)
+		var spline_normal := Vector3(-tangent.z, 0, tangent.x)
+		vertices.append(center_point + max_x * spline_normal)
+		vertices.append(center_point + min_x * spline_normal)
 		colors.append((1.0 - t) * Color.WHITE)
 		colors.append((1.0 - t) * Color.WHITE)
 	
-	_draw_quad_chain(vertices, colors)
+	_draw_quad_chain(vertices, PackedVector3Array(), colors)
 
 
 # This function expects a series of vertices ordered per cross-edge, with the righthand side vertex first for every edge.
-func _draw_quad_chain(vertices: PackedVector3Array, colors: PackedColorArray = PackedColorArray()):
+func _draw_quad_chain(vertices: PackedVector3Array, normals: PackedVector3Array = PackedVector3Array(), colors: PackedColorArray = PackedColorArray()):
 	var triangles: PackedInt32Array
 	for i in range(0, vertices.size() - 2, 2):
 		triangles.append(i)
@@ -110,9 +146,9 @@ func _draw_quad_chain(vertices: PackedVector3Array, colors: PackedColorArray = P
 		triangles.append(i + 3)
 		triangles.append(i + 2)
 	
-	var normals: PackedVector3Array
-	for i in vertices.size():
-		normals.append(Vector3.UP)
+	if normals.size() == 0:
+		for i in vertices.size():
+			normals.append(Vector3.UP)
 	
 	if colors.size() == 0:
 		for i in vertices.size():
