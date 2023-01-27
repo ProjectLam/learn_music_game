@@ -40,6 +40,7 @@ func _on_peer_connected(peer_id : int):
 	# Note : multiplayer api calls should not be called during 'received_match_presence'. But they 
 	# can be called during 'peer_connected'.
 	SessionVariables.instrument = PlayerVariables.gameplay_instrument_name
+	SessionVariables.single_player = false
 	get_tree().change_scene_to_file("res://scenes/performance.tscn")
 	SessionVariables.sync_remote()
 	

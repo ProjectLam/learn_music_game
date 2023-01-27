@@ -1,6 +1,7 @@
-[gd_scene load_steps=24 format=3 uid="uid://t8vajiottp28"]
+[gd_scene load_steps=25 format=3 uid="uid://t8vajiottp28"]
 
 [ext_resource type="Script" path="res://scenes/performance.gd" id="1_2i2o3"]
+[ext_resource type="PackedScene" uid="uid://koljkcrt3kjj" path="res://scenes/song_loader/song_loader.tscn" id="2_45rtj"]
 [ext_resource type="Script" path="res://scenes/performance/dancing_dots.gd" id="2_kgtlr"]
 [ext_resource type="Script" path="res://scenes/performance/camera.gd" id="2_qtcyo"]
 [ext_resource type="Shader" path="res://scenes/performance/tunnel.gdshader" id="3_30o2r"]
@@ -92,6 +93,9 @@ corner_radius_bottom_right = 20
 
 [node name="Performance" type="Node3D"]
 script = ExtResource("1_2i2o3")
+
+[node name="SongLoader" parent="." instance=ExtResource("2_45rtj")]
+unique_name_in_owner = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_n4e55")

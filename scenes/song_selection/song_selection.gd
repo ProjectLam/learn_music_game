@@ -350,6 +350,7 @@ func _on_Item_selected(p_nItem: SongSelectionItem):
 		if selection_mode == SELECTION_MODE.PLAY:
 			SessionVariables.current_song = PlayerVariables.songs[p_nItem.song.get_identifier()]
 			SessionVariables.instrument = PlayerVariables.gameplay_instrument_name
+			SessionVariables.single_player = true
 			get_tree().change_scene_to_file("res://scenes/performance.tscn")
 
 func _on_DownBtn_pressed():

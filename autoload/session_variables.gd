@@ -6,6 +6,8 @@ var instrument: String = ""
 
 var current_song :Song
 
+var single_player := true
+
 var song_identifier : String :
 	set(sid):
 		var n_song = PlayerVariables.songs.get(sid)
@@ -51,4 +53,3 @@ func sync_remote():
 
 	if prev_song != current_song:
 		song_changed.emit()
-		
