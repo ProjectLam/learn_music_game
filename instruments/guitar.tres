@@ -1,10 +1,15 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://d4jg01x54d3wx"]
+[gd_resource type="Resource" load_steps=4 format=3 uid="uid://d4jg01x54d3wx"]
 
+[ext_resource type="Texture2D" uid="uid://c6a82b6evlny6" path="res://assets/gui/main/Guitar.png" id="1_l31w8"]
 [ext_resource type="Script" path="res://instruments/instrument_data.gd" id="1_osdpj"]
+[ext_resource type="PackedScene" uid="uid://ctfso2u2l5mam" path="res://scenes/performance/instruments/performance_guitar.tscn" id="2_rshli"]
 
 [resource]
 script = ExtResource("1_osdpj")
-instrument_name = "Guitar"
+instrument_name = "guitar"
+instrument_label = "Guitar"
 family = 0
 tuning_pitches = [19, 24, 29, 34, 38, 43]
 transposition = -12
+icon = ExtResource("1_l31w8")
+performance_scene = ExtResource("2_rshli")

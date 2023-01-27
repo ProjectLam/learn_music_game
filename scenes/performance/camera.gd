@@ -18,16 +18,21 @@ var home: Vector3
 
 
 func _ready():
-	match SessionVariables.instrument:
-		SessionVariables.Instrument.GUITAR:
+	_on_instrument_changed()
+	SessionVariables.instrument_changed.connect(_on_instrument_changed)
+
+func _on_instrument_changed():
+	print("reconfiguring camera for session instrument [%s]" % SessionVariables.instrument)
+	match SessionVariables.instrument.to_lower():
+		"guitar.tres":
 			set_camera_position(guitar_position, guitar_rotation_degrees)
-		SessionVariables.Instrument.PIANO:
+		"piano.tres":
 			set_camera_position(piano_position, piano_rotation_degrees)
-		SessionVariables.Instrument.PHIN:
+		"phin.tres":
 			set_camera_position(phin_position, phin_rotation_degrees)
 	
 	home = position
-
+	
 
 func set_camera_position(_position: Vector3, _rotation_degrees: Vector3):
 	position = _position
@@ -41,3 +46,6 @@ func set_camera_position(_position: Vector3, _rotation_degrees: Vector3):
 func _process(delta):
 	noise_offset += delta * noise_frequency
 	position = home + noise_amplitude * Vector3(noise.get_noise_1d(noise_offset), noise.get_noise_2d(0, noise_offset), 0)
+	
+	if Input.is_action_just_pressed("ui_accept"):
+		set_camera_position(guitar_position, guitar_rotation_degrees)

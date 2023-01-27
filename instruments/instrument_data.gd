@@ -110,7 +110,18 @@ enum Chromatic {
 	G_SHARP8,
 }
 
-@export var instrument_name: String
+# used as identifier for the instrument.
+# instrument_name is case insensitive. when being used it will be converted to lowercase.
+var instrument_name: String :
+	get:
+		return resource_path.get_file()
+
+# used to display the name of the instrument.
+@export var instrument_label: String
 @export var family: Family = Family.GUITARS
 @export var tuning_pitches: Array[Chromatic]
 @export var transposition: int = 0
+
+# big Icon for instrument.
+@export var icon: Texture2D
+@export var performance_scene: PackedScene

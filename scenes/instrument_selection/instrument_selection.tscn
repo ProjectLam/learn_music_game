@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://cr2hwlak7qku5"]
+[gd_scene load_steps=18 format=3 uid="uid://cr2hwlak7qku5"]
 
 [ext_resource type="Script" path="res://scenes/instrument_selection/instrument_selection.gd" id="1_wh42a"]
 [ext_resource type="Texture2D" uid="uid://dxcxogdwflpig" path="res://assets/gui/main/background.png" id="2_i41le"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://drhti1f6dfqep" path="res://scenes/left_bar/left_bar.tscn" id="4_qvqqh"]
 [ext_resource type="Texture2D" uid="uid://ixiw3q117w38" path="res://assets/gui/main/txt-choose-instrument.png" id="6_nrcw0"]
 [ext_resource type="Texture2D" uid="uid://cewj8er7rgjhq" path="res://assets/gui/icons/left.png" id="7_572yt"]
+[ext_resource type="PackedScene" uid="uid://cc35yv0evrob7" path="res://scenes/instrument_selection/instrument_selection_box.tscn" id="7_aayu2"]
 [ext_resource type="Texture2D" uid="uid://dfxg2q3m2tb8m" path="res://assets/gui/icons/right.png" id="8_j2st0"]
 [ext_resource type="FontFile" uid="uid://df06bw7a1s1u7" path="res://fonts/Montserrat-Bold.ttf" id="9_uttt2"]
 
@@ -190,17 +191,9 @@ clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Items" type="Control" parent="Right/InstrumentMenu/HBoxContainer/Middle"]
+[node name="InstrumentSelectionBox" parent="Right/InstrumentMenu/HBoxContainer/Middle" instance=ExtResource("7_aayu2")]
+unique_name_in_owner = true
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 18.0
-offset_top = 47.0
-offset_right = 18.0
-offset_bottom = 47.0
-grow_horizontal = 2
-grow_vertical = 2
 
 [node name="Right" type="Control" parent="Right/InstrumentMenu/HBoxContainer"]
 custom_minimum_size = Vector2(80, 0)
@@ -252,6 +245,5 @@ text = "Get that"
 
 [connection signal="script_changed" from="." to="." method="_on_script_changed"]
 [connection signal="pressed" from="Right/InstrumentMenu/HBoxContainer/Left/LeftBtn" to="." method="_on_left_btn_pressed"]
-[connection signal="item_rect_changed" from="Right/InstrumentMenu/HBoxContainer/Middle/Items" to="." method="_on_Items_item_rect_changed"]
 [connection signal="pressed" from="Right/InstrumentMenu/HBoxContainer/Right/RightBtn" to="." method="_on_right_btn_pressed"]
 [connection signal="pressed" from="Right/SelectBtn" to="." method="_on_SelectBtn_pressed"]

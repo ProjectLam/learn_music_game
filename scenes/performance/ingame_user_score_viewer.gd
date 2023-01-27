@@ -28,11 +28,13 @@ func _ready():
 
 
 func refresh():
+	if not is_ready:
+		return
 	if(stats):
 		uname_label.text = name
 		uscore_label.text = "%d" % stats.score
 
 func _on_stats_changed():
-	if is_ready:
+	if not is_ready:
 		return
 	refresh()

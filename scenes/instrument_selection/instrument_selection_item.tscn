@@ -7,23 +7,23 @@
 [ext_resource type="Texture2D" uid="uid://bcyql8pbvs5yj" path="res://assets/gui/icons/song.png" id="5_v7lu5"]
 [ext_resource type="Texture2D" uid="uid://cmdd61q57jiu" path="res://assets/gui/icons/course.png" id="6_sdkno"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_yxg63"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ue7gu"]
 shader = ExtResource("2_tm0hu")
-shader_parameter/albedo = Color(0.968627, 0, 0.8, 0.458824)
-shader_parameter/animate = false
-shader_parameter/indicate = false
-shader_parameter/indicating_power = 1.0
-shader_parameter/lighting_point = Vector2(0.5, 0.5)
 shader_parameter/radius = 1.0
-shader_parameter/radius_base = 0.5
-shader_parameter/size = Vector2(600, 600)
+shader_parameter/animate = false
 shader_parameter/square_scale = 0.509
+shader_parameter/albedo = Color(0.968627, 0, 0.8, 0.458824)
+shader_parameter/indicate = false
+shader_parameter/size = Vector2(600, 600)
+shader_parameter/lighting_point = Vector2(0.5, 0.5)
+shader_parameter/indicating_power = 1.0
+shader_parameter/radius_base = 0.5
 shader_parameter/static_power = 0.5
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pcstd"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8v3wu"]
 bg_color = Color(0.145098, 0.462745, 1, 1)
 
-[sub_resource type="LabelSettings" id="LabelSettings_gs1dp"]
+[sub_resource type="LabelSettings" id="LabelSettings_lvjx4"]
 font = ExtResource("4_e8mw7")
 font_size = 40
 
@@ -39,7 +39,7 @@ script = ExtResource("1_g0eae")
 metadata/_edit_group_ = true
 
 [node name="Circle" type="Control" parent="."]
-material = SubResource("ShaderMaterial_yxg63")
+material = SubResource("ShaderMaterial_ue7gu")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -51,49 +51,43 @@ mouse_filter = 1
 
 [node name="Layer" type="Panel" parent="Circle"]
 use_parent_material = true
-layout_mode = 1
-anchors_preset = 15
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
-theme_override_styles/panel = SubResource("StyleBoxFlat_pcstd")
+theme_override_styles/panel = SubResource("StyleBoxFlat_8v3wu")
 
-[node name="Image" type="TextureRect" parent="."]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -85.5
-offset_top = -183.5
-offset_right = 228.5
-offset_bottom = 102.5
+[node name="Icon" type="TextureRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+anchor_left = 0.1
+anchor_top = 0.1
+anchor_right = 0.9
+anchor_bottom = 0.9
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("3_s8f7b")
+expand_mode = 1
+stretch_mode = 4
 
 [node name="Info" type="VBoxContainer" parent="."]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -177.5
-offset_top = -4.5
-offset_right = 29.5
-offset_bottom = 98.5
+unique_name_in_owner = true
+layout_mode = 0
+anchor_left = 0.3
+anchor_top = 0.608
+anchor_right = 0.3
+anchor_bottom = 0.608
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="NameLabel" type="Label" parent="Info"]
+unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1
 text = "MANDOLINE"
-label_settings = SubResource("LabelSettings_gs1dp")
+label_settings = SubResource("LabelSettings_lvjx4")
 
 [node name="Songs" type="HBoxContainer" parent="Info"]
 layout_mode = 2
@@ -105,7 +99,8 @@ layout_mode = 2
 texture = ExtResource("5_v7lu5")
 stretch_mode = 3
 
-[node name="Number" type="Label" parent="Info/Songs"]
+[node name="SongsNumber" type="Label" parent="Info/Songs"]
+unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1
 text = "0"
@@ -124,7 +119,8 @@ layout_mode = 2
 texture = ExtResource("6_sdkno")
 stretch_mode = 3
 
-[node name="Number" type="Label" parent="Info/Courses"]
+[node name="CoursesNumber" type="Label" parent="Info/Courses"]
+unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1
 text = "0"
