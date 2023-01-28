@@ -27,18 +27,44 @@ func load_song(new_song: Song, force_reload: bool = false):
 	print("loading song [%s] from [%s]" % [new_song.title, new_song.song_music_file])
 	if new_song.song_music_file == "":
 		loaded[new_song]["main_stream"] = load_mp3_from_buffer(new_song.song_music_buffer)
+		_on_song_loaded(new_song)
+		song_loaded.emit(new_song)
 	elif ( # It's a remote path
 			new_song.song_music_file.begins_with("http://")
 			or new_song.song_music_file.begins_with("https://")):
 		push_error("Not implemented")
 		pass
 	else:
-		loaded[new_song]["main_stream"] = load_mp3_from_path(new_song.song_music_file)
-		_on_song_loaded(new_song)
-		song_loaded.emit(new_song)
+		if(new_song.soog_music_file_access == FileAccess):
+			loaded[new_song]["main_stream"] = load_mp3_from_path(new_song.song_music_file)
+			_on_song_loaded(new_song)
+			song_loaded.emit(new_song)
+		else:
+			
+			# create a new loader node.
+			var loaderRequest = new_song.soog_music_file_access.create_request(new_song.song_music_file)
+			# prevent this from happening again if the song is being loaded.
+			loading[new_song] = true
+			# connect to the signal that indicates the request is completed
+			loaderRequest.request_completed.connect(func(buffer) : _on_song_buffer_loaded(new_song, buffer))
+			# add the new node to allow automatic pullling and resource handling. this way if the
+			# song loader node is destroyed, loaderRequest will be freed as well.
+			add_child(loaderRequest)
+			loaded[new_song]["main_stream"] = await new_song.soog_music_file_access.get_file(new_song.song_music_file)
+			_on_song_loaded(new_song)
+			song_loaded.emit(new_song)
+
+
+func _on_song_buffer_loaded(song: Song, buffer):
+	song.song_music_buffer = PackedByteArray(buffer)
+	loaded[song]["main_stream"] = load_mp3_from_buffer(song.song_music_buffer)
+	_on_song_loaded(song)
+	song_loaded.emit(song)
 
 
 func _on_song_loaded(song: Song) -> void:
+	if loading.has(song):
+		loaded.erase(song)
 	print("loaded song [%s]" % song)
 
 
@@ -50,9 +76,9 @@ func load_mp3_from_path(path):
 	return sound
 
 
-func load_mp3_from_buffer(buffer: PackedByteArray):
+func load_mp3_from_buffer(buffer):
 	var sound := AudioStreamMP3.new()
-	sound.data = buffer
+	sound.data = PackedByteArray(buffer)
 	return sound
 
 

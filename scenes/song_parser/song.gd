@@ -4,6 +4,8 @@ class_name Song
 var song_music_file: String
 var song_music_buffer: PackedByteArray
 
+# Generic Variant used by song_loader.gd to load the song.
+var soog_music_file_access = FileAccess
 
 var version: int
 var title: String
