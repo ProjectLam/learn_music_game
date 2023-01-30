@@ -1,21 +1,23 @@
 extends Node
 
 signal request_completed(buffer)
+signal request_completed_string(str)
 
-var target_url: String = ""
+@export var target_url: String = ""
 
 @onready var http_request = %HTTPRequest
 @onready var retry_timer = %retry_timer
 
-var request_headers: PackedStringArray = []
-var request_body: String
+@export var request_headers: PackedStringArray = []
+@export_multiline var request_body: String = ""
 
+# todo : add export enum for this.
 var request_method := HTTPClient.METHOD_GET
 
-var tls_validate := true
+@export var tls_validate := true
 
 # retry interval in seconds.
-var retry_interval := 1.0
+@export_range(0.1, 5.0) var retry_interval := 1.0
 
 
 func _ready():
@@ -47,9 +49,14 @@ func try():
 
 
 func _on_http_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray):
+	if response_code == HTTPClient.RESPONSE_NOT_FOUND:
+		push_error("Requested file not found : ", target_url)
+		request_completed.emit([])
+		request_completed_string.emit("")
+		queue_free()
 	if result == HTTPRequest.RESULT_SUCCESS:
-		print("file downloaded.")
-		request_completed.emit(FileAccess.get_file_as_bytes(http_request.download_file))
+		print("file [%s] downloaded." % target_url)
+		_on_request_completed()
 		queue_free()
 	else:
 		push_error("Bad HTTPRequest result :", result)
@@ -62,3 +69,10 @@ func get_downloaded_bytes():
 
 func get_remaining_bytes():
 	return http_request.get_body_size()
+
+
+func _on_request_completed():
+	if not request_completed.get_connections().is_empty():
+		request_completed.emit(FileAccess.get_file_as_bytes(http_request.download_file))
+	if not request_completed_string.get_connections().is_empty():
+		request_completed_string.emit(FileAccess.get_file_as_string(http_request.download_file))

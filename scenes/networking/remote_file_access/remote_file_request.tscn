@@ -2,10 +2,11 @@
 
 [ext_resource type="Script" path="res://scenes/networking/remote_file_access/remote_file_request.gd" id="1_5su86"]
 
-[node name="remote_file_request" type="Node"]
+[node name="RemoteFileRequest" type="Node"]
 process_mode = 3
 editor_description = "Continuously tries till it succeeds in downloading the requested file."
 script = ExtResource("1_5su86")
+request_headers = PackedStringArray()
 
 [node name="HTTPRequest" type="HTTPRequest" parent="."]
 unique_name_in_owner = true

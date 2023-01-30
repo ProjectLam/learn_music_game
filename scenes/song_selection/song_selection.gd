@@ -29,8 +29,7 @@ var index: int
 var tween_y: Tween
 var tween_x: Tween
 
-@export var songs_path = "user://songs"
-@export var songs_json_file = "songs.json"
+
 @export_range(0, 100) var h_space: int = 100
 
 var h_ratio: int = 1
@@ -38,7 +37,11 @@ var h_ratio: int = 1
 var selected_index: int
 
 func _ready():
-	load_songs()
+	if not SongsConfigPreloader.is_song_repload_completed:
+		set_process(false)
+		await SongsConfigPreloader.song_preload_completed
+		set_process(true)
+	
 	load_items()
 	
 	index = 3
@@ -49,41 +52,7 @@ func _ready():
 	_process_items()
 
 
-func load_songs():
-	var json_path := songs_path.path_join(songs_path)
-	# check for songs.json
-	if FileAccess.file_exists(json_path):
-		var json_string = FileAccess.get_file_as_string(json_path)
-		var json_data = JSON.parse_string(json_string)
-		if json_data == null or not json_data.has("songs"):
-			push_error("Failed to parse the json file at ", json_path)
-			return
-		for song in json_data.songs as String:
-			_handle_song_zip(songs_path.path_join(song))
-	
-	else:
-		# else check for files
-		
-		# processing directories
-		#Assume each directory is 1 song
-		#TODO in future allow a JSON file that has direct links to song zip or directories
-		var song_dirs := DirAccess.get_directories_at(songs_path)
-		for song_dir in song_dirs:
-			if song_dir.begins_with("."):
-				continue
-			var song_dpath = songs_path.path_join(song_dir)
-			print("Found directory - " + song_dpath)
-			_handle_song_dir(song_dpath)
-		
-		# Assume each zip file is 1 song.
-		var song_files := DirAccess.get_files_at(songs_path)
-		for sfile in song_files:
-			if sfile.begins_with(".") or sfile.get_extension() != "zip":
-				continue
-			var sfile_path := songs_path.path_join(sfile)
-			#TODO in future allow songs to be .zip files
-			print("Found zip - " + sfile_path)
-			_handle_song_zip(sfile_path)
+
 
 
 func load_items():
@@ -105,75 +74,7 @@ func load_items():
 				items_count += 1
 
 
-func _handle_song_dir(song_dpath: String):
-	print("handle_song_dir-" + song_dpath)
-	
-	var song: Song
-	
-	var files := DirAccess.get_files_at(song_dpath)
-	
-	for file in files:
-		if file.begins_with(".") or file.get_extension() != "xml":
-			continue
-		var fpath := song_dpath.path_join(file)
-		print("got song data xml - " + fpath)
-		var sp:SongParser = SongParser.new()
-		#sp.parse_xml_from_file(full_xml, song)
-		#NOTE this is the core Xml File, there are up to 4 other ones
-	
-	var sarr_path := song_dpath.path_join("songs/arr")
-	var arrfiles := DirAccess.get_files_at(sarr_path)
-	#Find the instrument specific ones, for now we are only going to look for lead guitair
-	for file in arrfiles:
-		if file.begins_with(".") or file.get_extension() != "xml":
-			continue
-		var fpath := sarr_path.path_join(file)
-		if file.ends_with("_lead.xml"):
-			print("got lead xml - " + fpath)
-			var sp:SongParser = SongParser.new()
-			song = sp.parse_xml_from_file(fpath)
-			#NOTE  TODO this is the lead guitar Xml File, there are up to 4 other ones, including vocals
-	
-	# Find the first .mp3 file that doesn't include _preview in audio/windows for now
-	# TODO in future do full directory traversal
-	var windows_path := song_dpath.path_join("audio/windows")
-	var wfiles := DirAccess.get_files_at(windows_path)
-	for file in wfiles:
-		if file.begins_with("."):
-			continue
-		var fpath := windows_path.path_join(file)
-		if file.get_extension() == "mp3" and not file.contains("preview"):
-			if song:
-				song.song_music_file = fpath
-				print("song file found : ", song.song_music_file)
-	print_debug(arrfiles, wfiles)
-	if song:
-		PlayerVariables.songs[song.get_identifier()] = song
 
-
-func _handle_song_zip(path: String):
-	var reader := ZIPReader.new()
-	var err := reader.open(path)
-	if err != OK:
-		push_error("This ZIP file at path ", path, " couldn't be opened")
-		return
-	
-	var song: Song
-	var song_music_buffer: PackedByteArray
-	
-	# Returns a PoolStringArray of all files in all directories
-	var files := reader.get_files()
-	
-	for file in files:
-		if file.ends_with("_lead.xml"):
-			var song_parser := SongParser.new()
-			song = song_parser.parse_xml_from_buffer(reader.read_file(file))
-		if file.ends_with(".mp3") and not "preview" in file:
-			song_music_buffer = reader.read_file(file)
-	
-	if song:
-		song.song_music_buffer = song_music_buffer
-		PlayerVariables.songs[song.get_identifier()] = song
 
 
 func select_item(p_index: int, p_is_internal: bool = false) -> void:
