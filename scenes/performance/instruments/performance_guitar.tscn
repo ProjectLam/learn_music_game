@@ -3,80 +3,80 @@
 [ext_resource type="Script" path="res://scenes/performance/instruments/performance_instrument.gd" id="1_b3xwo"]
 [ext_resource type="Shader" path="res://scenes/performance/lane.gdshader" id="1_euv2x"]
 [ext_resource type="Script" path="res://scenes/performance/instruments/guitar_notes.gd" id="3_60h86"]
-[ext_resource type="PackedScene" uid="uid://dbmsu8ssa6w6j" path="res://scenes/performance/instruments/guitar_note.tscn" id="4_b6pis"]
+[ext_resource type="PackedScene" uid="uid://7wmbsua6umrl" path="res://scenes/performance/instruments/guitar_note.tscn" id="4_b6pis"]
 [ext_resource type="PackedScene" uid="uid://bls282r4ku42k" path="res://scenes/performance/instruments/guitar.tscn" id="4_e1r3b"]
 [ext_resource type="PackedScene" uid="uid://d1j5vy3wif4qo" path="res://scenes/performance/instruments/guitar_chord.tscn" id="5_m6uog"]
 
-[sub_resource type="QuadMesh" id="QuadMesh_db2jj"]
+[sub_resource type="QuadMesh" id="QuadMesh_y5e1e"]
 size = Vector2(1.8, 48)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_dedgv"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gjsqa"]
 render_priority = 0
 shader = ExtResource("1_euv2x")
 shader_parameter/color = Color(0.207843, 0.505882, 0.615686, 1)
 shader_parameter/brightness = 0.5
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_skjas"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0xx6f"]
 render_priority = 0
 shader = ExtResource("1_euv2x")
 shader_parameter/color = Color(0.207843, 0.505882, 0.615686, 1)
 shader_parameter/brightness = 0.5
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_qsufs"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_v23ob"]
 render_priority = 0
 shader = ExtResource("1_euv2x")
 shader_parameter/color = Color(0.207843, 0.505882, 0.615686, 1)
 shader_parameter/brightness = 0.5
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_4ho7w"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_44h1p"]
 render_priority = 0
 shader = ExtResource("1_euv2x")
 shader_parameter/color = Color(0.207843, 0.505882, 0.615686, 1)
 shader_parameter/brightness = 0.5
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_wbcdr"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4ap2n"]
 render_priority = 0
 shader = ExtResource("1_euv2x")
 shader_parameter/color = Color(0.207843, 0.505882, 0.615686, 1)
 shader_parameter/brightness = 0.5
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_wdtbs"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vnnl8"]
 render_priority = 0
 shader = ExtResource("1_euv2x")
 shader_parameter/color = Color(0.207843, 0.505882, 0.615686, 1)
 shader_parameter/brightness = 0.5
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_w0kng"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_egpj0"]
 render_priority = 0
 shader = ExtResource("1_euv2x")
 shader_parameter/color = Color(0.207843, 0.505882, 0.615686, 1)
 shader_parameter/brightness = 0.5
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_2hjpl"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cf5wy"]
 render_priority = 0
 shader = ExtResource("1_euv2x")
 shader_parameter/color = Color(0.207843, 0.505882, 0.615686, 1)
 shader_parameter/brightness = 0.5
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_0bilr"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_65ic7"]
 render_priority = 0
 shader = ExtResource("1_euv2x")
 shader_parameter/color = Color(0.207843, 0.505882, 0.615686, 1)
 shader_parameter/brightness = 0.5
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_uclw8"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cki8s"]
 render_priority = 0
 shader = ExtResource("1_euv2x")
 shader_parameter/color = Color(0.207843, 0.505882, 0.615686, 1)
 shader_parameter/brightness = 0.5
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_rtek2"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3lcyg"]
 render_priority = 0
 shader = ExtResource("1_euv2x")
 shader_parameter/color = Color(0.207843, 0.505882, 0.615686, 1)
 shader_parameter/brightness = 0.5
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_qrraw"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_igkue"]
 render_priority = 0
 shader = ExtResource("1_euv2x")
 shader_parameter/color = Color(0.207843, 0.505882, 0.615686, 1)
@@ -89,75 +89,75 @@ script = ExtResource("1_b3xwo")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="Lanes"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 1, 0, -24)
-mesh = SubResource("QuadMesh_db2jj")
+mesh = SubResource("QuadMesh_y5e1e")
 skeleton = NodePath("../../..")
-surface_material_override/0 = SubResource("ShaderMaterial_dedgv")
+surface_material_override/0 = SubResource("ShaderMaterial_gjsqa")
 
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="Lanes"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 3, 0, -24)
-mesh = SubResource("QuadMesh_db2jj")
+mesh = SubResource("QuadMesh_y5e1e")
 skeleton = NodePath("../../..")
-surface_material_override/0 = SubResource("ShaderMaterial_skjas")
+surface_material_override/0 = SubResource("ShaderMaterial_0xx6f")
 
 [node name="MeshInstance3D4" type="MeshInstance3D" parent="Lanes"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 5, 0, -24)
-mesh = SubResource("QuadMesh_db2jj")
+mesh = SubResource("QuadMesh_y5e1e")
 skeleton = NodePath("../../..")
-surface_material_override/0 = SubResource("ShaderMaterial_qsufs")
+surface_material_override/0 = SubResource("ShaderMaterial_v23ob")
 
 [node name="MeshInstance3D5" type="MeshInstance3D" parent="Lanes"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 7, 0, -24)
-mesh = SubResource("QuadMesh_db2jj")
+mesh = SubResource("QuadMesh_y5e1e")
 skeleton = NodePath("../../..")
-surface_material_override/0 = SubResource("ShaderMaterial_4ho7w")
+surface_material_override/0 = SubResource("ShaderMaterial_44h1p")
 
 [node name="MeshInstance3D6" type="MeshInstance3D" parent="Lanes"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 9, 0, -24)
-mesh = SubResource("QuadMesh_db2jj")
+mesh = SubResource("QuadMesh_y5e1e")
 skeleton = NodePath("../../..")
-surface_material_override/0 = SubResource("ShaderMaterial_wbcdr")
+surface_material_override/0 = SubResource("ShaderMaterial_4ap2n")
 
 [node name="MeshInstance3D7" type="MeshInstance3D" parent="Lanes"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 11, 0, -24)
-mesh = SubResource("QuadMesh_db2jj")
+mesh = SubResource("QuadMesh_y5e1e")
 skeleton = NodePath("../../..")
-surface_material_override/0 = SubResource("ShaderMaterial_wdtbs")
+surface_material_override/0 = SubResource("ShaderMaterial_vnnl8")
 
 [node name="MeshInstance3D8" type="MeshInstance3D" parent="Lanes"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 13, 0, -24)
-mesh = SubResource("QuadMesh_db2jj")
+mesh = SubResource("QuadMesh_y5e1e")
 skeleton = NodePath("../../..")
-surface_material_override/0 = SubResource("ShaderMaterial_w0kng")
+surface_material_override/0 = SubResource("ShaderMaterial_egpj0")
 
 [node name="MeshInstance3D9" type="MeshInstance3D" parent="Lanes"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 15, 0, -24)
-mesh = SubResource("QuadMesh_db2jj")
+mesh = SubResource("QuadMesh_y5e1e")
 skeleton = NodePath("../../..")
-surface_material_override/0 = SubResource("ShaderMaterial_2hjpl")
+surface_material_override/0 = SubResource("ShaderMaterial_cf5wy")
 
 [node name="MeshInstance3D10" type="MeshInstance3D" parent="Lanes"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 17, 0, -24)
-mesh = SubResource("QuadMesh_db2jj")
+mesh = SubResource("QuadMesh_y5e1e")
 skeleton = NodePath("../../..")
-surface_material_override/0 = SubResource("ShaderMaterial_0bilr")
+surface_material_override/0 = SubResource("ShaderMaterial_65ic7")
 
 [node name="MeshInstance3D11" type="MeshInstance3D" parent="Lanes"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 19, 0, -24)
-mesh = SubResource("QuadMesh_db2jj")
+mesh = SubResource("QuadMesh_y5e1e")
 skeleton = NodePath("../../..")
-surface_material_override/0 = SubResource("ShaderMaterial_uclw8")
+surface_material_override/0 = SubResource("ShaderMaterial_cki8s")
 
 [node name="MeshInstance3D12" type="MeshInstance3D" parent="Lanes"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 21, 0, -24)
-mesh = SubResource("QuadMesh_db2jj")
+mesh = SubResource("QuadMesh_y5e1e")
 skeleton = NodePath("../../..")
-surface_material_override/0 = SubResource("ShaderMaterial_rtek2")
+surface_material_override/0 = SubResource("ShaderMaterial_3lcyg")
 
 [node name="MeshInstance3D13" type="MeshInstance3D" parent="Lanes"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 23, 0, -24)
-mesh = SubResource("QuadMesh_db2jj")
+mesh = SubResource("QuadMesh_y5e1e")
 skeleton = NodePath("../../..")
-surface_material_override/0 = SubResource("ShaderMaterial_qrraw")
+surface_material_override/0 = SubResource("ShaderMaterial_igkue")
 
 [node name="Notes" type="Node3D" parent="."]
 script = ExtResource("3_60h86")

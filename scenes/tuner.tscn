@@ -24,7 +24,7 @@ script = ExtResource("1_nftna")
 instrument_data = ExtResource("2_c46f0")
 
 [node name="ColorRect" type="ColorRect" parent="."]
-anchors_preset = 15
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -36,7 +36,7 @@ stream = SubResource("AudioStreamGenerator_obkhd")
 autoplay = true
 
 [node name="TextureRect" type="TextureRect" parent="."]
-anchors_preset = 3
+layout_mode = 0
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -49,7 +49,7 @@ texture = ExtResource("5_p2yhm")
 
 [node name="PerfectArrows" type="TextureRect" parent="TextureRect"]
 visible = false
-anchors_preset = 7
+layout_mode = 0
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
@@ -64,7 +64,7 @@ texture = ExtResource("6_1w18u")
 
 [node name="TooHighArrow" type="TextureRect" parent="TextureRect"]
 visible = false
-anchors_preset = 7
+layout_mode = 0
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
@@ -79,7 +79,7 @@ texture = ExtResource("7_26mmj")
 
 [node name="TooLowArrow" type="TextureRect" parent="TextureRect"]
 visible = false
-anchors_preset = 7
+layout_mode = 0
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
@@ -93,7 +93,7 @@ grow_vertical = 0
 texture = ExtResource("8_2aaeb")
 
 [node name="NoteLabels" type="Control" parent="TextureRect"]
-layout_mode = 3
+layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -105,7 +105,7 @@ grow_vertical = 0
 
 [node name="Label0" type="Label" parent="TextureRect/NoteLabels"]
 modulate = Color(1, 1, 1, 0)
-anchors_preset = 8
+layout_mode = 0
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -123,7 +123,7 @@ horizontal_alignment = 1
 
 [node name="Label1" type="Label" parent="TextureRect/NoteLabels"]
 modulate = Color(1, 1, 1, 0.1)
-anchors_preset = 8
+layout_mode = 0
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -141,7 +141,7 @@ horizontal_alignment = 1
 
 [node name="Label2" type="Label" parent="TextureRect/NoteLabels"]
 modulate = Color(1, 1, 1, 0.25)
-anchors_preset = 8
+layout_mode = 0
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -158,7 +158,7 @@ text = "Eb"
 horizontal_alignment = 1
 
 [node name="Label3" type="Label" parent="TextureRect/NoteLabels"]
-anchors_preset = 8
+layout_mode = 0
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -176,7 +176,7 @@ horizontal_alignment = 1
 
 [node name="Label4" type="Label" parent="TextureRect/NoteLabels"]
 modulate = Color(1, 1, 1, 0.25)
-anchors_preset = 8
+layout_mode = 0
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -194,7 +194,7 @@ horizontal_alignment = 1
 
 [node name="Label5" type="Label" parent="TextureRect/NoteLabels"]
 modulate = Color(1, 1, 1, 0.1)
-anchors_preset = 8
+layout_mode = 0
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -212,7 +212,7 @@ horizontal_alignment = 1
 
 [node name="Label6" type="Label" parent="TextureRect/NoteLabels"]
 modulate = Color(1, 1, 1, 0)
-anchors_preset = 8
+layout_mode = 0
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -229,7 +229,7 @@ text = "G"
 horizontal_alignment = 1
 
 [node name="NeedleAnchor" type="Control" parent="TextureRect"]
-layout_mode = 3
+layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -248,7 +248,7 @@ centered = false
 offset = Vector2(-11, -386)
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
-anchors_preset = 9
+layout_mode = 0
 anchor_bottom = 1.0
 offset_right = 20.0
 grow_vertical = 2
@@ -257,16 +257,10 @@ theme_override_constants/margin_top = 25
 theme_override_constants/margin_bottom = 25
 
 [node name="LeftBar" parent="MarginContainer" instance=ExtResource("8_85bco")]
-anchors_preset = 0
-anchor_bottom = 0.0
-offset_left = 80.0
-offset_top = 25.0
-offset_right = 80.0
-offset_bottom = 1055.0
-grow_vertical = 1
+layout_mode = 2
 
 [node name="BackButton" type="Button" parent="."]
-anchors_preset = 2
+layout_mode = 0
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_left = 152.0
@@ -277,7 +271,7 @@ grow_vertical = 0
 text = "Back"
 
 [node name="HeadStock" type="HBoxContainer" parent="."]
-anchors_preset = 4
+layout_mode = 0
 anchor_top = 0.5
 anchor_bottom = 0.5
 offset_left = 335.0
@@ -287,21 +281,14 @@ offset_bottom = 196.0
 grow_vertical = 2
 
 [node name="LeftPegs" type="VBoxContainer" parent="HeadStock"]
-offset_bottom = 392.0
+layout_mode = 2
 
 [node name="Control" type="Control" parent="HeadStock"]
 custom_minimum_size = Vector2(100, 0)
-layout_mode = 3
-anchors_preset = 0
-offset_left = 4.0
-offset_right = 104.0
-offset_bottom = 392.0
+layout_mode = 2
 
 [node name="RightPegs" type="VBoxContainer" parent="HeadStock"]
-offset_left = 108.0
-offset_top = 196.0
-offset_right = 108.0
-offset_bottom = 196.0
+layout_mode = 2
 size_flags_vertical = 4
 
 [connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]
