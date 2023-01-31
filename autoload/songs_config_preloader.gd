@@ -3,7 +3,7 @@ extends Node
 @export var local_songs_path = "user://songs"
 @export var local_songs_json_file = "songs.json"
 
-var is_song_repload_completed := false
+var is_song_preload_completed := false
 signal song_preload_completed
 
 signal song_preloaded(song: Song)
@@ -22,9 +22,19 @@ func load_songs():
 	# remote songs can override local songs. change order if this is not desired.
 	load_remote_songs()
 
+
 func load_remote_songs():
 	if not GBackend.remote_songs_json_initialized:
-		await GBackend .remote_songs_json_received
+		while true:
+			await get_tree().process_frame
+			if GBackend.remote_songs_json_initialized:
+				break
+			elif GBackend.file_src_mode == GBackend.FILE_SRC_MODE.OFFLINE:
+				print("Offline mode detected. Preloading song aborted.")
+				is_song_preload_completed = true
+				song_preload_completed.emit()
+				return
+		
 	
 	for key in GBackend.remote_songs_info:
 		var song_info = GBackend.remote_songs_info[key]
@@ -48,8 +58,8 @@ func load_remote_songs():
 		await remote_file_requests.child_exiting_tree
 		await get_tree().process_frame
 	
-	print("Preloading songs completed. Remote songs will be downloaded upon demand.")
-	is_song_repload_completed = true
+	print("Preloading song configurations completed.")
+	is_song_preload_completed = true
 	song_preload_completed.emit()
 
 
@@ -96,8 +106,9 @@ func _on_lead_xml_received(song_file_path, xml_buffer):
 	var song = sp.parse_xml_from_buffer(xml_buffer)
 	if(song):
 		song.song_music_file = song_file_path
-		song.soog_music_file_access = GBackend.song_remote_access
+		song.song_music_file_access = GBackend.song_remote_access
 		PlayerVariables.songs[song.get_identifier()] = song
+		print("song [%s] added" % song.get_identifier())
 		song_preloaded.emit(song)
 	else:
 		push_error("Could not parse song xml")
@@ -146,6 +157,7 @@ func _handle_song_dir(song_dpath: String):
 				print("song file found : ", song.song_music_file)
 	if song:
 		PlayerVariables.songs[song.get_identifier()] = song
+		print("song [%s] added" % song.get_identifier())
 		song_preloaded.emit(song)
 
 
@@ -172,4 +184,5 @@ func _handle_local_song_zip(path: String):
 	if song:
 		song.song_music_buffer = song_music_buffer
 		PlayerVariables.songs[song.get_identifier()] = song
+		print("song [%s] added" % song.get_identifier())
 		song_preloaded.emit(song)

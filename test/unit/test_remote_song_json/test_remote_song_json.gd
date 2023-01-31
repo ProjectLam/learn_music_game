@@ -1,5 +1,6 @@
 extends Control
 
+@export var skip_remote_songs := false
 
 @onready var song_buttons = %SongButtons
 @onready var audio_stream_player = %AudioStreamPlayer
@@ -8,14 +9,15 @@ extends Control
 @onready var player_indicator = %AudioStreamPlayerIndicator
 
 
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	GBackend.skip_remote_json_load = skip_remote_songs
+	GBackend.ui_node.visible = false
 	SongsConfigPreloader.song_preloaded.connect(_on_song_preloaded)
 	for sid in PlayerVariables.songs:
 		_on_song_preloaded(PlayerVariables.songs[sid])
 	
-	if not SongsConfigPreloader.is_song_repload_completed:
+	if not SongsConfigPreloader.is_song_preload_completed:
 		await SongsConfigPreloader.song_preload_completed
 	preloader_status.text = "Preloader Status : Preload completed"
 

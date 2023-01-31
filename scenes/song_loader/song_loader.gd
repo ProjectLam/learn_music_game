@@ -36,13 +36,13 @@ func load_song(new_song: Song, force_reload: bool = false):
 			or new_song.song_music_file.begins_with("https://")):
 		push_error("Absolute remote path not implemented.")
 	else:
-		if(new_song.soog_music_file_access == FileAccess):
+		if(new_song.song_music_file_access == FileAccess):
 			loaded[new_song]["main_stream"] = load_mp3_from_path(new_song.song_music_file)
 			_on_song_loaded(new_song)
 		else:
 			# Song has a custom access. posibly a remote access.
 			# create a new loader node.
-			var loaderRequest = new_song.soog_music_file_access.create_request(new_song.song_music_file)
+			var loaderRequest = new_song.song_music_file_access.create_request(new_song.song_music_file)
 			# prevent this from happening again if the song is being loaded.
 			loading[new_song] = true
 			# connect to the signal that indicates the request is completed

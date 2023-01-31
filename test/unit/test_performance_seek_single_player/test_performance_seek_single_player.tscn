@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://qsxmg8k0biw2"]
+
+[ext_resource type="Script" path="res://test/unit/test_performance_seek_single_player/test_performance_seek_single_player.gd" id="1_w18df"]
+
+[node name="test_performance_seek_single_player" type="Node"]
+script = ExtResource("1_w18df")
+initial_seek = {
+"The Dark Side of the Moon": 0.0,
+"Tougher Than the Rest": 10.0
+}

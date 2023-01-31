@@ -1,0 +1,44 @@
+[gd_scene load_steps=4 format=3 uid="uid://b88ljwc7dpdbx"]
+
+[ext_resource type="FontFile" uid="uid://df06bw7a1s1u7" path="res://fonts/Montserrat-Bold.ttf" id="1_quirq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2rbll"]
+content_margin_left = 50.0
+content_margin_top = 20.0
+content_margin_right = 50.0
+content_margin_bottom = 23.0
+bg_color = Color(0.760784, 0, 0.776471, 1)
+border_width_bottom = 5
+border_color = Color(0.54902, 0, 0.560784, 1)
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+shadow_color = Color(1, 0.262745, 0.784314, 0.14902)
+shadow_size = 27
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ooe4i"]
+content_margin_left = 50.0
+content_margin_top = 20.0
+content_margin_right = 50.0
+content_margin_bottom = 23.0
+bg_color = Color(0.886275, 0, 0.905882, 1)
+border_width_bottom = 5
+border_color = Color(0.54902, 0, 0.560784, 1)
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+shadow_color = Color(1, 0.337255, 0.792157, 0.168627)
+shadow_size = 25
+
+[node name="PopupButton" type="Button"]
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("1_quirq")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_2rbll")
+theme_override_styles/hover = SubResource("StyleBoxFlat_ooe4i")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_2rbll")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_2rbll")
+theme_override_styles/focus = SubResource("StyleBoxFlat_2rbll")
+text = "Ok"

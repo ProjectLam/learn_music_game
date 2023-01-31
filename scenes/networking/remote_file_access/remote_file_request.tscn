@@ -13,3 +13,4 @@ unique_name_in_owner = true
 
 [node name="retry_timer" type="Timer" parent="."]
 unique_name_in_owner = true
+one_shot = true

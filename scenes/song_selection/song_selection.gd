@@ -37,9 +37,11 @@ var h_ratio: int = 1
 var selected_index: int
 
 func _ready():
-	if not SongsConfigPreloader.is_song_repload_completed:
+	if not SongsConfigPreloader.is_song_preload_completed:
 		set_process(false)
+		print("Waiting for song configurations...")
 		await SongsConfigPreloader.song_preload_completed
+		print("Song configurations loaded")
 		set_process(true)
 	
 	load_items()
@@ -50,9 +52,6 @@ func _ready():
 	
 	_process_items_vertically()
 	_process_items()
-
-
-
 
 
 func load_items():
@@ -74,10 +73,8 @@ func load_items():
 				items_count += 1
 
 
-
-
-
 func select_item(p_index: int, p_is_internal: bool = false) -> void:
+	# FIXME : this function shouldn't be called when nodes are null. But in some testings it was.
 	if tween_y:
 		tween_y.stop()
 	tween_y = get_tree().create_tween().set_parallel(true)
@@ -138,6 +135,7 @@ func select_item(p_index: int, p_is_internal: bool = false) -> void:
 	tween_y.tween_property(nItems, "position:y", items_y, 0.5)
 	_process_items()
 
+
 func _process_items_vertically():
 	if tween_y:
 		tween_y.stop()
@@ -160,6 +158,7 @@ func _process_items_vertically():
 		
 		var y = i * item_height
 		nItem.position.y = y
+
 
 func _process_items() -> void:
 	if tween_x:
@@ -215,9 +214,11 @@ func _process_items() -> void:
 		
 		j += 1
 
+
 func go_down():
 	selected_index = (selected_index+1) % items_count
 	select_item((index+1) % items_count)
+
 
 func go_up():
 	selected_index -= 1
@@ -225,8 +226,10 @@ func go_up():
 		selected_index = items_count-1
 	select_item((index-1) % items_count)
 
+
 func get_song(p_index: int) -> SongSelectionItem:
 	return nItems.get_child(p_index)
+
 
 func _on_Songs_item_rect_changed():
 	if not nItems:
@@ -238,6 +241,7 @@ func _on_Songs_item_rect_changed():
 	_process_items()
 	
 	select_item(index, true)
+
 
 func _on_Item_selected(p_nItem: SongSelectionItem):
 	var item_index = p_nItem.get_index()
@@ -254,11 +258,14 @@ func _on_Item_selected(p_nItem: SongSelectionItem):
 			SessionVariables.single_player = true
 			get_tree().change_scene_to_file("res://scenes/performance.tscn")
 
+
 func _on_DownBtn_pressed():
 	go_down()
 
+
 func _on_UpBtn_pressed():
 	go_up()
+
 
 func _on_item_rect_changed() -> void:
 	h_ratio = get_rect().size.x / ProjectSettings.get("display/window/size/viewport_width")

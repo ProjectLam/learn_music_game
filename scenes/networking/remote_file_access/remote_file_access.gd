@@ -15,6 +15,8 @@ func create_request(target_path: String):
 	else:
 		final_url = target_path
 	var rqinstance = REQUEST_SCENE.instantiate()
+	# infinite retry, switching to offline mode is impossible at this stage.
+	rqinstance.default_retry_count = -1
 	
 	rqinstance.target_url = final_url
 	return rqinstance

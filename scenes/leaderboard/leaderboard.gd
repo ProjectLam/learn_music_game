@@ -45,7 +45,7 @@ func get_item(p_index: int) -> LeaderboardItem:
 	return nItems.get_child(p_index)
 
 func load_items() -> void:
-	if not GBackend.is_connected:
+	if not GBackend.connection_status != GBackend.CONNECTION_STATUS.CONNECTED:
 		return
 	
 	var leaderboard_id = "TestBoard"

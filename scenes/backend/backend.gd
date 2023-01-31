@@ -1,5 +1,17 @@
 extends Control
 
+enum CONNECTION_STATUS {
+	DISCONNECTED,
+	CONNECTING,
+	CONNECTED
+}
+
+enum FILE_SRC_MODE {
+	OFFLINE,
+	FETCHING,
+	REMOTE
+}
+
 var client: NakamaClient
 var session: NakamaSession
 var multiplayer_bridge: NakamaMultiplayerBridge
@@ -8,8 +20,6 @@ var socket: NakamaSocket
 var test_email = "meow@meow.com"
 var test_password = "meowwwwww"
 
-var is_connected = false
-
 # nakama
 var scheme = "https"
 var host = "nakama.projectlam.org"
@@ -17,34 +27,49 @@ var port = 7352
 var server_key = "projectlam"
 
 # song loading
-var remote_songs_json_url := "http://127.0.0.1/test_files/pjlam/songs.json"
+var remote_songs_json_url := ""
 var remote_songs_info: Dictionary = {}
-signal remote_songs_json_received
+var skip_remote_json_load := false
 var remote_songs_json_initialized := false
 const RTFILE_RQ_SCENE := preload("res://scenes/networking/remote_file_access/remote_file_request.tscn")
+const POPUP_SCENE := preload("res://scenes/popup_dialog/popup_dialog.tscn")
 var song_json_file_request
 var song_remote_access: RemoteFileAccess
+var connection_status := CONNECTION_STATUS.DISCONNECTED :
+	set = set_connection_status,
+	get = get_connection_status
+var file_src_mode := FILE_SRC_MODE.REMOTE :
+	set = set_file_src_mode,
+	get = get_file_src_mode
+var fetcher_count := 0
 
+var current_dialog
+var file_offline_dialog :
+	set(value):
+		current_dialog = value
+		file_offline_dialog = value
 
-@onready var nConnectionFailedDialog: Control = find_child("ConnectionFailedDialog")
-@onready var nConnectionFailedDialog_AnimationPlayer: AnimationPlayer = nConnectionFailedDialog.get_node("AnimationPlayer")
-
-@onready var nLoginFailedDialog: Control = find_child("LoginFailedDialog")
-@onready var nLoginFailedDialog_AnimationPlayer: AnimationPlayer = nLoginFailedDialog.get_node("AnimationPlayer")
+@onready var ui_node := $CanvasLayer
+@onready var status_node = %Status
 
 signal full_initialization
 signal received_match_presence(p_presence: NakamaRTAPI.MatchPresenceEvent)
 signal received_match_state(p_state)
 signal peer_connected(id : int)
+signal remote_songs_json_received
+signal file_offline_dialog_closed
 
 
 func _ready():
-	song_json_file_request = RTFILE_RQ_SCENE.instantiate()
-	song_json_file_request.target_url = remote_songs_json_url
-	song_json_file_request.request_completed_string.connect(_on_song_json_file_received)
-	song_remote_access = RemoteFileAccess.new()
-	song_remote_access.parent_url = remote_songs_json_url.get_base_dir()
-	add_child(song_json_file_request)
+	refresh()
+	
+	init_remote_songs_json_url()
+	
+	if skip_remote_json_load:
+		# skip
+		remote_songs_json_initialized = true
+	else:
+		call_deferred("init_json_request")
 	
 	await multiplayer_init_async()
 	if not remote_songs_json_initialized:
@@ -56,15 +81,40 @@ func _ready():
 	emit_signal("full_initialization")
 
 
-func _process(delta: float) -> void:
-	nLoginFailedDialog.pivot_offset.x = nLoginFailedDialog.get_rect().size.x/2
-	nLoginFailedDialog.pivot_offset.y = nLoginFailedDialog.get_rect().size.y/2
+func init_json_request():
+	if skip_remote_json_load:
+		# skip
+		remote_songs_json_initialized = true
+		return
 	
-	nLoginFailedDialog.pivot_offset.x = nLoginFailedDialog.get_rect().size.x/2
-	nLoginFailedDialog.pivot_offset.y = nLoginFailedDialog.get_rect().size.y/2
+	
+	if remote_songs_json_url == "":
+		push_error("remote remote_songs_json_url not set")
+		file_src_mode = FILE_SRC_MODE.OFFLINE
+		_on_song_json_file_received("{}")
+		return
+	
+	song_json_file_request = RTFILE_RQ_SCENE.instantiate()
+	song_json_file_request.target_url = remote_songs_json_url
+	song_json_file_request.request_completed_string.connect(_on_song_json_file_received)
+	song_remote_access = RemoteFileAccess.new()
+	song_remote_access.parent_url = remote_songs_json_url.get_base_dir()
+	add_child(song_json_file_request)
+
+
+func init_remote_songs_json_url():
+#	var os_name = OS.get_name()
+#	if Engine.has_singleton("JavaScriptBridge") and (os_name == 'HTML5' || os_name == 'Web'):
+#		var jscript_eval = JavaScriptBridge.eval("godotGame.getSongsManifest();", true)
+#		if jscript_eval is String:
+#			remote_songs_json_url = jscript_eval
+#	else:
+#		# TODO : decinde on what to use for this.
+#		remote_songs_json_url = "http://127.0.0.1/songs.json"
+	remote_songs_json_url = "http://127.0.0.1/songs.json"
+
+
 # use 'await await_finit()' to wait for full initialization.
-
-
 func await_finit():
 	if _is_fully_initialized:
 		return
@@ -86,9 +136,7 @@ func is_fully_initialized() -> bool:
 
 
 func multiplayer_init_async():
-	nConnectionFailedDialog.hide()
-	nLoginFailedDialog.hide()
-	
+	connection_status = CONNECTION_STATUS.CONNECTING
 	check_nakama_dev_values()
 	client = Nakama.create_client(server_key, host, port, scheme)
 	
@@ -150,35 +198,52 @@ func login_password(p_email: String, p_password: String) -> NakamaSession:
 
 
 func open_connection_failed_dialog():
-	nConnectionFailedDialog_AnimationPlayer.play("Open")
-
-
-func close_connection_failed_dialog():
-	nConnectionFailedDialog_AnimationPlayer.play("Close")
+	var instant_spawn := false
+	if not is_current_dialog_done():
+		instant_spawn = true
+		current_dialog.instant_fade = true
+		while not is_current_dialog_done():
+			await current_dialog.option_selected
+		current_dialog.visible = false
+	current_dialog = POPUP_SCENE.instantiate()
+	current_dialog.instant_spawn = instant_spawn
+	current_dialog.title = "Connection Failed"
+	current_dialog.message = "Connection failed to server!"
+	current_dialog.options = ["Ok"]
+	
+	ui_node.add_child(current_dialog)
 
 
 func open_login_failed_dialog():
-	nLoginFailedDialog_AnimationPlayer.play("Open")
-
-
-func close_login_failed_dialog():
-	nLoginFailedDialog_AnimationPlayer.play("Close")
+	var instant_spawn := false
+	if not is_current_dialog_done():
+		instant_spawn = true
+		current_dialog.instant_fade = true
+		while not is_current_dialog_done():
+			await current_dialog.option_selected
+		current_dialog.visible = false
+	current_dialog = POPUP_SCENE.instantiate()
+	current_dialog.instant_spawn = instant_spawn
+	current_dialog.title = "Login Failed"
+	current_dialog.message = "Your email or password were wrong!"
+	current_dialog.options = ["Ok"]
+	
+	ui_node.add_child(current_dialog)
 
 
 func _on_socket_connected():
 	print("Socket connected.")
-	is_connected = true
+	connection_status = CONNECTION_STATUS.CONNECTED
 
 
 func _on_socket_closed():
 	print("Socket closed.")
-	is_connected = false
+	connection_status = CONNECTION_STATUS.DISCONNECTED
 	open_connection_failed_dialog()
 
 
 func _on_socket_error(err):
 	printerr("Socket error %s" % err)
-	open_connection_failed_dialog()
 
 
 func _on_match_join_error(error):
@@ -187,22 +252,6 @@ func _on_match_join_error(error):
 
 func _on_match_joined() -> void:
 	print("Joined match with id: ", multiplayer_bridge.match_id)
-
-
-func _on_ConnectionFailedDialog_CloseBtn_pressed() -> void:
-	close_connection_failed_dialog()
-
-
-func _on_ConnectionFailedDialog_OkBtn_pressed() -> void:
-	close_connection_failed_dialog()
-
-
-func _on_LoginFailedDialog_CloseBtn_pressed() -> void:
-	close_login_failed_dialog()
-
-
-func _on_LoginFailedDialog_OkBtn_pressed() -> void:
-	close_login_failed_dialog()
 
 
 func _on_received_match_state(p_state) -> void:
@@ -243,3 +292,86 @@ func _on_song_json_file_received(json_string: String):
 		push_error("unimplemented remote song json format")
 	remote_songs_json_initialized = true
 	remote_songs_json_received.emit()
+
+
+func is_current_dialog_done() -> bool:
+	return not is_instance_valid(current_dialog) or current_dialog.done
+
+
+func set_connection_status(value) -> void:
+	if connection_status != value:
+		connection_status = value
+		refresh()
+
+
+func get_connection_status():
+	return connection_status
+
+
+func set_file_src_mode(value) -> void:
+	if file_src_mode != value:
+		file_src_mode = value
+		refresh()
+
+
+func get_file_src_mode():
+	return file_src_mode
+
+
+func refresh():
+	if status_node:
+		status_node.refresh()
+
+
+func add_fetcher():
+	assert(file_src_mode != FILE_SRC_MODE.OFFLINE)
+	fetcher_count += 1
+	if fetcher_count == 1:
+		file_src_mode = FILE_SRC_MODE.FETCHING
+
+
+func remove_fetcher():
+	fetcher_count -= 1
+	if fetcher_count == 0 and file_src_mode == FILE_SRC_MODE.FETCHING:
+		file_src_mode = FILE_SRC_MODE.REMOTE
+
+
+func _on_file_offline_dialog_closed():
+	file_offline_dialog_closed.emit()
+
+
+func file_offline_dialog_response(option: String) -> void:
+	match(option):
+		"Yes":
+			file_src_mode = FILE_SRC_MODE.OFFLINE
+		"No":
+			pass
+
+
+func open_file_offline_dialog(msg: String = ""):
+	if is_instance_valid(file_offline_dialog) and not file_offline_dialog.done:
+		return
+	
+	await get_tree().process_frame
+	
+	var instant_spawn := false
+	if not is_current_dialog_done():
+		instant_spawn = true
+		current_dialog.instant_fade = true
+		while not is_current_dialog_done():
+			await current_dialog.option_selected
+		current_dialog.visible = false
+	
+	var title := "Failed to download file"
+	var message := "Switch to offline mode?"
+	if msg != "":
+		message = "%s\n%s" % [msg, message]
+	file_offline_dialog = POPUP_SCENE.instantiate()
+	file_offline_dialog.tree_exited.connect(_on_file_offline_dialog_closed)
+	file_offline_dialog.title = title
+	file_offline_dialog.instant_spawn = instant_spawn
+	file_offline_dialog.message = message
+	file_offline_dialog.option_selected.connect(file_offline_dialog_response)
+	file_offline_dialog.options = ["Yes", "No"]
+	
+	ui_node.add_child(file_offline_dialog)

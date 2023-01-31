@@ -1,13 +1,15 @@
-[gd_scene load_steps=17 format=3 uid="uid://drhti1f6dfqep"]
+[gd_scene load_steps=18 format=3 uid="uid://drhti1f6dfqep"]
 
 [ext_resource type="Texture2D" uid="uid://ctu1miqp425c5" path="res://assets/gui/icons/casette.png" id="1_fr83g"]
 [ext_resource type="Script" path="res://scenes/left_bar/left_bar.gd" id="1_gck2n"]
-[ext_resource type="FontFile" uid="uid://d4npsuxeu82xd" path="res://fonts/Games.ttf" id="2_norfk"]
+[ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="2_norfk"]
 [ext_resource type="Texture2D" uid="uid://cojmsogxnfbum" path="res://assets/gui/icons/page.png" id="4_aqkcr"]
 [ext_resource type="Texture2D" uid="uid://bcyql8pbvs5yj" path="res://assets/gui/icons/song.png" id="5_pf3wh"]
 [ext_resource type="Texture2D" uid="uid://cxpbdejhyhyxu" path="res://assets/gui/icons/lyrics.png" id="6_1kbv2"]
 [ext_resource type="Texture2D" uid="uid://drypojyiolrwq" path="res://assets/gui/icons/settings.png" id="7_1q55x"]
 [ext_resource type="Texture2D" uid="uid://de686ygqs5poa" path="res://assets/gui/icons/logout.png" id="8_mbv55"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fhuii"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ja2ug"]
 bg_color = Color(1, 1, 1, 0.145098)
@@ -51,23 +53,18 @@ bg_color = Color(1, 1, 1, 0.145098)
 corner_radius_bottom_right = 100
 corner_radius_bottom_left = 100
 
-[node name="LeftBar" type="Control"]
-layout_mode = 3
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_left = 62.0
-offset_top = 48.0
-offset_right = 159.0
-offset_bottom = -49.0
+[node name="LeftBar" type="PanelContainer"]
+anchors_preset = -1
+anchor_left = 0.02
+anchor_top = 0.1
+anchor_right = 0.07
+anchor_bottom = 0.9
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_fhuii")
 script = ExtResource("1_gck2n")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 theme_override_constants/separation = 0
 
 [node name="Top" type="PanelContainer" parent="VBoxContainer"]
