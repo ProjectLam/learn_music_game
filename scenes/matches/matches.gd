@@ -33,7 +33,7 @@ func _ready():
 	_is_fully_initialized = true
 	emit_signal("full_initialization")
 
-func add_test_record() -> void:
+func add_test_record():
 	var game_match: NakamaRTAPI.Match = await GBackend.create_match_async("Meowing Cats Room")
 	print("Match created: #%s - %s" % [game_match.match_id, game_match.label])
 	return game_match
@@ -107,5 +107,6 @@ func _on_RefreshTimer_timeout() -> void:
 
 func _on_Item_selected(p_nItem: MatchesItem) -> void:
 	print("Match selected: ", p_nItem.item.nakama_object.match_id)
+	SessionVariables.single_player = false
 	await GBackend.join_match_async(p_nItem.item.nakama_object.match_id)
 	get_tree().change_scene_to_file("res://scenes/performance.tscn")

@@ -13,7 +13,7 @@ config_version=5
 config/name="Lam-dj"
 run/main_scene="res://scenes/instrument_selection/instrument_selection.tscn"
 config/features=PackedStringArray("4.0", "Mobile")
-run/main_scene.web="res://scenes/djclient.tscn"
+run/main_scene.web="res://scenes/main.tscn"
 
 [audio]
 
@@ -21,6 +21,7 @@ driver/enable_input=true
 
 [autoload]
 
+TmpFiles="*res://autoload/tmp_files.gd"
 WebsocketServer="*res://scenes/websocket_server.gd"
 InstrumentList="*res://autoload/instrument_list.gd"
 PlayerVariables="*res://scenes/PlayerVariables.gd"
@@ -36,6 +37,7 @@ GGoogleAuth="*res://scenes/google_auth/google_auth.tscn"
 GBackend="*res://scenes/backend/backend.tscn"
 GAudioServerManager="*res://autoload/audio_server_manager.gd"
 InstrumentDetails="*res://autoload/instrument_details.gd"
+SongsConfigPreloader="*res://autoload/songs_config_preloader.tscn"
 
 [debug]
 
@@ -58,6 +60,12 @@ theme/custom="res://ui_theme.tres"
 
 [input]
 
+ui_accept={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":4194309,"physical_keycode":0,"key_label":0,"unicode":4194309,"echo":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":4194310,"physical_keycode":0,"key_label":0,"unicode":4194310,"echo":false,"script":null)
+]
+}
 media_pause_play={
 "deadzone": 0.5,
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":32,"key_label":0,"unicode":0,"echo":false,"script":null)

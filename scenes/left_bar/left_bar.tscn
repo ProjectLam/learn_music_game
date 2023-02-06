@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://drhti1f6dfqep"]
+[gd_scene load_steps=18 format=3 uid="uid://drhti1f6dfqep"]
 
 [ext_resource type="Texture2D" uid="uid://ctu1miqp425c5" path="res://assets/gui/icons/casette.png" id="1_fr83g"]
 [ext_resource type="Script" path="res://scenes/left_bar/left_bar.gd" id="1_gck2n"]
@@ -8,6 +8,8 @@
 [ext_resource type="Texture2D" uid="uid://cxpbdejhyhyxu" path="res://assets/gui/icons/lyrics.png" id="6_1kbv2"]
 [ext_resource type="Texture2D" uid="uid://drypojyiolrwq" path="res://assets/gui/icons/settings.png" id="7_1q55x"]
 [ext_resource type="Texture2D" uid="uid://de686ygqs5poa" path="res://assets/gui/icons/logout.png" id="8_mbv55"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fhuii"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ja2ug"]
 bg_color = Color(1, 1, 1, 0.145098)
@@ -51,54 +53,42 @@ bg_color = Color(1, 1, 1, 0.145098)
 corner_radius_bottom_right = 100
 corner_radius_bottom_left = 100
 
-[node name="LeftBar" type="Control"]
-layout_mode = 3
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_left = 62.0
-offset_top = 48.0
-offset_right = 159.0
-offset_bottom = -49.0
+[node name="LeftBar" type="PanelContainer"]
+anchors_preset = -1
+anchor_left = 0.02
+anchor_top = 0.1
+anchor_right = 0.07
+anchor_bottom = 0.9
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_fhuii")
 script = ExtResource("1_gck2n")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 theme_override_constants/separation = 0
 
 [node name="Top" type="PanelContainer" parent="VBoxContainer"]
 custom_minimum_size = Vector2(0, 75)
-offset_right = 97.0
-offset_bottom = 106.0
+layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ja2ug")
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/Top"]
-offset_right = 97.0
-offset_bottom = 106.0
+layout_mode = 2
 texture = ExtResource("1_fr83g")
 stretch_mode = 5
 
 [node name="Middle" type="PanelContainer" parent="VBoxContainer"]
 custom_minimum_size = Vector2(0, 75)
-offset_top = 106.0
-offset_right = 97.0
-offset_bottom = 728.0
+layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_kv4qc")
 
 [node name="Empty" type="Control" parent="VBoxContainer/Middle"]
 visible = false
-layout_mode = 3
-anchors_preset = 0
-offset_right = 97.0
-offset_bottom = 622.0
+layout_mode = 2
 
 [node name="Label" type="Label" parent="VBoxContainer/Middle/Empty"]
-anchors_preset = 8
+layout_mode = 0
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -114,13 +104,10 @@ text = "LAM PROJECT"
 label_settings = SubResource("LabelSettings_ypi7r")
 
 [node name="Content" type="Control" parent="VBoxContainer/Middle"]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 97.0
-offset_bottom = 622.0
+layout_mode = 2
 
 [node name="Menu" type="Control" parent="VBoxContainer/Middle/Content"]
-layout_mode = 3
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -128,6 +115,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Middle/Content/Menu"]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -138,10 +126,7 @@ alignment = 1
 
 [node name="Button" type="Button" parent="VBoxContainer/Middle/Content/Menu/VBoxContainer"]
 custom_minimum_size = Vector2(50, 50)
-offset_left = 23.0
-offset_top = 123.0
-offset_right = 73.0
-offset_bottom = 173.0
+layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_styles/normal = SubResource("StyleBoxFlat_ixvow")
@@ -154,10 +139,7 @@ icon_alignment = 1
 
 [node name="Button2" type="Button" parent="VBoxContainer/Middle/Content/Menu/VBoxContainer"]
 custom_minimum_size = Vector2(50, 50)
-offset_left = 23.0
-offset_top = 198.0
-offset_right = 73.0
-offset_bottom = 248.0
+layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_styles/normal = SubResource("StyleBoxFlat_ixvow")
@@ -170,10 +152,7 @@ icon_alignment = 1
 
 [node name="Button3" type="Button" parent="VBoxContainer/Middle/Content/Menu/VBoxContainer"]
 custom_minimum_size = Vector2(50, 50)
-offset_left = 23.0
-offset_top = 273.0
-offset_right = 73.0
-offset_bottom = 323.0
+layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_styles/normal = SubResource("StyleBoxFlat_ixvow")
@@ -186,10 +165,7 @@ icon_alignment = 1
 
 [node name="Button4" type="Button" parent="VBoxContainer/Middle/Content/Menu/VBoxContainer"]
 custom_minimum_size = Vector2(50, 50)
-offset_left = 23.0
-offset_top = 348.0
-offset_right = 73.0
-offset_bottom = 398.0
+layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_styles/normal = SubResource("StyleBoxFlat_ixvow")
@@ -202,14 +178,10 @@ icon_alignment = 1
 
 [node name="Sep" type="Control" parent="VBoxContainer/Middle/Content/Menu/VBoxContainer"]
 custom_minimum_size = Vector2(0, 1)
-layout_mode = 3
-anchors_preset = 0
-offset_top = 423.0
-offset_right = 97.0
-offset_bottom = 424.0
+layout_mode = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/Middle/Content/Menu/VBoxContainer/Sep"]
-anchors_preset = -1
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 20.0
@@ -221,10 +193,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_6yw14")
 
 [node name="LoginBtn" type="Button" parent="VBoxContainer/Middle/Content/Menu/VBoxContainer"]
 custom_minimum_size = Vector2(50, 50)
-offset_left = 23.0
-offset_top = 449.0
-offset_right = 73.0
-offset_bottom = 499.0
+layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_styles/normal = SubResource("StyleBoxFlat_ixvow")
@@ -237,9 +206,7 @@ icon_alignment = 1
 
 [node name="Bottom" type="PanelContainer" parent="VBoxContainer"]
 custom_minimum_size = Vector2(0, 175)
-offset_top = 728.0
-offset_right = 97.0
-offset_bottom = 903.0
+layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_d6h5r")
 
 [connection signal="pressed" from="VBoxContainer/Middle/Content/Menu/VBoxContainer/LoginBtn" to="." method="_on_LoginBtn_pressed"]

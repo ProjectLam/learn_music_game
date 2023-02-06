@@ -1,6 +1,6 @@
 @tool
 
-extends Control
+extends PanelContainer
 
 func _ready():
 	pass

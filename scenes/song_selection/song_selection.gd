@@ -29,8 +29,7 @@ var index: int
 var tween_y: Tween
 var tween_x: Tween
 
-@export var songs_path = "user://songs"
-@export var songs_json_file = "songs.json"
+
 @export_range(0, 100) var h_space: int = 100
 
 var h_ratio: int = 1
@@ -38,7 +37,13 @@ var h_ratio: int = 1
 var selected_index: int
 
 func _ready():
-	load_songs()
+	if not SongsConfigPreloader.is_song_preload_completed:
+		set_process(false)
+		print("Waiting for song configurations...")
+		await SongsConfigPreloader.song_preload_completed
+		print("Song configurations loaded")
+		set_process(true)
+	
 	load_items()
 	
 	index = 3
@@ -47,40 +52,6 @@ func _ready():
 	
 	_process_items_vertically()
 	_process_items()
-
-
-func load_songs():
-	var dir =  DirAccess.open(songs_path)
-	dir.list_dir_begin()
-	
-	# check for songs.json
-	if dir.file_exists(songs_json_file):
-		var json_path: String = songs_path + "/" + songs_json_file
-		var json_string = FileAccess.get_file_as_string(json_path)
-		var json_data = JSON.parse_string(json_string)
-		if json_data == null or not json_data.has("songs"):
-			push_error("Failed to parse the json file at ", json_path)
-			return
-		for song in json_data.songs:
-			_handle_song_zip(songs_path + "/" + song)
-	
-	else:
-		# else check for files
-		while true:
-			var songFile = dir.get_next()
-			
-			#Assume each directory is 1 song
-			#TODO in future allow a JSON file that has direct links to song zip or directories
-			if songFile == "": 
-				break
-			elif !songFile.begins_with(".") && dir.current_is_dir():
-				print("Found directory - " + songFile)
-				_handle_song_dir(songFile,dir.get_current_dir() + "/"+ songFile) # ugly, why isn't there any easier way to do this
-			elif songFile.ends_with(".zip"):
-				#TODO in future allow songs to be .zip files
-				_handle_song_zip(dir.get_current_dir() + "/" + songFile)
-				print("Found zip - " + songFile)
-		dir.list_dir_end()
 
 
 func load_items():
@@ -102,100 +73,8 @@ func load_items():
 				items_count += 1
 
 
-func _handle_song_dir(songFile:String, curPath:String):
-	var dir =  DirAccess.open(curPath)
-	
-	print("handle_song_dir-" + songFile)
-	var song: Song
-	
-	dir.list_dir_begin()
-	while true:
-		var iFile = dir.get_next()
-		if iFile == "": 
-			break
-		elif iFile.ends_with(".xml"):
-			var full_xml =  dir.get_current_dir() + "/" + iFile
-			print("got song data xml - " + full_xml)
-			var sp:SongParser = SongParser.new()
-			#sp.parse_xml_from_file(full_xml, song)
-			#NOTE this is the core Xml File, there are up to 4 other ones
-	
-	dir.list_dir_end()
-	
-	#Find the instrument specific ones, for now we are only going to look for lead guitair
-	var err = dir.change_dir("songs/arr")
-	if err != OK:
-		print("error2 - " + err)
-		return
-	
-	dir.list_dir_begin()
-	while true:
-		var iFile = dir.get_next()
-		if iFile == "": 
-			break
-		elif iFile.ends_with("_lead.xml"):
-			var full_xml =  dir.get_current_dir() + "/" + iFile
-			print("got lead xml - " + full_xml)
-			var sp:SongParser = SongParser.new()
-			song = sp.parse_xml_from_file(full_xml)
-			#NOTE  TODO this is the lead guitar Xml File, there are up to 4 other ones, including vocals
-	
-	dir.list_dir_end()
-	dir.change_dir("..")
-	dir.change_dir("..")
-	
-	# Find the first .mp3 file that doesn't include _preview in audio/windows for now
-	# TODO in future do full directory traversal
-	err = dir.change_dir("audio/windows/")
-	if err != OK:
-		print("error2 - " + err)
-		return
-		
-	dir.list_dir_begin()
-	while true: 
-		var iFile = dir.get_next()
-		if iFile == "": 
-			break
-		elif iFile.ends_with(".mp3") && !("preview" in iFile):
-			if song:
-				song.song_music_file = dir.get_current_dir() + "/" + iFile
-				print(song.song_music_file)
-	
-	dir.list_dir_end()
-	
-	dir.change_dir("..")
-	dir.change_dir("..")
-	
-	if song:
-		PlayerVariables.songs[song.get_identifier()] = song
-
-
-func _handle_song_zip(path: String):
-	var reader := ZIPReader.new()
-	var err := reader.open(path)
-	if err != OK:
-		push_error("This ZIP file at path ", path, " couldn't be opened")
-		return
-	
-	var song: Song
-	var song_music_buffer: PackedByteArray
-	
-	# Returns a PoolStringArray of all files in all directories
-	var files := reader.get_files()
-	
-	for file in files:
-		if file.ends_with("_lead.xml"):
-			var song_parser := SongParser.new()
-			song = song_parser.parse_xml_from_buffer(reader.read_file(file))
-		if file.ends_with(".mp3") and not "preview" in file:
-			song_music_buffer = reader.read_file(file)
-	
-	if song:
-		song.song_music_buffer = song_music_buffer
-		PlayerVariables.songs[song.get_identifier()] = song
-
-
 func select_item(p_index: int, p_is_internal: bool = false) -> void:
+	# FIXME : this function shouldn't be called when nodes are null. But in some testings it was.
 	if tween_y:
 		tween_y.stop()
 	tween_y = get_tree().create_tween().set_parallel(true)
@@ -256,6 +135,7 @@ func select_item(p_index: int, p_is_internal: bool = false) -> void:
 	tween_y.tween_property(nItems, "position:y", items_y, 0.5)
 	_process_items()
 
+
 func _process_items_vertically():
 	if tween_y:
 		tween_y.stop()
@@ -278,6 +158,7 @@ func _process_items_vertically():
 		
 		var y = i * item_height
 		nItem.position.y = y
+
 
 func _process_items() -> void:
 	if tween_x:
@@ -333,9 +214,11 @@ func _process_items() -> void:
 		
 		j += 1
 
+
 func go_down():
 	selected_index = (selected_index+1) % items_count
 	select_item((index+1) % items_count)
+
 
 func go_up():
 	selected_index -= 1
@@ -343,8 +226,10 @@ func go_up():
 		selected_index = items_count-1
 	select_item((index-1) % items_count)
 
+
 func get_song(p_index: int) -> SongSelectionItem:
 	return nItems.get_child(p_index)
+
 
 func _on_Songs_item_rect_changed():
 	if not nItems:
@@ -356,6 +241,7 @@ func _on_Songs_item_rect_changed():
 	_process_items()
 	
 	select_item(index, true)
+
 
 func _on_Item_selected(p_nItem: SongSelectionItem):
 	var item_index = p_nItem.get_index()
@@ -369,13 +255,17 @@ func _on_Item_selected(p_nItem: SongSelectionItem):
 		if selection_mode == SELECTION_MODE.PLAY:
 			SessionVariables.current_song = PlayerVariables.songs[p_nItem.song.get_identifier()]
 			SessionVariables.instrument = PlayerVariables.gameplay_instrument_name
+			SessionVariables.single_player = true
 			get_tree().change_scene_to_file("res://scenes/performance.tscn")
+
 
 func _on_DownBtn_pressed():
 	go_down()
 
+
 func _on_UpBtn_pressed():
 	go_up()
+
 
 func _on_item_rect_changed() -> void:
 	h_ratio = get_rect().size.x / ProjectSettings.get("display/window/size/viewport_width")

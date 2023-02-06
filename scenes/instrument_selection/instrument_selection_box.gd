@@ -8,7 +8,7 @@ const ISELECT_ITEM = preload("res://scenes/instrument_selection/instrument_selec
 
 @export var auto_select := false
 
-var default_animation_duration = 0.18
+var default_animation_duration := 0.18
 
 var nLeft
 var nMiddle
@@ -49,7 +49,7 @@ func _ready():
 	var current_instrument := PlayerVariables.gameplay_instrument_data
 	
 	for index in item_nodes.size():
-		var node := item_nodes[index]
+		var node = item_nodes[index]
 		if node.instrument_data == current_instrument:
 			current_index = index
 	

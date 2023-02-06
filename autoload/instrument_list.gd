@@ -9,7 +9,6 @@ const default_instrument_list: Array[String] = [
 
 
 func _ready() -> void:
-	print(default_instrument_list)
 	for res_path in default_instrument_list:
 		if not (res_path is String):
 			push_error("Invalid instrument resource path.")

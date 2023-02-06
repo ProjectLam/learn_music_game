@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://cues4wrtqr8sf"]
+
+[ext_resource type="Script" path="res://autoload/songs_config_preloader.gd" id="1_sthl1"]
+
+[node name="PreloadSongs" type="Node"]
+script = ExtResource("1_sthl1")
+
+[node name="RemoteFileRequests" type="Node" parent="."]
+unique_name_in_owner = true
