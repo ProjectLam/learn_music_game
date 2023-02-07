@@ -1,5 +1,5 @@
 shader_type spatial;
-render_mode blend_add, unshaded;
+render_mode blend_add, unshaded, depth_draw_never;
 
 uniform vec4 color : source_color;
 uniform float brightness = 0.5;
