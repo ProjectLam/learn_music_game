@@ -1,5 +1,5 @@
 shader_type spatial;
-render_mode unshaded, blend_add;
+render_mode unshaded, blend_add, depth_draw_never;
 
 uniform vec4 color : source_color;
 uniform float radius = 0.0;

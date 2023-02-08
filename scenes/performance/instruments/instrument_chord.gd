@@ -1,5 +1,5 @@
-class_name InstrumentChord
 extends InstrumentNote
+class_name InstrumentChord
 
 
 @export var chord_tone_scene: PackedScene

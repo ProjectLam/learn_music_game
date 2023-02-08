@@ -16,7 +16,7 @@ var score: float :
 	get = get_score
 
 # This property is meant to be used to let others know the player or their client is not ready yet.
-var _ready_status: ReadyStatus = false
+var _ready_status: ReadyStatus = ReadyStatus.NOT_READY
 var ready_status: ReadyStatus:
 	set = set_ready_status,
 	get = get_ready_status

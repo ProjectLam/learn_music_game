@@ -1,5 +1,5 @@
-class_name Chord
 extends Note
+class_name Chord
 
 
 enum Strum { UP, DOWN }

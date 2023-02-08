@@ -860,12 +860,18 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.5, 0, 0)
 
 [node name="A" type="Label3D" parent="ComputerKeyboardLabels"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0.5, 0.1, 5)
+sorting_offset = 1.0
+alpha_cut = 1
+render_priority = 1
 modulate = Color(0, 0, 0, 1)
 text = "A"
 font_size = 150
 
 [node name="W" type="Label3D" parent="ComputerKeyboardLabels"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0.95, 0.3, 3)
+sorting_offset = 1.0
+alpha_cut = 1
+render_priority = 1
 text = "W
 "
 font_size = 150
@@ -873,30 +879,45 @@ outline_size = 44
 
 [node name="S" type="Label3D" parent="ComputerKeyboardLabels"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 1.5, 0.1, 5)
+sorting_offset = 1.0
+alpha_cut = 1
+render_priority = 1
 modulate = Color(0, 0, 0, 1)
 text = "S"
 font_size = 150
 
 [node name="E" type="Label3D" parent="ComputerKeyboardLabels"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 2.04999, 0.3, 3)
+sorting_offset = 1.0
+alpha_cut = 1
+render_priority = 1
 text = "E"
 font_size = 150
 outline_size = 44
 
 [node name="D" type="Label3D" parent="ComputerKeyboardLabels"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 2.5, 0.1, 5)
+sorting_offset = 1.0
+alpha_cut = 1
+render_priority = 1
 modulate = Color(0, 0, 0, 1)
 text = "D"
 font_size = 150
 
 [node name="F" type="Label3D" parent="ComputerKeyboardLabels"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 3.5, 0.1, 5)
+sorting_offset = 1.0
+alpha_cut = 1
+render_priority = 1
 modulate = Color(0, 0, 0, 1)
 text = "F"
 font_size = 150
 
 [node name="T" type="Label3D" parent="ComputerKeyboardLabels"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 3.95, 0.3, 3)
+sorting_offset = 1.0
+alpha_cut = 1
+render_priority = 1
 text = "T
 "
 font_size = 150
@@ -904,12 +925,18 @@ outline_size = 44
 
 [node name="G" type="Label3D" parent="ComputerKeyboardLabels"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 4.5, 0.1, 5)
+sorting_offset = 1.0
+alpha_cut = 1
+render_priority = 1
 modulate = Color(0, 0, 0, 1)
 text = "G"
 font_size = 150
 
 [node name="Y" type="Label3D" parent="ComputerKeyboardLabels"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 5, 0.3, 3)
+sorting_offset = 1.0
+alpha_cut = 1
+render_priority = 1
 text = "Y
 "
 font_size = 150
@@ -917,12 +944,18 @@ outline_size = 44
 
 [node name="H" type="Label3D" parent="ComputerKeyboardLabels"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 5.5, 0.1, 5)
+sorting_offset = 1.0
+alpha_cut = 1
+render_priority = 1
 modulate = Color(0, 0, 0, 1)
 text = "H"
 font_size = 150
 
 [node name="U" type="Label3D" parent="ComputerKeyboardLabels"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 6.05, 0.3, 3)
+sorting_offset = 1.0
+alpha_cut = 1
+render_priority = 1
 text = "U
 "
 font_size = 150
@@ -930,36 +963,54 @@ outline_size = 44
 
 [node name="J" type="Label3D" parent="ComputerKeyboardLabels"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 6.5, 0.1, 5)
+sorting_offset = 1.0
+alpha_cut = 1
+render_priority = 1
 modulate = Color(0, 0, 0, 1)
 text = "J"
 font_size = 150
 
 [node name="K" type="Label3D" parent="ComputerKeyboardLabels"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 7.5, 0.1, 5)
+sorting_offset = 1.0
+alpha_cut = 1
+render_priority = 1
 modulate = Color(0, 0, 0, 1)
 text = "K"
 font_size = 150
 
 [node name="O" type="Label3D" parent="ComputerKeyboardLabels"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 7.95, 0.3, 3)
+sorting_offset = 1.0
+alpha_cut = 1
+render_priority = 1
 text = "O"
 font_size = 150
 outline_size = 44
 
 [node name="L" type="Label3D" parent="ComputerKeyboardLabels"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 8.5, 0.1, 5)
+sorting_offset = 1.0
+alpha_cut = 1
+render_priority = 1
 modulate = Color(0, 0, 0, 1)
 text = "L"
 font_size = 150
 
 [node name="P" type="Label3D" parent="ComputerKeyboardLabels"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 9.05, 0.3, 3)
+sorting_offset = 1.0
+alpha_cut = 1
+render_priority = 1
 text = "P"
 font_size = 150
 outline_size = 44
 
 [node name=";" type="Label3D" parent="ComputerKeyboardLabels"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 9.5, 0.1, 5)
+sorting_offset = 1.0
+alpha_cut = 1
+render_priority = 1
 modulate = Color(0, 0, 0, 1)
 text = ";"
 font_size = 150

@@ -10,6 +10,7 @@ class_name Leaderboard
 @onready var nItems = find_child("Items")
 
 func _ready():
+	await GBackend.await_finit()
 	_update_style()
 	load_items()
 #	add_test_record()
@@ -22,9 +23,7 @@ func add_test_record():
 		print("An error occurred while loading leaderboard: ", record)
 		return
 	print("New record username %s and score %s" % [record.username, record.score])
-
-func _process(delta):
-	pass
+	
 
 func _update_style() -> void:
 	for i in nItems.get_child_count():
@@ -34,6 +33,7 @@ func _update_style() -> void:
 		else:
 			nItem.add_theme_stylebox_override("panel", style_even)
 
+
 func add_item(item: TLeaderboardItem):
 	var nItem: LeaderboardItem = cLeaderboardItem.instantiate()
 	nItems.add_child(nItem)
@@ -41,8 +41,10 @@ func add_item(item: TLeaderboardItem):
 	nItem.item = item
 	_update_style()
 
+
 func get_item(p_index: int) -> LeaderboardItem:
 	return nItems.get_child(p_index)
+
 
 func load_items() -> void:
 	if not GBackend.connection_status != GBackend.CONNECTION_STATUS.CONNECTED:
