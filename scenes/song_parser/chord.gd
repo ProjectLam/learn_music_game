@@ -73,6 +73,8 @@ func get_pitch_for_string(string_index: int) -> float:
 			return NoteFrequency.CHROMATIC[string_chromatic_indices[5] + fret_5]
 		_:
 			return -1.0
+	# workaround for parse error.
+	return -1.0
 
 
 func has_pitch(pitch: float) -> bool:
