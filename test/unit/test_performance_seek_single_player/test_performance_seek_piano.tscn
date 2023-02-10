@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://ddylmpf8nq3os"]
+
+[ext_resource type="PackedScene" uid="uid://qsxmg8k0biw2" path="res://test/unit/test_performance_seek_single_player/test_performance_seek_single_player.tscn" id="1_8tkrv"]
+
+[node name="test_performance_seek_single_player" instance=ExtResource("1_8tkrv")]
+instrument = 0

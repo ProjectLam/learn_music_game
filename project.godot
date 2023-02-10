@@ -11,9 +11,9 @@ config_version=5
 [application]
 
 config/name="Lam-dj"
-run/main_scene="res://test/unit/test_instruments/test_piano_01/test_piano_01.tscn"
+run/main_scene="res://test/unit/test_performance_seek_single_player/test_performance_seek_piano.tscn"
 config/features=PackedStringArray("4.0", "Mobile")
-run/main_scene.web="res://test/unit/test_instruments/test_piano_01/test_piano_01.tscn"
+run/main_scene.web="res://test/unit/test_performance_seek_single_player/test_performance_seek_piano.tscn"
 
 [audio]
 

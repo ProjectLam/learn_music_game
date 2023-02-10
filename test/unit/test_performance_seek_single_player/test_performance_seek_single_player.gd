@@ -33,9 +33,12 @@ const PERFORMANCE_SCENE := preload("res://scenes/performance.tscn")
 	SongIds[Songs.THE_DARK_SIDE_OF_THE_MOON]: 0.0
 }
 
+@export var vfx := false
+
 var performance_node: Node
 
 func _ready():
+	Debug.print_note_spawn = true
 	GBackend.ui_node.visible = false
 	SessionVariables.instrument = Instrument_ids[instrument]
 	if not SongsConfigPreloader.is_song_preload_completed:
@@ -45,6 +48,7 @@ func _ready():
 	
 	performance_node = PERFORMANCE_SCENE.instantiate()
 	add_child(performance_node)
+	performance_node.vfx.visible = vfx
 	
 	while(not performance_node.is_music_playing()):
 		await get_tree().process_frame
@@ -52,3 +56,4 @@ func _ready():
 	var initial_seek_value: float = initial_seek[SongIds[current_song]]
 	performance_node.audio_stream.seek(initial_seek_value)
 	performance_node.performance_instrument.notes.time = initial_seek_value
+	
