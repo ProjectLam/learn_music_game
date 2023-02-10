@@ -6,6 +6,7 @@ extends Node3D
 @onready var ingame_scores_viewer = %IngameScores
 @onready var song_loader = %SongLoader
 @export var should_print_song_loading_debugs: bool = false
+@onready var vfx = %VFX
 
 var test_song_path := "res://Arlow - How Do You Know [NCS Release].mp3"
 
@@ -129,6 +130,7 @@ func sync_audiostream_remote(p_playing: bool, p_seek):
 		if p_playing:
 			audio_stream.play(p_seek)
 			if is_instance_valid(performance_instrument) and p_seek == 0:
+				# TODO : there is an issue with browser not allowing music to play unless the tab is clicked on.
 				performance_instrument.start_game(current_song)
 		else:
 			audio_stream.stream_paused = true

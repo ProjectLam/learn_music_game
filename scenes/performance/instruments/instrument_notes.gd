@@ -80,7 +80,8 @@ func _is_missed_note(note_index: int):
 
 # Abstract, override in child class
 func spawn_note(note_data: Note, note_index: int):
-	pass
+	if Debug.print_note_spawn:
+		print("Spawning Note [idx=%d,time=%d]" % [note_index, note_data.time])
 
 
 # Abstract, override in child class
