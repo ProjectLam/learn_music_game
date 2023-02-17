@@ -4,23 +4,42 @@ const ISELECT_ITEM = preload("res://scenes/instrument_selection/instrument_selec
 
 @onready var instrument_selection_box = %InstrumentSelectionBox
 
+func _ready():
+	if get_viewport().gui_get_focus_owner() == null:
+		grab_focus()
 
-func _on_left_btn_pressed():
+
+func _process(delta):
+	
+	if has_focus():
+		if Input.is_action_just_pressed("ui_left"):
+			go_right()
+		elif Input.is_action_just_pressed("ui_right"):
+			go_left()
+		if Input.is_action_just_pressed("ui_accept"):
+			select_instrument()
+
+
+func go_left():
 	instrument_selection_box.go_left()
 
 
-func _on_right_btn_pressed():
+func go_right():
 	instrument_selection_box.go_right()
 
 
-func _on_SelectBtn_pressed():
+func select_instrument():
 	instrument_selection_box.select_current()
 	get_tree().change_scene_to_file("res://scenes/instrument_menu/instrument_menu.tscn")
 
 
-func _process(delta):
-	var x = get_viewport().get_mouse_position().x / get_viewport_rect().size.x
-	var y = get_viewport().get_mouse_position().y / get_viewport_rect().size.y
-	var pos = Vector2(x, y)
+func _on_left_btn_pressed():
+	go_left()
 
-	$Background/Layer.material.set_shader_parameter("lighting_point", pos)
+
+func _on_right_btn_pressed():
+	go_right()
+
+
+func _on_SelectBtn_pressed():
+	select_instrument()

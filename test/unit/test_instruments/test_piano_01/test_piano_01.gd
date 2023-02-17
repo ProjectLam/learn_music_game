@@ -10,6 +10,7 @@ const MOVEMENT_DISTANCE_THRESHOLD: float = 1.0
 
 
 func _ready():
+	super._ready()
 	GBackend.ui_node.visible = false
 #	if not SongsConfigPreloader.is_song_preload_completed:
 #		set_process(false)

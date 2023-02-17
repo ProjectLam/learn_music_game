@@ -9,6 +9,7 @@ var pitch_accuracy: float = 0.1
 
 
 func _ready():
+	super._ready()
 	spectrum_analyzer = AudioServer.get_bus_effect_instance(
 		AudioServer.get_bus_index("Input"),
 		1
@@ -16,6 +17,7 @@ func _ready():
 
 
 func _process(delta):
+	super._process(delta)
 	var min_frequency: float
 	var max_frequency: float
 	var volume: float

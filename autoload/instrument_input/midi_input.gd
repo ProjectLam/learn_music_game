@@ -7,6 +7,7 @@ var notes: PackedByteArray
 
 
 func _ready():
+	super._ready()
 	OS.open_midi_inputs()
 	
 	notes.resize(NoteFrequency.CHROMATIC.size())

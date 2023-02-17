@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scenes/song_selection/song_selection.gd" id="1_w4sd3"]
 [ext_resource type="Texture2D" uid="uid://c4e8lna5vxx00" path="res://assets/gui/song_selection/songs-bg.png" id="2_wl6ga"]
 [ext_resource type="Shader" path="res://shaders/LightingBackground.gdshader" id="3_ry738"]
-[ext_resource type="PackedScene" uid="uid://drhti1f6dfqep" path="res://scenes/left_bar/left_bar.tscn" id="4_bgttp"]
+[ext_resource type="PackedScene" uid="uid://bpsr6id66vxk2" path="res://scenes/left_bar/left_bar.tscn" id="4_bgttp"]
 [ext_resource type="Texture2D" uid="uid://d1xyolkxthdp1" path="res://assets/gui/icons/down.png" id="5_cr51n"]
 [ext_resource type="Texture2D" uid="uid://1uht5wqqvkkv" path="res://assets/gui/icons/up.png" id="6_xy0pm"]
 [ext_resource type="Texture2D" uid="uid://dncor6oxblufk" path="res://assets/gui/song_selection/song-cover-frame.png" id="7_gdab5"]
@@ -76,6 +76,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+focus_mode = 2
 script = ExtResource("1_w4sd3")
 
 [node name="Background" type="Control" parent="."]

@@ -13,6 +13,7 @@ var duration: float: set = set_duration
 
 
 func _process(delta):
+#	super.
 	translate(Vector3.BACK * speed * delta)
 
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bvqgs74gtjvsj"]
+[gd_scene load_steps=15 format=3 uid="uid://bvqgs74gtjvsj"]
 
 [ext_resource type="Texture2D" uid="uid://4jhy1ls4ta6u" path="res://assets/gui/blur.jpg" id="1_ptohn"]
 [ext_resource type="Script" path="res://scenes/instrument_menu/instrument_menu_action.gd" id="1_w063x"]
@@ -35,6 +35,26 @@ corner_radius_bottom_left = 1024
 shadow_color = Color(1, 0.262745, 0.784314, 0.14902)
 shadow_size = 27
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pg5ld"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_j6egy"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_637n0"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qkujt"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7m2s7"]
+bg_color = Color(1, 1, 1, 0.196078)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 0.823529, 0.964706, 0.2)
+corner_radius_top_left = 1024
+corner_radius_top_right = 1024
+corner_radius_bottom_right = 1024
+corner_radius_bottom_left = 1024
+
 [node name="InstrumentMenuAction" type="PanelContainer"]
 custom_minimum_size = Vector2(0, 80)
 theme_override_styles/panel = SubResource("StyleBoxFlat_qdthk")
@@ -42,69 +62,47 @@ script = ExtResource("1_w063x")
 
 [node name="Background" type="TextureRect" parent="."]
 self_modulate = Color(1, 1, 1, 0.0862745)
-offset_left = 1.0
-offset_top = 1.0
-offset_right = 343.0
-offset_bottom = 79.0
+layout_mode = 2
 texture = ExtResource("1_ptohn")
-ignore_texture_size = true
+expand_mode = 1
 stretch_mode = 6
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
-offset_left = 1.0
-offset_top = 1.0
-offset_right = 343.0
-offset_bottom = 79.0
+layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer"]
-offset_right = 342.0
-offset_bottom = 78.0
+layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="Spacer" type="Control" parent="HBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(15, 0)
-layout_mode = 3
-anchors_preset = 0
-offset_right = 15.0
-offset_bottom = 78.0
+layout_mode = 2
 
 [node name="Icon" type="TextureRect" parent="HBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(34, 0)
-offset_left = 19.0
-offset_right = 53.0
-offset_bottom = 78.0
+layout_mode = 2
 texture = ExtResource("2_2snoy")
-ignore_texture_size = true
+expand_mode = 1
 stretch_mode = 5
 
 [node name="Spacer2" type="Control" parent="HBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(10, 0)
-layout_mode = 3
-anchors_preset = 0
-offset_left = 57.0
-offset_right = 67.0
-offset_bottom = 78.0
+layout_mode = 2
 
 [node name="Label" type="Label" parent="HBoxContainer/HBoxContainer"]
-offset_left = 71.0
-offset_top = 23.0
-offset_right = 264.0
-offset_bottom = 54.0
+layout_mode = 2
 size_flags_horizontal = 3
 text = "LEARN A SONG"
 label_settings = SubResource("LabelSettings_hh1sg")
 vertical_alignment = 1
 
 [node name="Right" type="CenterContainer" parent="HBoxContainer/HBoxContainer"]
-offset_left = 268.0
-offset_right = 333.0
-offset_bottom = 78.0
+layout_mode = 2
 
 [node name="SelectBtn" type="Button" parent="HBoxContainer/HBoxContainer/Right"]
 custom_minimum_size = Vector2(65, 65)
-offset_top = 6.0
-offset_right = 65.0
-offset_bottom = 71.0
+layout_mode = 2
+focus_mode = 0
 theme_override_fonts/font = ExtResource("4_xujib")
 theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = SubResource("StyleBoxFlat_yje14")
@@ -117,17 +115,16 @@ icon_alignment = 1
 
 [node name="Spacer3" type="Control" parent="HBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(5, 0)
-layout_mode = 3
-anchors_preset = 0
-offset_left = 337.0
-offset_right = 342.0
-offset_bottom = 78.0
+layout_mode = 2
 
-[node name="BtnOverlay" type="Button" parent="."]
-offset_left = 1.0
-offset_top = 1.0
-offset_right = 343.0
-offset_bottom = 79.0
-flat = true
+[node name="ButtonOverlay" type="Button" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_pg5ld")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_j6egy")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_637n0")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_qkujt")
+theme_override_styles/focus = SubResource("StyleBoxFlat_7m2s7")
 
-[connection signal="pressed" from="BtnOverlay" to="." method="_on_OverlayBtn_pressed"]
+[connection signal="mouse_entered" from="ButtonOverlay" to="." method="_on_button_overlay_mouse_entered"]
+[connection signal="pressed" from="ButtonOverlay" to="." method="_on_button_overlay_pressed"]

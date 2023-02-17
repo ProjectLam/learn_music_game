@@ -30,14 +30,13 @@ InstrumentInput="*res://autoload/instrument_input/instrument_input.tscn"
 Debug="*res://autoload/debug/debug.tscn"
 SessionVariables="*res://autoload/session_variables.gd"
 Nakama="*res://addons/com.heroiclabs.nakama/Nakama.gd"
-GLoginDialog="*res://scenes/login_dialog/login_dialog.tscn"
-GRegisterDialog="*res://scenes/register_dialog/register_dialog.tscn"
-GDialogs="*res://scenes/dialogs/dialogs.tscn"
+Dialogs="*res://scenes/dialogs/dialogs.tscn"
 GGoogleAuth="*res://scenes/google_auth/google_auth.tscn"
-GBackend="*res://scenes/backend/backend.tscn"
+GBackend="*res://scenes/GBackend/GBackend.tscn"
 GAudioServerManager="*res://autoload/audio_server_manager.gd"
 InstrumentDetails="*res://autoload/instrument_details.gd"
 SongsConfigPreloader="*res://autoload/songs_config_preloader.tscn"
+FocusManager="*res://autoload/focus_manager.gd"
 
 [debug]
 

@@ -43,14 +43,19 @@ func _on_peer_connected(peer_id : int):
 	SessionVariables.single_player = false
 	get_tree().change_scene_to_file("res://scenes/performance.tscn")
 	SessionVariables.sync_remote()
-	
 
-func _on_BackBtn_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/instrument_menu/instrument_menu.tscn")
 
 func _on_CancelBtn_pressed() -> void:
 	await GBackend.leave_async()
-	get_tree().change_scene_to_file("res://scenes/instrument_menu/instrument_menu.tscn")
+	go_back()
 
 func _on_received_match_state(p_state):
 	print("Received match state: ", p_state)
+
+
+func go_back():
+	get_tree().change_scene_to_file("res://scenes/instrument_menu/instrument_menu.tscn")
+
+func _on_back_button_pressed():
+	await GBackend.leave_async()
+	go_back()

@@ -3,7 +3,8 @@
 [ext_resource type="Script" path="res://scenes/matchmaking/matchmaking.gd" id="1_62mgw"]
 [ext_resource type="Texture2D" uid="uid://dxcxogdwflpig" path="res://assets/gui/main/background.png" id="2_i2m6c"]
 [ext_resource type="Shader" path="res://shaders/LightingBackground.gdshader" id="3_11mtd"]
-[ext_resource type="PackedScene" uid="uid://drhti1f6dfqep" path="res://scenes/left_bar/left_bar.tscn" id="4_cayno"]
+[ext_resource type="PackedScene" uid="uid://bh1htbm1t4nlb" path="res://scenes/ui_elements/light_layer/light_layer.tscn" id="3_esan8"]
+[ext_resource type="PackedScene" uid="uid://bpsr6id66vxk2" path="res://scenes/left_bar/left_bar.tscn" id="4_cayno"]
 [ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="5_pdkhr"]
 [ext_resource type="Texture2D" uid="uid://bcyql8pbvs5yj" path="res://assets/gui/icons/song.png" id="6_tlsap"]
 [ext_resource type="PackedScene" uid="uid://bvqgs74gtjvsj" path="res://scenes/instrument_menu/instrument_menu_action.tscn" id="8_mij85"]
@@ -13,7 +14,8 @@
 [ext_resource type="PackedScene" uid="uid://b2ew1c3swawaj" path="res://scenes/instrument_selection/instrument_selection_item.tscn" id="12_dm5k6"]
 [ext_resource type="PackedScene" uid="uid://r5oy8h4p8suy" path="res://scenes/song_selection/song_selection.tscn" id="13_tr8mu"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_y6ivb"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_v02vh"]
+resource_local_to_scene = true
 shader = ExtResource("3_11mtd")
 shader_parameter/indicate = true
 shader_parameter/size = null
@@ -21,9 +23,6 @@ shader_parameter/lighting_point = Vector2(0.5, 0.5)
 shader_parameter/indicating_power = 1.0
 shader_parameter/radius_base = 0.5
 shader_parameter/static_power = 0.4
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_utcdj"]
-bg_color = Color(0.0862745, 0.0313726, 0.176471, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qsdl1"]
 bg_color = Color(0.282353, 0.192157, 0.454902, 0.933333)
@@ -113,7 +112,7 @@ pivot_offset = Vector2(-149, 500)
 script = ExtResource("1_62mgw")
 
 [node name="Background" type="Control" parent="."]
-layout_mode = 3
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -121,7 +120,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="TextureRect" type="TextureRect" parent="Background"]
-anchors_preset = 15
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -129,19 +128,18 @@ grow_vertical = 2
 texture = ExtResource("2_i2m6c")
 stretch_mode = 6
 
-[node name="Layer" type="Panel" parent="Background"]
-material = SubResource("ShaderMaterial_y6ivb")
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_utcdj")
+[node name="LightLayer" parent="Background" instance=ExtResource("3_esan8")]
+material = SubResource("ShaderMaterial_v02vh")
+layout_mode = 1
 
 [node name="LeftBar" parent="." instance=ExtResource("4_cayno")]
+layout_mode = 1
+offset_top = -403.0
+offset_right = 152.0
+offset_bottom = 403.0
 
 [node name="Right" type="Control" parent="."]
-layout_mode = 3
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -150,13 +148,13 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Left" type="Control" parent="Right"]
-layout_mode = 3
+layout_mode = 1
 anchor_right = 0.4
 anchor_bottom = 1.0
 grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Right/Left"]
-anchors_preset = 15
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -164,10 +162,10 @@ grow_vertical = 2
 
 [node name="Spacer" type="Control" parent="Right/Left/VBoxContainer"]
 custom_minimum_size = Vector2(0, 50)
-layout_mode = 3
-anchors_preset = 0
+layout_mode = 2
 
-[node name="BackBtn" type="Button" parent="Right/Left/VBoxContainer"]
+[node name="BackButton" type="Button" parent="Right/Left/VBoxContainer"]
+layout_mode = 2
 theme_override_colors/font_color = Color(0.980392, 0, 1, 1)
 theme_override_font_sizes/font_size = 18
 text = "< Back"
@@ -176,13 +174,14 @@ alignment = 0
 
 [node name="Spacer2" type="Control" parent="Right/Left/VBoxContainer"]
 custom_minimum_size = Vector2(0, 50)
-layout_mode = 3
-anchors_preset = 0
+layout_mode = 2
 
 [node name="Actions" type="VBoxContainer" parent="Right/Left/VBoxContainer"]
+layout_mode = 2
 theme_override_constants/separation = 15
 
 [node name="Create" parent="Right/Left/VBoxContainer/Actions" instance=ExtResource("8_mij85")]
+layout_mode = 2
 metadata/_edit_group_ = true
 
 [node name="Icon" parent="Right/Left/VBoxContainer/Actions/Create/HBoxContainer/HBoxContainer" index="1"]
@@ -191,42 +190,44 @@ texture = ExtResource("6_tlsap")
 [node name="Label" parent="Right/Left/VBoxContainer/Actions/Create/HBoxContainer/HBoxContainer" index="3"]
 text = "CREATE NEW MATCH"
 
-[node name="BtnOverlay" parent="Right/Left/VBoxContainer/Actions/Create" index="2"]
-metadata/_edit_lock_ = true
-
 [node name="Spacer3" type="Control" parent="Right/Left/VBoxContainer"]
 custom_minimum_size = Vector2(0, 50)
-layout_mode = 3
-anchors_preset = 0
+layout_mode = 2
 
 [node name="WaitingOpponent" type="PanelContainer" parent="Right/Left/VBoxContainer"]
 unique_name_in_owner = true
 visible = false
+layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_qsdl1")
 
 [node name="Background" type="TextureRect" parent="Right/Left/VBoxContainer/WaitingOpponent"]
 self_modulate = Color(1, 1, 1, 0.156863)
+layout_mode = 2
 texture = ExtResource("9_bqm6e")
-ignore_texture_size = true
+expand_mode = 1
 stretch_mode = 6
 
 [node name="CenterContainer" type="CenterContainer" parent="Right/Left/VBoxContainer/WaitingOpponent"]
+layout_mode = 2
 
 [node name="Text" type="VBoxContainer" parent="Right/Left/VBoxContainer/WaitingOpponent/CenterContainer"]
+layout_mode = 2
 
 [node name="Label" type="Label" parent="Right/Left/VBoxContainer/WaitingOpponent/CenterContainer/Text"]
+layout_mode = 2
 text = "Waiting for opponent"
 label_settings = SubResource("LabelSettings_dgac7")
 script = SubResource("GDScript_40e5y")
 
 [node name="Spacer" type="Control" parent="Right/Left/VBoxContainer/WaitingOpponent/CenterContainer/Text"]
 custom_minimum_size = Vector2(0, 25)
-layout_mode = 3
-anchors_preset = 0
+layout_mode = 2
 
 [node name="CancelBtn" type="Button" parent="Right/Left/VBoxContainer/WaitingOpponent/CenterContainer/Text"]
+layout_mode = 2
 size_flags_horizontal = 4
+focus_mode = 0
 theme_override_fonts/font = ExtResource("10_1qgjq")
 theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = SubResource("StyleBoxFlat_byefl")
@@ -244,15 +245,15 @@ libraries = {
 
 [node name="Matches" parent="Right/Left/VBoxContainer" instance=ExtResource("10_o03mo")]
 unique_name_in_owner = true
+layout_mode = 2
 size_flags_vertical = 3
 
 [node name="Spacer4" type="Control" parent="Right/Left/VBoxContainer"]
 custom_minimum_size = Vector2(0, 50)
-layout_mode = 3
-anchors_preset = 0
+layout_mode = 2
 
 [node name="Right" type="Control" parent="Right"]
-layout_mode = 3
+layout_mode = 1
 anchor_left = 0.4
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -261,6 +262,7 @@ grow_vertical = 2
 
 [node name="InstrumentBox" parent="Right/Right" instance=ExtResource("12_dm5k6")]
 unique_name_in_owner = true
+layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -274,12 +276,12 @@ offset_bottom = 254.5
 [node name="SongSelection" parent="." instance=ExtResource("13_tr8mu")]
 unique_name_in_owner = true
 visible = false
+layout_mode = 1
 selection_mode = 1
 
 [connection signal="script_changed" from="." to="." method="_on_script_changed"]
-[connection signal="pressed" from="Right/Left/VBoxContainer/BackBtn" to="." method="_on_BackBtn_pressed"]
+[connection signal="pressed" from="Right/Left/VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="selected" from="Right/Left/VBoxContainer/Actions/Create" to="." method="_on_Create_selected"]
 [connection signal="pressed" from="Right/Left/VBoxContainer/WaitingOpponent/CenterContainer/Text/CancelBtn" to="." method="_on_CancelBtn_pressed"]
 
-[editable path="LeftBar"]
 [editable path="Right/Left/VBoxContainer/Actions/Create"]

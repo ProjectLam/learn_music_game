@@ -7,6 +7,8 @@ extends Node3D
 @onready var song_loader = %SongLoader
 @export var should_print_song_loading_debugs: bool = false
 @onready var vfx = %VFX
+@onready var chat_box = %ChatBox
+@onready var chat_text = %RichTextLabel
 
 var test_song_path := "res://Arlow - How Do You Know [NCS Release].mp3"
 
@@ -34,7 +36,7 @@ func _ready():
 		assert(multiplayer.has_multiplayer_peer())
 		var cstate = multiplayer.multiplayer_peer.get_connection_status()
 		if cstate == MultiplayerPeer.CONNECTION_CONNECTED:
-			ingame_users["%s" % multiplayer.get_unique_id()] = self_user
+			ingame_users[get_user_id(multiplayer.get_unique_id())] = self_user
 			reload_network_users()
 	
 	SessionVariables.song_changed.connect(_on_song_changed)
@@ -230,7 +232,7 @@ func get_all_network_users() -> PackedStringArray:
 	var ret: PackedStringArray
 	ret.resize(users.size())
 	for index in users.size():
-		ret[index] = "%s" % users[index]
+		ret[index] = get_user_id(users[index])
 	return ret
 
 
@@ -262,17 +264,19 @@ func _on_users_ready_changed() -> void:
 		try_pause_game()
 
 
-func _on_user_connected(id: int):
+func _on_user_connected(peer_id: int):
 	reload_network_users()
 	if is_multiplayer_authority():
 		var udata := {}
 		for iuser in ingame_users:
 			udata[iuser] = iuser.get_data()
 		rpc("_set_all_user_data", udata)
+	add_chat_notification("%s connected." % get_user_id(peer_id))
 
 
-func _on_user_disconnected(id: int):
+func _on_user_disconnected(peer_id: int):
 	reload_network_users()
+	add_chat_notification("%s disconnected" % get_user_id(peer_id))
 
 
 func _on_server_disconnected() -> void:
@@ -281,7 +285,7 @@ func _on_server_disconnected() -> void:
 
 
 func _on_connected_to_server() -> void:
-	ingame_users["%s" % multiplayer.get_unique_id()] = self_user
+	ingame_users[get_user_id(multiplayer.get_unique_id())] = self_user
 	reload_network_users()
 
 
@@ -299,7 +303,7 @@ func broadcast_all_user_data() -> void:
 		assert(multiplayer.has_multiplayer_peer())
 		await GBackend.await_connection()
 		if multiplayer.multiplayer_peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED:
-			print_debug("broadcasting all user data")
+			print("Broadcasting all user data")
 			var udata := {}
 			for iuser in ingame_users:
 				udata[iuser] = iuser.get_data()
@@ -316,7 +320,7 @@ func broadcast_all_user_data() -> void:
 		var iuser: IngameUser
 		if ingame_users.has(key):
 			iuser = ingame_users[key]
-		elif key == ("%s" % multiplayer.get_unique_id()):
+		elif key == get_user_id(multiplayer.get_unique_id()):
 			ingame_users[key] = self_user
 			iuser = self_user
 		else:
@@ -333,7 +337,7 @@ func broadcast_all_user_data() -> void:
 @rpc("any_peer", "call_remote", "reliable") func _set_user_data(data) -> void:
 	print("received remote _set_user_data call with [id = %d, data = %s]" % 
 			[multiplayer.get_remote_sender_id(), data])
-	var uid :String = "%d" % multiplayer.get_remote_sender_id()
+	var uid :String = get_user_id(multiplayer.get_remote_sender_id())
 	if not (data is Dictionary):
 		push_error("invalid user data for uid [%s]" % uid)
 		return
@@ -358,4 +362,13 @@ func try_sync_user_data() -> void:
 func _on_good_note_started(note_index: int, time_error: float) -> void:
 	self_user._on_good_note(note_index, time_error)
 	try_sync_user_data()
-	
+
+
+# temporary unique user id generator. will be replaced with a user id system.
+func get_user_id(peer_id: int) -> String:
+	return "user_%s" % peer_id
+
+
+func add_chat_notification(message: String) -> void:
+	chat_text.text += "\n%s" % message
+	chat_box.refresh()

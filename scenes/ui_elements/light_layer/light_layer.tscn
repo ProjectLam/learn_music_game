@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://bh1htbm1t4nlb"]
+
+[ext_resource type="Shader" path="res://shaders/LightingBackground.gdshader" id="1_xvach"]
+[ext_resource type="Script" path="res://scenes/ui_elements/light_layer/light_layer.gd" id="2_v7qfi"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_y6ivb"]
+resource_local_to_scene = true
+shader = ExtResource("1_xvach")
+shader_parameter/indicate = true
+shader_parameter/size = null
+shader_parameter/lighting_point = Vector2(0.5, 0.5)
+shader_parameter/indicating_power = 1.0
+shader_parameter/radius_base = 0.5
+shader_parameter/static_power = 0.4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_utcdj"]
+bg_color = Color(0.0862745, 0.0313726, 0.176471, 1)
+
+[node name="LightLayer" type="Panel"]
+material = SubResource("ShaderMaterial_y6ivb")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_utcdj")
+script = ExtResource("2_v7qfi")

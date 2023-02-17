@@ -1,0 +1,50 @@
+[gd_scene load_steps=10 format=3 uid="uid://dh113rx5texfk"]
+
+[ext_resource type="Texture2D" uid="uid://drypojyiolrwq" path="res://assets/gui/icons/settings.png" id="1_31puw"]
+
+[sub_resource type="Gradient" id="Gradient_2n85i"]
+offsets = PackedFloat32Array(0.135371, 0.716157, 0.90393, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 0.207843, 1, 1, 1, 0.407843, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_bjg1b"]
+gradient = SubResource("Gradient_2n85i")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qxvm1"]
+texture = SubResource("GradientTexture2D_bjg1b")
+modulate_color = Color(1, 1, 1, 0.270588)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0jl17"]
+texture = SubResource("GradientTexture2D_bjg1b")
+modulate_color = Color(1, 1, 1, 0.643137)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_x0u68"]
+texture = SubResource("GradientTexture2D_bjg1b")
+modulate_color = Color(1, 1, 1, 0.0901961)
+
+[sub_resource type="Gradient" id="Gradient_6d00m"]
+offsets = PackedFloat32Array(0, 0.7, 1)
+colors = PackedColorArray(0.466667, 0.466667, 0.466667, 0.705882, 0.486275, 0.486275, 0.486275, 0.54902, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_hmed2"]
+gradient = SubResource("Gradient_6d00m")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6ar66"]
+texture = SubResource("GradientTexture2D_hmed2")
+
+[node name="CircleButton" type="Button"]
+custom_minimum_size = Vector2(50, 50)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxTexture_qxvm1")
+theme_override_styles/hover = SubResource("StyleBoxTexture_0jl17")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_x0u68")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_6ar66")
+icon = ExtResource("1_31puw")
+icon_alignment = 1

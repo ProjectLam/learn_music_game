@@ -1,10 +1,72 @@
-[gd_scene load_steps=2 format=3 uid="uid://cjxj065i82tnw"]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://scenes/dialogs/dialogs.gd" id="1_7treo"]
+[ext_resource type="Script" path="res://scenes/dialogs/ui.gd" id="2_eek1d"]
+[ext_resource type="PackedScene" uid="uid://ceba6hp7fvk5" path="res://scenes/dialogs/popup_dialog/popup_dialog.tscn" id="2_vltmc"]
+[ext_resource type="PackedScene" uid="uid://0x4fl5frrefp" path="res://scenes/dialogs/login_dialog/login_dialog.tscn" id="3_x803p"]
+[ext_resource type="PackedScene" uid="uid://vaqwcb5e3huk" path="res://scenes/dialogs/register_dialog/register_dialog.tscn" id="4_bthgc"]
 
 [node name="Dialogs" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1_7treo")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UI" type="Control" parent="CanvasLayer"]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("2_eek1d")
+metadata/_edit_use_anchors_ = true
+
+[node name="FileOfflineDialog" parent="CanvasLayer/UI" instance=ExtResource("2_vltmc")]
+unique_name_in_owner = true
+layout_mode = 1
+options = ["Yes", "No"]
+title = "Failed to download file"
+message = "Switch to offline mode?"
+
+[node name="ConnectionFailedDialog" parent="CanvasLayer/UI" instance=ExtResource("2_vltmc")]
+unique_name_in_owner = true
+layout_mode = 1
+options = ["Ok"]
+title = "Connection Failed"
+message = "Connection failed to server!"
+focus_close = true
+
+[node name="LoginFailedDialog" parent="CanvasLayer/UI" instance=ExtResource("2_vltmc")]
+unique_name_in_owner = true
+layout_mode = 1
+options = ["Ok"]
+title = "Login Failed"
+message = "Your email or password were wrong!"
+focus_close = true
+
+[node name="LoginDialog" parent="CanvasLayer/UI" instance=ExtResource("3_x803p")]
+unique_name_in_owner = true
+layout_mode = 1
+
+[node name="RegisterDialog" parent="CanvasLayer/UI" instance=ExtResource("4_bthgc")]
+unique_name_in_owner = true
+layout_mode = 1
+offset_left = -300.0
+offset_top = -440.0
+offset_right = 300.0
+offset_bottom = 440.0
+
+[connection signal="option_selected" from="CanvasLayer/UI/FileOfflineDialog" to="." method="_on_file_offline_dialog_option_selected"]
+[connection signal="option_selected" from="CanvasLayer/UI/ConnectionFailedDialog" to="." method="_on_connection_failed_dialog_option_selected"]
+[connection signal="option_selected" from="CanvasLayer/UI/LoginFailedDialog" to="." method="_on_login_failed_dialog_option_selected"]
+[connection signal="option_selected" from="CanvasLayer/UI/LoginDialog" to="." method="_on_login_dialog_option_selected"]
+[connection signal="option_selected" from="CanvasLayer/UI/RegisterDialog" to="." method="_on_register_dialog_option_selected"]

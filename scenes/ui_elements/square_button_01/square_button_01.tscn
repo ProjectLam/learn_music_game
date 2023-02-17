@@ -1,0 +1,42 @@
+[gd_scene load_steps=6 format=3 uid="uid://cwr5sfnmp7808"]
+
+[ext_resource type="Texture2D" uid="uid://d31d65aktssi6" path="res://assets/gui/icons/close.png" id="1_3k28b"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dbr32"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ledmk"]
+bg_color = Color(1, 1, 1, 0)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(1, 1, 1, 0.301961)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xd21k"]
+bg_color = Color(0.470588, 0.470588, 0.470588, 0)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0, 0, 0.67451, 0.643137)
+border_blend = true
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_c06mu"]
+
+[node name="SquareButton" type="Button"]
+offset_right = 40.0
+offset_bottom = 40.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_dbr32")
+theme_override_styles/hover = SubResource("StyleBoxFlat_ledmk")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_xd21k")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_c06mu")
+icon = ExtResource("1_3k28b")
+icon_alignment = 1
