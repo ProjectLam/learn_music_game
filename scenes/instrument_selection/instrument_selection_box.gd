@@ -122,6 +122,8 @@ func get_slot_scale(slot_index: int) -> Vector2:
 			return Vector2(1.0, 1.0)
 		_:
 			return Vector2(unselected_scale, unselected_scale)
+	# workaround for parse error.
+	return Vector2(unselected_scale, unselected_scale)
 
 
 func go_left() -> void:
