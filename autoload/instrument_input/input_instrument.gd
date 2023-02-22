@@ -11,6 +11,13 @@ signal deactivated()
 
 var is_active: bool = false
 
+func _ready():
+	pass
+
+
+func _process(delta):
+	pass
+
 
 # Abstract
 func get_inputs()->Array:

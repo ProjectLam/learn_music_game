@@ -1,7 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://bbmnra138m0bb"]
+[gd_scene load_steps=3 format=3]
 
-[ext_resource type="Script" path="res://scenes/backend/backend.gd" id="1_hbsao"]
-[ext_resource type="Script" path="res://scenes/backend/status.gd" id="2_rmt0l"]
+[ext_resource type="Script" path="res://scenes/GBackend/GBackend.gd" id="1_hbsao"]
+[ext_resource type="Script" path="res://scenes/GBackend/status.gd" id="2_rmt0l"]
 
 [node name="Backend" type="Control"]
 layout_mode = 3

@@ -14,6 +14,7 @@ func set_duration(value):
 
 
 func _ready():
+	super._ready()
 	pass
 #	$MeshInstance3D.material_override = $MeshInstance3D.material_override.duplicate()
 #	$DurationTail/MeshInstance3D.material_override = $DurationTail/MeshInstance3D.material_override.duplicate()

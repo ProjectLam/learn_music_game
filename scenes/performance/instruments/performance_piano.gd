@@ -10,6 +10,7 @@ const MOVEMENT_DISTANCE_THRESHOLD: float = 1.0
 
 
 func _ready():
+	super._ready()
 	var keyboard_instrument = InstrumentInput.get_instrument(InstrumentInput.get_instrument_index("ComputerKeyboardInput"))
 	keyboard_instrument.octave_changed.connect(on_keyboard_octave_changed)
 	keyboard_instrument.activated.connect(on_keyboard_activated)
@@ -51,6 +52,7 @@ func update_position():
 
 
 func _process(delta):
+	super._process(delta)
 	if target_position.distance_to(position) >= MOVEMENT_DISTANCE_THRESHOLD:
 		var direction = (target_position - position).normalized()
 		translate(direction * move_speed * delta)

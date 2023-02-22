@@ -10,12 +10,12 @@ const ISELECT_ITEM = preload("res://scenes/instrument_selection/instrument_selec
 
 var default_animation_duration := 0.18
 
-var nLeft
-var nMiddle
-var nRight
+var left_node
+var middle_node
+var right_node
 
-var nIncoming: InstrumentSelectionItem
-var nDisappearing: InstrumentSelectionItem
+var incoming_node: InstrumentSelectionItem
+var disappearing_node: InstrumentSelectionItem
 
 var current_index = 1
 
@@ -55,9 +55,9 @@ func _ready():
 	
 	var lindex := posmod(current_index - 1, item_nodes.size())
 	var rindex := posmod(current_index + 1, item_nodes.size())
-	nLeft = item_nodes[lindex]
-	nMiddle = item_nodes[current_index]
-	nRight = item_nodes[rindex]
+	left_node = item_nodes[lindex]
+	middle_node = item_nodes[current_index]
+	right_node = item_nodes[rindex]
 	
 	for index in item_nodes.size():
 		if(index == lindex or index == current_index or index == rindex):
@@ -68,7 +68,6 @@ func _ready():
 	is_ready = true
 	
 	_process_items()
-	
 
 
 func _process(delta):
@@ -85,45 +84,57 @@ func _process_items():
 	
 	var square_size = (items_container.size.x / 3) - (item_margin * 2)
 	
-	nLeft.size.x = square_size
-	nMiddle.size.x = square_size
-	nRight.size.x = square_size
+	left_node.size.x = square_size
+	middle_node.size.x = square_size
+	right_node.size.x = square_size
 	
-	nLeft.size.y = square_size
-	nMiddle.size.y = square_size
-	nRight.size.y = square_size
+	left_node.size.y = square_size
+	middle_node.size.y = square_size
+	right_node.size.y = square_size
 	
 	var pos0 = 0
-	var pos1 = pos0 + nLeft.size.x + item_margin
-	var pos2 = pos1 + nMiddle.size.x + item_margin
+	var pos1 = pos0 + left_node.size.x + item_margin
+	var pos2 = pos1 + middle_node.size.x + item_margin
 	
-	nLeft.position.x = pos0
-	nMiddle.position.x = pos1
-	nRight.position.x = pos2
+	left_node.position.x = pos0
+	middle_node.position.x = pos1
+	right_node.position.x = pos2
 	
-	var y = items_container.size.y / 2 - nLeft.size.y / 2
+	var y = items_container.size.y / 2 - left_node.size.y / 2
 	
-	nLeft.position.y = y
-	nMiddle.position.y = y
-	nRight.position.y = y
+	left_node.position.y = y
+	middle_node.position.y = y
+	right_node.position.y = y
 	
-	nLeft.scale = Vector2(unselected_scale, unselected_scale)
-	nRight.scale = Vector2(unselected_scale, unselected_scale)
+	left_node.scale = get_slot_scale(0)
+	right_node.scale = get_slot_scale(2)
 
 
-func get_slot_x(slot_index : int) -> int:
+func get_slot_x(slot_index: int) -> int:
 	var item_margin := 0
 	var square_size: int = (items_container.size.x / 3) - (item_margin * 2)
 	return (square_size + item_margin)*slot_index
 
 
-func go_left():
+func get_slot_scale(slot_index: int) -> Vector2:
+	match slot_index:
+		1:
+			return Vector2(1.0, 1.0)
+		_:
+			return Vector2(unselected_scale, unselected_scale)
+	# workaround for parse error.
+	return Vector2(unselected_scale, unselected_scale)
+
+
+func go_left() -> void:
 	var anim_duration := default_animation_duration
 	if playing_tween.is_running():
 		match(playing_dir):
 			-1:
 				while(true):
 					await get_tree().process_frame
+					if not is_inside_tree():
+						return
 					if not playing_tween.is_running():
 						break
 				if playing_dir != -1:
@@ -143,53 +154,57 @@ func go_left():
 	current_index = posmod(current_index + 1, items.size())
 	var incoming_index :int = posmod(current_index + 1, items.size())
 	
-	nIncoming = items[incoming_index]
-	nDisappearing = nLeft
+	incoming_node = items[incoming_index]
+	disappearing_node = left_node
 	
-	nIncoming.size = nRight.size
-	nIncoming.position.y = nRight.position.y
-	nIncoming.position.x = nRight.position.x + nRight.size.x
-	nIncoming.scale = nRight.scale
-	nIncoming.visible = true
+	incoming_node.size = right_node.size
+	incoming_node.position.y = right_node.position.y
+	incoming_node.position.x = right_node.position.x + right_node.size.x
+	incoming_node.scale = right_node.scale
+	incoming_node.visible = true
 	
-	var nLeft_pos = nLeft.position
-	var nLeft_scale = nLeft.scale
+	var left_node_pos = left_node.position
+	var left_node_scale = left_node.scale
 	
-	var nMiddle_pos = nMiddle.position
-	var nMiddle_scale = nMiddle.scale
+	var middle_node_pos = middle_node.position
+	var middle_node_scale = middle_node.scale
 	
 	var tween = get_tree().create_tween()
 	tween.set_parallel(true)
-	tween.tween_property(nLeft, "position:x", get_slot_x(-1), anim_duration)
-	tween.tween_property(nMiddle, "position:x", get_slot_x(0), anim_duration)
-	tween.tween_property(nMiddle, "scale", nLeft_scale, anim_duration)
-	tween.tween_property(nRight, "position:x", get_slot_x(1), anim_duration)
-	tween.tween_property(nRight, "scale", nMiddle_scale, anim_duration)
-	tween.tween_property(nIncoming, "position:x", get_slot_x(2), anim_duration)
+	tween.tween_property(left_node, "position:x", get_slot_x(-1), anim_duration)
+	tween.tween_property(left_node, "scale", get_slot_scale(-1), anim_duration)
+	tween.tween_property(middle_node, "position:x", get_slot_x(0), anim_duration)
+	tween.tween_property(middle_node, "scale", get_slot_scale(0), anim_duration)
+	tween.tween_property(right_node, "position:x", get_slot_x(1), anim_duration)
+	tween.tween_property(right_node, "scale", get_slot_scale(1), anim_duration)
+	tween.tween_property(incoming_node, "position:x", get_slot_x(2), anim_duration)
+	tween.tween_property(incoming_node, "scale", get_slot_scale(2), anim_duration)
 	
 	playing_tween = tween
 	
-	nLeft = nMiddle
-	nMiddle = nRight
-	nRight = nIncoming
+	left_node = middle_node
+	middle_node = right_node
+	right_node = incoming_node
 	
-	var nDisappearing_curr = nDisappearing
+	var disappearing_node_curr = disappearing_node
 	
 	tween.connect("finished", func ():
-		nDisappearing_curr.visible = false
+		disappearing_node_curr.visible = false
 	)
 	
 	if(auto_select):
 		select_current()
 
 
-func go_right():
+func go_right() -> void:
 	var anim_duration := default_animation_duration
 	if playing_tween.is_running():
 		match(playing_dir):
 			1:
 				while(true):
 					await get_tree().process_frame
+					if not is_inside_tree():
+						return
 					if not playing_tween.is_running():
 						break
 				if playing_dir != 1:
@@ -209,40 +224,42 @@ func go_right():
 	current_index = posmod(current_index - 1 + items.size(), items.size())
 	var disappearing_index: int = posmod(current_index - 1 + items.size(), items.size())
 	
-	nDisappearing = nRight
-	nIncoming = items[disappearing_index]
+	disappearing_node = right_node
+	incoming_node = items[disappearing_index]
 	
-	nIncoming.size = nLeft.size
-	nIncoming.position.y = nLeft.position.y
-	nIncoming.position.x = nLeft.position.x - nRight.size.x
-	nIncoming.scale = nLeft.scale
-	nIncoming.visible = true
+	incoming_node.size = left_node.size
+	incoming_node.position.y = left_node.position.y
+	incoming_node.position.x = left_node.position.x - right_node.size.x
+	incoming_node.scale = left_node.scale
+	incoming_node.visible = true
 	
-	var nRight_pos = nRight.position
-	var nRight_scale = nRight.scale
+	var right_node_pos = right_node.position
+	var right_node_scale = right_node.scale
 	
-	var nMiddle_pos = nMiddle.position
-	var nMiddle_scale = nMiddle.scale
+	var middle_node_pos = middle_node.position
+	var middle_node_scale = middle_node.scale
 	
 	var tween = get_tree().create_tween()
 	tween.set_parallel(true)
-	tween.tween_property(nRight, "position:x", get_slot_x(3), anim_duration)
-	tween.tween_property(nMiddle, "position:x", get_slot_x(2), anim_duration)
-	tween.tween_property(nMiddle, "scale", nRight_scale, anim_duration)
-	tween.tween_property(nLeft, "position:x", get_slot_x(1), anim_duration)
-	tween.tween_property(nLeft, "scale", nMiddle_scale, anim_duration)
-	tween.tween_property(nIncoming, "position:x", get_slot_x(0), anim_duration)
+	tween.tween_property(right_node, "position:x", get_slot_x(3), anim_duration)
+	tween.tween_property(right_node, "scale", get_slot_scale(3), anim_duration)
+	tween.tween_property(middle_node, "position:x", get_slot_x(2), anim_duration)
+	tween.tween_property(middle_node, "scale", get_slot_scale(2), anim_duration)
+	tween.tween_property(left_node, "position:x", get_slot_x(1), anim_duration)
+	tween.tween_property(left_node, "scale", get_slot_scale(1), anim_duration)
+	tween.tween_property(incoming_node, "position:x", get_slot_x(0), anim_duration)
+	tween.tween_property(incoming_node, "scale", get_slot_scale(0), anim_duration)
 	
 	playing_tween = tween
 	
-	nRight = nMiddle
-	nMiddle = nLeft
-	nLeft = nIncoming
+	right_node = middle_node
+	middle_node = left_node
+	left_node = incoming_node
 	
-	var nDisappearing_curr = nDisappearing
+	var disappearing_node_curr = disappearing_node
 	
 	tween.connect("finished", func ():
-		nDisappearing_curr.visible = false
+		disappearing_node_curr.visible = false
 	)
 	
 	if(auto_select):

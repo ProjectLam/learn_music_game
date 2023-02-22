@@ -1,6 +1,8 @@
 extends Control
 class_name InstrumentSelectionItem
 
+signal pressed
+
 var instrument_data: InstrumentData: set = set_instrument_data
 
 @onready var icon := %Icon
@@ -17,6 +19,8 @@ var info_visible: bool :
 	get = get_info_visible
 
 func _ready():
+	mouse_entered.connect(_on_mouse_entered)
+	mouse_exited.connect(_on_mouse_exited)
 	is_ready = true
 	reload()
 
@@ -42,9 +46,11 @@ func reload():
 		return
 	icon.texture = instrument_data.icon
 	name_label.text = instrument_data.instrument_label
+	info.visible = _info_visible
+	if not SongsConfigPreloader.is_song_preload_completed:
+		await SongsConfigPreloader.song_preload_completed
 	courses_number.text = str(InstrumentDetails.get_courses_number(instrument_data))
 	songs_number.text = str(InstrumentDetails.get_songs_number(instrument_data))
-	info.visible = _info_visible
 
 
 func set_info_visible(vis: bool) -> void:
@@ -62,3 +68,7 @@ func _on_mouse_entered():
 
 func _on_mouse_exited():
 	$Circle.material.set_shader_parameter("indicate", false)
+
+
+func _on_overlay_button_pressed():
+	pressed.emit()

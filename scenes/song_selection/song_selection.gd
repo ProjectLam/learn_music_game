@@ -6,7 +6,7 @@ signal item_played
 
 var cSongSelectionItem = preload("res://scenes/song_selection/song_selection_item.tscn")
 
-@onready var nItems = find_child("Items")
+@onready var song_items_container = find_child("Items")
 
 @export var items_number = 7
 @export var middle_i = 3
@@ -37,6 +37,8 @@ var h_ratio: int = 1
 var selected_index: int
 
 func _ready():
+	visibility_changed.connect(_on_visibility_changed)
+	
 	if not SongsConfigPreloader.is_song_preload_completed:
 		set_process(false)
 		print("Waiting for song configurations...")
@@ -52,12 +54,40 @@ func _ready():
 	
 	_process_items_vertically()
 	_process_items()
+	
+	if FocusManager.is_in_focus_tree():
+		grab_focus()
 
+
+func _gui_input(event):
+	if event.is_action_pressed("ui_down"):
+		accept_event()
+		go_down()
+	elif event.is_action_pressed("ui_up"):
+		accept_event()
+		go_up()
+	elif event.is_action_pressed("ui_accept"):
+		accept_event()
+		_on_Item_selected(song_items_container.get_child(selected_index))
+
+
+func _unhandled_input(event):
+	if not has_focus() and not is_ancestor_of(get_viewport().gui_get_focus_owner()):
+		return
+	if event.is_action_pressed("ui_down"):
+		get_viewport().set_input_as_handled()
+		go_down()
+	elif event.is_action_pressed("ui_up"):
+		get_viewport().set_input_as_handled()
+		go_up()
+	elif event.is_action_pressed("ui_accept"):
+		get_viewport().set_input_as_handled()
+		_on_Item_selected(song_items_container.get_child(selected_index))
 
 func load_items():
 	items_count = 0
 	
-	for n in nItems.get_children():
+	for n in song_items_container.get_children():
 		n.queue_free()
 	
 	if PlayerVariables.songs.size():
@@ -66,7 +96,7 @@ func load_items():
 				var song : Song = PlayerVariables.songs[songid]
 				print("Added song: ", song.title)
 				var nItem: SongSelectionItem = cSongSelectionItem.instantiate()
-				nItems.add_child(nItem)
+				song_items_container.add_child(nItem)
 				nItem.connect("selected", _on_Item_selected)
 				nItem.find_child("NameLabel").text = song.title
 				nItem.song = song
@@ -93,14 +123,14 @@ func select_item(p_index: int, p_is_internal: bool = false) -> void:
 		
 		var i = 0
 		while mov_i >= mov_lim:
-			var nMovingUp = nItems.get_child(-1)
-			nItems.move_child(nMovingUp, 0)
+			var nMovingUp = song_items_container.get_child(-1)
+			song_items_container.move_child(nMovingUp, 0)
 			nMovingUp.position.y = -1 * (item_height * (i+1))
 			mov_i -= 1
 			i += 1
 		
-		for j in range(items_number - middle_i, nItems.get_child_count()):
-			var nMovingDown = nItems.get_child(j)
+		for j in range(items_number - middle_i, song_items_container.get_child_count()):
+			var nMovingDown = song_items_container.get_child(j)
 			var y = nMovingDown.position.y + (item_height * di)
 			tween_y.tween_property(nMovingDown, "position:y", y, animation_duration)
 		
@@ -113,8 +143,8 @@ func select_item(p_index: int, p_is_internal: bool = false) -> void:
 			var move_lim = did
 			
 			for i in range(did):
-				var nMovingUp = nItems.get_child(0)
-				nItems.move_child(nMovingUp, -1)
+				var nMovingUp = song_items_container.get_child(0)
+				song_items_container.move_child(nMovingUp, -1)
 				
 				var y = (((items_count - 1) + i) * item_height) + item_height
 				
@@ -122,7 +152,7 @@ func select_item(p_index: int, p_is_internal: bool = false) -> void:
 			
 			var j = offset - 1
 			while j >= 0:
-				var nMovingUp = nItems.get_child(j)
+				var nMovingUp = song_items_container.get_child(j)
 				nMovingUp.position.y -= item_height * ((offset - 1) - j)
 				j -= 1
 			
@@ -132,7 +162,7 @@ func select_item(p_index: int, p_is_internal: bool = false) -> void:
 	var items_y = offset * item_height
 	items_y *= -1
 	
-	tween_y.tween_property(nItems, "position:y", items_y, 0.5)
+	tween_y.tween_property(song_items_container, "position:y", items_y, 0.5)
 	_process_items()
 
 
@@ -144,11 +174,11 @@ func _process_items_vertically():
 	var viewport_height = get_viewport_rect().size.y
 	
 	item_height = viewport_height / items_number
-	items_count = nItems.get_child_count()
+	items_count = song_items_container.get_child_count()
 	
-	for i in nItems.get_child_count():
+	for i in song_items_container.get_child_count():
 		
-		var nItem: SongSelectionItem = nItems.get_child(i)
+		var nItem: SongSelectionItem = song_items_container.get_child(i)
 		if not nItem:
 			break
 		var nBox: PanelContainer = nItem.find_child("Box")
@@ -167,13 +197,13 @@ func _process_items() -> void:
 	
 	var viewport_height = get_viewport_rect().size.y
 	item_height = viewport_height / items_number
-	items_count = nItems.get_child_count()
+	items_count = song_items_container.get_child_count()
 	
 	tween_x.set_ease(Tween.EASE_OUT_IN)
 	
 	for i in range(offset, offset + items_number):
 		
-		var nItem: SongSelectionItem = nItems.get_child(i)
+		var nItem: SongSelectionItem = song_items_container.get_child(i)
 		if not nItem:
 			break
 		var nBox: PanelContainer = nItem.find_child("Box")
@@ -187,7 +217,7 @@ func _process_items() -> void:
 	var j = 3
 	
 	for i in range(offset, offset + middle_i):
-		var nItem: SongSelectionItem = nItems.get_child(i)
+		var nItem: SongSelectionItem = song_items_container.get_child(i)
 		if not nItem:
 			break
 		var nBox: PanelContainer = nItem.find_child("Box")
@@ -199,13 +229,13 @@ func _process_items() -> void:
 		j -= 1
 	
 	var mi = offset + middle_i
-	var nMiddle = nItems.get_child(mi)
+	var nMiddle = song_items_container.get_child(mi)
 	tween_x.tween_property(nMiddle, "position:x", 0, animation_duration)
 	
 	j = 1
 	
 	for i in range(offset + middle_i + 1, (offset + middle_i*2) + 1):
-		var nItem: SongSelectionItem = nItems.get_child(i)
+		var nItem: SongSelectionItem = song_items_container.get_child(i)
 		if not nItem:
 			break
 		var nBox: PanelContainer = nItem.find_child("Box")
@@ -216,11 +246,15 @@ func _process_items() -> void:
 
 
 func go_down():
+	if items_count == 0:
+		return
 	selected_index = (selected_index+1) % items_count
 	select_item((index+1) % items_count)
 
 
 func go_up():
+	if items_count == 0:
+		return
 	selected_index -= 1
 	if selected_index < 0:
 		selected_index = items_count-1
@@ -228,11 +262,11 @@ func go_up():
 
 
 func get_song(p_index: int) -> SongSelectionItem:
-	return nItems.get_child(p_index)
+	return song_items_container.get_child(p_index)
 
 
 func _on_Songs_item_rect_changed():
-	if not nItems:
+	if not song_items_container:
 		return
 	
 	middle_y = get_viewport_rect().size.y / 2
@@ -257,7 +291,7 @@ func _on_Item_selected(p_nItem: SongSelectionItem):
 			SessionVariables.instrument = PlayerVariables.gameplay_instrument_name
 			SessionVariables.single_player = true
 			get_tree().change_scene_to_file("res://scenes/performance.tscn")
-
+		
 
 func _on_DownBtn_pressed():
 	go_down()
@@ -269,3 +303,13 @@ func _on_UpBtn_pressed():
 
 func _on_item_rect_changed() -> void:
 	h_ratio = get_rect().size.x / ProjectSettings.get("display/window/size/viewport_width")
+
+
+func go_back():
+	get_tree().change_scene_to_file("res://scenes/instrument_menu/instrument_menu.tscn")
+
+
+func _on_visibility_changed():
+	if visible:
+		if FocusManager.is_in_focus_tree():
+			grab_focus()

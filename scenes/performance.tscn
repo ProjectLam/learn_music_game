@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://t8vajiottp28"]
+[gd_scene load_steps=28 format=3 uid="uid://t8vajiottp28"]
 
 [ext_resource type="Script" path="res://scenes/performance.gd" id="1_2i2o3"]
 [ext_resource type="PackedScene" uid="uid://koljkcrt3kjj" path="res://scenes/song_loader/song_loader.tscn" id="2_45rtj"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://de686ygqs5poa" path="res://assets/gui/icons/logout.png" id="6_d47nm"]
 [ext_resource type="Texture2D" uid="uid://cr6tvdv0ve6cv" path="res://addons/gut/gui/play.png" id="7_28teg"]
 [ext_resource type="Script" path="res://scenes/ingame_scores.gd" id="8_npdy5"]
+[ext_resource type="PackedScene" uid="uid://bs3qjq2gbsqvb" path="res://scenes/rich_text_flow/rich_text_flow.tscn" id="10_3n7l4"]
 
 [sub_resource type="Environment" id="Environment_dudjq"]
 background_mode = 1
@@ -192,7 +193,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="QuitBtn" type="Button" parent="CanvasLayer/UI"]
+[node name="QuitButton" type="Button" parent="CanvasLayer/UI"]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -240,5 +241,21 @@ unique_name_in_owner = true
 layout_mode = 2
 script = ExtResource("8_npdy5")
 
-[connection signal="pressed" from="CanvasLayer/UI/QuitBtn" to="." method="_on_QuitBtn_pressed"]
+[node name="ChatBox" parent="CanvasLayer/UI" instance=ExtResource("10_3n7l4")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.8
+anchor_top = 0.3
+anchor_bottom = 0.7
+grow_horizontal = 0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/UI/ChatBox/ScrollContainer/TextContainer" index="0"]
+unique_name_in_owner = true
+layout_mode = 2
+fit_content = true
+
+[connection signal="pressed" from="CanvasLayer/UI/QuitButton" to="." method="_on_QuitBtn_pressed"]
 [connection signal="pressed" from="CanvasLayer/UI/MarginContainer/PausePlayButton" to="." method="_on_pause_play_button_pressed"]
+
+[editable path="CanvasLayer/UI/ChatBox"]

@@ -32,7 +32,7 @@ var remote_songs_info: Dictionary = {}
 var skip_remote_json_load := false
 var remote_songs_json_initialized := false
 const RTFILE_RQ_SCENE := preload("res://scenes/networking/remote_file_access/remote_file_request.tscn")
-const POPUP_SCENE := preload("res://scenes/popup_dialog/popup_dialog.tscn")
+
 var song_json_file_request
 var song_remote_access: RemoteFileAccess
 var connection_status := CONNECTION_STATUS.DISCONNECTED :
@@ -43,11 +43,7 @@ var file_src_mode := FILE_SRC_MODE.REMOTE :
 	get = get_file_src_mode
 var fetcher_count := 0
 
-var current_dialog
-var file_offline_dialog :
-	set(value):
-		current_dialog = value
-		file_offline_dialog = value
+
 
 @onready var ui_node := $CanvasLayer
 @onready var status_node = %Status
@@ -57,10 +53,12 @@ signal received_match_presence(p_presence: NakamaRTAPI.MatchPresenceEvent)
 signal received_match_state(p_state)
 signal peer_connected(id : int)
 signal remote_songs_json_received
-signal file_offline_dialog_closed
 
 
 func _ready():
+	Dialogs.file_offline_dialog.option_selected.connect(
+		_on_file_offline_dialog_response)
+	
 	refresh()
 	
 	init_remote_songs_json_url()
@@ -77,7 +75,7 @@ func _ready():
 	
 	
 	_is_fully_initialized = true
-	print("Backend fully initialized.")
+	print("GBackend fully initialized.")
 	emit_signal("full_initialization")
 
 
@@ -185,7 +183,7 @@ func login_password(p_email: String, p_password: String) -> NakamaSession:
 	
 	if session.is_exception():
 		print("Login Error: ", session.exception)
-		open_login_failed_dialog()
+		Dialogs.login_failed_dialog.open()
 	
 	print(session)
 	print(session.token)
@@ -197,40 +195,6 @@ func login_password(p_email: String, p_password: String) -> NakamaSession:
 	return session
 
 
-func open_connection_failed_dialog():
-	var instant_spawn := false
-	if not is_current_dialog_done():
-		instant_spawn = true
-		current_dialog.instant_fade = true
-		while not is_current_dialog_done():
-			await current_dialog.option_selected
-		current_dialog.visible = false
-	current_dialog = POPUP_SCENE.instantiate()
-	current_dialog.instant_spawn = instant_spawn
-	current_dialog.title = "Connection Failed"
-	current_dialog.message = "Connection failed to server!"
-	current_dialog.options = ["Ok"]
-	
-	ui_node.add_child(current_dialog)
-
-
-func open_login_failed_dialog():
-	var instant_spawn := false
-	if not is_current_dialog_done():
-		instant_spawn = true
-		current_dialog.instant_fade = true
-		while not is_current_dialog_done():
-			await current_dialog.option_selected
-		current_dialog.visible = false
-	current_dialog = POPUP_SCENE.instantiate()
-	current_dialog.instant_spawn = instant_spawn
-	current_dialog.title = "Login Failed"
-	current_dialog.message = "Your email or password were wrong!"
-	current_dialog.options = ["Ok"]
-	
-	ui_node.add_child(current_dialog)
-
-
 func _on_socket_connected():
 	print("Socket connected.")
 	connection_status = CONNECTION_STATUS.CONNECTED
@@ -239,7 +203,7 @@ func _on_socket_connected():
 func _on_socket_closed():
 	print("Socket closed.")
 	connection_status = CONNECTION_STATUS.DISCONNECTED
-	open_connection_failed_dialog()
+	Dialogs.connection_failed_dialog.open()
 
 
 func _on_socket_error(err):
@@ -285,17 +249,13 @@ func _on_peer_connected(id : int) -> void:
 
 
 func _on_song_json_file_received(json_string: String):
-	var parse_result := JSON.parse_string(json_string)
+	var parse_result = JSON.parse_string(json_string)
 	if parse_result is Dictionary:
 		remote_songs_info = parse_result
 	else:
 		push_error("unimplemented remote song json format")
 	remote_songs_json_initialized = true
 	remote_songs_json_received.emit()
-
-
-func is_current_dialog_done() -> bool:
-	return not is_instance_valid(current_dialog) or current_dialog.done
 
 
 func set_connection_status(value) -> void:
@@ -336,42 +296,19 @@ func remove_fetcher():
 		file_src_mode = FILE_SRC_MODE.REMOTE
 
 
-func _on_file_offline_dialog_closed():
-	file_offline_dialog_closed.emit()
-
-
-func file_offline_dialog_response(option: String) -> void:
-	match(option):
-		"Yes":
+func _on_file_offline_dialog_response(params: Dictionary) -> void:
+	var option = params.get("option")
+	if not (option is String):
+		push_error("invalid option for file offline dialog")
+		return
+	match(option.to_lower()):
+		"yes":
 			file_src_mode = FILE_SRC_MODE.OFFLINE
-		"No":
+		"no":
 			pass
 
 
-func open_file_offline_dialog(msg: String = ""):
-	if is_instance_valid(file_offline_dialog) and not file_offline_dialog.done:
-		return
-	
-	await get_tree().process_frame
-	
-	var instant_spawn := false
-	if not is_current_dialog_done():
-		instant_spawn = true
-		current_dialog.instant_fade = true
-		while not is_current_dialog_done():
-			await current_dialog.option_selected
-		current_dialog.visible = false
-	
-	var title := "Failed to download file"
-	var message := "Switch to offline mode?"
-	if msg != "":
-		message = "%s\n%s" % [msg, message]
-	file_offline_dialog = POPUP_SCENE.instantiate()
-	file_offline_dialog.tree_exited.connect(_on_file_offline_dialog_closed)
-	file_offline_dialog.title = title
-	file_offline_dialog.instant_spawn = instant_spawn
-	file_offline_dialog.message = message
-	file_offline_dialog.option_selected.connect(file_offline_dialog_response)
-	file_offline_dialog.options = ["Yes", "No"]
-	
-	ui_node.add_child(file_offline_dialog)
+func logout():
+	# TODO
+	pass
+

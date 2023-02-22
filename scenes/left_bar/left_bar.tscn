@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://drhti1f6dfqep"]
+[gd_scene load_steps=17 format=3 uid="uid://bpsr6id66vxk2"]
 
 [ext_resource type="Texture2D" uid="uid://ctu1miqp425c5" path="res://assets/gui/icons/casette.png" id="1_fr83g"]
 [ext_resource type="Script" path="res://scenes/left_bar/left_bar.gd" id="1_gck2n"]
@@ -6,10 +6,11 @@
 [ext_resource type="Texture2D" uid="uid://cojmsogxnfbum" path="res://assets/gui/icons/page.png" id="4_aqkcr"]
 [ext_resource type="Texture2D" uid="uid://bcyql8pbvs5yj" path="res://assets/gui/icons/song.png" id="5_pf3wh"]
 [ext_resource type="Texture2D" uid="uid://cxpbdejhyhyxu" path="res://assets/gui/icons/lyrics.png" id="6_1kbv2"]
-[ext_resource type="Texture2D" uid="uid://drypojyiolrwq" path="res://assets/gui/icons/settings.png" id="7_1q55x"]
+[ext_resource type="PackedScene" uid="uid://dh113rx5texfk" path="res://scenes/ui_elements/circle_button_01/circle_button_01.tscn" id="7_uivr1"]
 [ext_resource type="Texture2D" uid="uid://de686ygqs5poa" path="res://assets/gui/icons/logout.png" id="8_mbv55"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fhuii"]
+content_margin_left = 60.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ja2ug"]
 bg_color = Color(1, 1, 1, 0.145098)
@@ -24,26 +25,11 @@ font = ExtResource("2_norfk")
 font_size = 42
 font_color = Color(1, 1, 1, 0.192157)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ixvow"]
-bg_color = Color(1, 1, 1, 0.0431373)
-corner_radius_top_left = 100
-corner_radius_top_right = 100
-corner_radius_bottom_right = 100
-corner_radius_bottom_left = 100
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pnn2a"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v4d1s"]
-bg_color = Color(1, 1, 1, 0.0431373)
-corner_radius_top_left = 100
-corner_radius_top_right = 100
-corner_radius_bottom_right = 100
-corner_radius_bottom_left = 100
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u3nti"]
-bg_color = Color(1, 1, 1, 0.0431373)
-corner_radius_top_left = 100
-corner_radius_top_right = 100
-corner_radius_bottom_right = 100
-corner_radius_bottom_left = 100
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sa53t"]
+content_margin_top = 40.0
+content_margin_bottom = 40.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6yw14"]
 bg_color = Color(1, 1, 1, 0.117647)
@@ -54,26 +40,31 @@ corner_radius_bottom_right = 100
 corner_radius_bottom_left = 100
 
 [node name="LeftBar" type="PanelContainer"]
-anchors_preset = -1
-anchor_left = 0.02
-anchor_top = 0.1
-anchor_right = 0.07
-anchor_bottom = 0.9
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -328.5
+offset_right = 92.0
+offset_bottom = 328.5
 grow_vertical = 2
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_fhuii")
 script = ExtResource("1_gck2n")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
+mouse_filter = 0
 theme_override_constants/separation = 0
 
 [node name="Top" type="PanelContainer" parent="VBoxContainer"]
-custom_minimum_size = Vector2(0, 75)
+custom_minimum_size = Vector2(0, 175)
 layout_mode = 2
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ja2ug")
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/Top"]
 layout_mode = 2
+mouse_filter = 2
 texture = ExtResource("1_fr83g")
 stretch_mode = 5
 
@@ -81,11 +72,13 @@ stretch_mode = 5
 custom_minimum_size = Vector2(0, 75)
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_kv4qc")
 
 [node name="Empty" type="Control" parent="VBoxContainer/Middle"]
 visible = false
 layout_mode = 2
+mouse_filter = 2
 
 [node name="Label" type="Label" parent="VBoxContainer/Middle/Empty"]
 layout_mode = 0
@@ -103,78 +96,37 @@ rotation = -1.5708
 text = "LAM PROJECT"
 label_settings = SubResource("LabelSettings_ypi7r")
 
-[node name="Content" type="Control" parent="VBoxContainer/Middle"]
+[node name="Content" type="PanelContainer" parent="VBoxContainer/Middle"]
 layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_pnn2a")
 
-[node name="Menu" type="Control" parent="VBoxContainer/Middle/Content"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="Menu" type="PanelContainer" parent="VBoxContainer/Middle/Content"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_sa53t")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Middle/Content/Menu"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
 theme_override_constants/separation = 25
 alignment = 1
 
-[node name="Button" type="Button" parent="VBoxContainer/Middle/Content/Menu/VBoxContainer"]
-custom_minimum_size = Vector2(50, 50)
+[node name="IstrumentMenuButton" parent="VBoxContainer/Middle/Content/Menu/VBoxContainer" instance=ExtResource("7_uivr1")]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_styles/normal = SubResource("StyleBoxFlat_ixvow")
-theme_override_styles/hover = SubResource("StyleBoxFlat_v4d1s")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_ixvow")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_u3nti")
-theme_override_styles/focus = SubResource("StyleBoxFlat_ixvow")
 icon = ExtResource("4_aqkcr")
-icon_alignment = 1
 
-[node name="Button2" type="Button" parent="VBoxContainer/Middle/Content/Menu/VBoxContainer"]
-custom_minimum_size = Vector2(50, 50)
+[node name="PlaySongButton" parent="VBoxContainer/Middle/Content/Menu/VBoxContainer" instance=ExtResource("7_uivr1")]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_styles/normal = SubResource("StyleBoxFlat_ixvow")
-theme_override_styles/hover = SubResource("StyleBoxFlat_v4d1s")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_ixvow")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_u3nti")
-theme_override_styles/focus = SubResource("StyleBoxFlat_ixvow")
 icon = ExtResource("5_pf3wh")
-icon_alignment = 1
 
-[node name="Button3" type="Button" parent="VBoxContainer/Middle/Content/Menu/VBoxContainer"]
-custom_minimum_size = Vector2(50, 50)
+[node name="MatchmakingButton" parent="VBoxContainer/Middle/Content/Menu/VBoxContainer" instance=ExtResource("7_uivr1")]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_styles/normal = SubResource("StyleBoxFlat_ixvow")
-theme_override_styles/hover = SubResource("StyleBoxFlat_v4d1s")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_ixvow")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_u3nti")
-theme_override_styles/focus = SubResource("StyleBoxFlat_ixvow")
 icon = ExtResource("6_1kbv2")
-icon_alignment = 1
 
-[node name="Button4" type="Button" parent="VBoxContainer/Middle/Content/Menu/VBoxContainer"]
-custom_minimum_size = Vector2(50, 50)
+[node name="SettingsButton" parent="VBoxContainer/Middle/Content/Menu/VBoxContainer" instance=ExtResource("7_uivr1")]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_styles/normal = SubResource("StyleBoxFlat_ixvow")
-theme_override_styles/hover = SubResource("StyleBoxFlat_v4d1s")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_ixvow")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_u3nti")
-theme_override_styles/focus = SubResource("StyleBoxFlat_ixvow")
-icon = ExtResource("7_1q55x")
-icon_alignment = 1
 
 [node name="Sep" type="Control" parent="VBoxContainer/Middle/Content/Menu/VBoxContainer"]
 custom_minimum_size = Vector2(0, 1)
@@ -191,22 +143,17 @@ grow_vertical = 2
 size_flags_vertical = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_6yw14")
 
-[node name="LoginBtn" type="Button" parent="VBoxContainer/Middle/Content/Menu/VBoxContainer"]
-custom_minimum_size = Vector2(50, 50)
+[node name="LogoutButton" parent="VBoxContainer/Middle/Content/Menu/VBoxContainer" instance=ExtResource("7_uivr1")]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_styles/normal = SubResource("StyleBoxFlat_ixvow")
-theme_override_styles/hover = SubResource("StyleBoxFlat_v4d1s")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_ixvow")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_u3nti")
-theme_override_styles/focus = SubResource("StyleBoxFlat_ixvow")
 icon = ExtResource("8_mbv55")
-icon_alignment = 1
 
 [node name="Bottom" type="PanelContainer" parent="VBoxContainer"]
 custom_minimum_size = Vector2(0, 175)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_d6h5r")
 
-[connection signal="pressed" from="VBoxContainer/Middle/Content/Menu/VBoxContainer/LoginBtn" to="." method="_on_LoginBtn_pressed"]
+[connection signal="pressed" from="VBoxContainer/Middle/Content/Menu/VBoxContainer/IstrumentMenuButton" to="." method="_on_istrument_menu_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/Middle/Content/Menu/VBoxContainer/PlaySongButton" to="." method="_on_play_song_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/Middle/Content/Menu/VBoxContainer/MatchmakingButton" to="." method="_on_matchmaking_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/Middle/Content/Menu/VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/Middle/Content/Menu/VBoxContainer/LogoutButton" to="." method="_on_logout_button_pressed"]

@@ -50,6 +50,7 @@ class ChannelLeave extends NakamaAsyncResult:
 	var channel_id : String
 
 	func _init(p_channel_id : String):
+		super()
 		channel_id = p_channel_id
 
 	func serialize() -> Dictionary:
@@ -73,6 +74,7 @@ class ChannelMessageRemove extends NakamaAsyncResult:
 	var message_id : String
 
 	func _init(p_channel_id : String, p_message_id):
+		super()
 		channel_id = p_channel_id
 		message_id = p_message_id
 
@@ -98,6 +100,7 @@ class ChannelMessageSend extends NakamaAsyncResult:
 	var content : String
 
 	func _init(p_channel_id : String, p_content):
+		super()
 		channel_id = p_channel_id
 		content = p_content
 
@@ -124,6 +127,7 @@ class ChannelMessageUpdate extends NakamaAsyncResult:
 	var content : String
 
 	func _init(p_channel_id : String, p_message_id, p_content : String):
+		super()
 		channel_id = p_channel_id
 		message_id = p_message_id
 		content = p_content
@@ -148,6 +152,7 @@ class MatchCreate extends NakamaAsyncResult:
 	var name = null
 
 	func _init(p_name = null):
+		super()
 		name = p_name if p_name else null
 
 	func serialize():

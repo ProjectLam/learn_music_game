@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://b2ew1c3swawaj"]
+[gd_scene load_steps=15 format=3 uid="uid://b2ew1c3swawaj"]
 
 [ext_resource type="Script" path="res://scenes/instrument_selection/instrument_selection_item.gd" id="1_g0eae"]
 [ext_resource type="Shader" path="res://scenes/instrument_selection/item_circle.gdshader" id="2_tm0hu"]
@@ -26,6 +26,16 @@ bg_color = Color(0.145098, 0.462745, 1, 1)
 [sub_resource type="LabelSettings" id="LabelSettings_lvjx4"]
 font = ExtResource("4_e8mw7")
 font_size = 40
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_e6w7x"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_crpl3"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_l1vbk"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_i5ujm"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vl7xv"]
 
 [node name="InstrumentSelectionItem" type="Control"]
 layout_mode = 3
@@ -111,6 +121,7 @@ mouse_filter = 1
 text = "songs"
 
 [node name="Courses" type="HBoxContainer" parent="Info"]
+visible = false
 layout_mode = 2
 
 [node name="Icon" type="TextureRect" parent="Info/Courses"]
@@ -130,5 +141,27 @@ layout_mode = 2
 mouse_filter = 1
 text = "courses"
 
-[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[node name="Overlay" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="OverlayButton" type="Button" parent="Overlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme_override_styles/normal = SubResource("StyleBoxEmpty_e6w7x")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_crpl3")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_l1vbk")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_i5ujm")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_vl7xv")
+
+[connection signal="pressed" from="Overlay/OverlayButton" to="." method="_on_overlay_button_pressed"]

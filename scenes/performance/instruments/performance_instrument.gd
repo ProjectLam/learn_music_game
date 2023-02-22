@@ -7,6 +7,15 @@ signal note_ended(note_data)
 
 @onready var notes = $Notes
 
+
+func _ready():
+	pass
+
+
+func _process(_delta):
+	pass
+
+
 func start_game(song_data: Song):
 	$Notes.note_started.connect(on_note_started)
 	$Notes.note_ended.connect(on_note_ended)
