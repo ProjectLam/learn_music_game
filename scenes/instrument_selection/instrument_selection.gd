@@ -34,11 +34,11 @@ func select_instrument():
 
 
 func _on_left_btn_pressed():
-	go_left()
+	go_right()
 
 
 func _on_right_btn_pressed():
-	go_right()
+	go_left()
 
 
 func _on_SelectBtn_pressed():

@@ -56,6 +56,7 @@ signal remote_songs_json_received
 
 
 func _ready():
+	
 	Dialogs.file_offline_dialog.option_selected.connect(
 		_on_file_offline_dialog_response)
 	
@@ -150,6 +151,7 @@ func multiplayer_init_async():
 	multiplayer_bridge = NakamaMultiplayerBridge.new(socket)
 	multiplayer_bridge.match_join_error.connect(_on_match_join_error)
 	multiplayer_bridge.match_joined.connect(_on_match_joined)
+	add_child(multiplayer_bridge)
 	get_tree().get_multiplayer().set_multiplayer_peer(multiplayer_bridge.multiplayer_peer)
 	
 	multiplayer.peer_connected.connect(_on_peer_connected)
@@ -161,7 +163,7 @@ func check_nakama_dev_values() -> bool:
 	var file = FileAccess.open("user://dev.json", FileAccess.READ)
 	var content = file.get_as_text()
 	var dev = JSON.parse_string(content)
-	
+	print("parsed dev json : ", dev)
 	if dev.has("nakama"):
 		scheme = dev["nakama"]["connection"]["protocol"]
 		host = dev["nakama"]["connection"]["address"]
@@ -183,7 +185,12 @@ func login_password(p_email: String, p_password: String) -> NakamaSession:
 	
 	if session.is_exception():
 		print("Login Error: ", session.exception)
-		Dialogs.login_failed_dialog.open()
+		if session.exception.status_code == 2:
+			# http request failed.
+			connection_status = CONNECTION_STATUS.DISCONNECTED
+			Dialogs.connection_failed_dialog.open()
+		else:
+			Dialogs.login_failed_dialog.open()
 	
 	print(session)
 	print(session.token)
@@ -202,8 +209,9 @@ func _on_socket_connected():
 
 func _on_socket_closed():
 	print("Socket closed.")
-	connection_status = CONNECTION_STATUS.DISCONNECTED
-	Dialogs.connection_failed_dialog.open()
+	if connection_status != CONNECTION_STATUS.DISCONNECTED:
+		connection_status = CONNECTION_STATUS.DISCONNECTED
+		Dialogs.connection_failed_dialog.open()
 
 
 func _on_socket_error(err):
@@ -211,7 +219,10 @@ func _on_socket_error(err):
 
 
 func _on_match_join_error(error):
-	printerr("Unable to join match: ", error.message)
+	var msg = error.get("message")
+	if not msg:
+		msg = error
+	printerr("Unable to join match: ", msg)
 
 
 func _on_match_joined() -> void:
@@ -219,7 +230,7 @@ func _on_match_joined() -> void:
 
 
 func _on_received_match_state(p_state) -> void:
-	print("Received match state: ", p_state)
+#	print("Received match state: ", p_state)
 	received_match_state.emit(p_state)
 
 
@@ -227,21 +238,23 @@ func _on_received_match_presence(p_presence: NakamaRTAPI.MatchPresenceEvent) -> 
 	received_match_presence.emit(p_presence)
 
 
-func create_match_async(match_name = "") -> void:
+func create_match_async(match_name = "", params := {}) -> void:
 	await await_finit()
 	# TODO : add match naming. create_match_async should not be called on socket without
 	#  taking care of additional logic implemented in create_match()
-	await multiplayer_bridge.create_match()
+	await multiplayer_bridge.create_match_async(match_name, params)
+
+#	await socket.rpc_async("create_match", "{\"game_mode\": \"normal_match\"}")
 
 
 func leave_async() -> void:
 	await await_finit()
-	await multiplayer_bridge.leave()
+	await multiplayer_bridge.leave_async()
 
 
 func join_match_async(p_match_id: String) -> void:
 	await await_finit()
-	await multiplayer_bridge.join_match(p_match_id)
+	await multiplayer_bridge.join_match_async(p_match_id)
 
 
 func _on_peer_connected(id : int) -> void:
@@ -311,4 +324,3 @@ func _on_file_offline_dialog_response(params: Dictionary) -> void:
 func logout():
 	# TODO
 	pass
-

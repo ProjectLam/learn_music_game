@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://de686ygqs5poa" path="res://assets/gui/icons/logout.png" id="6_d47nm"]
 [ext_resource type="Texture2D" uid="uid://cr6tvdv0ve6cv" path="res://addons/gut/gui/play.png" id="7_28teg"]
 [ext_resource type="Script" path="res://scenes/ingame_scores.gd" id="8_npdy5"]
-[ext_resource type="PackedScene" uid="uid://bs3qjq2gbsqvb" path="res://scenes/rich_text_flow/rich_text_flow.tscn" id="10_3n7l4"]
+[ext_resource type="PackedScene" path="res://scenes/rich_text_flow/rich_text_flow.tscn" id="10_3n7l4"]
 
 [sub_resource type="Environment" id="Environment_dudjq"]
 background_mode = 1

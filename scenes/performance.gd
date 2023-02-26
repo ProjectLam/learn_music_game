@@ -214,6 +214,7 @@ func media_pause_play():
 
 
 func _on_QuitBtn_pressed() -> void:
+	await GBackend.leave_async()
 	get_tree().change_scene_to_file("res://scenes/instrument_selection/instrument_selection.tscn")
 
 
@@ -311,7 +312,7 @@ func broadcast_all_user_data() -> void:
 
 
 @rpc("authority", "call_remote", "reliable") func _set_all_user_data(data) -> void:
-	print("rpc _set_all_user_data called with {%s}" % data)
+	print("rpc _set_all_user_data called by {%s} with {%s}" % [multiplayer.get_remote_sender_id(), data])
 	for key in data:
 		if not (key is String):
 			# invalid key
@@ -366,7 +367,12 @@ func _on_good_note_started(note_index: int, time_error: float) -> void:
 
 # temporary unique user id generator. will be replaced with a user id system.
 func get_user_id(peer_id: int) -> String:
-	return "user_%s" % peer_id
+	var username: String = GBackend.multiplayer_bridge.get_peer_username(peer_id)
+	if username != "":
+		return username
+	else:
+		return "user_%s" % peer_id
+		
 
 
 func add_chat_notification(message: String) -> void:

@@ -31,7 +31,7 @@ func _get_packet_mode() -> int:
 func _get_packet_channel() -> int:
 	return 0
 
-func _put_packet_script(p_buffer: PackedByteArray) -> int:
+func _put_packet_script(p_buffer: PackedByteArray) -> Error:
 	packet_generated.emit(_target_id, p_buffer)
 	return OK
 
@@ -47,10 +47,10 @@ func _set_transfer_channel(p_channel) -> void:
 func _get_transfer_channel() -> int:
 	return 0
 
-func _set_transfer_mode(p_mode: int) -> void:
+func _set_transfer_mode(p_mode: MultiplayerPeer.TransferMode) -> void:
 	pass
 
-func _get_transfer_mode() -> int:
+func _get_transfer_mode() -> MultiplayerPeer.TransferMode:
 	return TRANSFER_MODE_RELIABLE
 
 func _set_target_peer(p_peer_id: int) -> void:
@@ -79,15 +79,18 @@ func _set_refuse_new_connections(p_enable: bool) -> void:
 func _is_refusing_new_connections() -> bool:
 	return _refusing_new_connections
 
-func _get_connection_status() -> int:
+func _get_connection_status() -> MultiplayerPeer.ConnectionStatus:
 	return _connection_status
 
 func initialize(p_self_id: int) -> void:
+	print("Initializing multiplayer peer with peer id :", p_self_id)
 	if _connection_status != CONNECTION_CONNECTING:
+		push_error("Connection status is not 'Connecting'")
 		return
 	_self_id = p_self_id
 	if _self_id == 1:
 		_connection_status = CONNECTION_CONNECTED
+	print("multiplayer peer successfully initialized.")
 
 func set_connection_status(p_connection_status: int) -> void:
 	_connection_status = p_connection_status

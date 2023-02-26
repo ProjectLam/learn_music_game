@@ -28,21 +28,24 @@ func _on_song_played(p_nSong: SongSelectionItem):
 	nMatches.hide()
 	nWaitingOpponent.show()
 	nWaitingOpponent_AnimationPlayer.play("Default")
-	
-	await GBackend.create_match_async()
+	var match_params := {
+		"instrument": SessionVariables.instrument,
+		"song": SessionVariables.current_song.get_identifier(),
+	}
+	await GBackend.create_match_async("unnamed_match", match_params)
 
 #	print("Match created: #%s - %s" % [GBackend.current_match.match_id, GBackend.current_match.label])
 	# TODO : change this when match naming is implemented.
 	print("Match created")
 
 func _on_peer_connected(peer_id : int):
-	# Client Relayed Multiplayer, not data maintained on the backend.
 	# Note : multiplayer api calls should not be called during 'received_match_presence'. But they 
 	# can be called during 'peer_connected'.
-	SessionVariables.instrument = PlayerVariables.gameplay_instrument_name
-	SessionVariables.single_player = false
-	get_tree().change_scene_to_file("res://scenes/performance.tscn")
-	SessionVariables.sync_remote()
+	if multiplayer.get_unique_id() == get_multiplayer_authority():
+		SessionVariables.instrument = PlayerVariables.gameplay_instrument_name
+		SessionVariables.single_player = false
+		get_tree().change_scene_to_file("res://scenes/performance.tscn")
+		SessionVariables.sync_remote()
 
 
 func _on_CancelBtn_pressed() -> void:
@@ -50,7 +53,8 @@ func _on_CancelBtn_pressed() -> void:
 	go_back()
 
 func _on_received_match_state(p_state):
-	print("Received match state: ", p_state)
+	pass
+#	print("Received match state: ", p_state)
 
 
 func go_back():

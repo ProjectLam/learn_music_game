@@ -2,7 +2,7 @@
 
 [ext_resource type="Shader" path="res://scenes/performance/lane.gdshader" id="1_d17bu"]
 [ext_resource type="Script" path="res://scenes/performance/instruments/performance_piano.gd" id="1_vwgk5"]
-[ext_resource type="PackedScene" uid="uid://beupsbquc3ecv" path="res://models/instruments/piano.glb" id="2_jfq7w"]
+[ext_resource type="PackedScene" uid="uid://c0unhxdn4b50r" path="res://models/instruments/piano.glb" id="2_jfq7w"]
 [ext_resource type="Script" path="res://scenes/performance/instruments/piano_notes.gd" id="4_0scbe"]
 [ext_resource type="Script" path="res://models/instruments/piano_model_data.gd" id="4_8kycb"]
 [ext_resource type="PackedScene" uid="uid://cwnmxqldm8kpr" path="res://scenes/performance/instruments/piano_note.tscn" id="5_mrvpn"]

@@ -12,7 +12,7 @@ var song_identifier: String :
 	set(sid):
 		var n_song = PlayerVariables.songs.get(sid)
 		if !n_song:
-			push_error("Song not found")
+			push_error("Song [%s] not found" % sid)
 		else:
 			current_song = n_song
 	get:
@@ -31,14 +31,16 @@ signal instrument_changed
 
 
 func sync_remote():
+	assert(get_multiplayer_authority() == multiplayer.get_unique_id())
 	var sync_dict := {}
 	for k in synch_variables:
 		sync_dict[k] = get(k)
+	print("sending sync request with :", sync_dict)
 	rpc("_sync_remote", sync_dict)
 
 
 @rpc("authority", "call_local", "reliable") func _sync_remote(sync_dict : Dictionary):
-	print("sync called with ", sync_dict)
+	print("sync called by peer id [%s] with " % multiplayer.get_remote_sender_id(), sync_dict)
 	var prev_song := current_song
 	var prev_instrument := instrument
 	

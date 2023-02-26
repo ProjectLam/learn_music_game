@@ -48,8 +48,8 @@ var transcription_track: SongTranscriptionTrack
 var levels: Array[SongLevel]
 
 
-func get_notes_and_chords_for_difficulty(difficulty: int = -1) -> Array:
-	var notes_and_chords: Array = []
+func get_notes_and_chords_for_difficulty(difficulty: int = -1) -> Array[Note]:
+	var notes_and_chords: Array[Note] = []
 	for i in phrase_iterations.size():
 		var pi := phrase_iterations[i]
 		var end_time: float

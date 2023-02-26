@@ -63,7 +63,7 @@ func retry():
 func try():
 	var err = OK + 1
 	while(err != OK):
-		err = http_request.request(target_url, request_headers, tls_validate, request_method, request_body)
+		err = http_request.request(target_url, request_headers, request_method, request_body)
 		if err != OK:
 			push_error("HTTPClient Error encountered while trying to create http request : ", err)
 			await retry_if_allowed(ERROR_CODES.COULD_NOT_CREATE_REQUEST, "HTTPClient Error encountered while trying to create http request : %s" % err)
