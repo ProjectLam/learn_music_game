@@ -32,6 +32,9 @@ func _on_focus_exitting(control: Control) -> void:
 	if Debug.print_gui_focus:
 		print("Control exitting focus :", control.get_path())
 	var curr_scene = get_tree().current_scene
+	
+	# if focus is outside of main scene tree.
+	# TODO : check if can curr_scene be null.
 	if not curr_scene or not curr_scene.is_ancestor_of(control):
 		var fallback = control.find_prev_valid_focus()
 		if is_a_valid_focus_node(fallback):

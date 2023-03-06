@@ -40,6 +40,9 @@ var performance_node: Node
 func _ready():
 	Debug.print_note_spawn = true
 	GBackend.ui_node.visible = false
+	Dialogs.disable_all()
+	Dialogs.file_offline_dialog.disabled = false
+	
 	SessionVariables.instrument = Instrument_ids[instrument]
 	if not SongsConfigPreloader.is_song_preload_completed:
 		await SongsConfigPreloader.song_preload_completed

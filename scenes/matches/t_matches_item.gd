@@ -1,11 +1,9 @@
-extends Object
+extends Resource
 class_name TMatchesItem
 
 var user: TUser = null: set = set_user
 var players_count: int = -1: set = set_players_count
 var date: String = "": set = set_date
-
-var nItem: MatchesItem
 
 var serializable: Dictionary: set = set_serializable, get = get_serializable
 var json: String: set = set_json, get = get_json

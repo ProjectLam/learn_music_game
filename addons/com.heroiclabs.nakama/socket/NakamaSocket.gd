@@ -429,6 +429,26 @@ func rpc_async(p_func_id : String, p_payload = null): # -> NakamaAPI.ApiRpc
 		"payload": payload
 	}), NakamaAPI.ApiRpc, NakamaAPI, "rpc", "rpc").completed
 
+
+# Same as rpc_async but the result is parsed.
+func rpc_async_parsed(p_func_id: String, meta_data = null):
+	var res = await rpc_async(p_func_id, meta_data)
+	if res.is_exception():
+		return res
+	
+	var payload_string = res.get("payload")
+	if not (payload_string is String):
+		push_error("Invalid payload")
+		return NakamaException.new("Invalid payload", -1, -1)
+	
+	var payload = JSON.parse_string(res.get("payload"))
+	if not (payload is Dictionary):
+		push_error("Invalid payload. Cannot parse payload")
+		return NakamaException.new("Invalid payload", -1, -1)
+	
+	return payload
+
+
 # Send input to a multiplayer match on the server.
 # When no presences are supplied the new match state will be sent to all presences.
 # @param p_match_id - The ID of the match.

@@ -377,6 +377,8 @@ func get_user_id(peer_id: int) -> String:
 	if username != "":
 		return username
 	else:
+		# TODO : this changes the username of the users that have left.
+		#  add a global profile cache for user profiles and use that for usernames.
 		return "user_%s" % peer_id
 		
 

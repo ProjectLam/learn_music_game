@@ -145,14 +145,30 @@ func multiplayer_init_async():
 	socket.connected.connect(_on_socket_connected)
 	socket.closed.connect(_on_socket_closed)
 	socket.received_error.connect(_on_socket_error)
-	socket.connect_async(session)
-	multiplayer_bridge = NakamaMultiplayerBridge.new(socket)
-	multiplayer_bridge.match_join_error.connect(_on_match_join_error)
-	multiplayer_bridge.match_joined.connect(_on_match_joined)
-	add_child(multiplayer_bridge)
-	get_tree().get_multiplayer().set_multiplayer_peer(multiplayer_bridge.multiplayer_peer)
+	await socket.connect_async(session)
+	multiplayer_bridge = await NakamaMultiplayerBridge.new(socket)
 	
-	multiplayer.peer_connected.connect(_on_peer_connected)
+	# bridge_initializing is because a bug was detected that led to _init 
+	# returning before the initializiation is complete.
+	# TODO : report this bug.
+	while(multiplayer_bridge.bridge_initializing):
+		await get_tree().process_frame
+
+	if not multiplayer_bridge.valid:
+		multiplayer_bridge = null
+		multiplayer_bridge.free()
+	else:
+		
+		multiplayer_bridge.match_join_error.connect(_on_match_join_error)
+		multiplayer_bridge.match_joined.connect(_on_match_joined)
+		add_child(multiplayer_bridge)
+		get_tree().get_multiplayer().set_multiplayer_peer(multiplayer_bridge.multiplayer_peer)
+		
+		multiplayer.peer_connected.connect(_on_peer_connected)
+	
+	if multiplayer_bridge == null:
+		push_error("Invalid multiplayer bridge detected.")
+		Dialogs.problem_with_server_dialog.open()
 
 
 func check_nakama_dev_values() -> void:
@@ -221,9 +237,10 @@ func _on_socket_error(err):
 
 func _on_match_join_error(error):
 	var msg = error.get("message")
-	if not msg:
+	if msg == null:
 		msg = error
 	printerr("Unable to join match: ", msg)
+	Dialogs.join_match_failed_dialog.message = msg
 
 
 func _on_match_joined() -> void:
@@ -231,7 +248,6 @@ func _on_match_joined() -> void:
 
 
 func _on_received_match_state(p_state) -> void:
-#	print("Received match state: ", p_state)
 	received_match_state.emit(p_state)
 
 
@@ -239,23 +255,48 @@ func _on_received_match_presence(p_presence: NakamaRTAPI.MatchPresenceEvent) -> 
 	received_match_presence.emit(p_presence)
 
 
-func create_match_async(match_name = "", params := {}) -> void:
+func list_matches_async(min_players : int = 1, max_players : int = -1, limit : int = 100,
+		label : String = "", query : String = "") -> NakamaAPI.ApiMatchList:
+	var maxpl
+	if max_players > 0:
+		maxpl = max_players
+	
+	
+	return await client.list_matches_async(session, min_players, maxpl, limit, true, label, query)
+	
+
+
+# returns false if it succeeds. this will be replaced with an error later.
+func create_match_async(match_name = "", params := {}) -> bool:
 	await await_finit()
-	# TODO : add match naming. create_match_async should not be called on socket without
-	#  taking care of additional logic implemented in create_match()
+	if multiplayer_bridge == null:
+		Dialogs.problem_with_server_dialog.open()
+		return true
 	await multiplayer_bridge.create_match_async(match_name, params)
-
-#	await socket.rpc_async("create_match", "{\"game_mode\": \"normal_match\"}")
-
+	if multiplayer_bridge.match_state != NakamaMultiplayerBridge.MatchState.CONNECTED:
+		Dialogs.create_match_failed_dialog.open()
+		return true
+	return false
 
 func leave_async() -> void:
 	await await_finit()
+	if multiplayer_bridge == null:
+		Dialogs.problem_with_server_dialog.open()
+		return
 	await multiplayer_bridge.leave_async()
 
 
-func join_match_async(p_match_id: String) -> void:
+# returns false if it succeeds. this will be replaced with an error later.
+func join_match_async(p_match_id: String) -> bool:
 	await await_finit()
+	if multiplayer_bridge == null:
+		Dialogs.problem_with_server_dialog.open()
+		return true
 	await multiplayer_bridge.join_match_async(p_match_id)
+	if multiplayer_bridge.match_state != NakamaMultiplayerBridge.MatchState.CONNECTED:
+		Dialogs.join_match_failed_dialog.open()
+		return true
+	return false
 
 
 func _on_peer_connected(id : int) -> void:

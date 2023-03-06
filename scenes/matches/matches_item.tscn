@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://c3lxt6hmgwob7"]
+[gd_scene load_steps=13 format=3 uid="uid://c3lxt6hmgwob7"]
 
 [ext_resource type="Script" path="res://scenes/matches/matches_item.gd" id="1_anwtr"]
 [ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="2_3q4ai"]
@@ -32,25 +32,37 @@ corner_radius_bottom_left = 10
 line_spacing = 0.0
 font = ExtResource("4_7gtxg")
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_j36lc"]
+blend_mode = 1
+light_mode = 1
+
+[sub_resource type="Gradient" id="Gradient_i41yu"]
+offsets = PackedFloat32Array(0, 0.699)
+colors = PackedColorArray(0.811765, 0.8, 0.992157, 0.105882, 0.811765, 0.8, 0.992157, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_pbh36"]
+gradient = SubResource("Gradient_i41yu")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
 [node name="MatchesItem" type="PanelContainer"]
-anchors_preset = -1
+anchors_preset = 10
 anchor_right = 1.0
 size_flags_horizontal = 3
+focus_mode = 2
 script = ExtResource("1_anwtr")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-offset_right = 1600.0
-offset_bottom = 106.0
+layout_mode = 2
 alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
-offset_right = 1600.0
-offset_bottom = 106.0
+layout_mode = 2
 
 [node name="NumberLabel" type="Label" parent="VBoxContainer/HBoxContainer"]
-offset_top = 41.0
-offset_right = 72.0
-offset_bottom = 65.0
+layout_mode = 2
+mouse_filter = 1
 theme_override_styles/normal = SubResource("StyleBoxEmpty_ukgxa")
 text = "01"
 label_settings = SubResource("LabelSettings_fkm56")
@@ -58,46 +70,55 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="AvatarImage" type="TextureRect" parent="VBoxContainer/HBoxContainer"]
-offset_left = 76.0
-offset_right = 168.0
-offset_bottom = 106.0
+layout_mode = 2
 texture = ExtResource("3_s7kml")
 stretch_mode = 5
 
 [node name="Details" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
-offset_left = 172.0
-offset_right = 1521.0
-offset_bottom = 106.0
+layout_mode = 2
 size_flags_horizontal = 3
 alignment = 1
 
 [node name="NameLabel" type="Label" parent="VBoxContainer/HBoxContainer/Details"]
-offset_top = 41.0
-offset_right = 1349.0
-offset_bottom = 65.0
-text = "Song Name"
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 1
+text = "Game Name"
 label_settings = SubResource("LabelSettings_owifg")
 
+[node name="InstrumentLabel" type="Label" parent="VBoxContainer/HBoxContainer/Details"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 1
+theme_override_colors/font_color = Color(0.478431, 0.458824, 1, 1)
+theme_override_fonts/font = ExtResource("4_7gtxg")
+text = "Instrument Name"
+
+[node name="SongLabel" type="Label" parent="VBoxContainer/HBoxContainer/Details"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 1
+theme_override_colors/font_color = Color(0.988235, 0, 0.466667, 1)
+theme_override_fonts/font = ExtResource("4_7gtxg")
+text = "Song Name"
+
 [node name="PlayersCountLabel" type="Label" parent="VBoxContainer/HBoxContainer"]
-offset_left = 1525.0
-offset_top = 32.0
-offset_right = 1576.0
-offset_bottom = 73.0
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 1
 theme_override_styles/normal = SubResource("StyleBoxFlat_8gexu")
 text = "0"
 label_settings = SubResource("LabelSettings_dqhvv")
 
 [node name="Spacer" type="Control" parent="VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(20, 0)
-layout_mode = 3
-anchors_preset = 0
-offset_left = 1580.0
-offset_right = 1600.0
-offset_bottom = 106.0
+layout_mode = 2
+mouse_filter = 1
 
-[node name="SelectBtn" type="Button" parent="."]
-offset_right = 1600.0
-offset_bottom = 106.0
-flat = true
-
-[connection signal="pressed" from="SelectBtn" to="." method="_on_SelectBtn_pressed"]
+[node name="FocusOverlay" type="TextureRect" parent="."]
+unique_name_in_owner = true
+show_behind_parent = true
+material = SubResource("CanvasItemMaterial_j36lc")
+layout_mode = 2
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_pbh36")
