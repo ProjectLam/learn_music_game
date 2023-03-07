@@ -354,6 +354,7 @@ func _on_nakama_socket_received_match_state(data) -> void:
 				
 				_my_peer_id = peer_map[_my_session_id]
 				_users[_my_session_id].peer_id = _my_peer_id
+				_id_map[_my_peer_id] = _my_session_id
 				_match_state = MatchState.CONNECTED
 				# TODO :
 				# boradcast that you are now ready

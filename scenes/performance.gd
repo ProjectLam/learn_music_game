@@ -30,7 +30,6 @@ func _ready():
 	
 	song_loader.song_loaded.connect(_on_song_loaded)
 	
-	ingame_scores_viewer.reload_users({"self": self_user})
 	
 	if not SessionVariables.single_player:
 		assert(multiplayer.has_multiplayer_peer())
@@ -38,6 +37,10 @@ func _ready():
 		if cstate == MultiplayerPeer.CONNECTION_CONNECTED:
 			ingame_users[get_user_id(multiplayer.get_unique_id())] = self_user
 			reload_network_users()
+		else:
+			ingame_scores_viewer.reload_users({"self": self_user})
+	else:
+		ingame_scores_viewer.reload_users({"self": self_user})
 	
 	SessionVariables.song_changed.connect(_on_song_changed)
 	SessionVariables.instrument_changed.connect(_on_instrument_changed)
@@ -242,6 +245,7 @@ func reload_network_users():
 	for iuser in users:
 		if not ingame_users.has(iuser):
 			_add_new_user(iuser)
+	ingame_scores_viewer.reload_users(ingame_users)
 
 
 func _add_new_user(uid) -> IngameUser:
@@ -333,6 +337,7 @@ func broadcast_all_user_data() -> void:
 			push_error("invalid user data %s" % udata)
 			continue
 		iuser.parse_data(udata)
+	ingame_scores_viewer.reload_users(ingame_users)
 
 
 @rpc("any_peer", "call_remote", "reliable") func _set_user_data(data) -> void:
@@ -346,6 +351,7 @@ func broadcast_all_user_data() -> void:
 		push_warning("something went wrong, non existing user is sending data")
 		return
 	ingame_users[uid].parse_data(data)
+	ingame_scores_viewer.reload_users(ingame_users)
 
 
 func _on_connect_instrument() -> void:

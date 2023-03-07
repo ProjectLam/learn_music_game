@@ -43,8 +43,6 @@ var file_src_mode := FILE_SRC_MODE.REMOTE :
 	get = get_file_src_mode
 var fetcher_count := 0
 
-
-
 @onready var ui_node := $CanvasLayer
 @onready var status_node = %Status
 
@@ -157,24 +155,27 @@ func multiplayer_init_async():
 	multiplayer.peer_connected.connect(_on_peer_connected)
 
 
-func check_nakama_dev_values() -> bool:
-	if not FileAccess.file_exists("user://dev.json"):
-		return false
-	var file = FileAccess.open("user://dev.json", FileAccess.READ)
-	var content = file.get_as_text()
-	var dev = JSON.parse_string(content)
-	print("parsed dev json : ", dev)
-	if dev.has("nakama"):
-		scheme = dev["nakama"]["connection"]["protocol"]
-		host = dev["nakama"]["connection"]["address"]
-		port = int(dev["nakama"]["connection"]["port"])
-		server_key = dev["nakama"]["connection"]["server_key"]
-		
-		if dev["nakama"].has("test_user"):
-			test_email = dev["nakama"]["test_user"]["email"]
-			test_password = dev["nakama"]["test_user"]["password"]
+func check_nakama_dev_values() -> void:
+	if FileAccess.file_exists("user://dev.json"):
+		var file = FileAccess.open("user://dev.json", FileAccess.READ)
+		var content = file.get_as_text()
+		var dev = JSON.parse_string(content)
+		print("parsed dev json : ", dev)
+		if dev.has("nakama"):
+			scheme = dev["nakama"]["connection"]["protocol"]
+			host = dev["nakama"]["connection"]["address"]
+			port = int(dev["nakama"]["connection"]["port"])
+			server_key = dev["nakama"]["connection"]["server_key"]
+			
+			if dev["nakama"].has("test_user"):
+				test_email = dev["nakama"]["test_user"]["email"]
+				test_password = dev["nakama"]["test_user"]["password"]
 	
-	return false
+	if CmdArgs.arguments.has("email"):
+		test_email = CmdArgs.arguments["email"]
+	
+	if CmdArgs.arguments.has("password"):
+		test_password = CmdArgs.arguments["password"]
 
 
 func login_password(p_email: String, p_password: String) -> NakamaSession:
