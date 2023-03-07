@@ -14,7 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://b2ew1c3swawaj" path="res://scenes/instrument_selection/instrument_selection_item.tscn" id="12_dm5k6"]
 [ext_resource type="PackedScene" uid="uid://r5oy8h4p8suy" path="res://scenes/song_selection/song_selection.tscn" id="13_tr8mu"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_v02vh"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0s2k1"]
 resource_local_to_scene = true
 shader = ExtResource("3_11mtd")
 shader_parameter/indicate = true
@@ -129,7 +129,7 @@ texture = ExtResource("2_i2m6c")
 stretch_mode = 6
 
 [node name="LightLayer" parent="Background" instance=ExtResource("3_esan8")]
-material = SubResource("ShaderMaterial_v02vh")
+material = SubResource("ShaderMaterial_0s2k1")
 layout_mode = 1
 
 [node name="LeftBar" parent="." instance=ExtResource("4_cayno")]
@@ -247,6 +247,7 @@ libraries = {
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
+authoritative = true
 
 [node name="Spacer4" type="Control" parent="Right/Left/VBoxContainer"]
 custom_minimum_size = Vector2(0, 50)

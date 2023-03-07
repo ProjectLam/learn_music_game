@@ -10,7 +10,7 @@ var icons_score: int = 0: set = set_icons_score
 
 func _ready():
 	for i in range(1, 10):
-		nLeaderboard.add_item(TLeaderboardItem.new({
+		nLeaderboard.add_item(await TLeaderboardItem.new({
 			"number": i,
 			"user": {
 				"id": i,

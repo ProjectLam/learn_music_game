@@ -204,6 +204,7 @@ func _received(p_bytes : PackedByteArray):
 		else:
 			logger.error("Invalid call id received %s" % dict)
 	else:
+		# TODO : these might need reordering.
 		if dict.has("error"):
 			var res = NakamaRTAPI.Error.create(NakamaRTAPI, dict["error"])
 			emit_signal("received_error", res)

@@ -24,8 +24,8 @@ var config = ConfigFile.new()
 
 
 func _ready():
-	selected_output_device = AudioServer.get_device()
-	selected_input_device = AudioServer.capture_get_device()
+	selected_output_device = AudioServer.output_device
+	selected_input_device = AudioServer.input_device
 	selected_hw_instrument = InstrumentInput.get_instrument_name(0)
 	gameplay_instrument_data = InstrumentList.instruments.values()[0]
 	

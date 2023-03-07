@@ -21,6 +21,7 @@ driver/enable_input=true
 
 [autoload]
 
+CmdArgs="*res://autoload/cmd_args.gd"
 TmpFiles="*res://autoload/tmp_files.gd"
 WebsocketServer="*res://scenes/websocket_server.gd"
 InstrumentList="*res://autoload/instrument_list.gd"
@@ -48,10 +49,6 @@ window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
-
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/gut/plugin.cfg")
 
 [gui]
 

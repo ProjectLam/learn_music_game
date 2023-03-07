@@ -30,7 +30,6 @@ func _ready():
 	
 	song_loader.song_loaded.connect(_on_song_loaded)
 	
-	ingame_scores_viewer.reload_users({"self": self_user})
 	
 	if not SessionVariables.single_player:
 		assert(multiplayer.has_multiplayer_peer())
@@ -38,6 +37,10 @@ func _ready():
 		if cstate == MultiplayerPeer.CONNECTION_CONNECTED:
 			ingame_users[get_user_id(multiplayer.get_unique_id())] = self_user
 			reload_network_users()
+		else:
+			ingame_scores_viewer.reload_users({"self": self_user})
+	else:
+		ingame_scores_viewer.reload_users({"self": self_user})
 	
 	SessionVariables.song_changed.connect(_on_song_changed)
 	SessionVariables.instrument_changed.connect(_on_instrument_changed)
@@ -214,6 +217,7 @@ func media_pause_play():
 
 
 func _on_QuitBtn_pressed() -> void:
+	await GBackend.leave_async()
 	get_tree().change_scene_to_file("res://scenes/instrument_selection/instrument_selection.tscn")
 
 
@@ -241,6 +245,7 @@ func reload_network_users():
 	for iuser in users:
 		if not ingame_users.has(iuser):
 			_add_new_user(iuser)
+	ingame_scores_viewer.reload_users(ingame_users)
 
 
 func _add_new_user(uid) -> IngameUser:
@@ -311,7 +316,7 @@ func broadcast_all_user_data() -> void:
 
 
 @rpc("authority", "call_remote", "reliable") func _set_all_user_data(data) -> void:
-	print("rpc _set_all_user_data called with {%s}" % data)
+	print("rpc _set_all_user_data called by {%s} with {%s}" % [multiplayer.get_remote_sender_id(), data])
 	for key in data:
 		if not (key is String):
 			# invalid key
@@ -332,6 +337,7 @@ func broadcast_all_user_data() -> void:
 			push_error("invalid user data %s" % udata)
 			continue
 		iuser.parse_data(udata)
+	ingame_scores_viewer.reload_users(ingame_users)
 
 
 @rpc("any_peer", "call_remote", "reliable") func _set_user_data(data) -> void:
@@ -345,6 +351,7 @@ func broadcast_all_user_data() -> void:
 		push_warning("something went wrong, non existing user is sending data")
 		return
 	ingame_users[uid].parse_data(data)
+	ingame_scores_viewer.reload_users(ingame_users)
 
 
 func _on_connect_instrument() -> void:
@@ -366,7 +373,12 @@ func _on_good_note_started(note_index: int, time_error: float) -> void:
 
 # temporary unique user id generator. will be replaced with a user id system.
 func get_user_id(peer_id: int) -> String:
-	return "user_%s" % peer_id
+	var username: String = GBackend.multiplayer_bridge.get_peer_username(peer_id)
+	if username != "":
+		return username
+	else:
+		return "user_%s" % peer_id
+		
 
 
 func add_chat_notification(message: String) -> void:

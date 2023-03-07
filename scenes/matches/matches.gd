@@ -83,7 +83,6 @@ func load_items() -> void:
 	
 	for m in result.matches:
 		var game_match: NakamaAPI.ApiMatch = m
-		
 		if game_match.size > max_players:
 			var node_name = game_match.match_id.replace(".", "")
 			var nExisting = nItems.get_node_or_null(node_name)
