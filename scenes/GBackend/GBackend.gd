@@ -43,6 +43,8 @@ var file_src_mode := FILE_SRC_MODE.REMOTE :
 	get = get_file_src_mode
 var fetcher_count := 0
 
+var problem_with_server := false
+
 @onready var ui_node := $CanvasLayer
 @onready var status_node = %Status
 
@@ -139,6 +141,13 @@ func multiplayer_init_async():
 	
 	await login_password(test_email, test_password)
 	
+	if not session.is_exception():
+		await _init_socket()
+		await _init_multiplayer_bridge()
+
+
+# TODO : check to see if the sockets can be reused. make new ones if needed.
+func _init_socket():
 	socket = Nakama.create_socket_from(client)
 	socket.received_match_presence.connect(_on_received_match_presence)
 	socket.received_match_state.connect(_on_received_match_state)
@@ -146,6 +155,9 @@ func multiplayer_init_async():
 	socket.closed.connect(_on_socket_closed)
 	socket.received_error.connect(_on_socket_error)
 	await socket.connect_async(session)
+
+
+func _init_multiplayer_bridge():
 	multiplayer_bridge = await NakamaMultiplayerBridge.new(socket)
 	
 	# bridge_initializing is because a bug was detected that led to _init 
@@ -155,8 +167,8 @@ func multiplayer_init_async():
 		await get_tree().process_frame
 
 	if not multiplayer_bridge.valid:
-		multiplayer_bridge = null
 		multiplayer_bridge.free()
+		multiplayer_bridge = null
 	else:
 		
 		multiplayer_bridge.match_join_error.connect(_on_match_join_error)
@@ -168,7 +180,10 @@ func multiplayer_init_async():
 	
 	if multiplayer_bridge == null:
 		push_error("Invalid multiplayer bridge detected.")
-		Dialogs.problem_with_server_dialog.open()
+		if problem_with_server:
+			Dialogs.problem_with_server_dialog.open()
+		else:
+			Dialogs.connection_failed_dialog.open()
 
 
 func check_nakama_dev_values() -> void:
@@ -201,20 +216,24 @@ func login_password(p_email: String, p_password: String) -> NakamaSession:
 	session = await client.authenticate_email_async(email, password)
 	
 	if session.is_exception():
-		print("Login Error: ", session.exception)
-		if session.exception.status_code == 2:
+		push_warning("Login Error: ", session.exception)
+		if not (
+				session.exception.status_code in [
+					HTTPClient.STATUS_CONNECTED,
+					HTTPClient.STATUS_BODY
+				]):
 			# http request failed.
 			connection_status = CONNECTION_STATUS.DISCONNECTED
 			Dialogs.connection_failed_dialog.open()
 		else:
 			Dialogs.login_failed_dialog.open()
-	
-	print(session)
-	print(session.token)
-	print(session.user_id)
-	print(session.username)
-	print("session.expired: ", session.expired)
-	print("session.expire_time: ", session.expire_time)
+	else:
+		print(session)
+		print(session.token)
+		print(session.user_id)
+		print(session.username)
+		print("session.expired: ", session.expired)
+		print("session.expire_time: ", session.expire_time)
 	
 	return session
 
@@ -270,7 +289,10 @@ func list_matches_async(min_players : int = 1, max_players : int = -1, limit : i
 func create_match_async(match_name = "", params := {}) -> bool:
 	await await_finit()
 	if multiplayer_bridge == null:
-		Dialogs.problem_with_server_dialog.open()
+		if problem_with_server:
+			Dialogs.problem_with_server_dialog.open()
+		else:
+			Dialogs.connection_failed_dialog.open()
 		return true
 	await multiplayer_bridge.create_match_async(match_name, params)
 	if multiplayer_bridge.match_state != NakamaMultiplayerBridge.MatchState.CONNECTED:
@@ -278,10 +300,14 @@ func create_match_async(match_name = "", params := {}) -> bool:
 		return true
 	return false
 
+
 func leave_async() -> void:
 	await await_finit()
 	if multiplayer_bridge == null:
-		Dialogs.problem_with_server_dialog.open()
+		if problem_with_server:
+			Dialogs.problem_with_server_dialog.open()
+		else:
+			Dialogs.connection_failed_dialog.open()
 		return
 	await multiplayer_bridge.leave_async()
 
@@ -290,7 +316,10 @@ func leave_async() -> void:
 func join_match_async(p_match_id: String) -> bool:
 	await await_finit()
 	if multiplayer_bridge == null:
-		Dialogs.problem_with_server_dialog.open()
+		if problem_with_server:
+			Dialogs.problem_with_server_dialog.open()
+		else:
+			Dialogs.connection_failed_dialog.open()
 		return true
 	await multiplayer_bridge.join_match_async(p_match_id)
 	if multiplayer_bridge.match_state != NakamaMultiplayerBridge.MatchState.CONNECTED:
