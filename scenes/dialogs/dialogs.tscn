@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=6 format=3 uid="uid://7xxsq8mny2gu"]
 
 [ext_resource type="Script" path="res://scenes/dialogs/dialogs.gd" id="1_7treo"]
 [ext_resource type="Script" path="res://scenes/dialogs/ui.gd" id="2_eek1d"]
@@ -30,17 +30,33 @@ mouse_filter = 2
 script = ExtResource("2_eek1d")
 metadata/_edit_use_anchors_ = true
 
+[node name="CreateMatchFailedDialog" parent="CanvasLayer/UI" instance=ExtResource("2_vltmc")]
+unique_name_in_owner = true
+layout_mode = 1
+options = Array[String](["Ok"])
+title = "Could not create match"
+message = "Match creation failed"
+focus_close = true
+
+[node name="JoinMatchFailedDialog" parent="CanvasLayer/UI" instance=ExtResource("2_vltmc")]
+unique_name_in_owner = true
+layout_mode = 1
+options = Array[String](["Ok"])
+title = "Could not join match"
+message = "Could not join match"
+focus_close = true
+
 [node name="FileOfflineDialog" parent="CanvasLayer/UI" instance=ExtResource("2_vltmc")]
 unique_name_in_owner = true
 layout_mode = 1
-options = ["Yes", "No"]
+options = Array[String](["Yes", "No"])
 title = "Failed to download file"
 message = "Switch to offline mode?"
 
 [node name="ConnectionFailedDialog" parent="CanvasLayer/UI" instance=ExtResource("2_vltmc")]
 unique_name_in_owner = true
 layout_mode = 1
-options = ["Ok"]
+options = Array[String](["Ok"])
 title = "Connection Failed"
 message = "Connection failed to server!"
 focus_close = true
@@ -48,7 +64,7 @@ focus_close = true
 [node name="LoginFailedDialog" parent="CanvasLayer/UI" instance=ExtResource("2_vltmc")]
 unique_name_in_owner = true
 layout_mode = 1
-options = ["Ok"]
+options = Array[String](["Ok"])
 title = "Login Failed"
 message = "Your email or password were wrong!"
 focus_close = true
@@ -65,8 +81,19 @@ offset_top = -440.0
 offset_right = 300.0
 offset_bottom = 440.0
 
+[node name="ProblemWithServerDialog" parent="CanvasLayer/UI" instance=ExtResource("2_vltmc")]
+unique_name_in_owner = true
+layout_mode = 1
+options = Array[String](["Ok"])
+title = "Problem With Server Detected!"
+message = "Game needs to be updated. If you are on a browser try refreshing the page."
+focus_close = true
+
+[connection signal="option_selected" from="CanvasLayer/UI/CreateMatchFailedDialog" to="." method="_on_create_match_failed_dialog_option_selected"]
+[connection signal="option_selected" from="CanvasLayer/UI/JoinMatchFailedDialog" to="." method="_on_join_match_failed_dialog_option_selected"]
 [connection signal="option_selected" from="CanvasLayer/UI/FileOfflineDialog" to="." method="_on_file_offline_dialog_option_selected"]
 [connection signal="option_selected" from="CanvasLayer/UI/ConnectionFailedDialog" to="." method="_on_connection_failed_dialog_option_selected"]
 [connection signal="option_selected" from="CanvasLayer/UI/LoginFailedDialog" to="." method="_on_login_failed_dialog_option_selected"]
 [connection signal="option_selected" from="CanvasLayer/UI/LoginDialog" to="." method="_on_login_dialog_option_selected"]
 [connection signal="option_selected" from="CanvasLayer/UI/RegisterDialog" to="." method="_on_register_dialog_option_selected"]
+[connection signal="option_selected" from="CanvasLayer/UI/ProblemWithServerDialog" to="." method="_on_problem_with_server_dialog_option_selected"]

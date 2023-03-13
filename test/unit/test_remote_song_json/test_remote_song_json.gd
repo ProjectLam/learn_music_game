@@ -13,6 +13,9 @@ extends Control
 func _ready():
 	GBackend.skip_remote_json_load = skip_remote_songs
 	GBackend.ui_node.visible = false
+	Dialogs.disable_all()
+	Dialogs.file_offline_dialog.disabled = false
+	
 	SongsConfigPreloader.song_preloaded.connect(_on_song_preloaded)
 	for sid in PlayerVariables.songs:
 		_on_song_preloaded(PlayerVariables.songs[sid])

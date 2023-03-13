@@ -4,7 +4,8 @@ const BUTTON_SSCENE := preload("popup_button.tscn")
 
 @export var options: Array[String] = []
 @export var title := "Popup"
-@export var message := "Message"
+@export_multiline var message := "Message":
+	set = set_message
 @export var focus_close := false
 @export var focus_options := false
 
@@ -29,7 +30,7 @@ func _ready():
 		v_box.add_child(bt_node)
 #
 	title_node.text = title
-	message_node.text = message
+	message_node.text = "[center]%s[/center]" % message
 	if focus_close:
 		close_button.focus_mode = FOCUS_ALL
 	else:
@@ -43,3 +44,10 @@ func _on_close_button_pressed():
 func _on_focus_entered():
 	if focus_close:
 		close_button.grab_focus()
+
+
+func set_message(value):
+	if message != value:
+		message = value
+		if message_node:
+			message_node.text = "[center]%s[/center]" % message

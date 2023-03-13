@@ -28,6 +28,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+focus_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_r6fid")
 script = ExtResource("1_ktp4o")
 
@@ -77,15 +78,17 @@ text = "Show All >"
 [node name="Content" type="ScrollContainer" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+follow_focus = true
 
 [node name="Items" type="VBoxContainer" parent="VBoxContainer/Content"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 0
 
 [node name="RefreshTimer" type="Timer" parent="."]
+unique_name_in_owner = true
 wait_time = 3.949
 one_shot = true
-autostart = true
 
-[connection signal="timeout" from="RefreshTimer" to="." method="_on_RefreshTimer_timeout"]
+[connection signal="timeout" from="RefreshTimer" to="." method="_on_refresh_timer_timeout"]

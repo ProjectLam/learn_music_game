@@ -29,11 +29,16 @@ func _on_song_played(p_nSong: SongSelectionItem):
 	nWaitingOpponent.show()
 	nWaitingOpponent_AnimationPlayer.play("Default")
 	var match_params := {
-		"instrument": SessionVariables.instrument,
+		# currently match is one on one so PlayerVariables is sued.
+		# later SessionVariables.instrument needs to be set sooner.
+		# and there should be a lobby room for host to start game by choice.
+		"instrument": PlayerVariables.gameplay_instrument_name,
 		"song": SessionVariables.current_song.get_identifier(),
 	}
-	await GBackend.create_match_async("unnamed_match", match_params)
-
+	var err = await GBackend.create_match_async("unnamed_match", match_params)
+	if err:
+		print("Match creation failed")
+		return
 #	print("Match created: #%s - %s" % [GBackend.current_match.match_id, GBackend.current_match.label])
 	# TODO : change this when match naming is implemented.
 	print("Match created")

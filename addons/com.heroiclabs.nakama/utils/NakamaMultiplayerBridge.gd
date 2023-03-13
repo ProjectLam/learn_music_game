@@ -1,6 +1,10 @@
 extends Node
 class_name NakamaMultiplayerBridge
 
+const version_index := 1
+
+var valid := false
+
 enum MatchState {
 	SOCKET_CLOSED,
 	DISCONNECTED,
@@ -57,10 +61,7 @@ signal match_join_error (exception)
 signal match_joined ()
 
 
-func _set_readonly(_value) -> void:
-	pass
-
-
+var bridge_initializing := true
 func _init(p_nakama_socket: NakamaSocket) -> void:
 	_nakama_socket = p_nakama_socket
 	_nakama_socket.received_match_presence.connect(self._on_nakama_socket_received_match_presence)
@@ -71,6 +72,24 @@ func _init(p_nakama_socket: NakamaSocket) -> void:
 
 	_multiplayer_peer.packet_generated.connect(self._on_multiplayer_peer_packet_generated)
 	_multiplayer_peer.set_connection_status(MultiplayerPeer.CONNECTION_CONNECTING)
+	
+	var payload2 = await _nakama_socket.rpc_async("get_version")
+	var payload = await _nakama_socket.rpc_async_parsed("get_version", {})
+	
+	var index = payload.get("index")
+	if index == null:
+		push_error("Invalid Server Version Detected")
+		bridge_initializing = false
+		return
+
+	if int(index) > version_index:
+		push_error("Server version index [%d] does not match with current version index [%d]" % [index, version_index])
+		bridge_initializing = false
+		return
+	
+	print("Server version detected :", payload)
+	bridge_initializing = false
+	valid = true
 
 
 func create_match_async(match_name: String, meta_data: Dictionary) -> NakamaRTAPI.Match:
@@ -86,29 +105,20 @@ func create_match_async(match_name: String, meta_data: Dictionary) -> NakamaRTAP
 	_match_state = MatchState.JOINING
 	meta_data["name"] = match_name
 	multiplayer_peer.set_connection_status(MultiplayerPeer.CONNECTION_CONNECTING)
-	var res = await _nakama_socket.rpc_async("create_match", meta_data)
-
-	if res.is_exception():
-		_cleanup()
-		match_join_error.emit(res.get_exception())
-		return null
+	var payload = await _nakama_socket.rpc_async_parsed("create_match", meta_data)
 	
-	var payload_string = res.get("payload")
-	if not (payload_string is String):
-		_cleanup()
-		return null
-		match_join_error.emit("Invalid payload")
-	
-	var payload = JSON.parse_string(res.get("payload"))
 	if not (payload is Dictionary):
 		_cleanup()
-		match_join_error.emit("Invalid payload")
+		if payload is NakamaException:
+			match_join_error.emit(payload)
+		elif payload is NakamaAsyncResult:
+			match_join_error.emit(payload.get_exception())
 		return null
 		
 	var match_id = payload.get("match_id")
 	if not (match_id is String):
 		_cleanup()
-		match_join_error.emit("Invalid match_id")
+		match_join_error.emit(NakamaException.new("Invalid match_id", -1, -1))
 		return null
 	
 	var join_res = await _nakama_socket.join_match_async(match_id)
@@ -148,7 +158,8 @@ func join_match_async(match_id: String):
 	_match_state = MatchState.JOINING
 	
 	var join_res = await _nakama_socket.join_match_async(match_id)
-	if not (join_res is NakamaRTAPI.Match):
+	if not (join_res is NakamaRTAPI.Match) or not (join_res.self_user is NakamaRTAPI.UserPresence):
+		push_error("joining match failed")
 		_cleanup()
 		match_join_error.emit(join_res.get_exception())
 		return

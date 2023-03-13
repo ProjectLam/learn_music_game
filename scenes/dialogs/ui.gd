@@ -30,3 +30,8 @@ func set_blocking(value: bool) -> void:
 			mouse_filter = Control.MOUSE_FILTER_STOP
 		else:
 			mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+
+func disable_all() -> void:
+	for c in get_children():
+		c.set("disabled", true)

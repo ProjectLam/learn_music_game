@@ -653,8 +653,13 @@ func list_leaderboard_records_around_owner_async(p_session : NakamaSession,
 # @param p_label - The label to filter the match list on.
 # @param p_query - A query for the matches to filter.
 # Returns a task which resolves to the match list object.
-func list_matches_async(p_session : NakamaSession, p_min : int, p_max : int, p_limit : int, p_authoritative : bool,
+func list_matches_async(p_session : NakamaSession, p_min: int, p_max, p_limit, p_authoritative,
 		p_label : String, p_query : String): # -> NakamaAPI.ApiMatchList:
+	# EXPERIMENTAL : needs to be properly tested but it might be possible to pass null values.
+	assert( p_max == null or p_max is int)
+	assert( p_limit == null or p_limit is int)
+	assert( p_authoritative == null or p_authoritative is bool )
+	
 	return await _api_client.list_matches_async(p_session, p_limit, p_authoritative, p_label if p_label else null, p_min, p_max, p_query if p_query else null)
 
 # List notifications for the user with an optional cursor.

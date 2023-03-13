@@ -1,22 +1,31 @@
-extends Control
+extends PanelContainer
 class_name Matches
 
-@onready var cMatchesItem = preload("res://scenes/matches/matches_item.tscn")
+const MATCH_ITEM_SCENE = preload("res://scenes/matches/matches_item.tscn")
 
 @export var style_odd: StyleBox
 @export var style_even: StyleBox
 @export var style_mine: StyleBox
 
-@export var min_players = 0
-@export var max_players = 1
+@export var min_players = 1
+@export var max_players = -1
 @export var limit = 10
-@export var authoritative = false
+@export var authoritative = true
 @export var label = ""
 @export var query = ""
 
-@onready var nItems = find_child("Items")
+@onready var items = %Items
+@onready var refresh_timer = %RefreshTimer
+
+# (match_id, control) pairs.
+var match_items := {}
+
+# having a focused match will allow external nodes to view more details about 
+# the focused match if needed.
+var focused_match: NakamaAPI.ApiMatch
 
 signal full_initialization
+var _is_fully_initialized = false
 
 # use 'await await_finit()' to wait for full initialization.
 func await_finit():
@@ -24,88 +33,91 @@ func await_finit():
 		return
 	await full_initialization
 
-var _is_fully_initialized = false
 
 func _ready():
-	_update_style()
+	focus_entered.connect(_on_focus_entered)
 	await GBackend.await_finit()
-	await load_items()
 	_is_fully_initialized = true
 	emit_signal("full_initialization")
+	
+	_on_refresh_timer_timeout()
 
-func add_test_record():
-	var game_match: NakamaRTAPI.Match = await GBackend.create_match_async("Meowing Cats Room")
-	print("Match created: #%s - %s" % [game_match.match_id, game_match.label])
-	return game_match
 
 func _process(delta):
 	pass
 
-func _update_style() -> void:
-	for i in nItems.get_child_count():
-		var nItem: PanelContainer = nItems.get_child(i)
-		if i % 2 == 0:
-			if style_odd:
-				nItem.add_theme_stylebox_override("panel", style_odd)
-		else:
-			if style_even:
-				nItem.add_theme_stylebox_override("panel", style_even)
 
-func add_item(p_item: TMatchesItem) -> void:
-	var node_name = p_item.nakama_object.match_id.replace(".", "")
+func reload_items():
+	var match_list: NakamaAPI.ApiMatchList = await GBackend.list_matches_async(min_players, max_players, limit, label, query)
+	var included_matches: Array[NakamaAPI.ApiMatch]
+	for apimatch in match_list.matches:
+		var mtch: NakamaAPI.ApiMatch = apimatch
+		if mtch.authoritative and mtch.size > 0:
+			included_matches.append(mtch)
+	_reload_items(included_matches)
+
+
+# override reload items to pass fake items for testing.
+func _reload_items(included_matches: Array[NakamaAPI.ApiMatch]):
+	match_items.clear()
+	refresh_item_count(included_matches.size())
 	
-	var nExisting = nItems.get_node_or_null(node_name)
+	var items_children = items.get_children()
 	
-	if nExisting:
+	for i in included_matches.size():
+		var apimatch := included_matches[i]
+		var control = items_children[i]
+		control.set_apimatch(apimatch)
+		match_items[apimatch.match_id] = control
+
+func refresh_item_count(target_count: int):
+	var current_count = items.get_child_count()
+	if current_count > target_count:
+		var items_children = items.get_children()
+		for i in range(current_count - 1, current_count - target_count - 1, -1):
+			items_children[i].queue_free()
+	elif current_count < target_count:
+		for i in target_count - current_count:
+			var match_node = MATCH_ITEM_SCENE.instantiate()
+			match_node.selected.connect(_on_match_item_selected)
+			match_node.focus_entered.connect(
+					func() : _on_match_item_focus_entered(match_node))
+			items.add_child(match_node)
+
+
+func _on_refresh_timer_timeout() -> void:
+	await reload_items()
+	refresh_timer.start()
+
+
+var joining_match := false
+func _on_match_item_selected(match_id: String) -> void:
+	if joining_match:
 		return
-	
-	var nItem: MatchesItem = cMatchesItem.instantiate()
-	nItem.name = node_name
-	nItem.connect("selected", _on_Item_selected)
-	nItems.add_child(nItem, true)
-	nItem.nMatches = self
-	nItem.item = p_item
-	_update_style()
-
-func get_item(p_index: int) -> MatchesItem:
-	return nItems.get_child(p_index)
-
-func load_items() -> void:
-	if(!GBackend.is_fully_initialized()):
-		return
-	print("Loading matches...")
-	
-	var result = await GBackend.client.list_matches_async(GBackend.session, min_players, max_players, limit, authoritative, label, query)
-	
-	print("Total Matches: ", result.matches.size())
-	
-	var match_ids = []
-	
-	for m in result.matches:
-		var game_match: NakamaAPI.ApiMatch = m
-		if game_match.size > max_players:
-			var node_name = game_match.match_id.replace(".", "")
-			var nExisting = nItems.get_node_or_null(node_name)
-			if nExisting:
-				nExisting.queue_free()
-		
-		var item: TMatchesItem = await TMatchesItem.new()
-		await item.set_nakama_object(game_match)
-		add_item(item)
-		
-		match_ids.push_back(game_match.match_id)
-	
-	for i in nItems.get_children():
-		var nExisting: MatchesItem = i
-		if not match_ids.has(nExisting.item.nakama_object.match_id):
-			nExisting.queue_free()
-
-func _on_RefreshTimer_timeout() -> void:
-	await load_items()
-	$RefreshTimer.start()
-
-func _on_Item_selected(p_nItem: MatchesItem) -> void:
-	print("Match selected: ", p_nItem.item.nakama_object.match_id)
+	joining_match = true
+	print("Match selected: ", match_id)
 	SessionVariables.single_player = false
-	await GBackend.join_match_async(p_nItem.item.nakama_object.match_id)
+	var err = await GBackend.join_match_async(match_id)
+	if err:
+		joining_match = false
+		return
 	get_tree().change_scene_to_file("res://scenes/performance.tscn")
+
+
+func _on_focus_entered():
+	if focused_match:
+		var match_item = match_items.get(focused_match.match_id)
+		if is_instance_valid(match_item):
+			match_item.grab_focus()
+		elif items.get_child_count() > 0:
+			items.get_child(0).grab_focus()
+		else:
+			# TODO : check if release_focus is the right function to call.
+			release_focus()
+	else:
+		# TODO : check if release_focus is the right function to call.
+		release_focus()
+
+
+func _on_match_item_focus_entered(match_item: MatchesItem):
+	focused_match = match_item.apimatch

@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=3 format=3 uid="uid://m7n3odivyv54"]
 
 [ext_resource type="Script" path="res://scenes/GBackend/GBackend.gd" id="1_hbsao"]
 [ext_resource type="Script" path="res://scenes/GBackend/status.gd" id="2_rmt0l"]

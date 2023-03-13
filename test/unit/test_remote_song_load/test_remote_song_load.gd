@@ -12,6 +12,7 @@ var request_node
 func _ready():
 	GBackend.skip_remote_json_load = true
 	GBackend.ui_node.visible = false
+	Dialogs.disable_all()
 	audio_stream_player.finished.connect(audio_play_finished)
 	
 	remote_access.parent_url = parent_url
