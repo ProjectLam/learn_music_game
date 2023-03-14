@@ -29,6 +29,10 @@ func _on_gui_focus_changed(control: Control) -> void:
 	)
 
 func _on_focus_exitting(control: Control) -> void:
+	if not is_inside_tree():
+		# This can happen when closed the application.
+		# return to not freeze on closing.
+		return
 	if Debug.print_gui_focus:
 		print("Control exitting focus :", control.get_path())
 	var curr_scene = get_tree().current_scene

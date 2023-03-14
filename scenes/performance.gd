@@ -19,7 +19,12 @@ var target_ready_state := IngameUser.ReadyStatus.READY
 
 var performance_instrument: PerformanceInstrument
 
+# seek amount is 1 second for testing.
+var seek_amount := 1.0
+
 var is_ready := false
+var paused := true:
+	set = set_paused
 
 
 func _ready():
@@ -132,16 +137,18 @@ func sync_audiostream_remote(p_playing: bool, p_seek):
 		assert(multiplayer.has_multiplayer_peer())
 		rpc("_sync_audiostream_remote", p_playing, p_seek, -1)
 	else:
-		if p_playing:
-			audio_stream.play(p_seek)
-			if is_instance_valid(performance_instrument) and p_seek == 0:
-				# TODO : there is an issue with browser not allowing music to play unless the tab is clicked on.
-				performance_instrument.start_game(current_song)
-		else:
-			audio_stream.stream_paused = true
+		paused = not p_playing
+		_seek(p_seek)
+
+func set_paused(value: bool) -> void:
+	if paused != value:
+		paused = value
+		audio_stream.stream_paused = paused
+		performance_instrument.notes.paused = paused
+
 
 func is_music_playing() -> bool:
-	return audio_stream.playing
+	return not paused
 
 
 # The current play/pause mechanism is designed in a way that if there are any conflicts in the 
@@ -152,19 +159,21 @@ func is_music_playing() -> bool:
 		return
 	if is_music_playing() == p_playing:
 		# do nothing.
+		_seek(p_seek)
 		return
 	else:
 		if(p_playing):
 			if not is_everyone_ready():
 				print("Ignoring stream sync. Not everyone is ready.")
 				# Probably everyone is ready but we don't know that yet.
+				# TODO : Add more handling
 				return
-			audio_stream.play(p_seek)
-			# TODO : add notes seeking
-			if is_instance_valid(performance_instrument) and p_seek == 0:
-				performance_instrument.start_game(current_song)
+			paused = false 
+			_seek(p_seek)
+#			audio_stream.play(p_seek)
 		else:
-			audio_stream.stream_paused = true
+			paused = true
+			_seek(p_seek)
 			if multiplayer.get_unique_id() != multiplayer.get_remote_sender_id():
 				# relay pause command to sychronize state.
 				rpc("_sync_audiostream_remote", p_playing, p_seek, multiplayer.get_remote_sender_id())
@@ -184,10 +193,6 @@ func _on_instrument_changed():
 	_on_connect_instrument()
 
 
-func is_playing() -> bool:
-	return audio_stream.playing
-
-
 func _process(delta: float) -> void:
 	if Input.is_action_pressed("ui_cancel"):
 		get_tree().change_scene_to_file("res://scenes/instrument_selection/instrument_selection.tscn")
@@ -195,25 +200,58 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("media_pause_play"):
 		print("media_pause_play pressed")
 		media_pause_play()
+	if Input.is_action_just_pressed("media_seek_forward"):
+		print("seeking forward by %s seconds" % seek_amount)
+		media_seek(true)
+	if Input.is_action_just_pressed("media_seek_backward"):
+		print("seeking backward by %s seconds" % seek_amount)
+		media_seek(false)
 
 
+func _seek(time: float = 0):
+	if not paused:
+		audio_stream.play(time)
+		if is_instance_valid(performance_instrument):
+			performance_instrument.start_game(current_song)
+			performance_instrument.notes.paused = false
+			performance_instrument.seek(time)
+	else:
+		performance_instrument.start_game(current_song)
+		audio_stream.stream_paused = true
+		performance_instrument.seek(time)
+		performance_instrument.notes.paused = true
+	
+
+
+# performs a pause/play action.
 func media_pause_play():
 	if not SessionVariables.single_player:
 		assert(multiplayer.has_multiplayer_peer())
 		await GBackend.await_connection()
 		if multiplayer.multiplayer_peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED:
-			if is_playing():
-				sync_audiostream_remote(false, audio_stream.get_playback_position())
-			else:
-				sync_audiostream_remote(true, audio_stream.get_playback_position())
+			sync_audiostream_remote(not is_music_playing(), audio_stream.get_playback_position())
 			return
 	
-	if is_playing():
-		audio_stream.stream_paused = true
-	else:
-		audio_stream.stream_paused = false
-		if not is_playing():
-			audio_stream.play()
+	paused = is_music_playing()
+#	_seek(audio_stream.get_playback_position())
+
+
+func media_seek(forward: bool) -> void:
+	var _seek := seek_amount
+	if not forward:
+		_seek *= -1
+	var final_time := audio_stream.get_playback_position()
+	if is_instance_valid(performance_instrument):
+		final_time = performance_instrument.notes.time
+	final_time += _seek
+	if not SessionVariables.single_player:
+		assert(multiplayer.has_multiplayer_peer())
+		await GBackend.await_connection()
+		if multiplayer.multiplayer_peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED:
+			sync_audiostream_remote(is_music_playing(), final_time)
+			return
+	
+	_seek(final_time)
 
 
 func _on_QuitBtn_pressed() -> void:

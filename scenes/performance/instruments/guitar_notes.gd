@@ -28,6 +28,7 @@ func spawn_note(note_data: Note, note_index: int):
 	note.color = string_colors[note_data.string]
 	note.duration = note_data.sustain
 	note.index = note_index
+	note.instrument_notes = self
 	
 	if note_data.fret == 0:
 		# Open string
@@ -53,7 +54,7 @@ func spawn_chord(chord_data: Chord, note_index: int):
 	chord.speed = note_speed
 	add_child(chord)
 	chord.position = Vector3(0, 0, -note_speed * (chord_data.time - time))
-	
+	chord.instrument_notes = self
 	var frets := chord_data.get_frets()
 	for string in frets.size():
 		if frets[string] == -1:

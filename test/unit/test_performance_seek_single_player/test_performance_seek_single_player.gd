@@ -38,7 +38,7 @@ const PERFORMANCE_SCENE := preload("res://scenes/performance.tscn")
 var performance_node: Node
 
 func _ready():
-	Debug.print_note_spawn = true
+	Debug.print_note = true
 	GBackend.ui_node.visible = false
 	Dialogs.disable_all()
 	Dialogs.file_offline_dialog.disabled = false

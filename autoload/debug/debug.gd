@@ -5,8 +5,8 @@ extends CanvasLayer
 
 
 var _is_active: bool = true
-var print_note_spawn := false
-var print_gui_focus := false
+var print_note := false
+var print_gui_focus := true
 
 
 func _ready():
