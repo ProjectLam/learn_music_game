@@ -110,7 +110,7 @@ func init_remote_songs_json_url():
 #	else:
 #		# TODO : decinde on what to use for this.
 #		remote_songs_json_url = "http://127.0.0.1/songs.json"
-	remote_songs_json_url = "http://127.0.0.1/songs.json"
+	pass
 
 
 # use 'await await_finit()' to wait for full initialization.
