@@ -34,7 +34,7 @@ var tween_x: Tween
 
 var h_ratio: int = 1
 
-var selected_index: int
+var selected_item: Node
 
 func _ready():
 	visibility_changed.connect(_on_visibility_changed)
@@ -50,10 +50,10 @@ func _ready():
 	
 	index = 3
 	offset = index - middle_i
-	selected_index = index
 	
 	_process_items_vertically()
 	_process_items()
+	selected_item = song_items_container.get_child(index)
 	
 	if FocusManager.is_in_focus_tree():
 		grab_focus()
@@ -68,7 +68,7 @@ func _gui_input(event):
 		go_up()
 	elif event.is_action_pressed("ui_accept"):
 		accept_event()
-		_on_Item_selected(song_items_container.get_child(selected_index))
+		_on_Item_selected(song_items_container.get_child(index))
 
 
 func _unhandled_input(event):
@@ -82,7 +82,7 @@ func _unhandled_input(event):
 		go_up()
 	elif event.is_action_pressed("ui_accept"):
 		get_viewport().set_input_as_handled()
-		_on_Item_selected(song_items_container.get_child(selected_index))
+		_on_Item_selected(selected_item)
 
 func load_items():
 	items_count = 0
@@ -104,6 +104,7 @@ func load_items():
 
 
 func select_item(p_index: int, p_is_internal: bool = false) -> void:
+	selected_item = song_items_container.get_child(p_index)
 	# FIXME : this function shouldn't be called when nodes are null. But in some testings it was.
 	if tween_y:
 		tween_y.stop()
@@ -248,17 +249,19 @@ func _process_items() -> void:
 func go_down():
 	if items_count == 0:
 		return
-	selected_index = (selected_index+1) % items_count
+#	selected_index = (selected_index+1) % items_count
 	select_item((index+1) % items_count)
+	selected_item = song_items_container.get_child(index)
 
 
 func go_up():
 	if items_count == 0:
 		return
-	selected_index -= 1
-	if selected_index < 0:
-		selected_index = items_count-1
+#	selected_index -= 1
+#	if selected_index < 0:
+#		selected_index = items_count-1
 	select_item((index-1) % items_count)
+	selected_item = song_items_container.get_child(index)
 
 
 func get_song(p_index: int) -> SongSelectionItem:
@@ -277,17 +280,16 @@ func _on_Songs_item_rect_changed():
 	select_item(index, true)
 
 
-func _on_Item_selected(p_nItem: SongSelectionItem):
-	var item_index = p_nItem.get_index()
+func _on_Item_selected(p_selected: SongSelectionItem):
+#	var item_index = p_selected.get_index()
 	
-	if item_index != selected_index:
-		selected_index = item_index
-		select_item(item_index)
-		item_selected.emit(p_nItem)
+	if p_selected != selected_item:
+		select_item(p_selected.get_index())
+		item_selected.emit(p_selected)
 	else:
-		item_played.emit(p_nItem)
+		item_played.emit(p_selected)
 		if selection_mode == SELECTION_MODE.PLAY:
-			SessionVariables.current_song = PlayerVariables.songs[p_nItem.song.get_identifier()]
+			SessionVariables.current_song = PlayerVariables.songs[p_selected.song.get_identifier()]
 			SessionVariables.instrument = PlayerVariables.gameplay_instrument_name
 			SessionVariables.single_player = true
 			get_tree().change_scene_to_file("res://scenes/performance.tscn")

@@ -1,3 +1,4 @@
+@tool
 class_name InstrumentData
 extends Resource
 
@@ -125,3 +126,67 @@ var instrument_name: String :
 # big Icon for instrument.
 @export var icon: Texture2D
 @export var performance_scene: PackedScene
+
+@export var marker_positions: Array[Vector2i] = []
+
+const default_string_pitches: Array[Chromatic] = [
+	Chromatic.E2,
+	Chromatic.A2,
+	Chromatic.D3,
+	Chromatic.G3,
+	Chromatic.B3,
+	Chromatic.E4,
+]
+
+const default_fret_count := 12
+
+func get_default_tune(string: int, fret: int) -> Chromatic:
+	assert(string > 0 and string < default_string_pitches.size())
+	var base = default_string_pitches[string]
+	return base + fret
+
+
+# TODO: add string mapping that correspond to guitar strings for other instruments.
+func map_note(string,fret) -> Vector2:
+	if (
+			tuning_pitches.size() > string and default_string_pitches[string] == tuning_pitches[string]
+			and get_real_fret_count() == default_fret_count):
+		# no conversion needed
+		return Vector2(string,fret)
+	var tune = get_default_tune(string, fret)
+	# Add more fingering logic here if neede.
+	
+	# Current algortihm will just find the lowest fret possible.
+	var mstring = 0
+	while(tuning_pitches.size() - 1 > mstring and tuning_pitches[mstring + 1] < tune):
+		mstring += 1
+	var mfret = tune - tuning_pitches[mstring]
+	
+	return Vector2(mstring, mfret)
+
+func get_string_count() -> int:
+	return tuning_pitches.size()
+
+
+func get_real_fret_count() -> int:
+	return abs(transposition)
+
+
+func get_default_string_colors() -> Array[Color]:
+	return [
+		Color.PURPLE,
+		Color.GREEN,
+		Color.PINK,
+		Color.BLUE,
+		Color.YELLOW,
+		Color.RED
+	]
+
+
+func create_performance_node() -> Node:
+	if not performance_scene:
+		push_error("No performance scene set.")
+		return null
+	var ret = performance_scene.instantiate()
+	ret.set("instrument_data", self)
+	return ret

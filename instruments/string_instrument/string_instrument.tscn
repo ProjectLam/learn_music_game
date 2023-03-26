@@ -1,0 +1,56 @@
+[gd_scene load_steps=13 format=3 uid="uid://dyposltgd7vvg"]
+
+[ext_resource type="Script" path="res://instruments/string_instrument/string_instrument.gd" id="1_eo8an"]
+[ext_resource type="Script" path="res://instruments/string_instrument/strings.gd" id="1_vqd15"]
+[ext_resource type="PackedScene" uid="uid://154vi63fbykf" path="res://instruments/string_instrument/string_scene.tscn" id="2_tk1yq"]
+[ext_resource type="Script" path="res://instruments/string_instrument/frets.gd" id="4_dgaed"]
+[ext_resource type="Script" path="res://instruments/string_instrument/string_notes.gd" id="4_t2mvm"]
+[ext_resource type="PackedScene" path="res://instruments/string_instrument/fret_mesh.tscn" id="5_2of8n"]
+[ext_resource type="Script" path="res://instruments/string_instrument/lanes.gd" id="5_rpnvn"]
+[ext_resource type="PackedScene" uid="uid://d3d5rumdr4oic" path="res://instruments/string_instrument/lane_scene.tscn" id="6_wmbf5"]
+[ext_resource type="Script" path="res://instruments/string_instrument/markers.gd" id="7_li1tq"]
+[ext_resource type="PackedScene" uid="uid://bkhapivckj6d5" path="res://instruments/string_instrument/marker_scene.tscn" id="8_eggfd"]
+[ext_resource type="PackedScene" uid="uid://7wmbsua6umrl" path="res://scenes/performance/instruments/guitar_note.tscn" id="11_1tu5n"]
+[ext_resource type="PackedScene" uid="uid://d1j5vy3wif4qo" path="res://scenes/performance/instruments/guitar_chord.tscn" id="12_p46nm"]
+
+[node name="StringInstrument" type="Node3D"]
+script = ExtResource("1_eo8an")
+
+[node name="Strings" type="Node3D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("1_vqd15")
+string_scene = ExtResource("2_tk1yq")
+string_space = 1.7
+string_count = 8
+string_colors = Array[Color]([Color(0, 0, 0, 1), Color(0, 0, 0, 1), Color(0, 0, 0, 1), Color(0, 0, 0, 1), Color(0, 0, 0, 1), Color(0, 0, 0, 1), Color(0, 0, 0, 1), Color(0, 0, 0, 1)])
+string_positions = PackedFloat32Array(0, 0.142857, 0.285714, 0.428571, 0.571429, 0.714286, 0.857143, 1)
+bottom_margin = 0.325
+curvature_radius = 1.5
+
+[node name="Frets" type="Node3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.36734)
+script = ExtResource("4_dgaed")
+fret_scene = ExtResource("5_2of8n")
+nut_scene = ExtResource("5_2of8n")
+fret_count = 12
+fret_space = 30.0
+
+[node name="Lanes" type="Node3D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("5_rpnvn")
+lane_scene = ExtResource("6_wmbf5")
+
+[node name="Markers" type="Node3D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("7_li1tq")
+marker_scene = ExtResource("8_eggfd")
+marker_positions = Array[Vector2i]([Vector2i(2, 1), Vector2i(4, 1), Vector2i(6, 1), Vector2i(8, 1), Vector2i(11, 2)])
+
+[node name="Notes" type="Node3D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("4_t2mvm")
+note_scene = ExtResource("11_1tu5n")
+chord_scene = ExtResource("12_p46nm")
+
+[connection signal="changed" from="Frets" to="Strings" method="_on_frets_changed"]

@@ -40,7 +40,9 @@ func _parse_xml(parser: XMLParser) -> Song:
 	song.offset = document.get_element_by_name("offset").get_text().to_float()
 	song.cent_offset = document.get_element_by_name("centOffset").get_text().to_float()
 	song.song_length = document.get_element_by_name("songLength").get_text().to_float()
-	song.song_name_sort = document.get_element_by_name("songNameSort").get_text()
+	var songNameSort = document.get_element_by_name("songNameSort")
+	if songNameSort:
+		song.song_name_sort = songNameSort.get_text()
 	song.start_beat = document.get_element_by_name("startBeat").get_text().to_float()
 	song.average_tempo = document.get_element_by_name("averageTempo").get_text().to_float()
 	song.tuning = document.get_element_by_name("tuning").attributes.duplicate()
@@ -48,20 +50,36 @@ func _parse_xml(parser: XMLParser) -> Song:
 	song.artist_name = document.get_element_by_name("artistName").get_text()
 	song.artist_name_sort = document.get_element_by_name("artistNameSort").get_text()
 	song.album_name = document.get_element_by_name("albumName").get_text()
-	song.album_name_sort = document.get_element_by_name("albumNameSort").get_text()
-	song.album_year = document.get_element_by_name("albumYear").get_text().to_int()
-	song.album_art = document.get_element_by_name("albumArt").get_text()
+	var albumNameSort = document.get_element_by_name("albumNameSort")
+	if albumNameSort:
+		song.album_name_sort = albumNameSort.get_text()
+	var albumYear = document.get_element_by_name("albumYear")
+	if albumYear:
+		song.album_year = albumYear.get_text().to_int()
+	var albumArt = document.get_element_by_name("albumArt")
+	if albumArt:
+		song.album_art = albumArt.get_text()
 	song.crowd_speed = document.get_element_by_name("crowdSpeed").get_text().to_int()
 	song.arrangement_properties = document.get_element_by_name("arrangementProperties").attributes.duplicate()
 	song.last_conversion_date_time = document.get_element_by_name("lastConversionDateTime").get_text()
 	song.phrases = []
 	for phrase_tag in document.get_element_by_name("phrases").get_elements_by_name("phrase"):
 		var phrase := Song.SongPhrase.new()
-		phrase.disparity = phrase_tag.attributes["disparity"] == "1"
-		phrase.ignore = phrase_tag.attributes["ignore"] == "1"
-		phrase.max_difficulty = phrase_tag.attributes["maxDifficulty"].to_int()
-		phrase.name = phrase_tag.attributes["name"]
-		phrase.solo = phrase_tag.attributes["solo"] == "1"
+		var disparity = phrase_tag.attributes.get("disparity")
+		if disparity is String:
+			phrase.disparity = disparity == "1"
+		var ignore = phrase_tag.attributes.get("ignore")
+		if ignore is String:
+			phrase.ignore = ignore == "1"
+		var maxDifficulty = phrase_tag.attributes.get("maxDifficulty")
+		if maxDifficulty is String:
+			phrase.max_difficulty = maxDifficulty.to_int()
+		var name = phrase_tag.attributes.get("name")
+		if name:
+			phrase.name = name
+		var solo = phrase_tag.attributes.get("solo")
+		if solo is String:
+			phrase.solo = solo == "1"
 		song.phrases.append(phrase)
 	song.new_linked_diffs = []
 	for new_linked_diff_tag in document.get_element_by_name("newLinkedDiffs").get_elements_by_name("newLinkedDiff"):
@@ -78,7 +96,9 @@ func _parse_xml(parser: XMLParser) -> Song:
 		var phrase_iteration := Song.SongPhraseIteration.new()
 		phrase_iteration.time = phrase_iteration_tag.attributes["time"].to_float()
 		phrase_iteration.phrase_id = phrase_iteration_tag.attributes["phraseId"].to_int()
-		phrase_iteration.variation = phrase_iteration_tag.attributes["variation"]
+		var variation = phrase_iteration_tag.attributes.get("variation")
+		if variation is String:
+			phrase_iteration.variation = variation
 		phrase_iteration.hero_levels = []
 		for hero_level_tag in phrase_iteration_tag.get_elements_by_name("heroLevel"):
 			var hero_level := Song.SongPhraseIteration.HeroLevel.new()
@@ -114,34 +134,55 @@ func _parse_xml(parser: XMLParser) -> Song:
 	song.ebeats = []
 	for ebeat_tag in document.get_element_by_name("ebeats").get_elements_by_name("ebeat"):
 		var ebeat := Song.SongEbeat.new()
-		ebeat.time = ebeat_tag.attributes["time"].to_float()
-		ebeat.measure = ebeat_tag.attributes["measure"].to_int()
+		var time = ebeat_tag.attributes.get("time")
+		if time is String:
+			ebeat.time = time.to_float()
+		var measure = ebeat_tag.attributes.get("measure")
+		if measure is String:
+			ebeat.measure = measure.to_int()
 		song.ebeats.append(ebeat)
-	song.tonebase = document.get_element_by_name("tonebase").get_text()
-	song.tone_a = document.get_element_by_name("tonea").get_text()
-	song.tone_b = document.get_element_by_name("toneb").get_text()
-	song.tone_c = document.get_element_by_name("tonec").get_text()
-	song.tone_d = document.get_element_by_name("toned").get_text()
+	var tonebase = document.get_element_by_name("tonebase")
+	if tonebase:
+		song.tonebase = tonebase.get_text()
+	var tonea = document.get_element_by_name("tonea")
+	if tonea:
+		song.tone_a = tonea.get_text()
+	var toneb = document.get_element_by_name("toneb")
+	if toneb:
+		song.tone_b = toneb.get_text()
+	var tonec = document.get_element_by_name("tonec")
+	if tonec:
+		song.tone_c = tonec.get_text()
+	var toned = document.get_element_by_name("toned")
+	if toned:
+		song.tone_d = toned.get_text()
 	song.tones = []
-	for tone_tag in document.get_element_by_name("tones").get_elements_by_name("tone"):
-		var tone := Song.SongTone.new()
-		tone.time = tone_tag.attributes["time"].to_float()
-		tone.id = tone_tag.attributes["id"].to_int()
-		tone.name = tone_tag.attributes["name"]
-		song.tones.append(tone)
+	var tones = document.get_element_by_name("tones")
+	if tones:
+		for tone_tag in tones.get_elements_by_name("tone"):
+			var tone := Song.SongTone.new()
+			tone.time = tone_tag.attributes["time"].to_float()
+			tone.id = tone_tag.attributes["id"].to_int()
+			tone.name = tone_tag.attributes["name"]
+			song.tones.append(tone)
 	song.sections = []
-	for section_tag in document.get_element_by_name("sections").get_elements_by_name("section"):
-		var section := Song.SongSection.new()
-		section.name = section_tag.attributes["name"]
-		section.number = section_tag.attributes["number"].to_int()
-		section.start_time = section_tag.attributes["startTime"].to_float()
-		song.sections.append(section)
+	var sections = document.get_element_by_name("sections")
+	if sections:
+		for section_tag in sections.get_elements_by_name("section"):
+			var section := Song.SongSection.new()
+			section.name = section_tag.attributes["name"]
+			section.number = section_tag.attributes["number"].to_int()
+			section.start_time = section_tag.attributes["startTime"].to_float()
+			song.sections.append(section)
+			
 	song.events = []
-	for event_tag in document.get_element_by_name("events").get_elements_by_name("event"):
-		var event := Song.SongEvent.new()
-		event.time = event_tag.attributes["time"].to_float()
-		event.code = event_tag.attributes["code"]
-		song.events.append(event)
+	var events = document.get_element_by_name("events")
+	if events:
+		for event_tag in events.get_elements_by_name("event"):
+			var event := Song.SongEvent.new()
+			event.time = event_tag.attributes["time"].to_float()
+			event.code = event_tag.attributes["code"]
+			song.events.append(event)
 	
 	var transcription_track_tag = document.get_element_by_name("transcriptionTrack")
 	var transcription_track := Song.SongTranscriptionTrack.new()
@@ -162,8 +203,10 @@ func _parse_xml(parser: XMLParser) -> Song:
 	for hand_shape_tag in transcription_track_tag.get_element_by_name("handShapes").get_elements_by_name("handShape"):
 		pass
 	transcription_track.fret_hand_mutes = []
-	for fret_hand_mute_tag in transcription_track_tag.get_element_by_name("fretHandMutes").get_elements_by_name("frethandMute"):
-		pass
+	var fretHandMutes = transcription_track_tag.get_element_by_name("fretHandMutes")
+	if fretHandMutes:
+		for fret_hand_mute_tag in fretHandMutes.get_elements_by_name("frethandMute"):
+			pass
 	
 	song.levels = []
 	for level_tag in document.get_element_by_name("levels").get_elements_by_name("level"):
@@ -173,30 +216,74 @@ func _parse_xml(parser: XMLParser) -> Song:
 		for note_tag in level_tag.get_element_by_name("notes").get_elements_by_name("note"):
 			var note := Song.SongLevel.SongLevelNote.new()
 			note.time = note_tag.attributes["time"].to_float()
-			note.link_next = note_tag.attributes["linkNext"] == "1"
-			note.accent = note_tag.attributes["accent"] == "1"
-			note.bend = note_tag.attributes["bend"] == "1"
+			var linkNext = note_tag.attributes.get("linkNext")
+			if linkNext is String:
+				note.link_next = linkNext == "1"
+			var accent = note_tag.attributes.get("accent")
+			if accent is String:
+				note.accent = accent == "1"
+			var bend = note_tag.attributes.get("bend")
+			if bend is String:
+				note.bend = bend == "1"
 			note.fret = note_tag.attributes["fret"].to_int()
-			note.hammer_on = note_tag.attributes["hammerOn"] == "1"
-			note.harmonic = note_tag.attributes["harmonic"] == "1"
-			note.hopo = note_tag.attributes["hopo"] == "1"
-			note.ignore = note_tag.attributes["ignore"] == "1"
-			note.left_hand = note_tag.attributes["leftHand"].to_int()
-			note.mute = note_tag.attributes["mute"] == "1"
-			note.palm_mute = note_tag.attributes["palmMute"] == "1"
-			note.pluck = note_tag.attributes["pluck"].to_int()
-			note.pull_off = note_tag.attributes["pullOff"] == "1"
-			note.slap = note_tag.attributes["slap"].to_int()
-			note.slide_to = note_tag.attributes["slideTo"].to_int()
+			var hammerOn = note_tag.attributes.get("hammerOn")
+			if hammerOn is String:
+				note.hammer_on = hammerOn == "1"
+			var harmonic = note_tag.attributes.get("harmonic")
+			if harmonic is String:
+				note.harmonic = harmonic == "1"
+			var hopo = note_tag.attributes.get("hopo")
+			if hopo is String:
+				note.hopo = hopo == "1"
+			var ignore = note_tag.attributes.get("ignore")
+			if ignore is String:
+				note.ignore = ignore == "1"
+			var leftHand = note_tag.attributes.get("leftHand")
+			if leftHand is String:
+				note.left_hand = leftHand.to_int()
+			var mute = note_tag.attributes.get("mute")
+			if mute is String:
+				note.mute = mute == "1"
+			var palm_mute = note_tag.attributes.get("palmMute")
+			if palm_mute is String:
+				note.palm_mute = palm_mute == "1"
+			var pluck = note_tag.attributes.get("pluck")
+			if pluck is String:
+				note.pluck = pluck.to_int()
+			var pullOff = note_tag.attributes.get("pullOff")
+			if pullOff is String:
+				note.pull_off = pullOff == "1"
+			var slap = note_tag.attributes.get("slap")
+			if slap is String:
+				note.slap = slap.to_int()
+			var slide_to = note_tag.attributes.get("slideTo")
+			if slide_to is String:
+				note.slide_to = slide_to.to_int()
 			note.string = note_tag.attributes["string"].to_int()
-			note.sustain = note_tag.attributes["sustain"].to_float()
-			note.tremolo = note_tag.attributes["tremolo"] == "1"
-			note.harmonic_pinch = note_tag.attributes["harmonicPinch"] == "1"
-			note.pick_direction = note_tag.attributes["pickDirection"] == "1"
-			note.right_hand = note_tag.attributes["rightHand"].to_int()
-			note.slide_unpitch_to = note_tag.attributes["slideUnpitchTo"].to_int()
-			note.tap = note_tag.attributes["tap"] == "1"
-			note.vibrato = note_tag.attributes["vibrato"] == "1"
+			var sustain = note_tag.attributes.get("sustain")
+			if sustain is String:
+				note.sustain = sustain.to_float()
+			var tremolo = note_tag.attributes.get("tremolo")
+			if tremolo:
+				note.tremolo = tremolo == "1"
+			var harmonicPinch = note_tag.attributes.get("harmonicPinch")
+			if harmonicPinch is String:
+				note.harmonic_pinch = harmonicPinch == "1"
+			var pickDirection = note_tag.attributes.get("pickDirection")
+			if pickDirection is String:
+				note.pick_direction = pickDirection == "1"
+			var rightHand = note_tag.attributes.get("rightHand")
+			if rightHand is String:
+				note.right_hand = rightHand.to_int()
+			var slideUnpitchTo = note_tag.attributes.get("slideUnpitchTo")
+			if slideUnpitchTo is String:
+				note.slide_unpitch_to = slideUnpitchTo.to_int()
+			var tap = note_tag.attributes.get("tap")
+			if tap is String:
+				note.tap = tap == "1"
+			var vibrato = note_tag.attributes.get("vibrato")
+			if vibrato is String:
+				note.vibrato = vibrato == "1"
 			level.notes.append(note)
 		level.chords = []
 		for chord_tag in level_tag.get_element_by_name("chords").get_elements_by_name("chord"):
@@ -270,7 +357,7 @@ func _parse_xml_into_data(parser: XMLParser) -> XmlElementBase:
 				element.text = parser.get_node_data()
 				current_element.add_child(element)
 	
-	assert(current_element == document, "The number of opening and closing tags doesn't match")
+	assert(current_element == null or current_element == document, "The number of opening and closing tags doesn't match")
 	
 	return document
 

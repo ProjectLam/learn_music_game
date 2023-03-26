@@ -5,6 +5,7 @@ extends Node3D
 signal note_started(note_data)
 signal note_ended(note_data)
 signal good_note_started(note_index: int, timing_error: float)
+signal game_finished
 
 
 @export var note_scene: PackedScene
@@ -71,6 +72,7 @@ func _process(delta):
 	if time > end_time:
 		print("game finished!")
 		set_process(false)
+		game_finished.emit()
 
 
 func set_finished(value: bool) -> void:

@@ -59,7 +59,7 @@ func _ready():
 	
 	if SessionVariables.instrument != "":
 		var instrument_data := InstrumentList.get_instrument_by_name(SessionVariables.instrument)
-		performance_instrument = instrument_data.performance_scene.instantiate()
+		performance_instrument = instrument_data.create_performance_node()
 
 	
 	if !is_instance_valid(performance_instrument):
@@ -188,7 +188,7 @@ func _on_instrument_changed():
 		return
 	
 	var instrument_data := InstrumentList.get_instrument_by_name(SessionVariables.instrument)
-	performance_instrument = instrument_data.performance_scene.instantiate()
+	performance_instrument = instrument_data.create_performance_node()
 	add_child(performance_instrument)
 	_on_connect_instrument()
 
