@@ -6,6 +6,7 @@ extends Node3D
 var index: int = -1
 var speed: float = 10.0
 var is_playing: bool = false: set = set_is_playing, get = get_is_playing
+var instrument_notes
 
 
 var color: Color: set = set_color
@@ -13,8 +14,8 @@ var duration: float: set = set_duration
 
 
 func _process(delta):
-#	super.
-	translate(Vector3.BACK * speed * delta)
+	if not is_instance_valid(instrument_notes) or not instrument_notes.get("paused"):
+		translate(Vector3.BACK * speed * delta)
 
 
 func play():

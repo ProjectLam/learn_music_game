@@ -23,6 +23,7 @@ func spawn_note(note_data: Note, note_index: int):
 	note.color = Color.from_string("#35819d", Color.LIGHT_SKY_BLUE)
 	note.duration = note_data.sustain
 	note.index = note_index
+	note.instrument_notes = self
 	
 	# Signals
 	note.tree_exited.connect(on_note_destroyed)
@@ -45,6 +46,7 @@ func spawn_chord(chord_data: Chord, note_index: int):
 		note.color = Color.from_string("#35819d", Color.LIGHT_SKY_BLUE)
 		note.duration = chord_data.sustain
 		note.index = note_index
+		note.instrument_notes = self
 		
 		# Signals
 		note.tree_exited.connect(on_note_destroyed)
@@ -65,3 +67,9 @@ func get_notes_center_x():
 
 func on_note_destroyed():
 	note_destroyed.emit()
+
+
+func clear():
+	super.clear()
+	for c in get_children():
+		c.queue_free()
