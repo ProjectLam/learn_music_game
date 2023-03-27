@@ -6,7 +6,7 @@ musings and prototypes in Godot for new karaoke engine
 Development is currently done using Godot 4 Stable.
 
 1. Clone/download this repository to your machine.
-2. Download Godot 4 Stable the [official site](https://godotengine.org/).
+2. Download Godot 4 Stable from the [official site](https://godotengine.org/).
 3. Extract the downloaded file to a location of your choice. Godot is self-contained and does not require installation.
 4. Run the Godot 4 executable and press the `Import` button, select the folder containing this repository on your machine.
 6. Once the project opens, navigate to the `Project` menu, and select `Export`.
