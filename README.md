@@ -23,10 +23,14 @@ Assuming you've already generated the game executable create a couple of shortcu
 launch multiple instances of the game. The email/password can be almost anything, the account
 will get automatically created if it doesn't exist.
 
-1. Create a shortcut named `Player 1` for the game executable, set the `Target`
-   to `<path\to\LamKaraoke.exe> -- --email="player1@whatever.com" --password="player1pass"`.
-2. Create another shortcut named `Player 2` for the game executable, set the `Target`
-   to `<path\to\LamKaraoke.exe> -- --email="player2@whatever.com" --password="player2pass"`.
+1. Create a shortcut named `Player 1` for the game executable, set the `Target` to
+   ```
+   <path\to\LamKaraoke.exe> -- --email="player1@whatever.com" --password="player1pass"
+   ```
+2. Create another shortcut named `Player 2` for the game executable, set the `Target` to
+   ```
+   <path\to\LamKaraoke.exe> -- --email="player2@whatever.com" --password="player2pass"
+   ```
 3. Copy some songs to `%APPDATA%\Godot\app_userdata\Lam-dj\songs`.
 4. Launch `Player 1` game and `Player 2` game.
 5. As Player 1 select an instrument in the game window and press the `Get that` button.
