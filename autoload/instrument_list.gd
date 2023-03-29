@@ -3,8 +3,9 @@ extends Node
 var instruments: Dictionary = {}
 
 const default_instrument_list: Array[String] = [
-	"res://models/instruments/piano.tres",
+	"res://instruments/piano.tres",
 	"res://instruments/guitar.tres",
+	"res://instruments/phin.tres",
 ]
 
 

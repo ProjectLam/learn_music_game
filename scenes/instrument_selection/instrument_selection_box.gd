@@ -27,22 +27,22 @@ var is_ready := false
 
 
 func _ready():
-	for key in InstrumentList.instruments:
-		var ins_data: InstrumentData = InstrumentList.instruments[key]
-		var new_child := ISELECT_ITEM.instantiate()
-		new_child.instrument_data = ins_data
-		items_container.add_child(new_child)
-	
-	# Fill empty spots. This is in case instrument count is less than 3
-	while(items_container.get_children().size() < 4):
-		var a = items_container.get_children().size()
+	if InstrumentList.instruments.size() == 0:
+		push_error("Instrument list is empty")
+	else:
 		for key in InstrumentList.instruments:
 			var ins_data: InstrumentData = InstrumentList.instruments[key]
 			var new_child := ISELECT_ITEM.instantiate()
 			new_child.instrument_data = ins_data
 			items_container.add_child(new_child)
-			if items_container.get_children().size() == 4:
-				break
+		
+		var cloned_instruments: Array = InstrumentList.instruments.values()
+		# Fill empty spots. This is in case instrument count is less than 3
+		while(items_container.get_children().size() < 4):
+			for ins_data in cloned_instruments:
+				var new_child := ISELECT_ITEM.instantiate()
+				new_child.instrument_data = ins_data
+				items_container.add_child(new_child)
 	
 	var item_nodes = items_container.get_children()
 	

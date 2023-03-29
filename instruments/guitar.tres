@@ -1,15 +1,15 @@
-[gd_resource type="Resource" load_steps=4 format=3 uid="uid://d4jg01x54d3wx"]
+[gd_resource type="Resource" script_class="InstrumentData" load_steps=4 format=3 uid="uid://d4jg01x54d3wx"]
 
 [ext_resource type="Texture2D" uid="uid://c6a82b6evlny6" path="res://assets/gui/main/Guitar.png" id="1_l31w8"]
 [ext_resource type="Script" path="res://instruments/instrument_data.gd" id="1_osdpj"]
-[ext_resource type="PackedScene" uid="uid://ctfso2u2l5mam" path="res://scenes/performance/instruments/performance_guitar.tscn" id="2_rshli"]
+[ext_resource type="PackedScene" uid="uid://dyposltgd7vvg" path="res://instruments/string_instrument/string_instrument.tscn" id="2_ym3rl"]
 
 [resource]
 script = ExtResource("1_osdpj")
-instrument_name = "guitar"
 instrument_label = "Guitar"
 family = 0
-tuning_pitches = [19, 24, 29, 34, 38, 43]
+tuning_pitches = Array[int]([19, 24, 29, 34, 38, 43])
 transposition = -12
 icon = ExtResource("1_l31w8")
-performance_scene = ExtResource("2_rshli")
+performance_scene = ExtResource("2_ym3rl")
+marker_positions = Array[Vector2i]([Vector2i(2, 1), Vector2i(4, 1), Vector2i(6, 1), Vector2i(8, 1), Vector2i(11, 2)])

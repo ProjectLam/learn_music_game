@@ -222,31 +222,31 @@ class SongLevel:
 	
 	
 	class SongLevelNote:
-		var time: float
-		var link_next: bool
-		var accent: bool
-		var bend: bool
-		var fret: int
-		var hammer_on: bool
-		var harmonic: bool
-		var hopo: bool
-		var ignore: bool
-		var left_hand: int
-		var mute: bool
-		var palm_mute: bool
+		var time: float = 0.0
+		var link_next: bool = false
+		var accent: bool = false
+		var bend: bool = false
+		var fret: int = 0
+		var hammer_on: bool = false
+		var harmonic: bool = false
+		var hopo: bool = false
+		var ignore: bool = false
+		var left_hand: int = 0
+		var mute: bool = false
+		var palm_mute: bool = false
 		var pluck: int
-		var pull_off: bool
+		var pull_off: bool = false
 		var slap: int
-		var slide_to: int
-		var string: int
+		var slide_to: int = -1
+		var string: int = 0
 		var sustain: float
-		var tremolo: bool
-		var harmonic_pinch: bool
-		var pick_direction: bool
+		var tremolo: bool = false
+		var harmonic_pinch: bool = false
+		var pick_direction: bool = false
 		var right_hand: int
-		var slide_unpitch_to: int
-		var tap: bool
-		var vibrato: bool
+		var slide_unpitch_to: int = -1
+		var tap: bool = false
+		var vibrato: bool = false
 	
 	
 	class SongLevelChord:
@@ -279,14 +279,14 @@ class SongLevel:
 			var pluck: int
 			var pull_off: bool
 			var slap: int
-			var slide_to: int
+			var slide_to: int = -1
 			var string: int
 			var sustain: float
 			var tremolo: bool
 			var harmonic_pinch: bool
 			var pick_direction: bool
 			var right_hand: int
-			var slide_unpitch_to: int
+			var slide_unpitch_to: int = -1
 			var tap: bool
 			var vibrato: bool
 	

@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://d3d5rumdr4oic"]
+
+[ext_resource type="Shader" path="res://scenes/performance/lane.gdshader" id="1_7ppft"]
+[ext_resource type="Script" path="res://instruments/string_instrument/lane_scene.gd" id="2_o8kwr"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_b3027"]
+size = Vector2(1.5, 48)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_aurw6"]
+render_priority = 0
+shader = ExtResource("1_7ppft")
+shader_parameter/color = Color(0.207843, 0.505882, 0.615686, 1)
+shader_parameter/brightness = 0.5
+
+[node name="lane_scene" type="Node3D"]
+script = ExtResource("2_o8kwr")
+
+[node name="mesh" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, -24)
+mesh = SubResource("QuadMesh_b3027")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("ShaderMaterial_aurw6")
