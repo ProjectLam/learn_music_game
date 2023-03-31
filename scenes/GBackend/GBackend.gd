@@ -45,14 +45,29 @@ var fetcher_count := 0
 
 var problem_with_server := false
 
+var is_js_enabled = Engine.has_singleton("JavaScriptBridge") && OS.get_name() == 'Web'
+var _js_godotGame: JavaScriptObject
+var _js_login_callback_ref
+
 @onready var ui_node := $CanvasLayer
 @onready var status_node = %Status
 
+signal session_created
 signal full_initialization
 signal received_match_presence(p_presence: NakamaRTAPI.MatchPresenceEvent)
 signal received_match_state(p_state)
 signal peer_connected(id : int)
 signal remote_songs_json_received
+
+func _init():
+	if is_js_enabled:
+		_js_godotGame = JavaScriptBridge.get_interface("godotGame")
+		if is_instance_valid(_js_godotGame):
+			_js_login_callback_ref = JavaScriptBridge.create_callback(_login_password_js_wrapper)
+			_js_godotGame.loginCallback = _js_login_callback_ref
+		else:
+			push_error("JS enabled, but godotGame not defined")
+			is_js_enabled = false
 
 
 func _ready():
@@ -102,14 +117,12 @@ func init_json_request():
 
 
 func init_remote_songs_json_url():
-#	var os_name = OS.get_name()
-#	if Engine.has_singleton("JavaScriptBridge") and (os_name == 'HTML5' || os_name == 'Web'):
-#		var jscript_eval = JavaScriptBridge.eval("godotGame.getSongsManifest();", true)
-#		if jscript_eval is String:
-#			remote_songs_json_url = jscript_eval
-#	else:
-#		# TODO : decinde on what to use for this.
-#		remote_songs_json_url = "http://127.0.0.1/songs.json"
+	if is_js_enabled:
+		var jscript_eval = _js_godotGame.getSongsManifest()
+		if jscript_eval is String:
+			remote_songs_json_url = jscript_eval
+	#else:
+	#	remote_songs_json_url = "http://127.0.0.1/songs.json"
 	pass
 
 
@@ -139,9 +152,18 @@ func multiplayer_init_async():
 	check_nakama_dev_values()
 	client = Nakama.create_client(server_key, host, port, scheme)
 	
-	await login_password(test_email, test_password)
-	
+	# in the web build the host page will invoke login_password
+	if is_js_enabled:
+		open_js_login_dialog()
+	else:
+		login_password(test_email, test_password)
+
+	await session_created
+
 	if not session.is_exception():
+		if is_js_enabled:
+			_js_godotGame.onLoginOk()
+		
 		await _init_socket()
 		await _init_multiplayer_bridge()
 
@@ -209,7 +231,19 @@ func check_nakama_dev_values() -> void:
 		test_password = CmdArgs.arguments["password"]
 
 
-func login_password(p_email: String, p_password: String) -> NakamaSession:
+func open_js_login_dialog():
+	_js_godotGame.showLoginModal(true)
+
+
+# NOTE: In Godot 4 the callback MUST have an Array arg,
+# and when invoked from JS you MUST pass in an argument (null will do).
+# Failing to do any of the above will not produce any kind of error, the
+# callback will just fail silently!
+func _login_password_js_wrapper(p: Array):
+	login_password(p[0], p[1])
+
+
+func login_password(p_email: String, p_password: String):
 	var email = p_email
 	var password = p_password
 	
@@ -217,7 +251,9 @@ func login_password(p_email: String, p_password: String) -> NakamaSession:
 	
 	if session.is_exception():
 		push_warning("Login Error: ", session.exception)
-		if not (
+		if is_js_enabled:
+			_js_godotGame.onLoginError(session.exception.message)
+		elif not (
 				session.exception.status_code in [
 					HTTPClient.STATUS_CONNECTED,
 					HTTPClient.STATUS_BODY
@@ -235,7 +271,7 @@ func login_password(p_email: String, p_password: String) -> NakamaSession:
 		print("session.expired: ", session.expired)
 		print("session.expire_time: ", session.expire_time)
 	
-	return session
+	emit_signal("session_created")
 
 
 func _on_socket_connected():

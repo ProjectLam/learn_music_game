@@ -19,7 +19,10 @@ func _on_logout_button_pressed():
 		current_scene.go_back()
 	else:
 		await GBackend.logout()
-		Dialogs.login_dialog.open()
+		if (GBackend.is_js_enabled):
+			GBackend.open_js_login_dialog()
+		else:
+			Dialogs.login_dialog.open()
 
 
 func request_finish() -> bool:
