@@ -13,7 +13,7 @@ config_version=5
 config/name="Lam-dj"
 run/main_scene="res://scenes/instrument_selection/instrument_selection.tscn"
 config/features=PackedStringArray("4.0", "Mobile")
-run/main_scene.web="res://scenes/main.tscn"
+run/main_scene.web="res://scenes/instrument_selection/instrument_selection.tscn"
 
 [audio]
 
