@@ -6,7 +6,7 @@ extends VBoxContainer
 
 
 func _ready():
-	for item in AudioServer.get_device_list():
+	for item in AudioServer.get_output_device_list():
 		item_list.add_item(item)
 
 	for i in range(item_list.get_item_count()):
@@ -14,7 +14,7 @@ func _ready():
 			item_list.select(i)
 			break
 	
-	var mic_list : Array = AudioServer.capture_get_device_list()
+	var mic_list : Array = AudioServer.get_input_device_list()
 	for i in mic_list:
 		item_list_input.add_item(i)
 
@@ -32,7 +32,7 @@ func _ready():
 
 func _process(_delta):
 	var speaker_mode_text = "Stereo"
-	var input_device_text = AudioServer.capture_get_device()
+	var input_device_text = AudioServer.input_device
 	var speaker_mode = AudioServer.get_speaker_mode()
 
 	if speaker_mode == AudioServer.SPEAKER_SURROUND_31:
@@ -42,7 +42,7 @@ func _process(_delta):
 	elif speaker_mode == AudioServer.SPEAKER_SURROUND_71:
 		speaker_mode_text = "Surround 7.1"
 
-	$DeviceInfo.text = "Current Device: " + AudioServer.get_device() + "\n"
+	$DeviceInfo.text = "Current Device: " + AudioServer.output_device + "\n"
 	$DeviceInfo.text += "Speaker Mode: " + speaker_mode_text + "\n"
 	$DeviceInfo.text += "Input Device: " + input_device_text
 
@@ -50,7 +50,7 @@ func _process(_delta):
 func _on_set_speaker_pressed():
 	for item in item_list.get_selected_items():
 		var device = item_list.get_item_text(item)
-		AudioServer.set_device(device)
+		AudioServer.output_device = device
 		PlayerVariables.selected_output_device = device
 		PlayerVariables.save()
 
@@ -68,7 +68,7 @@ func _on_play_audio_pressed():
 func _on_set_input_pressed():
 	for item in item_list_input.get_selected_items():
 		var device = item_list_input.get_item_text(item)
-		AudioServer.capture_set_device(device)
+		AudioServer.input_device = device
 		# Not sure if we even need to keep track except to save in config file
 		PlayerVariables.selected_input_device = device
 		PlayerVariables.save()
