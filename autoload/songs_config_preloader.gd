@@ -159,6 +159,8 @@ func _handle_song_dir(song_dpath: String):
 		PlayerVariables.songs[song.get_identifier()] = song
 		print("song [%s] added" % song.get_identifier())
 		song_preloaded.emit(song)
+	else:
+		push_warning("no song found in directory : ", song_dpath)
 
 
 func _handle_local_song_zip(path: String):
