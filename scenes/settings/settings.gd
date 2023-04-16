@@ -1,8 +1,10 @@
 extends Control
 
+@onready var home_dir_label = %HomeDirLabel
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	home_dir_label.text = "Put songs in : %s" % OS.get_user_data_dir()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
