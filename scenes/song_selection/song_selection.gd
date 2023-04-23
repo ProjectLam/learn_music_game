@@ -53,7 +53,8 @@ func _ready():
 	
 	_process_items_vertically()
 	_process_items()
-	selected_item = song_items_container.get_child(index)
+	if song_items_container.get_child_count() != 0:
+		selected_item = song_items_container.get_child(index)
 	
 	if FocusManager.is_in_focus_tree():
 		grab_focus()
@@ -68,7 +69,8 @@ func _gui_input(event):
 		go_up()
 	elif event.is_action_pressed("ui_accept"):
 		accept_event()
-		_on_Item_selected(song_items_container.get_child(index))
+		if song_items_container.get_child_count() != 0:
+			_on_Item_selected(song_items_container.get_child(index))
 
 
 func _unhandled_input(event):
@@ -98,12 +100,15 @@ func load_items():
 				var nItem: SongSelectionItem = cSongSelectionItem.instantiate()
 				song_items_container.add_child(nItem)
 				nItem.connect("selected", _on_Item_selected)
+				print_debug("AAAA")
 				nItem.find_child("NameLabel").text = song.title
 				nItem.song = song
 				items_count += 1
 
 
 func select_item(p_index: int, p_is_internal: bool = false) -> void:
+	if song_items_container.get_child_count() == 0:
+		return
 	selected_item = song_items_container.get_child(p_index)
 	# FIXME : this function shouldn't be called when nodes are null. But in some testings it was.
 	if tween_y:
@@ -168,6 +173,8 @@ func select_item(p_index: int, p_is_internal: bool = false) -> void:
 
 
 func _process_items_vertically():
+	if song_items_container.get_child_count() == 0:
+		return
 	if tween_y:
 		tween_y.stop()
 	tween_y = get_tree().create_tween().set_parallel(true)
@@ -192,6 +199,8 @@ func _process_items_vertically():
 
 
 func _process_items() -> void:
+	if song_items_container.get_child_count() == 0:
+		return
 	if tween_x:
 		tween_x.stop()
 	tween_x = get_tree().create_tween().set_parallel(true)
@@ -203,7 +212,7 @@ func _process_items() -> void:
 	tween_x.set_ease(Tween.EASE_OUT_IN)
 	
 	for i in range(offset, offset + items_number):
-		
+		print_debug(song_items_container.get_child_count())
 		var nItem: SongSelectionItem = song_items_container.get_child(i)
 		if not nItem:
 			break
@@ -247,6 +256,8 @@ func _process_items() -> void:
 
 
 func go_down():
+	if song_items_container.get_child_count() == 0:
+		return
 	if items_count == 0:
 		return
 #	selected_index = (selected_index+1) % items_count
@@ -255,6 +266,8 @@ func go_down():
 
 
 func go_up():
+	if song_items_container.get_child_count() == 0:
+		return
 	if items_count == 0:
 		return
 #	selected_index -= 1
@@ -265,6 +278,8 @@ func go_up():
 
 
 func get_song(p_index: int) -> SongSelectionItem:
+	if song_items_container.get_child_count() == 0:
+		return null
 	return song_items_container.get_child(p_index)
 
 
