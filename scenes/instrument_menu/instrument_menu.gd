@@ -57,7 +57,7 @@ func _on_Settings_selected() -> void:
 
 
 func _on_Tuning_selected() -> void:
-	get_tree().change_scene_to_file("res://scenes/tuner/tuner.tscn")
+	get_tree().change_scene_to_file("res://scenes/tuner.tscn")
 
 
 func _on_Quit_selected() -> void:
