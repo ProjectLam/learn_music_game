@@ -90,7 +90,7 @@ func _process(delta):
 	var min_frequency: float
 	var max_frequency: float
 	var volume: float
-
+	
 	var previous_inputs = inputs.duplicate()
 	inputs = []
 	var pure_raw_peaks := GAudioServerManager.get_record_peaks()
@@ -122,7 +122,9 @@ func _process(delta):
 	for peak_chr in current_peaks:
 		# TODO : replace with binary search. maybe even resue peak_frequencies.
 		if not (peak_chr in peak_chromatics):
-#			if peak_chr == 24:
+			var peak = current_peaks[peak_chr]
+			if peak["started"]:
+				note_ended.emit(NoteFrequency.CHROMATIC[peak_chr])
 			current_peaks.erase(peak_chr)
 	
 	for peak in peaks:
@@ -152,9 +154,10 @@ func _process(delta):
 			current_volume = peak.y
 			if current_volume > volume_start_threshold:
 				current_peaks[chromatic] = {
-					"frequency" : peak.x,
-					"volume" : current_volume,
-					"duration" : 0,
+					"frequency": peak.x,
+					"volume": current_volume,
+					"duration": 0,
+					"started": false,
 				}
 				var fmag =  GAudioServerManager.get_volume(peak.x*0.3, peak.x*3.0)
 				var ferg = clamp((60.0 + linear_to_db(fmag)) / 60.0, 0, 1)
@@ -164,6 +167,8 @@ func _process(delta):
 					if pvol > mvol:
 						mvol = pvol
 				if (total_energy > last_total_energy or peak.y > 0.95*ferg) and peak.y > mvol*0.9 :
+					current_peaks[chromatic]["started"] = true
+					note_started.emit(NoteFrequency.CHROMATIC[chromatic])
 					print("Microphone input note %s(%s, %s Hz) started at frame :" % [NoteFrequency.CHROMATIC_NAMES[peak.z], peak.z, str(peak.x)], Engine.get_frames_drawn(), ", clearity =", current_volume, ", time =", time_passed)
 		
 	last_total_energy = total_energy
