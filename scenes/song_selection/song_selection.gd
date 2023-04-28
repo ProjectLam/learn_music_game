@@ -100,7 +100,6 @@ func load_items():
 				var nItem: SongSelectionItem = cSongSelectionItem.instantiate()
 				song_items_container.add_child(nItem)
 				nItem.connect("selected", _on_Item_selected)
-				print_debug("AAAA")
 				nItem.find_child("NameLabel").text = song.title
 				nItem.song = song
 				items_count += 1
@@ -212,7 +211,6 @@ func _process_items() -> void:
 	tween_x.set_ease(Tween.EASE_OUT_IN)
 	
 	for i in range(offset, offset + items_number):
-		print_debug(song_items_container.get_child_count())
 		var nItem: SongSelectionItem = song_items_container.get_child(i)
 		if not nItem:
 			break

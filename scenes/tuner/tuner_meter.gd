@@ -1,15 +1,17 @@
-extends Control
+extends PanelContainer
 
 var cNotesItem = preload("res://scenes/tuner/notes_item.tscn")
+
 
 @export var pitch_freq: float = 440
 @export var freq_start_div: float = 1
 @export var freq_end_div: float = 1
 @export var volume_sensitivity := 0.5
+@export_range(0.01,1.0) var note_font_size_ratio := 0.05
 
 @onready var note_items = %Notes.find_child("Items")
-@onready var note_label = %NoteLabel
-@onready var volume_label = %VolumeLabel
+#@onready var note_label = %NoteLabel
+#@onready var volume_label = %VolumeLabel
 @onready var stick = %Stick
 
 var mnemonics = [
@@ -34,11 +36,23 @@ var stick_end = 60
 
 func _ready():
 	for note in mnemonics:
-		var nItem = cNotesItem.instantiate()
-		note_items.add_child(nItem)
-		nItem.find_child("MnemonicLabel").text = note
+		var item_node = cNotesItem.instantiate()
+		item_node.find_child("MnemonicLabel").text = note
+		note_items.add_child(item_node)
 	
 	GAudioServerManager.set_record_peaks_clarity(0.4)
+	refresh()
+	
+	resized.connect(refresh)
+
+
+func refresh():
+	if not is_inside_tree():
+		return
+	
+	for item_node in note_items.get_children():
+		item_node.find_child("MnemonicLabel")["theme_override_font_sizes/font_size"] = size.y*note_font_size_ratio
+		item_node.custom_minimum_size.x = size.y*note_font_size_ratio*2.0
 
 
 func note_freq(i: int) -> float:
@@ -95,7 +109,7 @@ func _process(delta):
 		var sub_freq_ratio: float = sub_freq / sub_freq_range
 		
 		var note = mnemonics[note_i]
-		note_label.text = "Note: " + note
+#		note_label.text = "Note: " + note
 		var isw = note_items.get_rect().size.x / mnemonics.size()
 		var pos = note_items.get_parent().size.x / 2 - isw * note_i - isw/2
 		

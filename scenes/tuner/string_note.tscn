@@ -1,0 +1,51 @@
+[gd_scene load_steps=4 format=3 uid="uid://d0uu3trtqhtup"]
+
+[ext_resource type="Script" path="res://scenes/tuner/string_note.gd" id="1_6fjvb"]
+[ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="2_d8er7"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k3oa8"]
+content_margin_left = 3.0
+content_margin_top = 3.0
+content_margin_right = 3.0
+content_margin_bottom = 3.0
+bg_color = Color(0.180392, 0.266667, 0.360784, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.521569, 0.117647, 0.458824, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="StringNote" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_6fjvb")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(40, 15)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -7.5
+offset_top = -9.5
+offset_right = 7.5
+offset_bottom = 9.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_k3oa8")
+
+[node name="Label" type="Label" parent="PanelContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("2_d8er7")
+theme_override_font_sizes/font_size = 30
+text = "55"
+horizontal_alignment = 1
+vertical_alignment = 2

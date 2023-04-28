@@ -26,9 +26,11 @@ func get_inputs()->Array:
 
 func activate():
 	is_active = true
+	set_physics_process(true)
 	activated.emit()
 
 
 func deactivate():
 	is_active = false
+	set_physics_process(true)
 	deactivated.emit()
