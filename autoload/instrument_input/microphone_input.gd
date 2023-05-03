@@ -74,6 +74,8 @@ var min_retrigger_interval := 0.1
 
 func _on_new_frame_processed(delta, last_pure_raw_peaks):
 	time_passed += delta
+	if not is_active:
+		return
 	var total_magnitude: float = GAudioServerManager.get_volume(20.0, 22000.0)
 	var total_energy: float = clamp((60.0 + linear_to_db(total_magnitude)) / 60.0, 0, 1)
 	
@@ -129,9 +131,11 @@ func _on_new_frame_processed(delta, last_pure_raw_peaks):
 			if start_state == START_STATE.STARTING and next_duration > note_transition_trigger:
 				current_peaks[chromatic]["start_state"] = START_STATE.STARTED
 				start_note(chromatic)
-				print("Microphone input note %s(%s, %s Hz) started at frame :" % [NoteFrequency.CHROMATIC_NAMES[peak.z], peak.z, str(peak.x)], Engine.get_frames_drawn(), ", clearity =", current_volume, ", time =", time_passed)
-			elif current_volume > prev_volume*4.2:
-				print("Microphone input. note %d retrigger detected. spike ratio : %s" % [chromatic, str(current_volume/prev_volume)])
+				if Debug.print_note:
+					print("Microphone input note %s(%s, %s Hz) started at frame :" % [NoteFrequency.CHROMATIC_NAMES[peak.z], peak.z, str(peak.x)], Engine.get_frames_drawn(), ", clearity =", current_volume, ", time =", time_passed)
+			elif current_volume > prev_volume*2.2:
+				if Debug.print_note:
+					print("Microphone input. note %d retrigger detected. spike ratio : %s" % [chromatic, str(current_volume/prev_volume)])
 				retrigger = true
 		else:
 			retrigger = true

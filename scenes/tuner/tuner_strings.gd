@@ -7,6 +7,7 @@ extends PanelContainer
 var string_nodes := []
 
 func _ready():
+	InstrumentInput.connect_instrument(InstrumentInput.find_child("MicrophoneInput").get_index())
 	if not Engine.is_editor_hint():
 		InstrumentInput.microphone_input.note_started.connect(_on_note_started)
 		InstrumentInput.microphone_input.note_ended.connect(_on_note_ended)
