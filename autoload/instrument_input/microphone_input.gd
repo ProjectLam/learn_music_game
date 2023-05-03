@@ -39,6 +39,7 @@ enum START_STATE {
 	NONE,
 	STARTING,
 	STARTED,
+	STOPPING,
 }
 
 const fadj_lfactor := 1.0/22000.0
@@ -47,7 +48,7 @@ const fadj_lfactor := 1.0/22000.0
 
 # note transition timer
 # after x seconds of presistance, the trigger will happen.
-var note_transition_trigger := 0.03
+var note_transition_trigger := 0.05
 
 # key : value = chromatic_index : { frequency, volume, duration, start_state }
 var current_peaks := {}
@@ -56,6 +57,7 @@ func _ready():
 	super._ready()
 	
 	deactivated.connect(_on_deactivated)
+	GAudioServerManager.new_frame_processed.connect(_on_new_frame_processed)
 
 
 # the current algorithm does not support note trails or chords.
@@ -64,19 +66,16 @@ func _ready():
 var time_passed = 0.0
 var start_volume := 0.0
 var last_total_energy := 0.0
-var accum_delta := 0.0
+#var accum_delta := 0.0
 var last_started_note_chromatic := -1
 var last_started_note_timstamp := 0.0
 var min_retrigger_interval := 0.1
 
-func _physics_process(delta):
+
+func _on_new_frame_processed(delta, last_pure_raw_peaks):
 	time_passed += delta
-	super._process(delta)
 	var total_magnitude: float = GAudioServerManager.get_volume(20.0, 22000.0)
 	var total_energy: float = clamp((60.0 + linear_to_db(total_magnitude)) / 60.0, 0, 1)
-	
-	delta += accum_delta
-	accum_delta = 0.0
 	
 	var min_frequency: float
 	var max_frequency: float
@@ -84,9 +83,8 @@ func _physics_process(delta):
 	
 	var previous_inputs = inputs.duplicate()
 	inputs = []
-	last_pure_raw_peaks = GAudioServerManager.get_record_peaks()
 	var prev_last_raw_peak := last_raw_peaks
-	last_raw_peaks = set_volumes(last_pure_raw_peaks)
+	last_raw_peaks = last_pure_raw_peaks
 	var peaks := adjust_and_filter_peaks(last_raw_peaks)
 	var prev_peaks := current_peaks.duplicate(true)
 	
@@ -94,14 +92,22 @@ func _physics_process(delta):
 	for peak in peaks:
 		peak_chromatics.append(int(peak.z))
 	
-	for peak_chr in current_peaks:
+	var cp_keys = current_peaks.keys()
+	for peak_chr in cp_keys:
 		# TODO : replace with binary search. maybe even resue peak_frequencies.
+		var peak = current_peaks[peak_chr]
 		if not (peak_chr in peak_chromatics):
-			var peak = current_peaks[peak_chr]
 			if peak["start_state"] == START_STATE.STARTED:
-				end_note(peak_chr)
-			current_peaks.erase(peak_chr)
-	
+				# the note will be removed in the next audio frame.
+#				end_note(peak_chr)
+				current_peaks[peak_chr]["start_state"] = START_STATE.STOPPING
+				current_peaks[peak_chr]["volume"] = peak["volume"]*0.5
+				current_peaks[peak_chr]["duration"] += delta
+			else:
+				current_peaks.erase(peak_chr)
+		elif peak["start_state"] == START_STATE.STOPPING:
+			peak["start_state"] = START_STATE.STARTED
+			
 	var pc = current_peaks.duplicate(true)
 	for peak in peaks:
 		var prev_volume := 0.0
@@ -244,19 +250,6 @@ func adjust_and_filter_peaks(peaks) -> PackedVector3Array:
 
 func get_inputs()->Array:
 	return inputs
-
-
-func set_volumes(input_peaks: PackedVector2Array) -> PackedVector2Array:
-	const MIN_DB = 60
-	var ret = input_peaks.duplicate()
-	for index in input_peaks.size():
-		var peak := input_peaks[index]
-		var frequency: float = peak.x
-		var magnitude: float = GAudioServerManager.get_volume(frequency*(1 - 3.0*pitch_accuracy), frequency*(1 + 3.0*pitch_accuracy))
-		var energy: float = clamp((MIN_DB + linear_to_db(magnitude)) / MIN_DB, 0, 1)
-		ret[index].y = energy
-	
-	return ret
 
 
 func _on_deactivated() -> void:
