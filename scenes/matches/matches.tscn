@@ -1,19 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://ba0n1dg0yxtpj"]
+[gd_scene load_steps=8 format=3 uid="uid://ba0n1dg0yxtpj"]
 
 [ext_resource type="Script" path="res://scenes/matches/matches.gd" id="1_ktp4o"]
 [ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="2_it6lb"]
+[ext_resource type="PackedScene" uid="uid://byvabor24b1r5" path="res://scenes/ui_elements/glass_panel_vlist.tscn" id="2_pke6e"]
+[ext_resource type="PackedScene" uid="uid://dl4nx74f03pxd" path="res://scenes/ui_elements/glass_panel.tscn" id="3_1c6a1"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r6fid"]
-bg_color = Color(0.737255, 0.00392157, 0.917647, 0.282353)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(1, 1, 1, 0.364706)
-corner_radius_top_left = 25
-corner_radius_top_right = 25
-corner_radius_bottom_right = 25
-corner_radius_bottom_left = 25
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p2mpx"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_ieun8"]
 line_spacing = 0.0
@@ -29,24 +21,27 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_r6fid")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_p2mpx")
 script = ExtResource("1_ktp4o")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="glass_panel2" parent="." instance=ExtResource("2_pke6e")]
 layout_mode = 2
 
-[node name="Header" type="Control" parent="VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="glass_panel2"]
+layout_mode = 2
+
+[node name="Header" type="Control" parent="glass_panel2/VBoxContainer"]
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Header"]
+[node name="HBoxContainer" type="HBoxContainer" parent="glass_panel2/VBoxContainer/Header"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TitleLabel" type="Label" parent="VBoxContainer/Header/HBoxContainer"]
+[node name="TitleLabel" type="Label" parent="glass_panel2/VBoxContainer/Header/HBoxContainer"]
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
 text = "MATCHES"
@@ -54,16 +49,16 @@ label_settings = SubResource("LabelSettings_ieun8")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Spacer" type="Control" parent="VBoxContainer/Header/HBoxContainer"]
+[node name="Spacer" type="Control" parent="glass_panel2/VBoxContainer/Header/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Actions" type="HBoxContainer" parent="VBoxContainer/Header/HBoxContainer"]
+[node name="Actions" type="HBoxContainer" parent="glass_panel2/VBoxContainer/Header/HBoxContainer"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 alignment = 1
 
-[node name="ShowAllBtn" type="Button" parent="VBoxContainer/Header/HBoxContainer/Actions"]
+[node name="ShowAllBtn" type="Button" parent="glass_panel2/VBoxContainer/Header/HBoxContainer/Actions"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 focus_mode = 0
@@ -75,16 +70,20 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_7japh")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_7japh")
 text = "Show All >"
 
-[node name="Content" type="ScrollContainer" parent="VBoxContainer"]
+[node name="Content" type="ScrollContainer" parent="glass_panel2/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 follow_focus = true
 
-[node name="Items" type="VBoxContainer" parent="VBoxContainer/Content"]
+[node name="Items" type="VBoxContainer" parent="glass_panel2/VBoxContainer/Content"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 0
+
+[node name="glass_panel" parent="." instance=ExtResource("3_1c6a1")]
+visible = false
+layout_mode = 2
 
 [node name="RefreshTimer" type="Timer" parent="."]
 unique_name_in_owner = true

@@ -3,22 +3,23 @@
 [ext_resource type="Script" path="res://scenes/instrument_selection/instrument_selection.gd" id="1_wh42a"]
 [ext_resource type="Texture2D" uid="uid://dxcxogdwflpig" path="res://assets/gui/main/background.png" id="2_i41le"]
 [ext_resource type="Shader" path="res://shaders/LightingBackground.gdshader" id="3_hqkqb"]
-[ext_resource type="PackedScene" uid="uid://bh1htbm1t4nlb" path="res://scenes/ui_elements/light_layer/light_layer.tscn" id="3_p3vom"]
 [ext_resource type="PackedScene" uid="uid://bpsr6id66vxk2" path="res://scenes/left_bar/left_bar.tscn" id="4_2ntam"]
 [ext_resource type="Texture2D" uid="uid://ixiw3q117w38" path="res://assets/gui/main/txt-choose-instrument.png" id="6_nrcw0"]
 [ext_resource type="Texture2D" uid="uid://cewj8er7rgjhq" path="res://assets/gui/icons/left.png" id="7_572yt"]
 [ext_resource type="PackedScene" uid="uid://cc35yv0evrob7" path="res://scenes/instrument_selection/instrument_selection_box.tscn" id="7_aayu2"]
 [ext_resource type="Texture2D" uid="uid://dfxg2q3m2tb8m" path="res://assets/gui/icons/right.png" id="8_j2st0"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_m54hm"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u6878"]
 resource_local_to_scene = true
 shader = ExtResource("3_hqkqb")
 shader_parameter/indicate = true
 shader_parameter/size = null
-shader_parameter/lighting_point = Vector2(0.5, 0.5)
 shader_parameter/indicating_power = 1.0
 shader_parameter/radius_base = 0.5
 shader_parameter/static_power = 0.4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_utcdj"]
+bg_color = Color(0.0862745, 0.0313726, 0.176471, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0vvxe"]
 
@@ -103,9 +104,15 @@ grow_vertical = 2
 texture = ExtResource("2_i41le")
 stretch_mode = 6
 
-[node name="LightLayer" parent="Background" instance=ExtResource("3_p3vom")]
-material = SubResource("ShaderMaterial_m54hm")
+[node name="LightLayer" type="Panel" parent="Background"]
+material = SubResource("ShaderMaterial_u6878")
 layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_utcdj")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 1
@@ -117,7 +124,6 @@ grow_vertical = 2
 
 [node name="LeftBar" parent="HBoxContainer" instance=ExtResource("4_2ntam")]
 layout_mode = 2
-size_flags_vertical = 4
 
 [node name="Right" type="Control" parent="HBoxContainer"]
 layout_mode = 2

@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://chhf5tjr2l5py"]
+[gd_scene load_steps=17 format=3 uid="uid://chhf5tjr2l5py"]
 
 [ext_resource type="Script" path="res://scenes/instrument_menu/instrument_menu.gd" id="1_66tmw"]
 [ext_resource type="Texture2D" uid="uid://dxcxogdwflpig" path="res://assets/gui/main/background.png" id="2_hvina"]
@@ -11,15 +11,15 @@
 [ext_resource type="PackedScene" uid="uid://bvqgs74gtjvsj" path="res://scenes/instrument_menu/instrument_menu_action.tscn" id="8_88a38"]
 [ext_resource type="Texture2D" uid="uid://cxpbdejhyhyxu" path="res://assets/gui/icons/lyrics.png" id="9_mhjhx"]
 [ext_resource type="Texture2D" uid="uid://drypojyiolrwq" path="res://assets/gui/icons/settings.png" id="10_oow68"]
+[ext_resource type="Texture2D" uid="uid://chddge5ps0ym4" path="res://assets/gui/icons/filters.png" id="11_ay8bl"]
 [ext_resource type="Texture2D" uid="uid://de686ygqs5poa" path="res://assets/gui/icons/logout.png" id="11_quq3v"]
 [ext_resource type="PackedScene" uid="uid://b2ew1c3swawaj" path="res://scenes/instrument_selection/instrument_selection_item.tscn" id="12_p1ru3"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_sav0i"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r2fi2"]
 resource_local_to_scene = true
 shader = ExtResource("3_f3xdb")
 shader_parameter/indicate = true
 shader_parameter/size = null
-shader_parameter/lighting_point = Vector2(0.5, 0.5)
 shader_parameter/indicating_power = 1.0
 shader_parameter/radius_base = 0.5
 shader_parameter/static_power = 0.4
@@ -58,7 +58,7 @@ texture = ExtResource("2_hvina")
 stretch_mode = 6
 
 [node name="LightLayer" parent="Background" instance=ExtResource("3_4tmb3")]
-material = SubResource("ShaderMaterial_sav0i")
+material = SubResource("ShaderMaterial_r2fi2")
 layout_mode = 1
 
 [node name="LeftBar" parent="." instance=ExtResource("4_jve2t")]
@@ -92,14 +92,6 @@ grow_vertical = 2
 [node name="Spacer" type="Control" parent="Right/Left/VBoxContainer"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
-
-[node name="BackBtn" type="Button" parent="Right/Left/VBoxContainer"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.980392, 0, 1, 1)
-theme_override_font_sizes/font_size = 18
-text = "< Back"
-flat = true
-alignment = 0
 
 [node name="InstrumentTitle" type="Label" parent="Right/Left/VBoxContainer"]
 unique_name_in_owner = true
@@ -174,57 +166,37 @@ metadata/_edit_group_ = true
 [node name="PlayButton" parent="Right/Left/VBoxContainer/Actions" instance=ExtResource("8_88a38")]
 unique_name_in_owner = true
 layout_mode = 2
+text = "Play A Song"
+icon = ExtResource("6_rhfwd")
 metadata/_edit_group_ = true
-
-[node name="Icon" parent="Right/Left/VBoxContainer/Actions/PlayButton/HBoxContainer/HBoxContainer" index="1"]
-texture = ExtResource("6_rhfwd")
-
-[node name="Label" parent="Right/Left/VBoxContainer/Actions/PlayButton/HBoxContainer/HBoxContainer" index="3"]
-text = "PLAY A SONG"
 
 [node name="MatchesButton" parent="Right/Left/VBoxContainer/Actions" instance=ExtResource("8_88a38")]
 unique_name_in_owner = true
 layout_mode = 2
+text = "Matches"
+icon = ExtResource("9_mhjhx")
 metadata/_edit_group_ = true
-
-[node name="Icon" parent="Right/Left/VBoxContainer/Actions/MatchesButton/HBoxContainer/HBoxContainer" index="1"]
-texture = ExtResource("9_mhjhx")
-
-[node name="Label" parent="Right/Left/VBoxContainer/Actions/MatchesButton/HBoxContainer/HBoxContainer" index="3"]
-text = "MATCHES"
 
 [node name="TuningButton" parent="Right/Left/VBoxContainer/Actions" instance=ExtResource("8_88a38")]
 unique_name_in_owner = true
 layout_mode = 2
+text = "Tuner"
+icon = ExtResource("11_ay8bl")
 metadata/_edit_group_ = true
-
-[node name="Icon" parent="Right/Left/VBoxContainer/Actions/TuningButton/HBoxContainer/HBoxContainer" index="1"]
-texture = ExtResource("9_mhjhx")
-
-[node name="Label" parent="Right/Left/VBoxContainer/Actions/TuningButton/HBoxContainer/HBoxContainer" index="3"]
-text = "TUNER"
 
 [node name="SettingsButton" parent="Right/Left/VBoxContainer/Actions" instance=ExtResource("8_88a38")]
 unique_name_in_owner = true
 layout_mode = 2
+text = "Settings"
+icon = ExtResource("10_oow68")
 metadata/_edit_group_ = true
-
-[node name="Icon" parent="Right/Left/VBoxContainer/Actions/SettingsButton/HBoxContainer/HBoxContainer" index="1"]
-texture = ExtResource("10_oow68")
-
-[node name="Label" parent="Right/Left/VBoxContainer/Actions/SettingsButton/HBoxContainer/HBoxContainer" index="3"]
-text = "SETTINGS"
 
 [node name="QuitButton" parent="Right/Left/VBoxContainer/Actions" instance=ExtResource("8_88a38")]
 unique_name_in_owner = true
 layout_mode = 2
+text = "Quit"
+icon = ExtResource("11_quq3v")
 metadata/_edit_group_ = true
-
-[node name="Icon" parent="Right/Left/VBoxContainer/Actions/QuitButton/HBoxContainer/HBoxContainer" index="1"]
-texture = ExtResource("11_quq3v")
-
-[node name="Label" parent="Right/Left/VBoxContainer/Actions/QuitButton/HBoxContainer/HBoxContainer" index="3"]
-text = "QUIT"
 
 [node name="Right" type="Control" parent="Right"]
 layout_mode = 1
@@ -247,7 +219,6 @@ offset_top = -254.5
 offset_right = 254.5
 offset_bottom = 254.5
 
-[connection signal="pressed" from="Right/Left/VBoxContainer/BackBtn" to="." method="_on_BackBtn_pressed"]
 [connection signal="selected" from="Right/Left/VBoxContainer/Actions/LearnButton" to="." method="_on_Learn_selected"]
 [connection signal="selected" from="Right/Left/VBoxContainer/Actions/PlayButton" to="." method="_on_Play_selected"]
 [connection signal="selected" from="Right/Left/VBoxContainer/Actions/MatchesButton" to="." method="_on_Matches_selected"]
@@ -255,9 +226,3 @@ offset_bottom = 254.5
 [connection signal="selected" from="Right/Left/VBoxContainer/Actions/SettingsButton" to="." method="_on_Settings_selected"]
 [connection signal="selected" from="Right/Left/VBoxContainer/Actions/QuitButton" to="." method="_on_Quit_selected"]
 [connection signal="pressed" from="Right/Right/InstrumentBox" to="." method="_on_instrument_box_pressed"]
-
-[editable path="Right/Left/VBoxContainer/Actions/PlayButton"]
-[editable path="Right/Left/VBoxContainer/Actions/MatchesButton"]
-[editable path="Right/Left/VBoxContainer/Actions/TuningButton"]
-[editable path="Right/Left/VBoxContainer/Actions/SettingsButton"]
-[editable path="Right/Left/VBoxContainer/Actions/QuitButton"]

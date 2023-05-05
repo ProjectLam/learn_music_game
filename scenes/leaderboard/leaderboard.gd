@@ -50,14 +50,14 @@ func load_items() -> void:
 	if not GBackend.connection_status != GBackend.CONNECTION_STATUS.CONNECTED:
 		return
 	
-	var leaderboard_id = "TestBoard"
-	var result: NakamaAPI.ApiLeaderboardRecordList = await GBackend.client.list_leaderboard_records_async(GBackend.session, leaderboard_id)
-	if result.is_exception():
-		print("An error occurred while loading leaderboard: %s" % result)
-		return
-	
-	for r in result.records:
-		var record: NakamaAPI.ApiLeaderboardRecord = r
-		var item: TLeaderboardItem = await TLeaderboardItem.new()
-		await item.set_nakama_object(record)
-		add_item(item)
+#	var leaderboard_id = "TestBoard"
+#	var result: NakamaAPI.ApiLeaderboardRecordList = await GBackend.client.list_leaderboard_records_async(GBackend.session, leaderboard_id)
+#	if result.is_exception():
+#		print("An error occurred while loading leaderboard: %s" % result)
+#		return
+#
+#	for r in result.records:
+#		var record: NakamaAPI.ApiLeaderboardRecord = r
+#		var item: TLeaderboardItem = await TLeaderboardItem.new()
+#		await item.set_nakama_object(record)
+#		add_item(item)

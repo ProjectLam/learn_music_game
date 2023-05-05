@@ -1,0 +1,340 @@
+[gd_scene load_steps=23 format=3 uid="uid://dktnaraphwpsr"]
+
+[ext_resource type="Script" path="res://scenes/game_lobby/game_lobby.gd" id="1_biyfc"]
+[ext_resource type="Texture2D" uid="uid://dxcxogdwflpig" path="res://assets/gui/main/background.png" id="1_f8xbt"]
+[ext_resource type="Shader" path="res://shaders/LightingBackground.gdshader" id="2_dfmqi"]
+[ext_resource type="PackedScene" uid="uid://bpsr6id66vxk2" path="res://scenes/left_bar/left_bar.tscn" id="3_6nvfy"]
+[ext_resource type="Texture2D" uid="uid://4jhy1ls4ta6u" path="res://assets/gui/blur.jpg" id="4_4wboe"]
+[ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="5_hjdi7"]
+[ext_resource type="PackedScene" uid="uid://dl4nx74f03pxd" path="res://scenes/ui_elements/glass_panel.tscn" id="5_tqolk"]
+[ext_resource type="PackedScene" uid="uid://b133uclm8sivo" path="res://scenes/chat/chat_input.tscn" id="8_jw2p5"]
+[ext_resource type="PackedScene" uid="uid://d3o4oipt5jw2b" path="res://scenes/ui_elements/glass_panel_element_even.tscn" id="9_iodg5"]
+[ext_resource type="PackedScene" uid="uid://byvabor24b1r5" path="res://scenes/ui_elements/glass_panel_vlist.tscn" id="9_k3g2w"]
+[ext_resource type="PackedScene" uid="uid://b15ivw3lwhasd" path="res://scenes/ui_elements/basic_rounded_button_01.tscn" id="9_mgxxf"]
+[ext_resource type="PackedScene" uid="uid://dj6q8o76cf5vf" path="res://scenes/ui_elements/glass_panel_element_odd.tscn" id="11_3rqbt"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_as5wc"]
+resource_local_to_scene = true
+shader = ExtResource("2_dfmqi")
+shader_parameter/indicate = true
+shader_parameter/size = null
+shader_parameter/indicating_power = 1.0
+shader_parameter/radius_base = 0.5
+shader_parameter/static_power = 0.4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uw4x4"]
+bg_color = Color(0.0862745, 0.0313726, 0.176471, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sakpx"]
+content_margin_left = 40.0
+content_margin_top = 40.0
+content_margin_right = 40.0
+content_margin_bottom = 40.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yqd10"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_jse8d"]
+line_spacing = 0.0
+font = ExtResource("5_hjdi7")
+font_size = 40
+
+[sub_resource type="GDScript" id="GDScript_olvkk"]
+script/source = "extends Label
+
+func _process(delta: float) -> void:
+	pivot_offset.x = get_rect().size.x / 2
+	pivot_offset.y = get_rect().size.y / 2
+"
+
+[sub_resource type="Animation" id="Animation_igqv6"]
+resource_name = "Default"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Control/Control:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6, 1.2, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.5, 1.5), Vector2(1, 1), Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_ov42r"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Control/Control:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_b00j2"]
+_data = {
+"Default": SubResource("Animation_igqv6"),
+"RESET": SubResource("Animation_ov42r")
+}
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_a33u1"]
+content_margin_left = 20.0
+content_margin_top = 10.0
+
+[node name="GameLobby" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_biyfc")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_f8xbt")
+
+[node name="LightLayer" type="Panel" parent="."]
+material = SubResource("ShaderMaterial_as5wc")
+layout_mode = 2
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 1919.0
+offset_bottom = 1079.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_uw4x4")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LeftBar" parent="HBoxContainer" instance=ExtResource("3_6nvfy")]
+layout_mode = 2
+
+[node name="Panels" type="PanelContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_sakpx")
+
+[node name="PanelsVBox" type="VBoxContainer" parent="HBoxContainer/Panels"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/Panels/PanelsVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="GameInfo" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer" instance=ExtResource("5_tqolk")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="WaitingOpponent" type="PanelContainer" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer/GameInfo"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_yqd10")
+
+[node name="Background" type="TextureRect" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer/GameInfo/WaitingOpponent"]
+visible = false
+self_modulate = Color(1, 1, 1, 0.156863)
+layout_mode = 2
+texture = ExtResource("4_4wboe")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Control" type="Control" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer/GameInfo/WaitingOpponent"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer/GameInfo/WaitingOpponent/Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer/GameInfo/WaitingOpponent/Control/Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -212.5
+offset_top = -20.0
+offset_right = 212.5
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Waiting for opponent"
+label_settings = SubResource("LabelSettings_jse8d")
+horizontal_alignment = 1
+vertical_alignment = 1
+script = SubResource("GDScript_olvkk")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer/GameInfo/WaitingOpponent"]
+unique_name_in_owner = true
+autoplay = "Default"
+libraries = {
+"": SubResource("AnimationLibrary_b00j2")
+}
+
+[node name="chat_input" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer" instance=ExtResource("8_jw2p5")]
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.3
+
+[node name="glass_panel" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer2" instance=ExtResource("9_k3g2w")]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer2/glass_panel"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer2/glass_panel/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_hjdi7")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_a33u1")
+text = "Players"
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer2/glass_panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 30
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer2/glass_panel/VBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Players" type="VBoxContainer" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer2/glass_panel/VBoxContainer/MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 0
+
+[node name="EvenPanel" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer2/glass_panel/VBoxContainer/MarginContainer/ScrollContainer/Players" instance=ExtResource("9_iodg5")]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="OddPanel" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer2/glass_panel/VBoxContainer/MarginContainer/ScrollContainer/Players" instance=ExtResource("11_3rqbt")]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="EvenPanel2" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer2/glass_panel/VBoxContainer/MarginContainer/ScrollContainer/Players" instance=ExtResource("9_iodg5")]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="OddPanel2" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer2/glass_panel/VBoxContainer/MarginContainer/ScrollContainer/Players" instance=ExtResource("11_3rqbt")]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="EvenPanel3" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer2/glass_panel/VBoxContainer/MarginContainer/ScrollContainer/Players" instance=ExtResource("9_iodg5")]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="OddPanel3" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer2/glass_panel/VBoxContainer/MarginContainer/ScrollContainer/Players" instance=ExtResource("11_3rqbt")]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="EvenPanel4" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer2/glass_panel/VBoxContainer/MarginContainer/ScrollContainer/Players" instance=ExtResource("9_iodg5")]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="OddPanel4" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer2/glass_panel/VBoxContainer/MarginContainer/ScrollContainer/Players" instance=ExtResource("11_3rqbt")]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="EvenPanel5" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer2/glass_panel/VBoxContainer/MarginContainer/ScrollContainer/Players" instance=ExtResource("9_iodg5")]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="OddPanel5" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer2/glass_panel/VBoxContainer/MarginContainer/ScrollContainer/Players" instance=ExtResource("11_3rqbt")]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="EvenPanel6" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer2/glass_panel/VBoxContainer/MarginContainer/ScrollContainer/Players" instance=ExtResource("9_iodg5")]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="OddPanel6" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer2/glass_panel/VBoxContainer/MarginContainer/ScrollContainer/Players" instance=ExtResource("11_3rqbt")]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="EvenPanel7" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer2/glass_panel/VBoxContainer/MarginContainer/ScrollContainer/Players" instance=ExtResource("9_iodg5")]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="OddPanel7" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer2/glass_panel/VBoxContainer/MarginContainer/ScrollContainer/Players" instance=ExtResource("11_3rqbt")]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="EvenPanel8" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer2/glass_panel/VBoxContainer/MarginContainer/ScrollContainer/Players" instance=ExtResource("9_iodg5")]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="OddPanel8" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer2/glass_panel/VBoxContainer/MarginContainer/ScrollContainer/Players" instance=ExtResource("11_3rqbt")]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="EvenPanel9" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer2/glass_panel/VBoxContainer/MarginContainer/ScrollContainer/Players" instance=ExtResource("9_iodg5")]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="OddPanel9" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer2/glass_panel/VBoxContainer/MarginContainer/ScrollContainer/Players" instance=ExtResource("11_3rqbt")]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="EvenPanel10" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer2/glass_panel/VBoxContainer/MarginContainer/ScrollContainer/Players" instance=ExtResource("9_iodg5")]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="OddPanel10" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer2/glass_panel/VBoxContainer/MarginContainer/ScrollContainer/Players" instance=ExtResource("11_3rqbt")]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="PlayerList" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer2" instance=ExtResource("5_tqolk")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+
+[node name="RoundedButton" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer2" instance=ExtResource("9_mgxxf")]
+layout_mode = 2
+text = "Start Match
+"

@@ -8,11 +8,11 @@ class_name NakamaHTTPAdapter
 var logger : RefCounted = NakamaLogger.new()
 
 # The timeout for requests
-var timeout : int = 3
+var timeout : int = 6
 # If request should be automatically retried when a network error occurs.
 var auto_retry : bool = true
 # The maximum number of time a request will be retried when auto_retry is true
-var auto_retry_count : int = 3
+var auto_retry_count : int = 5
 var auto_retry_backoff_base : int = 10
 
 var _pending = {}

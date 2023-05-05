@@ -1,8 +1,20 @@
-[gd_scene load_steps=4 format=3 uid="uid://c4k6ckm4k3k18"]
+[gd_scene load_steps=8 format=3 uid="uid://c4k6ckm4k3k18"]
 
 [ext_resource type="Script" path="res://test/interactive/test_matches/test_matches.gd" id="1_27vri"]
 [ext_resource type="PackedScene" uid="uid://ba0n1dg0yxtpj" path="res://scenes/matches/matches.tscn" id="1_xepu4"]
 [ext_resource type="Script" path="res://test/interactive/test_matches/matches.gd" id="2_lbbf4"]
+[ext_resource type="Texture2D" uid="uid://dxcxogdwflpig" path="res://assets/gui/main/background.png" id="2_lbye7"]
+[ext_resource type="PackedScene" uid="uid://bh1htbm1t4nlb" path="res://scenes/ui_elements/light_layer/light_layer.tscn" id="3_rmqth"]
+[ext_resource type="Shader" path="res://shaders/LightingBackground.gdshader" id="4_odsak"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o1txi"]
+resource_local_to_scene = true
+shader = ExtResource("4_odsak")
+shader_parameter/indicate = true
+shader_parameter/size = null
+shader_parameter/indicating_power = 1.0
+shader_parameter/radius_base = 0.5
+shader_parameter/static_power = 0.4
 
 [node name="test_matches" type="Control"]
 layout_mode = 3
@@ -13,7 +25,33 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_27vri")
 
+[node name="Background" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="Background"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_lbye7")
+stretch_mode = 6
+
+[node name="LightLayer" parent="Background" instance=ExtResource("3_rmqth")]
+material = SubResource("ShaderMaterial_o1txi")
+layout_mode = 1
+
 [node name="Matches" parent="." instance=ExtResource("1_xepu4")]
 unique_name_in_owner = true
 layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.3
+anchor_top = 0.2
+anchor_right = 0.7
+anchor_bottom = 0.8
 script = ExtResource("2_lbbf4")

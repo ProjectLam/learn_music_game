@@ -54,7 +54,6 @@ func _on_login_failed_dialog_option_selected(params : Dictionary):
 	login_failed_dialog.close()
 
 
-
 func _on_problem_with_server_dialog_option_selected(params):
 	problem_with_server_dialog.close()
 

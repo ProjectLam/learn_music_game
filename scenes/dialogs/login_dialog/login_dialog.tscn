@@ -1,6 +1,7 @@
-[gd_scene load_steps=20 format=3 uid="uid://0x4fl5frrefp"]
+[gd_scene load_steps=21 format=3 uid="uid://0x4fl5frrefp"]
 
 [ext_resource type="Script" path="res://scenes/dialogs/login_dialog/login_dialog.gd" id="1_rcm27"]
+[ext_resource type="PackedScene" uid="uid://dl4nx74f03pxd" path="res://scenes/ui_elements/glass_panel.tscn" id="2_1q1xt"]
 [ext_resource type="Texture2D" uid="uid://4jhy1ls4ta6u" path="res://assets/gui/blur.jpg" id="2_26f22"]
 [ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="3_tn1uw"]
 [ext_resource type="Texture2D" uid="uid://cq0qaoeso6jc" path="res://assets/gui/icons/email.png" id="4_sv2m6"]
@@ -14,17 +15,7 @@
 [ext_resource type="Animation" uid="uid://bjlwdprs18ns1" path="res://scenes/dialogs/popup_dialog/Open.res" id="12_1aptv"]
 [ext_resource type="Animation" uid="uid://bxdor4i0qqn5r" path="res://scenes/dialogs/popup_dialog/RESET.res" id="13_qtw5v"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rh8hi"]
-bg_color = Color(0.282353, 0.192157, 0.454902, 0.933333)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(1, 0.823529, 0.964706, 0.2)
-corner_radius_top_left = 25
-corner_radius_top_right = 25
-corner_radius_bottom_right = 25
-corner_radius_bottom_left = 25
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_t22ix"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_gl7oe"]
 font = ExtResource("3_tn1uw")
@@ -73,8 +64,14 @@ grow_vertical = 2
 pivot_offset = Vector2(341, 361.5)
 focus_next = NodePath("MarginContainer/VBoxContainer/Form/EmailInput")
 focus_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_rh8hi")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_t22ix")
 script = ExtResource("1_rcm27")
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="."]
+copy_mode = 2
+
+[node name="glass_panel" parent="." instance=ExtResource("2_1q1xt")]
+layout_mode = 2
 
 [node name="Background" type="TextureRect" parent="."]
 self_modulate = Color(1, 1, 1, 0.156863)
@@ -154,7 +151,6 @@ mouse_filter = 2
 
 [node name="LoginButton" parent="MarginContainer/VBoxContainer/Form/Buttons" instance=ExtResource("5_rrgxk")]
 layout_mode = 2
-focus_mode = 0
 mouse_filter = 1
 text = "Login
 "

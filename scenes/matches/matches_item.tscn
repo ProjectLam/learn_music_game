@@ -1,9 +1,13 @@
-[gd_scene load_steps=13 format=3 uid="uid://c3lxt6hmgwob7"]
+[gd_scene load_steps=16 format=3 uid="uid://d2o0s3qn8v70o"]
 
 [ext_resource type="Script" path="res://scenes/matches/matches_item.gd" id="1_anwtr"]
 [ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="2_3q4ai"]
+[ext_resource type="PackedScene" uid="uid://dj6q8o76cf5vf" path="res://scenes/ui_elements/glass_panel_element_odd.tscn" id="2_u82bc"]
+[ext_resource type="PackedScene" uid="uid://d3o4oipt5jw2b" path="res://scenes/ui_elements/glass_panel_element_even.tscn" id="3_6myts"]
 [ext_resource type="Texture2D" uid="uid://ctu1miqp425c5" path="res://assets/gui/icons/casette.png" id="3_s7kml"]
 [ext_resource type="FontFile" uid="uid://df06bw7a1s1u7" path="res://fonts/Montserrat-Bold.ttf" id="4_7gtxg"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bnxlh"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ukgxa"]
 content_margin_left = 25.0
@@ -37,21 +41,30 @@ blend_mode = 1
 light_mode = 1
 
 [sub_resource type="Gradient" id="Gradient_i41yu"]
-offsets = PackedFloat32Array(0, 0.699)
-colors = PackedColorArray(0.811765, 0.8, 0.992157, 0.105882, 0.811765, 0.8, 0.992157, 0)
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(0.811765, 0.8, 0.992157, 0, 0.811765, 0.8, 0.992157, 0.219608, 0.811765, 0.8, 0.992157, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_pbh36"]
 gradient = SubResource("Gradient_i41yu")
-fill = 1
-fill_from = Vector2(0.5, 0.5)
-fill_to = Vector2(1, 0.5)
+fill_from = Vector2(0.5, 0)
+fill_to = Vector2(0.5, 1)
 
 [node name="MatchesItem" type="PanelContainer"]
 anchors_preset = 10
 anchor_right = 1.0
 size_flags_horizontal = 3
 focus_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_bnxlh")
 script = ExtResource("1_anwtr")
+
+[node name="OddPanel" parent="." instance=ExtResource("2_u82bc")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="EvenPanel" parent="." instance=ExtResource("3_6myts")]
+unique_name_in_owner = true
+layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2

@@ -31,7 +31,7 @@ void fragment() {
 		float r = radius_base + sqrt(pow(dx, 2.0) + pow(dy, 2.0));
 		r *= indicating_power;
 
-		COLOR.a = r;
+		COLOR.a *= r;
 	} else {
 		float ratio = 1.0;
 		vec2 csize = vec2(0.9);
@@ -50,7 +50,7 @@ void fragment() {
 		float r = sqrt(pow(dx, 2.0) + pow(dy, 2.0));
 		r *= 1.0 - static_power;
 		
-		COLOR.a = r;
+		COLOR.a *= r;
 	}
 	
     float sc = square_scale + square_scale/2.;

@@ -17,8 +17,8 @@ var session: NakamaSession
 var multiplayer_bridge: NakamaMultiplayerBridge
 var socket: NakamaSocket
 
-var test_email = "meow@meow.com"
-var test_password = "meowwwwww"
+var user_email = "meow@meow.com"
+var user_password = "meowwwwww"
 
 # nakama
 var scheme = "https"
@@ -56,8 +56,10 @@ signal session_created
 signal full_initialization
 signal received_match_presence(p_presence: NakamaRTAPI.MatchPresenceEvent)
 signal received_match_state(p_state)
-signal peer_connected(id : int)
+#signal peer_connected(id : int)
 signal remote_songs_json_received
+signal login_set(cancelled: bool)
+signal connection_status_changed
 
 func _init():
 	if is_js_enabled:
@@ -74,6 +76,8 @@ func _ready():
 	
 	Dialogs.file_offline_dialog.option_selected.connect(
 		_on_file_offline_dialog_response)
+	Dialogs.login_failed_dialog.option_selected.connect(
+		_on_login_failed_dialog_option_selected)
 	
 	refresh()
 	
@@ -85,14 +89,16 @@ func _ready():
 	else:
 		call_deferred("init_json_request")
 	
-	await multiplayer_init_async()
+	
 	if not remote_songs_json_initialized:
 		await remote_songs_json_received
-	
 	
 	_is_fully_initialized = true
 	print("GBackend fully initialized.")
 	emit_signal("full_initialization")
+	
+	
+	await multiplayer_init_async()
 
 
 func init_json_request():
@@ -147,39 +153,41 @@ func is_fully_initialized() -> bool:
 	return _is_fully_initialized
 
 
-func multiplayer_init_async():
-	connection_status = CONNECTION_STATUS.CONNECTING
-	check_nakama_dev_values()
+func create_client_and_socket():
 	client = Nakama.create_client(server_key, host, port, scheme)
-	
-	# in the web build the host page will invoke login_password
-	if is_js_enabled:
-		open_js_login_dialog()
-	else:
-		login_password(test_email, test_password)
-
-	await session_created
-
-	if not session.is_exception():
-		if is_js_enabled:
-			_js_godotGame.onLoginOk()
-		
-		await _init_socket()
-		await _init_multiplayer_bridge()
-
-
-# TODO : check to see if the sockets can be reused. make new ones if needed.
-func _init_socket():
 	socket = Nakama.create_socket_from(client)
 	socket.received_match_presence.connect(_on_received_match_presence)
 	socket.received_match_state.connect(_on_received_match_state)
 	socket.connected.connect(_on_socket_connected)
 	socket.closed.connect(_on_socket_closed)
 	socket.received_error.connect(_on_socket_error)
+	socket.connection_error.connect(_on_socket_connection_error)
+
+
+func multiplayer_init_async():
+	check_nakama_dev_values()
+	create_client_and_socket()
+	
+	await try_login_async()
+
+
+# TODO : check to see if the sockets can be reused. make new ones if needed.
+func _init_socket():
+#	socket = Nakama.create_socket_from(client)
+#	socket.received_match_presence.connect(_on_received_match_presence)
+#	socket.received_match_state.connect(_on_received_match_state)
+#	socket.connected.connect(_on_socket_connected)
+#	socket.closed.connect(_on_socket_closed)
+#	socket.received_error.connect(_on_socket_error)
 	await socket.connect_async(session)
 
 
 func _init_multiplayer_bridge():
+	if is_instance_valid(multiplayer_bridge):
+		multiplayer_bridge.match_join_error.disconnect(_on_match_join_error)
+		multiplayer_bridge.match_joined.disconnect(_on_match_joined)
+		multiplayer_bridge.queue_free()
+		
 	multiplayer_bridge = await NakamaMultiplayerBridge.new(socket)
 	
 	# bridge_initializing is because a bug was detected that led to _init 
@@ -196,8 +204,9 @@ func _init_multiplayer_bridge():
 		multiplayer_bridge.match_join_error.connect(_on_match_join_error)
 		multiplayer_bridge.match_joined.connect(_on_match_joined)
 		add_child(multiplayer_bridge)
-		get_tree().get_multiplayer().set_multiplayer_peer(multiplayer_bridge.multiplayer_peer)
-		
+		multiplayer_bridge._multiplayer_peer.set_connection_status(MultiplayerPeer.CONNECTION_CONNECTING)
+		multiplayer.set_multiplayer_peer(multiplayer_bridge.multiplayer_peer)
+		multiplayer_bridge._multiplayer_peer.set_connection_status(MultiplayerPeer.CONNECTION_DISCONNECTED)
 		multiplayer.peer_connected.connect(_on_peer_connected)
 	
 	if multiplayer_bridge == null:
@@ -221,14 +230,14 @@ func check_nakama_dev_values() -> void:
 			server_key = dev["nakama"]["connection"]["server_key"]
 			
 			if dev["nakama"].has("test_user"):
-				test_email = dev["nakama"]["test_user"]["email"]
-				test_password = dev["nakama"]["test_user"]["password"]
+				user_email = dev["nakama"]["test_user"]["email"]
+				user_password = dev["nakama"]["test_user"]["password"]
 	
 	if CmdArgs.arguments.has("email"):
-		test_email = CmdArgs.arguments["email"]
+		user_email = CmdArgs.arguments["email"]
 	
 	if CmdArgs.arguments.has("password"):
-		test_password = CmdArgs.arguments["password"]
+		user_password = CmdArgs.arguments["password"]
 
 
 func open_js_login_dialog():
@@ -240,28 +249,35 @@ func open_js_login_dialog():
 # Failing to do any of the above will not produce any kind of error, the
 # callback will just fail silently!
 func _login_password_js_wrapper(p: Array):
-	login_password(p[0], p[1])
+	user_email = p[0]
+	user_password = p[1]
+	login_set.emit(false)
 
 
-func login_password(p_email: String, p_password: String):
-	var email = p_email
-	var password = p_password
-	
-	session = await client.authenticate_email_async(email, password)
-	
+# creates valid session.
+func authenticate_async():
+	session = await client.authenticate_email_async(user_email, user_password)
 	if session.is_exception():
 		push_warning("Login Error: ", session.exception)
+		var msg = session.exception.message
+		session = null
 		if is_js_enabled:
-			_js_godotGame.onLoginError(session.exception.message)
-		elif not (
-				session.exception.status_code in [
-					HTTPClient.STATUS_CONNECTED,
-					HTTPClient.STATUS_BODY
-				]):
-			# http request failed.
-			connection_status = CONNECTION_STATUS.DISCONNECTED
-			Dialogs.connection_failed_dialog.open()
+			_js_godotGame.onLoginError(msg)
+			# TODO : this has to prompt the user to try to login again or continue without loggin in.
+			# TODO : call login_set.emit(false) if the login is cancelled.
 		else:
+			Dialogs.login_failed_dialog.message = msg
+			Dialogs.login_failed_dialog.open()
+	elif not session.is_valid() or session.is_expired():
+		var msg := "Invalid Session"
+		session = null
+		push_warning("Login Error: ", msg)
+		if is_js_enabled:
+			_js_godotGame.onLoginError(msg)
+			# TODO : this has to prompt the user to try to login again or continue without loggin in.
+			# TODO : call login_set.emit(false) if the login is cancelled.
+		else:
+			Dialogs.login_failed_dialog.message = msg
 			Dialogs.login_failed_dialog.open()
 	else:
 		print(session)
@@ -270,8 +286,6 @@ func login_password(p_email: String, p_password: String):
 		print(session.username)
 		print("session.expired: ", session.expired)
 		print("session.expire_time: ", session.expire_time)
-	
-	emit_signal("session_created")
 
 
 func _on_socket_connected():
@@ -316,28 +330,38 @@ func list_matches_async(min_players : int = 1, max_players : int = -1, limit : i
 	if max_players > 0:
 		maxpl = max_players
 	
-	
-	return await client.list_matches_async(session, min_players, maxpl, limit, true, label, query)
+	if client:
+		var ret = await client.list_matches_async(session, min_players, maxpl, limit, true, label, query)
+		return ret
+	else:
+		push_warning("invalid client")
+		return NakamaAPI.ApiMatchList.new()
 	
 
 
-# returns false if it succeeds. this will be replaced with an error later.
-func create_match_async(match_name = "", params := {}) -> bool:
+# returns OK if it succeeds. this will be replaced with an error later.
+func create_match_async(match_name = "", params := {}) -> int:
 	await await_finit()
+	if connection_status in [CONNECTION_STATUS.CONNECTING, CONNECTION_STATUS.CONNECTING]:
+		push_error("Trying to create match while connection is not established. Disable access from the UI")
+		if connection_status == CONNECTION_STATUS.DISCONNECTED:
+			return -1
 	if multiplayer_bridge == null:
+		while connection_status == CONNECTION_STATUS.CONNECTING:
+			await get_tree().process_frame
 		if problem_with_server:
 			Dialogs.problem_with_server_dialog.open()
 		else:
 			Dialogs.connection_failed_dialog.open()
-		return true
+		return -1
 	await multiplayer_bridge.create_match_async(match_name, params)
 	if multiplayer_bridge.match_state != NakamaMultiplayerBridge.MatchState.CONNECTED:
 		Dialogs.create_match_failed_dialog.open()
-		return true
-	return false
+		return -1
+	return OK
 
 
-func leave_async() -> void:
+func leave_match_async() -> void:
 	await await_finit()
 	if multiplayer_bridge == null:
 		if problem_with_server:
@@ -345,27 +369,33 @@ func leave_async() -> void:
 		else:
 			Dialogs.connection_failed_dialog.open()
 		return
-	await multiplayer_bridge.leave_async()
+	await multiplayer_bridge.leave_match_async()
 
 
-# returns false if it succeeds. this will be replaced with an error later.
-func join_match_async(p_match_id: String) -> bool:
+# returns OK if it succeeds. this will be replaced with an error later.
+func join_match_async(p_match_id: String) -> int:
 	await await_finit()
+	if connection_status in [CONNECTION_STATUS.CONNECTING, CONNECTION_STATUS.CONNECTING]:
+		push_error("Trying to create match while connection is not established. Disable access from the UI")
+		if connection_status == CONNECTION_STATUS.DISCONNECTED:
+			return -1
 	if multiplayer_bridge == null:
+		while connection_status == CONNECTION_STATUS.CONNECTING:
+			await get_tree().process_frame
 		if problem_with_server:
 			Dialogs.problem_with_server_dialog.open()
 		else:
 			Dialogs.connection_failed_dialog.open()
-		return true
+		return -1
 	await multiplayer_bridge.join_match_async(p_match_id)
 	if multiplayer_bridge.match_state != NakamaMultiplayerBridge.MatchState.CONNECTED:
 		Dialogs.join_match_failed_dialog.open()
-		return true
-	return false
+		return -1
+	return OK
 
 
 func _on_peer_connected(id : int) -> void:
-	peer_connected.emit(id)
+	pass
 
 
 func _on_song_json_file_received(json_string: String):
@@ -382,6 +412,7 @@ func set_connection_status(value) -> void:
 	if connection_status != value:
 		connection_status = value
 		refresh()
+		connection_status_changed.emit()
 
 
 func get_connection_status():
@@ -428,6 +459,91 @@ func _on_file_offline_dialog_response(params: Dictionary) -> void:
 			pass
 
 
-func logout():
-	# TODO
+func _on_login_failed_dialog_option_selected(params : Dictionary):
+	var opt = params.get("option")
+	match(opt):
+		"try_again":
+			print("Trying to login again")
+			await try_login_async()
+		"continue_offline", PopupBase.OPTION_CLOSE:
+			await logout()
+			print("Continuing offline without loggin in")
+		_:
+			push_error("Invalid response [%s] to login failure" % str(opt))
+
+
+func logout(manual: bool = false):
+	if session_is_valid():
+		await client.session_logout_async(session)
+	session = null
+	if not manual:
+		connection_status = CONNECTION_STATUS.DISCONNECTED
+
+
+func try_login_async():
+	connection_status = CONNECTION_STATUS.CONNECTING
+	await logout(true)
+	var cancelled = false
+	if not session_is_valid():
+		if is_js_enabled:
+			open_js_login_dialog()
+			cancelled = await login_set
+		else:
+			# TODO : add a login dialog before loggin in.
+			pass
+	
+	# setting new session.
+	if not cancelled:
+		await authenticate_async()
+		# In case of an authentication failure _on_login_failed_dialog_option_selected will handle 
+		# things based on user's choice.
+	else:
+		# We're logged out now.
+		connection_status = CONNECTION_STATUS.DISCONNECTED
+		return
+	
+	if session_is_valid():
+		# authentication failed.
+		await connect_to_session_async()
+		if is_js_enabled:
+			_js_godotGame.onLoginOk()
+		
+		await _init_multiplayer_bridge()
+		if is_logged_in():
+			connection_status = CONNECTION_STATUS.CONNECTED
+		# We keep the state on connecting till login failed dialog decides if we want to keep trying.
+#		else:
+#			connection_status = CONNECTION_STATUS.DISCONNECTED
+
+
+# returns OK if it succeeds. -1.
+func connect_to_session_async() -> int:
+	if not session or not session.valid or session.is_expired():
+		push_error("cannot connect to invalid session")
+		if connection_status != CONNECTION_STATUS.DISCONNECTED:
+			connection_status = CONNECTION_STATUS.DISCONNECTED
+		Dialogs.connection_failed_dialog.open()
+		return -1
+	
+	await socket.connect_async(session, false, 10)
+	if not is_logged_in():
+		return -1
+	
+	return OK
+
+
+func is_logged_in():
+	return socket.is_connected_to_host()
+
+
+func session_is_valid() -> bool:
+	return session and not session.is_exception() and session.is_valid() and not session.is_expired()
+
+
+func _on_socket_connection_error(p_error):
 	pass
+
+
+func _process(delta):
+	if Input.is_action_just_pressed("ui_up"):
+		var payload = await socket.rpc_async_parsed("get_versionn", {})

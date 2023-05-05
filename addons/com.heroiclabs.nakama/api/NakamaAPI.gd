@@ -3635,7 +3635,7 @@ class ApiClient extends RefCounted:
 		_server_key = p_server_key
 
 	func _refresh_session(p_session : NakamaSession):
-		if auto_refresh and p_session.is_valid() and p_session.refresh_token and not p_session.is_refresh_expired() and p_session.would_expire_in(auto_refresh_time):
+		if p_session and auto_refresh and p_session.is_valid() and p_session.refresh_token and not p_session.is_refresh_expired() and p_session.would_expire_in(auto_refresh_time):
 			var request = ApiSessionRefreshRequest.new()
 			request._token = p_session.refresh_token
 			return await session_refresh_async(_server_key, "", request)

@@ -1,6 +1,14 @@
 @tool
 
+class_name LeftBar
 extends PanelContainer
+
+enum {
+	REQUEST_PLAY_SONG,
+	REQUEST_MATCHMAKING,
+	REQUEST_SETTINGS,
+	REQUEST_INSTRUMENT_MENU
+} 
 
 
 func _ready():
@@ -25,33 +33,33 @@ func _on_logout_button_pressed():
 			Dialogs.login_dialog.open()
 
 
-func request_finish() -> bool:
+func request_finish(request_code: int) -> bool:
 	var curr_scene := get_tree().current_scene
 	if curr_scene.has_method("request_finish"):
-		return await curr_scene.request_finish()
+		return await curr_scene.request_finish(request_code)
 	else:
 		return true
 
 
 func _on_play_song_button_pressed():
-	var finished = await request_finish()
+	var finished = await request_finish(REQUEST_PLAY_SONG)
 	if finished:
 		get_tree().change_scene_to_file("res://scenes/song_selection/song_selection.tscn")
 
 
 func _on_matchmaking_button_pressed():
-	var finished = await request_finish()
+	var finished = await request_finish(REQUEST_MATCHMAKING)
 	if finished:
 		get_tree().change_scene_to_file("res://scenes/matchmaking/matchmaking.tscn")
 
 
 func _on_settings_button_pressed():
-	var finished = await request_finish()
+	var finished = await request_finish(REQUEST_SETTINGS)
 	if finished:
 		get_tree().change_scene_to_file("res://scenes/settings/settings.tscn")
 
 
 func _on_istrument_menu_button_pressed():
-	var finished = await request_finish()
+	var finished = await request_finish(REQUEST_INSTRUMENT_MENU)
 	if finished:
 		get_tree().change_scene_to_file("res://scenes/instrument_menu/instrument_menu.tscn")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://b2ew1c3swawaj"]
+[gd_scene load_steps=14 format=3 uid="uid://b2ew1c3swawaj"]
 
 [ext_resource type="Script" path="res://scenes/instrument_selection/instrument_selection_item.gd" id="1_g0eae"]
 [ext_resource type="Shader" path="res://scenes/instrument_selection/item_circle.gdshader" id="2_tm0hu"]
@@ -8,20 +8,18 @@
 [ext_resource type="Texture2D" uid="uid://cmdd61q57jiu" path="res://assets/gui/icons/course.png" id="6_sdkno"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ue7gu"]
+resource_local_to_scene = true
 shader = ExtResource("2_tm0hu")
 shader_parameter/radius = 1.0
 shader_parameter/animate = false
 shader_parameter/square_scale = 0.509
-shader_parameter/albedo = Color(0.968627, 0, 0.8, 0.458824)
+shader_parameter/albedo = Color(0.968627, 0, 0.8, 0.780392)
 shader_parameter/indicate = false
 shader_parameter/size = Vector2(600, 600)
 shader_parameter/lighting_point = Vector2(0.5, 0.5)
 shader_parameter/indicating_power = 1.0
 shader_parameter/radius_base = 0.5
 shader_parameter/static_power = 0.5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8v3wu"]
-bg_color = Color(0.145098, 0.462745, 1, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_lvjx4"]
 font = ExtResource("4_e8mw7")
@@ -48,100 +46,7 @@ size_flags_horizontal = 4
 script = ExtResource("1_g0eae")
 metadata/_edit_group_ = true
 
-[node name="Circle" type="Control" parent="."]
-material = SubResource("ShaderMaterial_ue7gu")
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(260, 260)
-mouse_filter = 1
-
-[node name="Layer" type="Panel" parent="Circle"]
-use_parent_material = true
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 1
-theme_override_styles/panel = SubResource("StyleBoxFlat_8v3wu")
-
-[node name="Icon" type="TextureRect" parent="."]
-unique_name_in_owner = true
-layout_mode = 0
-anchor_left = 0.1
-anchor_top = 0.1
-anchor_right = 0.9
-anchor_bottom = 0.9
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("3_s8f7b")
-expand_mode = 1
-stretch_mode = 4
-
-[node name="Info" type="VBoxContainer" parent="."]
-unique_name_in_owner = true
-layout_mode = 0
-anchor_left = 0.3
-anchor_top = 0.608
-anchor_right = 0.3
-anchor_bottom = 0.608
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="NameLabel" type="Label" parent="Info"]
-unique_name_in_owner = true
-layout_mode = 2
-mouse_filter = 1
-text = "MANDOLINE"
-label_settings = SubResource("LabelSettings_lvjx4")
-
-[node name="Songs" type="HBoxContainer" parent="Info"]
-layout_mode = 2
-theme_override_constants/separation = 5
-
-[node name="Icon" type="TextureRect" parent="Info/Songs"]
-custom_minimum_size = Vector2(20, 0)
-layout_mode = 2
-texture = ExtResource("5_v7lu5")
-stretch_mode = 3
-
-[node name="SongsNumber" type="Label" parent="Info/Songs"]
-unique_name_in_owner = true
-layout_mode = 2
-mouse_filter = 1
-text = "0"
-
-[node name="SongsCountLabel" type="Label" parent="Info/Songs"]
-layout_mode = 2
-mouse_filter = 1
-text = "songs"
-
-[node name="Courses" type="HBoxContainer" parent="Info"]
-visible = false
-layout_mode = 2
-
-[node name="Icon" type="TextureRect" parent="Info/Courses"]
-custom_minimum_size = Vector2(20, 0)
-layout_mode = 2
-texture = ExtResource("6_sdkno")
-stretch_mode = 3
-
-[node name="CoursesNumber" type="Label" parent="Info/Courses"]
-unique_name_in_owner = true
-layout_mode = 2
-mouse_filter = 1
-text = "0"
-
-[node name="CoursesCountLabel" type="Label" parent="Info/Courses"]
-layout_mode = 2
-mouse_filter = 1
-text = "courses"
-
-[node name="Overlay" type="Control" parent="."]
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -150,7 +55,115 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="OverlayButton" type="Button" parent="Overlay"]
+[node name="Control" type="Control" parent="AspectRatioContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Circle" type="Control" parent="AspectRatioContainer/Control"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_ue7gu")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(260, 260)
+mouse_filter = 2
+
+[node name="Layer" type="Panel" parent="AspectRatioContainer/Control/Circle"]
+use_parent_material = true
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Icon" type="TextureRect" parent="AspectRatioContainer/Control"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.1
+anchor_top = 0.1
+anchor_right = 0.9
+anchor_bottom = 0.9
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3_s8f7b")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Info" type="VBoxContainer" parent="AspectRatioContainer/Control"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.3
+anchor_top = 0.608
+anchor_right = 0.3
+anchor_bottom = 0.608
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="NameLabel" type="Label" parent="AspectRatioContainer/Control/Info"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "MANDOLINE"
+label_settings = SubResource("LabelSettings_lvjx4")
+
+[node name="Songs" type="HBoxContainer" parent="AspectRatioContainer/Control/Info"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 5
+
+[node name="Icon" type="TextureRect" parent="AspectRatioContainer/Control/Info/Songs"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("5_v7lu5")
+stretch_mode = 3
+
+[node name="SongsNumber" type="Label" parent="AspectRatioContainer/Control/Info/Songs"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0"
+
+[node name="SongsCountLabel" type="Label" parent="AspectRatioContainer/Control/Info/Songs"]
+layout_mode = 2
+text = "songs"
+
+[node name="Courses" type="HBoxContainer" parent="AspectRatioContainer/Control/Info"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Icon" type="TextureRect" parent="AspectRatioContainer/Control/Info/Courses"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("6_sdkno")
+stretch_mode = 3
+
+[node name="CoursesNumber" type="Label" parent="AspectRatioContainer/Control/Info/Courses"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0"
+
+[node name="CoursesCountLabel" type="Label" parent="AspectRatioContainer/Control/Info/Courses"]
+layout_mode = 2
+text = "courses"
+
+[node name="Overlay" type="Control" parent="AspectRatioContainer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="OverlayButton" type="Button" parent="AspectRatioContainer/Control/Overlay"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -164,4 +177,4 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_l1vbk")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_i5ujm")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_vl7xv")
 
-[connection signal="pressed" from="Overlay/OverlayButton" to="." method="_on_overlay_button_pressed"]
+[connection signal="pressed" from="AspectRatioContainer/Control/Overlay/OverlayButton" to="." method="_on_overlay_button_pressed"]

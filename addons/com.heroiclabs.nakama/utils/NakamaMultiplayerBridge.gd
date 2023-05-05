@@ -2,7 +2,9 @@ extends Node
 class_name NakamaMultiplayerBridge
 
 const version_index := 1
-
+const retry_count := 0
+const ping_interval := 3.0
+var _ping_timer := 0.0
 var valid := false
 
 enum MatchState {
@@ -24,7 +26,8 @@ var _nakama_socket: NakamaSocket
 var nakama_socket: NakamaSocket:
 	get: return _nakama_socket
 	set(_v): pass
-var _match_state: int = MatchState.DISCONNECTED
+var _match_state: int = MatchState.DISCONNECTED:
+	set = _set_match_state
 var match_state: int:
 	get: return _match_state
 	set(_v): pass
@@ -32,14 +35,15 @@ var _match_id := ''
 var match_id: String:
 	get: return _match_id
 	set(_v): pass
+var match_label := {}
 var _multiplayer_peer: NakamaMultiplayerPeer = NakamaMultiplayerPeer.new()
 var multiplayer_peer: NakamaMultiplayerPeer:
 	get: return _multiplayer_peer
 	set(_v): pass
 
 # Configuration that can be set by the developer.
-const meta_op_code: int = 9001
-const godot_rpc_op_code: int = 9002
+const META_OPCODE: int = 9001
+const GODOT_RPC_OPCODE: int = 9002
 
 
 # Internal variables.
@@ -57,8 +61,9 @@ class User extends RefCounted:
 	func _init(p_presence) -> void:
 		presence = p_presence
 
-signal match_join_error (exception)
-signal match_joined ()
+signal match_join_error(exception)
+signal match_joined()
+signal needs_reconnect()
 
 
 var bridge_initializing := true
@@ -71,31 +76,56 @@ func _init(p_nakama_socket: NakamaSocket) -> void:
 	_nakama_socket.closed.connect(self._on_nakama_socket_closed)
 
 	_multiplayer_peer.packet_generated.connect(self._on_multiplayer_peer_packet_generated)
-	_multiplayer_peer.set_connection_status(MultiplayerPeer.CONNECTION_CONNECTING)
+	_cleanup()
 	
-	var payload2 = await _nakama_socket.rpc_async("get_version")
-	var payload = await _nakama_socket.rpc_async_parsed("get_version", {})
+	await try_validate_async()
+	if valid:
+		bridge_initializing = false
+
+
+func _process(delta):
+	_ping_timer += delta
+	if _ping_timer > ping_interval:
+		_ping_timer = 0.0
+
+
+func try_validate_async() -> void:
+	var payload = await get_version()
+	
+	if payload == null:
+		push_error("Could not get version. Retry again.")
+		valid = false
+		return
 	
 	var index = payload.get("index")
 	if index == null:
 		push_error("Invalid Server Version Detected")
-		bridge_initializing = false
+		valid = false
 		return
 
 	if int(index) > version_index:
 		push_error("Server version index [%d] does not match with current version index [%d]" % [index, version_index])
-		bridge_initializing = false
+		valid = false
 		return
 	
 	print("Server version detected :", payload)
-	bridge_initializing = false
 	valid = true
+
+
+func get_version():
+	for i in retry_count+1:
+		var payload = await _nakama_socket.rpc_async_parsed("get_version", {})
+		if payload and not (not (payload is Dictionary) and not payload.is_exception()):
+			return payload
+	
+	needs_reconnect.emit()
+	return null
 
 
 func create_match_async(match_name: String, meta_data: Dictionary) -> NakamaRTAPI.Match:
 	if _match_state > MatchState.JOINING:
 		push_warning("Trying to create match before leaving the current one.")
-		await leave_async()
+		await leave_match_async()
 	while(_match_state == MatchState.LEAVING_MATCH):
 		await get_tree().process_frame
 	if _match_state == MatchState.SOCKET_CLOSED:
@@ -104,7 +134,7 @@ func create_match_async(match_name: String, meta_data: Dictionary) -> NakamaRTAP
 	
 	_match_state = MatchState.JOINING
 	meta_data["name"] = match_name
-	multiplayer_peer.set_connection_status(MultiplayerPeer.CONNECTION_CONNECTING)
+#	multiplayer_peer.set_connection_status(MultiplayerPeer.CONNECTION_CONNECTING)
 	var payload = await _nakama_socket.rpc_async_parsed("create_match", meta_data)
 	
 	if not (payload is Dictionary):
@@ -122,13 +152,19 @@ func create_match_async(match_name: String, meta_data: Dictionary) -> NakamaRTAP
 		return null
 	
 	var join_res = await _nakama_socket.join_match_async(match_id)
-	if not (join_res is NakamaRTAPI.Match):
+	if not (join_res is NakamaRTAPI.Match) or join_res.is_exception():
 		_cleanup()
 		match_join_error.emit(join_res.get_exception())
 		return
+	
 	_match_id = join_res.match_id
 	_my_session_id = join_res.self_user.session_id
-	
+	var parsed_label = JSON.parse_string(join_res.label)
+	if parsed_label is Dictionary:
+		match_label = parsed_label
+	else:
+		push_error("invalid match label")
+		match_label.clear()
 	for presence in join_res.presences:
 		print("adding Initial presence :", presence)
 		if presence.session_id == _my_session_id:
@@ -149,7 +185,7 @@ func create_match_async(match_name: String, meta_data: Dictionary) -> NakamaRTAP
 func join_match_async(match_id: String):
 	if _match_state > MatchState.JOINING:
 		push_warning("Trying to join match before leaving the current one.")
-		await leave_async()
+		await leave_match_async()
 	while(_match_state == MatchState.LEAVING_MATCH):
 		await get_tree().process_frame
 	if _match_state == MatchState.SOCKET_CLOSED:
@@ -170,6 +206,14 @@ func join_match_async(match_id: String):
 		if presence.session_id == _my_session_id:
 			continue
 		_on_presence_join(presence)
+	
+	var parsed_label = JSON.parse_string(join_res.label)
+	if parsed_label is Dictionary:
+		match_label = parsed_label
+	else:
+		push_error("invalid match label")
+		match_label.clear()
+	
 	# _match_state is already set to joining.
 	# upon receiving session_d for peer_id 1 with 
 	# _on_nakama_socked_received_match_state _match_state will be updated.
@@ -238,7 +282,7 @@ func get_user_presence_for_peer(peer_id: int) -> NakamaRTAPI.UserPresence:
 	return user.presence
 
 
-func leave_async() -> void:
+func leave_match_async() -> void:
 	if _match_state <= MatchState.LEAVING_MATCH:
 		push_warning("Trying to leave match more than once")
 	
@@ -266,7 +310,7 @@ func _cleanup() -> void:
 	_id_map.clear()
 	_users.clear()
 
-	_multiplayer_peer.set_connection_status(MultiplayerPeer.CONNECTION_DISCONNECTED)
+#	_multiplayer_peer.set_connection_status(MultiplayerPeer.CONNECTION_DISCONNECTED)
 	if _match_state > MatchState.DISCONNECTED:
 		_match_state = MatchState.DISCONNECTED
 
@@ -323,84 +367,94 @@ func _on_nakama_socket_received_match_state(data) -> void:
 		return
 	if data.match_id != _match_id:
 		return
+	
+	match data.op_code:
+		META_OPCODE:
+			_process_meta(data)
+		GODOT_RPC_OPCODE:
+			_process_godot_rpc(data)
+		_:
+			push_error("INVALID OPCODE :", data)
 
 
-	if data.op_code == meta_op_code:
-		var content = _parse_json(data.data)
-		if content == null:
-			return
-		var type = content['type']
+func _process_meta(data) -> void:
+	var content = _parse_json(data.data)
+	if content == null:
+		return
+	var type = content['type']
 #
 #		# Ensure that any meta messages are coming from the server!
-		if data.presence:
-			push_error("Meta op codes only allowed from server")
+	if data.presence:
+		push_error("Meta op codes only allowed from server")
+		return
+	if type == MetaMessageType.SET_PEER_MAP:
+		# peer_map is a Dictionary of (session_id : peer_id) pairs
+		var peer_map = content.get("peer_map")
+		if not (peer_map is Dictionary):
+			push_error("invalid value for 'new_peers_map' entry")
 			return
-		if type == MetaMessageType.SET_PEER_MAP:
-			# peer_map is a Dictionary of (session_id : peer_id) pairs
-			var peer_map = content.get("peer_map")
-			if not (peer_map is Dictionary):
-				push_error("invalid value for 'new_peers_map' entry")
-				return
-			
-			# entries for users that have left should 
-			# be removed. Not sure if we need to check for that. If the backend 
-			# is doing it's job then we shouldn't need to.
-			if _match_state == MatchState.CONNECTED:
-				for sess_id in peer_map:
-					if not _users.has(sess_id):
-						# trying to set peer_id for a precense that hasn't been received yet.
-						push_error("Setting peer for non existing user :", sess_id)
+		
+		# entries for users that have left should 
+		# be removed. Not sure if we need to check for that. If the backend 
+		# is doing it's job then we shouldn't need to.
+		if _match_state == MatchState.CONNECTED:
+			for sess_id in peer_map:
+				if not _users.has(sess_id):
+					# trying to set peer_id for a precense that hasn't been received yet.
+					push_error("Setting peer for non existing user :", sess_id)
+					return
+				var peer_id: int = peer_map[sess_id]
+				if _id_map.has(peer_id):
+					if _id_map.get(peer_id) != sess_id:
+						push_error("Changing peer id is not supported")
 						return
-					var peer_id: int = peer_map[sess_id]
-					if _id_map.has(peer_id):
-						if _id_map.get(peer_id) != sess_id:
-							push_error("Changing peer id is not supported")
-							return
-					else:
-						_id_map[peer_id] = sess_id
-						_users[sess_id].peer_id = peer_id
-						multiplayer_peer.peer_connected.emit(peer_id)
-			elif _match_state == MatchState.JOINING and peer_map.has(_my_session_id):
-				# our peer id has been set. we can initialize multiplayer_peer. 
-				
-				_my_peer_id = peer_map[_my_session_id]
-				_users[_my_session_id].peer_id = _my_peer_id
-				_id_map[_my_peer_id] = _my_session_id
-				_match_state = MatchState.CONNECTED
-				# TODO :
-				# boradcast that you are now ready
-				_multiplayer_peer.initialize(_my_peer_id)
-				_multiplayer_peer.set_connection_status(MultiplayerPeer.CONNECTION_CONNECTED)
-				# peer_connected events for the rest of the peers :
-				for sess_id in peer_map:
-					if sess_id == _my_session_id:
-						continue
-					var peer_id: int = peer_map[sess_id]
-					_users[sess_id].peer_id = peer_id
+				else:
 					_id_map[peer_id] = sess_id
-					_multiplayer_peer.peer_connected.emit(peer_id)
-				if _id_map.has(1):
-					# host has joined.
-					_match_state = MatchState.CONNECTED
-					match_joined.emit()
-		else:
-			_nakama_socket.logger.error("Received meta message with unknown type :%s" % content)
-	elif data.op_code == godot_rpc_op_code:
-		if data.presence == null:
-			push_error("Invalid godot rpc. null sender.")
-			return
-		if data.presence.session_id == _my_session_id:
-			# Invalid godot rpc. sender = self. ignoring silently.
-			return
-		var from_session_id: String = data.presence.session_id
-		if not _users.has(from_session_id) or _users[from_session_id].peer_id == 0:
-			push_error("Received RPC from %s which isn't assigned a peer id" % data.presence.session_id)
-			return
-		
-		# forward packet for built in processing.
-		var from_peer_id = _users[from_session_id].peer_id
-		
-		_multiplayer_peer.deliver_packet(Marshalls.base64_to_raw(data.data), from_peer_id)
+					_users[sess_id].peer_id = peer_id
+					multiplayer_peer.peer_connected.emit(peer_id)
+		elif _match_state == MatchState.JOINING and peer_map.has(_my_session_id):
+			# our peer id has been set. we can initialize multiplayer_peer. 
+			
+			_my_peer_id = peer_map[_my_session_id]
+			_users[_my_session_id].peer_id = _my_peer_id
+			_id_map[_my_peer_id] = _my_session_id
+			# TODO :
+			# boradcast that you are now ready
+			_multiplayer_peer.initialize(_my_peer_id)
+			_match_state = MatchState.CONNECTED
+#				_multiplayer_peer.set_connection_status(MultiplayerPeer.CONNECTION_CONNECTED)
+			# peer_connected events for the rest of the peers :
+			for sess_id in peer_map:
+				if sess_id == _my_session_id:
+					continue
+				var peer_id: int = peer_map[sess_id]
+				_users[sess_id].peer_id = peer_id
+				_id_map[peer_id] = sess_id
+				_multiplayer_peer.peer_connected.emit(peer_id)
+			if _id_map.has(1):
+				# host has joined.
+				_match_state = MatchState.CONNECTED
+				match_joined.emit()
+	else:
+		_nakama_socket.logger.error("Received meta message with unknown type :%s" % content)
+
+
+func _process_godot_rpc(data) -> void:
+	if data.presence == null:
+		push_error("Invalid godot rpc. null sender.")
+		return
+	if data.presence.session_id == _my_session_id:
+		# Invalid godot rpc. sender = self. ignoring silently.
+		return
+	var from_session_id: String = data.presence.session_id
+	if not _users.has(from_session_id) or _users[from_session_id].peer_id == 0:
+		push_error("Received RPC from %s which isn't assigned a peer id" % data.presence.session_id)
+		return
+	
+	# forward packet for built in processing.
+	var from_peer_id = _users[from_session_id].peer_id
+	
+	_multiplayer_peer.deliver_packet(Marshalls.base64_to_raw(data.data), from_peer_id)
 
 
 # sends godot rpc buffers around.
@@ -421,7 +475,7 @@ func _on_multiplayer_peer_packet_generated(peer_id: int, buffer: PackedByteArray
 			"target_presence": target_presence,
 			"data": Marshalls.raw_to_base64(buffer),
 		})
-		_nakama_socket.send_match_state_async(_match_id, godot_rpc_op_code, data, target_presences)
+		_nakama_socket.send_match_state_async(_match_id, GODOT_RPC_OPCODE, data, target_presences)
 	else:
 		push_error("RPC sent while the NakamaMultiplayerBridge isn't connected!")
 
@@ -441,3 +495,18 @@ func get_peer_username(peer_id: int) -> String:
 	else:
 		push_error("no user presence for peer_id[%d]", peer_id)
 		return ""
+
+
+func _set_match_state(value: MatchState) -> void:
+	if _match_state != value:
+		_match_state = value
+		match(_match_state):
+			MatchState.JOINING:
+				if _multiplayer_peer._get_connection_status() != MultiplayerPeer.CONNECTION_CONNECTING:
+					_multiplayer_peer.set_connection_status(MultiplayerPeer.CONNECTION_CONNECTING)
+			MatchState.CONNECTED:
+				if _multiplayer_peer._get_connection_status() != MultiplayerPeer.CONNECTION_CONNECTED:
+					_multiplayer_peer.set_connection_status(MultiplayerPeer.CONNECTION_CONNECTED)
+			_:
+				if _multiplayer_peer._get_connection_status() != MultiplayerPeer.CONNECTION_DISCONNECTED:
+					_multiplayer_peer.set_connection_status(MultiplayerPeer.CONNECTION_DISCONNECTED)

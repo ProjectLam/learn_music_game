@@ -1,7 +1,7 @@
-[gd_scene load_steps=17 format=3 uid="uid://vaqwcb5e3huk"]
+[gd_scene load_steps=16 format=3 uid="uid://vaqwcb5e3huk"]
 
 [ext_resource type="Script" path="res://scenes/dialogs/register_dialog/register_dialog.gd" id="1_xufkn"]
-[ext_resource type="Texture2D" uid="uid://4jhy1ls4ta6u" path="res://assets/gui/blur.jpg" id="2_deppv"]
+[ext_resource type="PackedScene" uid="uid://dl4nx74f03pxd" path="res://scenes/ui_elements/glass_panel.tscn" id="2_cr363"]
 [ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="3_cxlij"]
 [ext_resource type="Texture2D" uid="uid://cq0qaoeso6jc" path="res://assets/gui/icons/email.png" id="4_16j4a"]
 [ext_resource type="PackedScene" uid="uid://b15ivw3lwhasd" path="res://scenes/ui_elements/basic_rounded_button_01.tscn" id="5_awxgy"]
@@ -9,18 +9,6 @@
 [ext_resource type="PackedScene" uid="uid://cwr5sfnmp7808" path="res://scenes/ui_elements/square_button_01/square_button_01.tscn" id="7_ulaxe"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6pln6"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rh8hi"]
-bg_color = Color(0.282353, 0.192157, 0.454902, 0.933333)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(1, 0.823529, 0.964706, 0.2)
-corner_radius_top_left = 25
-corner_radius_top_right = 25
-corner_radius_bottom_right = 25
-corner_radius_bottom_left = 25
 
 [sub_resource type="LabelSettings" id="LabelSettings_gl7oe"]
 font = ExtResource("3_cxlij")
@@ -50,35 +38,11 @@ bg_color = Color(1, 1, 1, 0.203922)
 [sub_resource type="Animation" id="Animation_f3yv1"]
 resource_name = "Close"
 length = 0.5
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Box:scale")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0.5),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, 0)]
-}
 
 [sub_resource type="Animation" id="Animation_ns50l"]
 resource_name = "Open"
 length = 0.5
 step = 0.02
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Box:scale")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.4, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector2(0, 0), Vector2(1.15, 1.15), Vector2(1, 1)]
-}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_b82ex"]
 _data = {
@@ -99,20 +63,13 @@ mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_6pln6")
 script = ExtResource("1_xufkn")
 
-[node name="Box" type="PanelContainer" parent="."]
-layout_mode = 2
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_rh8hi")
+[node name="BackBufferCopy" type="BackBufferCopy" parent="."]
+copy_mode = 2
 
-[node name="Background" type="TextureRect" parent="Box"]
-self_modulate = Color(1, 1, 1, 0.156863)
+[node name="glass_panel" parent="." instance=ExtResource("2_cr363")]
 layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("2_deppv")
-expand_mode = 1
-stretch_mode = 6
 
-[node name="MarginContainer" type="MarginContainer" parent="Box"]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 40
@@ -120,22 +77,22 @@ theme_override_constants/margin_top = 40
 theme_override_constants/margin_right = 40
 theme_override_constants/margin_bottom = 40
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Box/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 30
 
-[node name="Label" type="Label" parent="Box/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "SIGN UP"
 label_settings = SubResource("LabelSettings_gl7oe")
 
-[node name="Form" type="VBoxContainer" parent="Box/MarginContainer/VBoxContainer"]
+[node name="Form" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 30
 
-[node name="NameInput" type="LineEdit" parent="Box/MarginContainer/VBoxContainer/Form"]
+[node name="NameInput" type="LineEdit" parent="MarginContainer/VBoxContainer/Form"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1
@@ -144,7 +101,7 @@ placeholder_text = "Name"
 caret_blink = true
 caret_blink_interval = 0.5
 
-[node name="SurnameInput" type="LineEdit" parent="Box/MarginContainer/VBoxContainer/Form"]
+[node name="SurnameInput" type="LineEdit" parent="MarginContainer/VBoxContainer/Form"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1
@@ -153,7 +110,7 @@ placeholder_text = "Surname"
 caret_blink = true
 caret_blink_interval = 0.5
 
-[node name="EmailInput" type="LineEdit" parent="Box/MarginContainer/VBoxContainer/Form"]
+[node name="EmailInput" type="LineEdit" parent="MarginContainer/VBoxContainer/Form"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1
@@ -162,7 +119,7 @@ placeholder_text = "Email"
 caret_blink = true
 caret_blink_interval = 0.5
 
-[node name="Icon" type="TextureRect" parent="Box/MarginContainer/VBoxContainer/Form/EmailInput"]
+[node name="Icon" type="TextureRect" parent="MarginContainer/VBoxContainer/Form/EmailInput"]
 modulate = Color(1, 1, 1, 0.784314)
 layout_mode = 1
 anchors_preset = 4
@@ -176,7 +133,7 @@ grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("4_16j4a")
 
-[node name="PasswordInput" type="LineEdit" parent="Box/MarginContainer/VBoxContainer/Form"]
+[node name="PasswordInput" type="LineEdit" parent="MarginContainer/VBoxContainer/Form"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1
@@ -186,7 +143,7 @@ secret = true
 caret_blink = true
 caret_blink_interval = 0.5
 
-[node name="Icon" type="TextureRect" parent="Box/MarginContainer/VBoxContainer/Form/PasswordInput"]
+[node name="Icon" type="TextureRect" parent="MarginContainer/VBoxContainer/Form/PasswordInput"]
 modulate = Color(1, 1, 1, 0.784314)
 layout_mode = 1
 anchors_preset = 4
@@ -200,7 +157,7 @@ grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("5_jrqbc")
 
-[node name="PasswordRepeatInput" type="LineEdit" parent="Box/MarginContainer/VBoxContainer/Form"]
+[node name="PasswordRepeatInput" type="LineEdit" parent="MarginContainer/VBoxContainer/Form"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1
@@ -210,7 +167,7 @@ secret = true
 caret_blink = true
 caret_blink_interval = 0.5
 
-[node name="Icon" type="TextureRect" parent="Box/MarginContainer/VBoxContainer/Form/PasswordRepeatInput"]
+[node name="Icon" type="TextureRect" parent="MarginContainer/VBoxContainer/Form/PasswordRepeatInput"]
 modulate = Color(1, 1, 1, 0.784314)
 layout_mode = 1
 anchors_preset = 4
@@ -224,52 +181,51 @@ grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("5_jrqbc")
 
-[node name="Buttons" type="HBoxContainer" parent="Box/MarginContainer/VBoxContainer/Form"]
+[node name="Buttons" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Form"]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="RegisterButton" parent="Box/MarginContainer/VBoxContainer/Form/Buttons" instance=ExtResource("5_awxgy")]
+[node name="RegisterButton" parent="MarginContainer/VBoxContainer/Form/Buttons" instance=ExtResource("5_awxgy")]
 layout_mode = 2
-focus_mode = 0
 mouse_filter = 1
 text = "Sign up"
 
-[node name="NewAccount" type="PanelContainer" parent="Box/MarginContainer/VBoxContainer"]
+[node name="NewAccount" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_2m76u")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Box/MarginContainer/VBoxContainer/NewAccount"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/NewAccount"]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Spacer" type="Control" parent="Box/MarginContainer/VBoxContainer/NewAccount/VBoxContainer"]
+[node name="Spacer" type="Control" parent="MarginContainer/VBoxContainer/NewAccount/VBoxContainer"]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Sep" type="Panel" parent="Box/MarginContainer/VBoxContainer/NewAccount/VBoxContainer"]
+[node name="Sep" type="Panel" parent="MarginContainer/VBoxContainer/NewAccount/VBoxContainer"]
 custom_minimum_size = Vector2(0, 1)
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_jg4r4")
 
-[node name="Spacer2" type="Control" parent="Box/MarginContainer/VBoxContainer/NewAccount/VBoxContainer"]
+[node name="Spacer2" type="Control" parent="MarginContainer/VBoxContainer/NewAccount/VBoxContainer"]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Box/MarginContainer/VBoxContainer/NewAccount/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/NewAccount/VBoxContainer"]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 15
 alignment = 1
 
-[node name="Label" type="Label" parent="Box/MarginContainer/VBoxContainer/NewAccount/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/NewAccount/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "Already have an account?"
 
-[node name="LoginButton" type="Button" parent="Box/MarginContainer/VBoxContainer/NewAccount/VBoxContainer/HBoxContainer"]
+[node name="LoginButton" type="Button" parent="MarginContainer/VBoxContainer/NewAccount/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 focus_mode = 0
 mouse_filter = 1
@@ -278,12 +234,12 @@ theme_override_font_sizes/font_size = 18
 text = "Login"
 flat = true
 
-[node name="Overlay" type="Control" parent="Box"]
+[node name="Overlay" type="Control" parent="."]
 layout_mode = 2
 mouse_filter = 2
 metadata/_edit_lock_ = true
 
-[node name="CloseButton" parent="Box/Overlay" instance=ExtResource("7_ulaxe")]
+[node name="CloseButton" parent="Overlay" instance=ExtResource("7_ulaxe")]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = -1
@@ -307,6 +263,6 @@ unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1
 
-[connection signal="pressed" from="Box/MarginContainer/VBoxContainer/Form/Buttons/RegisterButton" to="." method="_on_register_button_pressed"]
-[connection signal="pressed" from="Box/MarginContainer/VBoxContainer/NewAccount/VBoxContainer/HBoxContainer/LoginButton" to="." method="_on_login_button_pressed"]
-[connection signal="pressed" from="Box/Overlay/CloseButton" to="." method="_on_close_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Form/Buttons/RegisterButton" to="." method="_on_register_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/NewAccount/VBoxContainer/HBoxContainer/LoginButton" to="." method="_on_login_button_pressed"]
+[connection signal="pressed" from="Overlay/CloseButton" to="." method="_on_close_button_pressed"]
