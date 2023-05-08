@@ -1,0 +1,66 @@
+[gd_scene load_steps=7 format=3 uid="uid://c8x5dkmf3ijh2"]
+
+[ext_resource type="Script" path="res://scenes/tuner/tuner_string.gd" id="1_conr7"]
+[ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="1_hgtpp"]
+[ext_resource type="Script" path="res://scenes/tuner/note_containter.gd" id="2_pcwgy"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_43i33"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8123o"]
+content_margin_left = 10.0
+content_margin_right = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hw1qu"]
+resource_local_to_scene = true
+bg_color = Color(0.443137, 0.113725, 0.564706, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="TunerString" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_43i33")
+script = ExtResource("1_conr7")
+string_color = Color(0.443137, 0.113725, 0.564706, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_8123o")
+
+[node name="StringPanel" type="Panel" parent="VBoxContainer/PanelContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_hw1qu")
+
+[node name="NoteContainter" type="Control" parent="VBoxContainer/PanelContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+script = ExtResource("2_pcwgy")
+
+[node name="StringLabel" type="Label" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_hgtpp")
+theme_override_font_sizes/font_size = 30
+text = "AA"
+horizontal_alignment = 1
+vertical_alignment = 2

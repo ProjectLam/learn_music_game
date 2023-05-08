@@ -1,31 +1,54 @@
 extends Node
 
-var record_bus : int
-var record_peaks_effect : int = 0
-var bus_layout : AudioBusLayout = preload("res://default_bus_layout.tres")
+signal new_frame_processed(delta, data)
 
-var reset_audio_bus := true
+var mix_rate := 0
+var analyze_bus: int
+var record_peaks_effect: int = 0
+var record_spectrum_effect: int = 1
+var bus_layout: AudioBusLayout = preload("res://default_bus_layout.tres")
+var reset_audio_bus := false
+var pitch_accuracy = 0.025
+var pitch_analyzer_fft_size := 0
+var pitch_analyzer_delta := 0.0
 
 # for repeatitive not ciritical tasks, locking MIGHT ruin things.
 # disabling locking might result in no change.
 # locking is still done by default for safety.
 var lock_audio_server := true
 
+
 func _ready():
 	AudioServer.lock()
-	record_bus = AudioServer.get_bus_index("NoteDetection")
-#	bus_layout.set("bus/%d/effect/%d/effect" % 
-#		[record_bus, record_peaks_effect], naf)
+	analyze_bus = AudioServer.get_bus_index("NoteDetection")
+	pitch_analyzer_fft_size = 256 << AudioServer.get_bus_effect(analyze_bus, record_peaks_effect).get("fft_size")
+	var mix_rate = AudioServer.get_mix_rate()
+	pitch_analyzer_delta = float(pitch_analyzer_fft_size) / mix_rate
 	AudioServer.unlock()
+	
+	set_record_peaks_clarity(0.40)
+	get_pitch_analyzer().connect("new_frame_processed", _on_new_pa_frame_processed)
+
+
+func _process(delta):
+	if reset_audio_bus:
+		call_deferred("_reload_audio_bus")
+		reset_audio_bus = false
+
 
 # lock AudioServer before calling this
-func get_pitch_analyzer():
-	return AudioServer.get_bus_effect_instance(record_bus,record_peaks_effect)
+func get_pitch_analyzer() -> AudioEffectPitchAnalyzerInstance:
+	return AudioServer.get_bus_effect_instance(analyze_bus,record_peaks_effect)
+
+
+func get_spectrum_analyzer():
+	return AudioServer.get_bus_effect_instance(analyze_bus, record_spectrum_effect)
+
 
 func get_record_peaks() -> PackedVector2Array:
 	if(lock_audio_server):
 		AudioServer.lock()
-	var arr : PackedVector2Array = []
+	var arr: PackedVector2Array = []
 	var spectrum = get_pitch_analyzer()
 	if(spectrum):
 		arr = spectrum.get_peaks()
@@ -33,20 +56,45 @@ func get_record_peaks() -> PackedVector2Array:
 		AudioServer.unlock()
 	return arr
 
+
+func get_volume(start_frequency, end_frequency):
+	var spectrum = get_spectrum_analyzer()
+	return spectrum.get_magnitude_for_frequency_range(start_frequency, end_frequency).length()
+
+
 func set_record_peaks_clarity(clarity : float = 0.05):
 	# Note : there is a cpoule of ways to do this
 	var peffect = bus_layout.get("bus/%d/effect/%d/effect" % 
-		[record_bus, record_peaks_effect])
+			[analyze_bus, record_peaks_effect])
 	peffect.set("clarity_threshold", clarity)
-	
 	# forces to recreate the instances with the new settings.
 	# not the most efficient way but the most generic way.
 	reset_audio_bus = true
-	
+
+
 func _reload_audio_bus():
 	AudioServer.set_bus_layout(bus_layout)
+	get_pitch_analyzer().connect("new_frame_processed", _on_new_pa_frame_processed)
+
+
+func mute_analyze(muted: bool):
+	bus_layout.set("bus/%d/mute" % [analyze_bus], muted)
+	reset_audio_bus = true
+#	AudioServer.set_bus_mute(analyze_bus, muted)
+
+
+func _set_volumes(input_peaks: PackedVector2Array) -> PackedVector2Array:
+	const MIN_DB = 60
+	var ret = input_peaks.duplicate()
+	for index in input_peaks.size():
+		var peak := input_peaks[index]
+		var frequency: float = peak.x
+		var magnitude: float = get_volume(frequency*(1 - 3.0*pitch_accuracy), frequency*(1 + 3.0*pitch_accuracy))
+		var energy: float = clamp((MIN_DB + linear_to_db(magnitude)) / MIN_DB, 0, 1)
+		ret[index].y = energy
 	
-func _process(delta):
-	if reset_audio_bus:
-		call_deferred("_reload_audio_bus")
-		reset_audio_bus = false
+	return ret
+
+
+func _on_new_pa_frame_processed(data):
+	new_frame_processed.emit(pitch_analyzer_delta, _set_volumes(data))

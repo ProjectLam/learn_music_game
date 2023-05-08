@@ -1,0 +1,90 @@
+[gd_scene load_steps=7 format=3 uid="uid://ccobg18fs2u6d"]
+
+[ext_resource type="Texture2D" uid="uid://cg02jwx5fxg4r" path="res://assets/gui/tuner/circle.png" id="1_d4886"]
+[ext_resource type="Script" path="res://scenes/tuner/tuner_meter.gd" id="1_o047u"]
+[ext_resource type="Texture2D" uid="uid://dc5drx1lt0y1c" path="res://assets/gui/tuner/needle.png" id="3_dm1ag"]
+[ext_resource type="Script" path="res://scenes/tuner/stick_texture.gd" id="4_mc40l"]
+[ext_resource type="Texture2D" uid="uid://bttcmnyq0lyr6" path="res://assets/gui/tuner/note_stick_circle.png" id="5_f3p6r"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_irb2j"]
+
+[node name="TunerMeter" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_irb2j")
+script = ExtResource("1_o047u")
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
+layout_mode = 2
+ratio = 1.4789
+alignment_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="AspectRatioContainer"]
+layout_mode = 2
+texture = ExtResource("1_d4886")
+expand_mode = 1
+
+[node name="Stick" type="Control" parent="AspectRatioContainer/TextureRect"]
+unique_name_in_owner = true
+layout_mode = 1
+anchor_left = 0.5
+anchor_top = 0.74
+anchor_right = 0.5
+anchor_bottom = 0.74
+offset_top = -0.000518799
+offset_bottom = -0.000518799
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+
+[node name="StickTexture" type="TextureRect" parent="AspectRatioContainer/TextureRect/Stick"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = -23.5337
+offset_top = -644.76
+offset_right = 23.5337
+texture = ExtResource("3_dm1ag")
+expand_mode = 4
+script = ExtResource("4_mc40l")
+containter = NodePath("../..")
+size_ratio = 0.597
+width_ratio = 0.073
+metadata/_edit_lock_ = true
+
+[node name="CircleNotes" type="Control" parent="AspectRatioContainer"]
+layout_mode = 2
+
+[node name="Notes" type="Control" parent="AspectRatioContainer/CircleNotes"]
+unique_name_in_owner = true
+clip_contents = true
+layout_mode = 1
+anchor_top = 0.784
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="TextureRect" type="TextureRect" parent="AspectRatioContainer/CircleNotes/Notes"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.4
+anchor_right = 0.6
+anchor_bottom = 1.0
+texture = ExtResource("5_f3p6r")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Items" type="HBoxContainer" parent="AspectRatioContainer/CircleNotes/Notes"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+alignment = 1

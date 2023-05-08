@@ -10,6 +10,8 @@ signal chord_ended(frequencies)
 var current_instrument := 0
 var instrument_count := 0
 
+@onready var microphone_input = %MicrophoneInput
+
 
 func _ready():
 	for child in get_children():

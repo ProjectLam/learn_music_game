@@ -11,11 +11,13 @@
 script = ExtResource("1_tr0se")
 
 [node name="MicrophoneInput" type="Node" parent="."]
+unique_name_in_owner = true
 script = ExtResource("2_cci1d")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="MicrophoneInput"]
 stream = SubResource("AudioStreamMicrophone_4mn6f")
-bus = &"Input"
+autoplay = true
+bus = &"Record"
 
 [node name="MidiInput" type="Node" parent="."]
 script = ExtResource("3_e7eyk")

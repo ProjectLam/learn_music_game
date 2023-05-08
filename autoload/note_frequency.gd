@@ -315,7 +315,7 @@ const OCTAVES = [
 	},
 ]
 
-const CHROMATIC = [
+const CHROMATIC: PackedFloat32Array = [
 	A0,
 	A_SHARP0,
 	B0,
