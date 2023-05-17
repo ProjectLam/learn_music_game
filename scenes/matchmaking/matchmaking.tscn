@@ -12,7 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://b2ew1c3swawaj" path="res://scenes/instrument_selection/instrument_selection_item.tscn" id="12_dm5k6"]
 [ext_resource type="PackedScene" uid="uid://r5oy8h4p8suy" path="res://scenes/song_selection/song_selection.tscn" id="13_tr8mu"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ykk77"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_al4mc"]
 resource_local_to_scene = true
 shader = ExtResource("3_11mtd")
 shader_parameter/indicate = true
@@ -52,7 +52,7 @@ texture = ExtResource("2_i2m6c")
 stretch_mode = 6
 
 [node name="LightLayer" parent="Background" instance=ExtResource("3_esan8")]
-material = SubResource("ShaderMaterial_ykk77")
+material = SubResource("ShaderMaterial_al4mc")
 layout_mode = 1
 
 [node name="LeftBar" parent="." instance=ExtResource("4_cayno")]
@@ -143,13 +143,13 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_n47vw")
 
 [node name="BackBufferCopy" type="BackBufferCopy" parent="PopupBG"]
-visible = false
 position = Vector2(160, 140)
 copy_mode = 2
 rect = Rect2(0, 0, 800, 400)
 
 [node name="CreatingMatchPopup" type="MarginContainer" parent="PopupBG"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 
 [node name="glass_panel" parent="PopupBG/CreatingMatchPopup" instance=ExtResource("10_t33hw")]
