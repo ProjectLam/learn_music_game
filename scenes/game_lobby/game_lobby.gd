@@ -11,11 +11,6 @@ func _ready():
 	refresh()
 
 
-func _process(delta):
-	if Input.is_action_just_pressed("ui_up"):
-		refresh()
-
-
 func request_finish(request_code: int) -> bool:
 	# TODO : add confirmation dialogs.
 	# TODO : set previous scene when going to the settings page.

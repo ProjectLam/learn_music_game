@@ -542,8 +542,3 @@ func session_is_valid() -> bool:
 
 func _on_socket_connection_error(p_error):
 	pass
-
-
-func _process(delta):
-	if Input.is_action_just_pressed("ui_up"):
-		var payload = await socket.rpc_async_parsed("get_versionn", {})
