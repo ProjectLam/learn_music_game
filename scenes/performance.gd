@@ -73,6 +73,22 @@ func _ready():
 	is_ready = true
 
 
+func _process(delta: float) -> void:
+	if Input.is_action_pressed("ui_cancel"):
+		MatchManager.leave_match_async()
+		get_tree().change_scene_to_file("res://scenes/instrument_selection/instrument_selection.tscn")
+		return
+	if Input.is_action_just_pressed("media_pause_play"):
+		print("media_pause_play pressed")
+		media_pause_play()
+	if Input.is_action_just_pressed("media_seek_forward"):
+		print("seeking forward by %s seconds" % seek_amount)
+		media_seek(true)
+	if Input.is_action_just_pressed("media_seek_backward"):
+		print("seeking backward by %s seconds" % seek_amount)
+		media_seek(false)
+
+
 func print_song_loading_debug(to_print):
 	if should_print_song_loading_debugs:
 		print(to_print)
@@ -191,21 +207,6 @@ func _on_instrument_changed():
 	performance_instrument = instrument_data.create_performance_node()
 	add_child(performance_instrument)
 	_on_connect_instrument()
-
-
-func _process(delta: float) -> void:
-	if Input.is_action_pressed("ui_cancel"):
-		get_tree().change_scene_to_file("res://scenes/instrument_selection/instrument_selection.tscn")
-		return
-	if Input.is_action_just_pressed("media_pause_play"):
-		print("media_pause_play pressed")
-		media_pause_play()
-	if Input.is_action_just_pressed("media_seek_forward"):
-		print("seeking forward by %s seconds" % seek_amount)
-		media_seek(true)
-	if Input.is_action_just_pressed("media_seek_backward"):
-		print("seeking backward by %s seconds" % seek_amount)
-		media_seek(false)
 
 
 func _seek(time: float = 0):
@@ -411,7 +412,7 @@ func _on_good_note_started(note_index: int, time_error: float) -> void:
 
 # temporary unique user id generator. will be replaced with a user id system.
 func get_user_id(peer_id: int) -> String:
-	var username: String = GBackend.multiplayer_bridge.get_peer_username(peer_id)
+	var username: String = MatchManager.get_peer_username(peer_id)
 	if username != "":
 		return username
 	else:

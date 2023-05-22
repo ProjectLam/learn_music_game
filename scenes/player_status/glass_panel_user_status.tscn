@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://bxwph8rhsllwu"]
+
+[ext_resource type="Script" path="res://scenes/player_status/glass_panel_user_status.gd" id="1_81kx1"]
+[ext_resource type="PackedScene" uid="uid://d3o4oipt5jw2b" path="res://scenes/ui_elements/glass_panel_element_even.tscn" id="2_65tmo"]
+[ext_resource type="PackedScene" uid="uid://bvillkq34yvoo" path="res://scenes/player_status/user_status.tscn" id="2_pfmjn"]
+[ext_resource type="PackedScene" uid="uid://dj6q8o76cf5vf" path="res://scenes/ui_elements/glass_panel_element_odd.tscn" id="3_7od1h"]
+
+[node name="glass_panel_player_status" type="PanelContainer"]
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+script = ExtResource("1_81kx1")
+
+[node name="EvenPanel" parent="." instance=ExtResource("2_65tmo")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="OddPanel" parent="." instance=ExtResource("3_7od1h")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="player_status" parent="." instance=ExtResource("2_pfmjn")]
+layout_mode = 2

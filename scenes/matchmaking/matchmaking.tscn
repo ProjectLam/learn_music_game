@@ -12,7 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://b2ew1c3swawaj" path="res://scenes/instrument_selection/instrument_selection_item.tscn" id="12_dm5k6"]
 [ext_resource type="PackedScene" uid="uid://r5oy8h4p8suy" path="res://scenes/song_selection/song_selection.tscn" id="13_tr8mu"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_al4mc"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_f5a4a"]
 resource_local_to_scene = true
 shader = ExtResource("3_11mtd")
 shader_parameter/indicate = true
@@ -52,7 +52,7 @@ texture = ExtResource("2_i2m6c")
 stretch_mode = 6
 
 [node name="LightLayer" parent="Background" instance=ExtResource("3_esan8")]
-material = SubResource("ShaderMaterial_al4mc")
+material = SubResource("ShaderMaterial_f5a4a")
 layout_mode = 1
 
 [node name="LeftBar" parent="." instance=ExtResource("4_cayno")]

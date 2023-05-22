@@ -60,6 +60,7 @@ signal received_match_state(p_state)
 signal remote_songs_json_received
 signal login_set(cancelled: bool)
 signal connection_status_changed
+signal game_status_changed()
 
 func _init():
 	if is_js_enabled:
@@ -186,7 +187,10 @@ func _init_multiplayer_bridge():
 	if is_instance_valid(multiplayer_bridge):
 		multiplayer_bridge.match_join_error.disconnect(_on_match_join_error)
 		multiplayer_bridge.match_joined.disconnect(_on_match_joined)
-		multiplayer_bridge.queue_free()
+		multiplayer_bridge.game_status_changed.disconnect(_on_game_status_changed)
+		remove_child(multiplayer_bridge)
+		
+		multiplayer_bridge.free()
 		
 	multiplayer_bridge = await NakamaMultiplayerBridge.new(socket)
 	
@@ -203,6 +207,7 @@ func _init_multiplayer_bridge():
 		
 		multiplayer_bridge.match_join_error.connect(_on_match_join_error)
 		multiplayer_bridge.match_joined.connect(_on_match_joined)
+		multiplayer_bridge.game_status_changed.connect(_on_game_status_changed)
 		add_child(multiplayer_bridge)
 		multiplayer_bridge._multiplayer_peer.set_connection_status(MultiplayerPeer.CONNECTION_CONNECTING)
 		multiplayer.set_multiplayer_peer(multiplayer_bridge.multiplayer_peer)
@@ -542,3 +547,11 @@ func session_is_valid() -> bool:
 
 func _on_socket_connection_error(p_error):
 	pass
+
+
+func _on_game_status_changed():
+	game_status_changed.emit()
+
+#func _process(delta):
+#	if Input.is_action_just_pressed("ui_up"):
+#		var payload = await socket.rpc_async_parsed("get_versionn", {})

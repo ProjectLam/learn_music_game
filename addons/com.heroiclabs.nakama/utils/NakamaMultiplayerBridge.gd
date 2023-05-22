@@ -19,7 +19,13 @@ enum MatchState {
 enum MetaMessageType {
 	# used for setting the (peer,session_id) pairs.
 	SET_PEER_MAP = 1001,
+	MATCH_LABEL_UPDATE = 1002
 }
+
+signal match_join_error(exception)
+signal match_joined()
+signal needs_reconnect()
+signal game_status_changed()
 
 # Read-only variables.
 var _nakama_socket: NakamaSocket
@@ -42,8 +48,9 @@ var multiplayer_peer: NakamaMultiplayerPeer:
 	set(_v): pass
 
 # Configuration that can be set by the developer.
-const META_OPCODE: int = 9001
-const GODOT_RPC_OPCODE: int = 9002
+const OPCPDE_META: int = 9001
+const OPCODE_RPC_GODOT: int = 9002
+const OPCODE_MATCH_HANDLER_RPC: int = 9003
 
 
 # Internal variables.
@@ -60,10 +67,6 @@ class User extends RefCounted:
 
 	func _init(p_presence) -> void:
 		presence = p_presence
-
-signal match_join_error(exception)
-signal match_joined()
-signal needs_reconnect()
 
 
 var bridge_initializing := true
@@ -122,6 +125,14 @@ func get_version():
 	return null
 
 
+func parse_match_label(label_string: String) -> int:
+	var parsed_label = JSON.parse_string(label_string)
+	if parsed_label is Dictionary:
+		match_label = parsed_label
+		return OK
+	return -1
+
+
 func create_match_async(match_name: String, meta_data: Dictionary) -> NakamaRTAPI.Match:
 	if _match_state > MatchState.JOINING:
 		push_warning("Trying to create match before leaving the current one.")
@@ -159,12 +170,10 @@ func create_match_async(match_name: String, meta_data: Dictionary) -> NakamaRTAP
 	
 	_match_id = join_res.match_id
 	_my_session_id = join_res.self_user.session_id
-	var parsed_label = JSON.parse_string(join_res.label)
-	if parsed_label is Dictionary:
-		match_label = parsed_label
-	else:
+	if parse_match_label(join_res.label) != OK:
 		push_error("invalid match label")
 		match_label.clear()
+		# TODO : add more error handling
 	for presence in join_res.presences:
 		print("adding Initial presence :", presence)
 		if presence.session_id == _my_session_id:
@@ -207,12 +216,11 @@ func join_match_async(match_id: String):
 			continue
 		_on_presence_join(presence)
 	
-	var parsed_label = JSON.parse_string(join_res.label)
-	if parsed_label is Dictionary:
-		match_label = parsed_label
-	else:
+	
+	if parse_match_label(join_res.label) != OK:
 		push_error("invalid match label")
 		match_label.clear()
+		# TODO : add more error handling
 	
 	# _match_state is already set to joining.
 	# upon receiving session_d for peer_id 1 with 
@@ -224,6 +232,21 @@ func join_match_async(match_id: String):
 		return join_res
 	else:
 		return null
+
+
+
+func match_rpc_async(data: Dictionary) -> int :
+	if match_state == MatchState.CONNECTED:
+		var send_data = JSON.stringify(data)
+		
+		var res = await _nakama_socket.send_match_state_async(_match_id, OPCODE_MATCH_HANDLER_RPC, send_data, [])
+		if res.is_exception():
+			return -1
+		
+		return OK
+	else:
+		push_error("RPC sent while the NakamaMultiplayerBridge isn't connected!")
+		return -1
 
 
 #func start_matchmaking(ticket) -> void:
@@ -369,9 +392,9 @@ func _on_nakama_socket_received_match_state(data) -> void:
 		return
 	
 	match data.op_code:
-		META_OPCODE:
+		OPCPDE_META:
 			_process_meta(data)
-		GODOT_RPC_OPCODE:
+		OPCODE_RPC_GODOT:
 			_process_godot_rpc(data)
 		_:
 			push_error("INVALID OPCODE :", data)
@@ -387,56 +410,76 @@ func _process_meta(data) -> void:
 	if data.presence:
 		push_error("Meta op codes only allowed from server")
 		return
-	if type == MetaMessageType.SET_PEER_MAP:
-		# peer_map is a Dictionary of (session_id : peer_id) pairs
-		var peer_map = content.get("peer_map")
-		if not (peer_map is Dictionary):
-			push_error("invalid value for 'new_peers_map' entry")
-			return
-		
-		# entries for users that have left should 
-		# be removed. Not sure if we need to check for that. If the backend 
-		# is doing it's job then we shouldn't need to.
-		if _match_state == MatchState.CONNECTED:
-			for sess_id in peer_map:
-				if not _users.has(sess_id):
-					# trying to set peer_id for a precense that hasn't been received yet.
-					push_error("Setting peer for non existing user :", sess_id)
+	match(int(type)):
+		MetaMessageType.SET_PEER_MAP:
+			_process_meta_set_peer_map(content)
+		MetaMessageType.MATCH_LABEL_UPDATE:
+			_process_meta_match_label_update(content)
+		_:
+			_nakama_socket.logger.error("Received meta message with unknown type :%s" % content)
+
+
+func _process_meta_match_label_update(content):
+	var prev_label = match_label.duplicate(true)
+	var new_label_string = content.get("match_label")
+	if parse_match_label(new_label_string) != OK:
+		push_error("Meta update sent invalid match label")
+		match_label.clear()
+		# TODO : add more error handling
+	
+	if prev_label.get("game_status") != match_label.get("game_status"):
+		game_status_changed.emit()
+	
+
+
+func _process_meta_set_peer_map(content):
+	# peer_map is a Dictionary of (session_id : peer_id) pairs
+	var peer_map = content.get("peer_map")
+	if not (peer_map is Dictionary):
+		push_error("invalid value for 'new_peers_map' entry")
+		return
+	
+	# entries for users that have left should 
+	# be removed. Not sure if we need to check for that. If the backend 
+	# is doing it's job then we shouldn't need to.
+	if _match_state == MatchState.CONNECTED:
+		for sess_id in peer_map:
+			if not _users.has(sess_id):
+				# trying to set peer_id for a precense that hasn't been received yet.
+				push_error("Setting peer for non existing user :", sess_id)
+				return
+			var peer_id: int = peer_map[sess_id]
+			if _id_map.has(peer_id):
+				if _id_map.get(peer_id) != sess_id:
+					push_error("Changing peer id is not supported")
 					return
-				var peer_id: int = peer_map[sess_id]
-				if _id_map.has(peer_id):
-					if _id_map.get(peer_id) != sess_id:
-						push_error("Changing peer id is not supported")
-						return
-				else:
-					_id_map[peer_id] = sess_id
-					_users[sess_id].peer_id = peer_id
-					multiplayer_peer.peer_connected.emit(peer_id)
-		elif _match_state == MatchState.JOINING and peer_map.has(_my_session_id):
-			# our peer id has been set. we can initialize multiplayer_peer. 
-			
-			_my_peer_id = peer_map[_my_session_id]
-			_users[_my_session_id].peer_id = _my_peer_id
-			_id_map[_my_peer_id] = _my_session_id
-			# TODO :
-			# boradcast that you are now ready
-			_multiplayer_peer.initialize(_my_peer_id)
-			_match_state = MatchState.CONNECTED
-#				_multiplayer_peer.set_connection_status(MultiplayerPeer.CONNECTION_CONNECTED)
-			# peer_connected events for the rest of the peers :
-			for sess_id in peer_map:
-				if sess_id == _my_session_id:
-					continue
-				var peer_id: int = peer_map[sess_id]
-				_users[sess_id].peer_id = peer_id
+			else:
 				_id_map[peer_id] = sess_id
-				_multiplayer_peer.peer_connected.emit(peer_id)
-			if _id_map.has(1):
-				# host has joined.
-				_match_state = MatchState.CONNECTED
-				match_joined.emit()
-	else:
-		_nakama_socket.logger.error("Received meta message with unknown type :%s" % content)
+				_users[sess_id].peer_id = peer_id
+				multiplayer_peer.peer_connected.emit(peer_id)
+	elif _match_state == MatchState.JOINING and peer_map.has(_my_session_id):
+		# our peer id has been set. we can initialize multiplayer_peer. 
+		
+		_my_peer_id = peer_map[_my_session_id]
+		_users[_my_session_id].peer_id = _my_peer_id
+		_id_map[_my_peer_id] = _my_session_id
+		# TODO :
+		# boradcast that you are now ready
+		_multiplayer_peer.initialize(_my_peer_id)
+		_match_state = MatchState.CONNECTED
+#				_multiplayer_peer.set_connection_status(MultiplayerPeer.CONNECTION_CONNECTED)
+		# peer_connected events for the rest of the peers :
+		for sess_id in peer_map:
+			if sess_id == _my_session_id:
+				continue
+			var peer_id: int = peer_map[sess_id]
+			_users[sess_id].peer_id = peer_id
+			_id_map[peer_id] = sess_id
+			_multiplayer_peer.peer_connected.emit(peer_id)
+		if _id_map.has(1):
+			# host has joined.
+			_match_state = MatchState.CONNECTED
+			match_joined.emit()
 
 
 func _process_godot_rpc(data) -> void:
@@ -475,25 +518,43 @@ func _on_multiplayer_peer_packet_generated(peer_id: int, buffer: PackedByteArray
 			"target_presence": target_presence,
 			"data": Marshalls.raw_to_base64(buffer),
 		})
-		_nakama_socket.send_match_state_async(_match_id, GODOT_RPC_OPCODE, data, target_presences)
+		_nakama_socket.send_match_state_async(_match_id, OPCODE_RPC_GODOT, data, target_presences)
 	else:
 		push_error("RPC sent while the NakamaMultiplayerBridge isn't connected!")
 
 
-func get_peer_username(peer_id: int) -> String:
+func get_peer_UserPresence(peer_id: int) -> NakamaRTAPI.UserPresence:
 	var sess_id = _id_map.get(peer_id)
 	if not (sess_id is String):
-		push_error("no user presence for peer_id[%d]", peer_id)
-		return ""
+		push_error("no user presence for peer_id[%d]" % peer_id)
+		return null
 	var user: User = _users.get(sess_id)
 	if not user:
-		push_error("no user presence for peer_id[%d]", peer_id)
-		return ""
-	var presence = user.presence
-	if presence is NakamaRTAPI.UserPresence:
+		push_error("no user presence for peer_id[%d]" % peer_id)
+		return null
+	if user.presence is NakamaRTAPI.UserPresence:
+		return user.presence
+	else:
+		push_error("Invalid user presence for peer_id[%d]" % peer_id)
+		return null
+	
+
+func get_peer_username(peer_id: int) -> String:
+	var presence = get_peer_UserPresence(peer_id)
+	if presence:
 		return presence.username
 	else:
-		push_error("no user presence for peer_id[%d]", peer_id)
+		push_error("no user presence for peer_id[%d]" % peer_id)
+		return ""
+	
+
+
+func get_peer_user_id(peer_id: int) -> String:
+	var presence = get_peer_UserPresence(peer_id)
+	if presence:
+		return presence.user_id
+	else:
+		push_error("no user presence for peer_id[%d]" % peer_id)
 		return ""
 
 
