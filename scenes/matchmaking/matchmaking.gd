@@ -98,7 +98,6 @@ func refresh():
 				joining_match_popup.hide()
 			_:
 				push_error("Transition to ", MatchManager.status ," not implemented")
-			
 	
 	prev_match_manager_status = MatchManager.status
 

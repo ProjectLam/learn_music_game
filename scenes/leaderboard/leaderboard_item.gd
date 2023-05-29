@@ -1,5 +1,5 @@
 extends PanelContainer
-class_name LeaderboardItem
+#class_name LeaderboardItem
 
 @onready var nNumberLabel: Label = find_child("NumberLabel")
 @onready var nNameLabel: Label = find_child("NameLabel")
@@ -21,32 +21,32 @@ func _process(delta):
 
 func set_item(p_item: TLeaderboardItem) -> void:
 	item = p_item
-	
-	if item.rank >= 0:
-		nNumberLabel.text = "#" + str(item.rank)
-		nNumberLabel.show()
-	else:
-		nNumberLabel.hide()
-	
-	if item.user:
-		nNameLabel.text = item.user.username
-		
-		if item.percent >= 0:
-			nPercentLabel.text = "%" + str(item.percent)
-			nPercentLabel.show()
-		else:
-			nPercentLabel.hide()
-		
-		if item.score >= 0:
-			nScoreLabel.text = str(item.score)
-		else:
-			nScoreLabel.hide()
-	
-	if item.date == "":
-		nDateLabel.hide()
-	else:
-		nDateLabel.text = item.date
-		nDateLabel.show()
+#
+#	if item.rank >= 0:
+#		nNumberLabel.text = "#" + str(item.rank)
+#		nNumberLabel.show()
+#	else:
+#		nNumberLabel.hide()
+#
+#	if item.user:
+#		nNameLabel.text = item.user.username
+#
+#		if item.percent >= 0:
+#			nPercentLabel.text = "%" + str(item.percent)
+#			nPercentLabel.show()
+#		else:
+#			nPercentLabel.hide()
+#
+#		if item.score >= 0:
+#			nScoreLabel.text = str(item.score)
+#		else:
+#			nScoreLabel.hide()
+#
+#	if item.date == "":
+#		nDateLabel.hide()
+#	else:
+#		nDateLabel.text = item.date
+#		nDateLabel.show()
 
 func set_is_me(p_is_me: bool) -> void:
 	is_me = p_is_me

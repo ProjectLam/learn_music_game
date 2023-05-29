@@ -32,7 +32,7 @@ signal instrument_changed
 
 func sync_remote():
 	if get_multiplayer_authority() != multiplayer.get_unique_id():
-		push_error("Not Multiplayer Authority")
+		push_error("Not multiplayer authority. Not permitted to call synch_remote")
 		return
 	var sync_dict := {}
 	for k in synch_variables:

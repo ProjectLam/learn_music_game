@@ -39,8 +39,8 @@ var game_status := GameStatus.UNDEFINED:
 # Also helps with not having to wait for leave_match_async.
 var processing_request := false
 
-# user_id : User map
-var users := {}
+# peer_id : User map
+var users: RefDict
 
 func _ready():
 	GBackend.connection_status_changed.connect(_on_connection_status_changed)
@@ -70,8 +70,8 @@ func set_game_status(value: GameStatus) -> void:
 	if game_status != value:
 		game_status = value
 		
-		if game_status == GameStatus.UNDEFINED:
-			users.clear()
+#		if game_status == GameStatus.UNDEFINED:
+#			users.dict.clear()
 
 
 func create_match_async(song: Song) -> int:
@@ -128,6 +128,14 @@ func _init_match(join_err: int) -> int:
 		status = MatchMakingStatus.IDLE
 		return join_err
 	
+	if multiplayer.multiplayer_peer.get_connection_status() != MultiplayerPeer.CONNECTION_CONNECTED:
+		push_warning("Something went wrong. waiting for multiplayer to initialize.")
+		await multiplayer.connected_to_server
+	
+	
+	users = GBackend.multiplayer_bridge._users_pid
+	
+	
 	var isntrument_name = get_label().get("instrument")
 	if not (isntrument_name in InstrumentList.instruments):
 		push_error("Instrument not found")
@@ -150,6 +158,7 @@ func _init_match(join_err: int) -> int:
 	SessionVariables.instrument = PlayerVariables.gameplay_instrument_name
 	
 	SessionVariables.single_player = false
+	
 	status = MatchMakingStatus.JOINED_MATCH
 	
 	return OK
@@ -262,15 +271,43 @@ func list_matches_async(only_allowed := true):
 
 func get_peer_username(peer_id: int) -> String:
 	# TODO : add checks.
-	return GBackend.multiplayer_bridge.get_peer_username(peer_id)
+	var user = users.dict.get(peer_id)
+	if not user:
+		push_error("invalid peer id")
+		return ""
+	return user.username
 
 
 func get_peer_user_id(peer_id: int) -> String:
 	# TODO : add checks
-	return GBackend.multiplayer_bridge.get_peer_user_id(peer_id)
+	var user = users.dict.get(peer_id)
+	if not user:
+		push_error("invalid peer id")
+		return ""
+	return users.user_id
 
 
 func _on_peer_connected(peer_id: int) -> void:
-	var presence := GBackend.multiplayer_bridge.get_peer_UserPresence(peer_id)
+	var presence := GBackend.multiplayer_bridge.get_peer_user(peer_id)
 	if presence:
-		users[presence.user_id] = User.new(presence)
+		users[presence.user_id] = Users.get_from(presence)
+
+
+func is_user_host(user: User):
+	if not user:
+		return false
+	
+	if user.peer_id == get_multiplayer_authority():
+		return true
+	
+	return false
+
+
+func is_user_self(user: User):
+	if not user:
+		return false
+	
+	if status != MatchMakingStatus.RECONNECTING and status != MatchMakingStatus.JOINED_MATCH:
+		return false
+	
+	return user.peer_id == multiplayer.get_unique_id()

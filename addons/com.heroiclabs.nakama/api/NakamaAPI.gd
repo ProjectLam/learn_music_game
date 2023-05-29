@@ -5602,6 +5602,7 @@ class ApiClient extends RefCounted:
 		var uri = "%s%s%s" % [_base_uri, urlpath, "?" + query_params if query_params else ""]
 		var method = "GET"
 		var headers = {}
+		# FIXME : p_session was null.
 		var header = "Bearer %s" % p_session.token
 		headers["Authorization"] = header
 

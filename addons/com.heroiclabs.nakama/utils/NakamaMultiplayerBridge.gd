@@ -56,17 +56,9 @@ const OPCODE_MATCH_HANDLER_RPC: int = 9003
 # Internal variables.
 var _my_session_id: String
 var _my_peer_id: int = 0
-var _id_map := {}
+var _users_pid := RefDict.new()
 var _users := {}
 var _matchmaker_ticket := ''
-
-class User extends RefCounted:
-	var presence
-	var peer_id: int = 0
-	var ready := false
-
-	func _init(p_presence) -> void:
-		presence = p_presence
 
 
 var bridge_initializing := true
@@ -295,16 +287,6 @@ func _on_nakama_socket_closed() -> void:
 	_cleanup()
 
 
-func get_user_presence_for_peer(peer_id: int) -> NakamaRTAPI.UserPresence:
-	var session_id = _id_map.get(peer_id)
-	if session_id == null:
-		return null
-	var user = _users.get(session_id)
-	if user == null:
-		return null
-	return user.presence
-
-
 func leave_match_async() -> void:
 	if _match_state <= MatchState.LEAVING_MATCH:
 		push_warning("Trying to leave match more than once")
@@ -323,14 +305,14 @@ func leave_match_async() -> void:
 
 
 func _cleanup() -> void:
-	for peer_id in _id_map:
+	for peer_id in _users_pid.dict:
 		multiplayer_peer.peer_disconnected.emit(peer_id)
 
 	_match_id = ''
 	_matchmaker_ticket = ''
 	_my_session_id = ''
 	_my_peer_id = 0
-	_id_map.clear()
+	_users_pid.dict.clear()
 	_users.clear()
 
 #	_multiplayer_peer.set_connection_status(MultiplayerPeer.CONNECTION_DISCONNECTED)
@@ -354,7 +336,8 @@ func _on_nakama_socket_received_match_presence(event) -> void:
 #		# generate a new id for them and send all the necessary messages.
 #		if _my_peer_id == 1 and _users[presence.session_id].peer_id == 0:
 #			_host_add_peer(presence)
-	
+
+
 	for presence in event.leaves:
 		if not _users.has(presence.session_id):
 			push_warning("A user left. But it's join event was not received.")
@@ -364,13 +347,13 @@ func _on_nakama_socket_received_match_presence(event) -> void:
 		
 		if peer_id:
 			_multiplayer_peer.peer_disconnected.emit(peer_id)
-			_id_map.erase(peer_id)
+			_users_pid.dict.erase(peer_id)
 		_users.erase(presence.session_id)
 
 
 func _on_presence_join(presence: NakamaRTAPI.UserPresence):
 	if not _users.has(presence.session_id):
-		_users[presence.session_id] = User.new(presence)
+		_users[presence.session_id] = Users.get_from(presence)
 
 
 func _parse_json(data: String):
@@ -449,20 +432,22 @@ func _process_meta_set_peer_map(content):
 				push_error("Setting peer for non existing user :", sess_id)
 				return
 			var peer_id: int = peer_map[sess_id]
-			if _id_map.has(peer_id):
-				if _id_map.get(peer_id) != sess_id:
+			if _users_pid.dict.has(peer_id):
+				if _users_pid.dict.get(peer_id).session_id != sess_id:
 					push_error("Changing peer id is not supported")
 					return
 			else:
-				_id_map[peer_id] = sess_id
-				_users[sess_id].peer_id = peer_id
+				var user = _users[sess_id]
+				user.peer_id = peer_id
+				_users_pid.dict[peer_id] = user
 				multiplayer_peer.peer_connected.emit(peer_id)
 	elif _match_state == MatchState.JOINING and peer_map.has(_my_session_id):
 		# our peer id has been set. we can initialize multiplayer_peer. 
 		
 		_my_peer_id = peer_map[_my_session_id]
-		_users[_my_session_id].peer_id = _my_peer_id
-		_id_map[_my_peer_id] = _my_session_id
+		var self_user = _users[_my_session_id]
+		self_user.peer_id = _my_peer_id
+		_users_pid.dict[_my_peer_id] = self_user
 		# TODO :
 		# boradcast that you are now ready
 		_multiplayer_peer.initialize(_my_peer_id)
@@ -473,10 +458,11 @@ func _process_meta_set_peer_map(content):
 			if sess_id == _my_session_id:
 				continue
 			var peer_id: int = peer_map[sess_id]
-			_users[sess_id].peer_id = peer_id
-			_id_map[peer_id] = sess_id
+			var user = _users[sess_id]
+			user.peer_id = peer_id
+			_users_pid.dict[peer_id] = user
 			_multiplayer_peer.peer_connected.emit(peer_id)
-		if _id_map.has(1):
+		if _users_pid.dict.has(1):
 			# host has joined.
 			_match_state = MatchState.CONNECTED
 			match_joined.emit()
@@ -506,10 +492,11 @@ func _on_multiplayer_peer_packet_generated(peer_id: int, buffer: PackedByteArray
 		var target_presences = null
 		var target_presence = null
 		if peer_id > 0:
-			if not _id_map.has(peer_id):
+			var user := _users_pid.dict.get(peer_id)
+			if not user:
 				push_error("Attempting to send RPC to unknown peer id: %s" % peer_id)
 				return
-			var presence: NakamaRTAPI.UserPresence = _users[_id_map[peer_id]].presence
+			var presence: NakamaRTAPI.UserPresence = user.nkPresence
 			target_presence = presence.session_id
 			target_presences = [ presence ]
 		# because nakama api dumps target presences for target_precenses we need to bundle them.
@@ -523,24 +510,16 @@ func _on_multiplayer_peer_packet_generated(peer_id: int, buffer: PackedByteArray
 		push_error("RPC sent while the NakamaMultiplayerBridge isn't connected!")
 
 
-func get_peer_UserPresence(peer_id: int) -> NakamaRTAPI.UserPresence:
-	var sess_id = _id_map.get(peer_id)
-	if not (sess_id is String):
+func get_peer_user(peer_id: int) -> User:
+	var user = _users_pid.dict.get(peer_id)
+	if not (user is String):
 		push_error("no user presence for peer_id[%d]" % peer_id)
 		return null
-	var user: User = _users.get(sess_id)
-	if not user:
-		push_error("no user presence for peer_id[%d]" % peer_id)
-		return null
-	if user.presence is NakamaRTAPI.UserPresence:
-		return user.presence
-	else:
-		push_error("Invalid user presence for peer_id[%d]" % peer_id)
-		return null
+	return user
 	
 
 func get_peer_username(peer_id: int) -> String:
-	var presence = get_peer_UserPresence(peer_id)
+	var presence = get_peer_user(peer_id)
 	if presence:
 		return presence.username
 	else:
@@ -550,7 +529,7 @@ func get_peer_username(peer_id: int) -> String:
 
 
 func get_peer_user_id(peer_id: int) -> String:
-	var presence = get_peer_UserPresence(peer_id)
+	var presence = get_peer_user(peer_id)
 	if presence:
 		return presence.user_id
 	else:

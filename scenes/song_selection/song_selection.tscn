@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://r5oy8h4p8suy"]
+[gd_scene load_steps=20 format=3 uid="uid://r5oy8h4p8suy"]
 
 [ext_resource type="Script" path="res://scenes/song_selection/song_selection.gd" id="1_w4sd3"]
 [ext_resource type="Texture2D" uid="uid://c4e8lna5vxx00" path="res://assets/gui/song_selection/songs-bg.png" id="2_wl6ga"]
@@ -59,14 +59,6 @@ font_size = 22
 [sub_resource type="LabelSettings" id="LabelSettings_3ps5x"]
 line_spacing = 0.0
 font = ExtResource("15_fnnqe")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fa7sp"]
-bg_color = Color(0.545098, 0, 0.505882, 0.27451)
-border_color = Color(0.992157, 0, 0.909804, 0.643137)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yhh6w"]
-bg_color = Color(0.631373, 0.4, 0.647059, 0.27451)
-border_color = Color(0.992157, 0, 0.909804, 0.643137)
 
 [node name="SongSelection" type="Control"]
 layout_mode = 3
@@ -301,8 +293,6 @@ grow_vertical = 2
 
 [node name="leaderboard" parent="Right/SongDetails/Leaderboard" instance=ExtResource("13_txwuv")]
 layout_mode = 1
-style_odd = SubResource("StyleBoxFlat_fa7sp")
-style_even = SubResource("StyleBoxFlat_yhh6w")
 
 [node name="HBoxContainer" parent="Right/SongDetails/Leaderboard/leaderboard/VBoxContainer/Header" index="0"]
 anchor_right = 0.0

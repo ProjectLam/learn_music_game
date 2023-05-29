@@ -2,9 +2,14 @@
 
 [ext_resource type="StyleBox" uid="uid://o85avtnh5o0a" path="res://scenes/ui_elements/glass_panel_dim.stylebox" id="1_gc5y6"]
 
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_yby5w"]
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_j0rgv"]
 blend_mode = 3
 
 [node name="EvenPanel" type="Panel"]
-material = SubResource("CanvasItemMaterial_yby5w")
+material = SubResource("CanvasItemMaterial_j0rgv")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_styles/panel = ExtResource("1_gc5y6")
