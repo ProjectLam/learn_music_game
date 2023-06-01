@@ -2,6 +2,8 @@ extends PanelContainer
 class_name MatchesItem
 
 signal selected(match_id: String)
+signal join_not_allowed(message: String)
+signal protected_match_selected(match_id: String)
 
 const ANIMATION_DURATION := 0.15
 
@@ -13,6 +15,7 @@ const ANIMATION_DURATION := 0.15
 @onready var playing_tween: Tween
 @onready var even_panel = %EvenPanel
 @onready var odd_panel = %OddPanel
+@onready var locked_icon = %LockedIcon
 
 
 var style_odd: StyleBox
@@ -22,16 +25,20 @@ var style_mine: StyleBox
 var apimatch: NakamaAPI.ApiMatch :
 	set = set_apimatch
 var match_id: String = ""
-var paresd_label :
+var parsed_label :
 	set = set_parsed_label
 var instrument_name := "" :
 	set = set_instrument_name
 var song_identifier := "" :
 	set = set_song_identifier
-var player_count := 0 :
+var player_count := 0:
 	set = set_player_count
+var player_limit := 0:
+	set = set_player_limit
 var match_name := "" :
 	set = set_match_name
+var password_proceted := false:
+	set = set_password_protected
 
 func _ready():
 	focus_overlay.set("modulate", Color(1.0,1.0,1.0,0.0))
@@ -42,7 +49,8 @@ func _ready():
 	name_label.text = match_name
 	instrument_label.text = instrument_name
 	song_label.text = song_identifier
-	players_count_label.text = str(player_count)
+	players_count_label.player_count = player_count
+	locked_icon.modulate = Color.TRANSPARENT if password_proceted else Color.WHITE
 	refresh()
 
 
@@ -58,7 +66,8 @@ func _gui_input(event):
 			if not event.pressed and not skip_click:
 				skip_click = false
 			elif event.double_click:
-				selected.emit(match_id)
+				try_join()
+					
 		accept_event()
 	elif event.is_action_pressed("ui_accept"):
 		selected.emit(match_id)
@@ -73,24 +82,41 @@ func refresh() -> void:
 	match_name = "invalid name"
 	song_identifier = ""
 	instrument_name = ""
-	if not (paresd_label is Dictionary):
+	player_limit = 0
+	password_proceted = false
+	
+	if parsed_label == null:
+		return
+	if not (parsed_label is Dictionary):
 		push_error("Invalid match label detected")
 	else:
-		var lname = paresd_label.get("name")
+		var lname = parsed_label.get("name")
 		if not (lname is String):
 			push_error("Ivalid match name")
 		else:
 			match_name = lname
-		var lsongid = paresd_label.get("song")
+		var lsongid = parsed_label.get("song")
 		if not (lsongid is String):
 			push_error("Invalid song identifier")
 		else:
 			song_identifier = lsongid
-		var linsname = paresd_label.get("instrument")
+		var linsname = parsed_label.get("instrument")
 		if not (linsname is String):
 			push_error("Invalid instrument name")
 		else:
 			instrument_name = linsname.get_basename()
+		var lplimit = parsed_label.get("player_limit")
+		if not (lplimit is int) and not (lplimit is float):
+			push_error("Invalid player limit")
+		else:
+			player_limit = int(lplimit)
+		
+		var lpassprotected = parsed_label.get("password_protected")
+		if not (lpassprotected is bool):
+			push_error("Invalid value for [password_protected]")
+		else:
+			password_proceted = lpassprotected
+		
 	
 	if prev_has_focus != has_focus():
 		if has_focus():
@@ -135,13 +161,13 @@ func set_apimatch(value: NakamaAPI.ApiMatch) -> void:
 		apimatch = value
 		match_id = apimatch.match_id
 		player_count = apimatch.size
-		paresd_label = JSON.parse_string(apimatch.label)
+		parsed_label = JSON.parse_string(apimatch.label)
 #		refresh()
 
 
 func set_parsed_label(value):
-	if paresd_label != value:
-		paresd_label = value
+	if parsed_label != value:
+		parsed_label = value
 		refresh()
 
 
@@ -167,7 +193,7 @@ func set_player_count(value: int) -> void:
 		else:
 			player_count = value
 		if is_inside_tree():
-			players_count_label.text = str(player_count)
+			players_count_label.player_count = player_count
 
 
 func set_match_name(value: String) -> void:
@@ -183,3 +209,29 @@ func _on_focus_entered():
 
 func _on_focus_exited():
 	refresh()
+
+
+func set_player_limit(value: int) -> void:
+	if player_limit != value:
+		if value < 0:
+			push_warning("invalid player count")
+			player_limit = 0
+		else:
+			player_limit = value
+		
+		if is_inside_tree():
+			players_count_label.player_limit = player_limit
+
+
+func try_join() -> void:
+	if player_count >= player_limit:
+		join_not_allowed.emit("Match is full")
+		return
+	
+	selected.emit(match_id)
+
+
+func set_password_protected(value: bool) -> void:
+	password_proceted = value
+	if is_inside_tree():
+		locked_icon.modulate = Color.TRANSPARENT if password_proceted else Color.WHITE

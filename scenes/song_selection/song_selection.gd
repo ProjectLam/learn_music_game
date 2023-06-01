@@ -74,7 +74,9 @@ func _gui_input(event):
 
 
 func _unhandled_input(event):
-	if not has_focus() and not is_ancestor_of(get_viewport().gui_get_focus_owner()):
+	if not get_viewport().gui_get_focus_owner() \
+			or (not has_focus() and not is_ancestor_of(get_viewport().gui_get_focus_owner())):
+		
 		return
 	if event.is_action_pressed("ui_down"):
 		get_viewport().set_input_as_handled()

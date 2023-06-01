@@ -76,7 +76,7 @@ func refresh_item_count(target_count: int):
 	var current_count = items.get_child_count()
 	if current_count > target_count:
 		var items_children = items.get_children()
-		for i in range(current_count - 1, current_count - target_count - 1, -1):
+		for i in range(current_count - 1, target_count - 1, -1):
 			items_children[i].queue_free()
 	elif current_count < target_count:
 		for i in target_count - current_count:

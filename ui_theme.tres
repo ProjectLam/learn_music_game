@@ -1,6 +1,31 @@
-[gd_resource type="Theme" load_steps=2 format=3 uid="uid://bggw5pj5h085b"]
+[gd_resource type="Theme" load_steps=4 format=3 uid="uid://bggw5pj5h085b"]
 
 [ext_resource type="FontFile" uid="uid://cl8syiom7jxno" path="res://fonts/Montserrat-Regular.ttf" id="1_nkoyg"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xi7gt"]
+content_margin_left = 20.0
+content_margin_top = 10.0
+content_margin_right = 20.0
+content_margin_bottom = 10.0
+bg_color = Color(0.980392, 0, 0, 0.282353)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ic48k"]
+content_margin_left = 20.0
+content_margin_top = 10.0
+content_margin_right = 20.0
+content_margin_bottom = 10.0
+bg_color = Color(0.980392, 0, 0.796078, 0.282353)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
 [resource]
 default_font = ExtResource("1_nkoyg")
+matches_item_pc_label/base_type = &"Label"
+matches_item_pc_label/styles/full = SubResource("StyleBoxFlat_xi7gt")
+matches_item_pc_label/styles/normal = SubResource("StyleBoxFlat_ic48k")

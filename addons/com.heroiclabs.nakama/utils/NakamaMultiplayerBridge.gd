@@ -126,6 +126,12 @@ func parse_match_label(label_string: String) -> int:
 
 
 func create_match_async(match_name: String, meta_data: Dictionary) -> NakamaRTAPI.Match:
+	
+	# join password
+	var join_password = meta_data.get("password","")
+	if not meta_data.has("password"):
+		meta_data["password"] = ""
+	
 	if _match_state > MatchState.JOINING:
 		push_warning("Trying to create match before leaving the current one.")
 		await leave_match_async()
@@ -154,7 +160,10 @@ func create_match_async(match_name: String, meta_data: Dictionary) -> NakamaRTAP
 		match_join_error.emit(NakamaException.new("Invalid match_id", -1, -1))
 		return null
 	
-	var join_res = await _nakama_socket.join_match_async(match_id)
+	var join_meta = {
+		"join_password": join_password,
+	}
+	var join_res = await _nakama_socket.join_match_async(match_id, join_meta)
 	if not (join_res is NakamaRTAPI.Match) or join_res.is_exception():
 		_cleanup()
 		match_join_error.emit(join_res.get_exception())
@@ -183,7 +192,7 @@ func create_match_async(match_name: String, meta_data: Dictionary) -> NakamaRTAP
 		return null
 
 
-func join_match_async(match_id: String):
+func join_match_async(match_id: String, password = ""):
 	if _match_state > MatchState.JOINING:
 		push_warning("Trying to join match before leaving the current one.")
 		await leave_match_async()
@@ -194,7 +203,11 @@ func join_match_async(match_id: String):
 		return null
 	_match_state = MatchState.JOINING
 	
-	var join_res = await _nakama_socket.join_match_async(match_id)
+	var metadata := {
+		"password": password
+	}
+	
+	var join_res = await _nakama_socket.join_match_async(match_id, metadata)
 	if not (join_res is NakamaRTAPI.Match) or not (join_res.self_user is NakamaRTAPI.UserPresence):
 		push_error("joining match failed")
 		_cleanup()

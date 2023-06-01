@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://dktnaraphwpsr"]
+[gd_scene load_steps=24 format=3]
 
 [ext_resource type="Script" path="res://scenes/game_lobby/game_lobby.gd" id="1_biyfc"]
 [ext_resource type="Texture2D" uid="uid://dxcxogdwflpig" path="res://assets/gui/main/background.png" id="1_f8xbt"]
@@ -11,7 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://d3o4oipt5jw2b" path="res://scenes/ui_elements/glass_panel_element_even.tscn" id="9_iodg5"]
 [ext_resource type="PackedScene" uid="uid://byvabor24b1r5" path="res://scenes/ui_elements/glass_panel_vlist.tscn" id="9_k3g2w"]
 [ext_resource type="PackedScene" uid="uid://b15ivw3lwhasd" path="res://scenes/ui_elements/basic_rounded_button_01.tscn" id="9_mgxxf"]
-[ext_resource type="Script" path="res://scenes/game_lobby/Players.gd" id="10_teld2"]
+[ext_resource type="Script" path="res://scenes/game_lobby/players.gd" id="10_teld2"]
 [ext_resource type="PackedScene" uid="uid://dj6q8o76cf5vf" path="res://scenes/ui_elements/glass_panel_element_odd.tscn" id="11_3rqbt"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_as5wc"]
