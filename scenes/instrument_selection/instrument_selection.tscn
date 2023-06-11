@@ -1,13 +1,10 @@
-[gd_scene load_steps=17 format=3 uid="uid://cr2hwlak7qku5"]
+[gd_scene load_steps=8 format=3 uid="uid://ws4j6yf376r2"]
 
 [ext_resource type="Script" path="res://scenes/instrument_selection/instrument_selection.gd" id="1_wh42a"]
 [ext_resource type="Texture2D" uid="uid://dxcxogdwflpig" path="res://assets/gui/main/background.png" id="2_i41le"]
 [ext_resource type="Shader" path="res://shaders/LightingBackground.gdshader" id="3_hqkqb"]
 [ext_resource type="PackedScene" uid="uid://bpsr6id66vxk2" path="res://scenes/left_bar/left_bar.tscn" id="4_2ntam"]
-[ext_resource type="Texture2D" uid="uid://ixiw3q117w38" path="res://assets/gui/main/txt-choose-instrument.png" id="6_nrcw0"]
-[ext_resource type="Texture2D" uid="uid://cewj8er7rgjhq" path="res://assets/gui/icons/left.png" id="7_572yt"]
-[ext_resource type="PackedScene" uid="uid://cc35yv0evrob7" path="res://scenes/instrument_selection/instrument_selection_box.tscn" id="7_aayu2"]
-[ext_resource type="Texture2D" uid="uid://dfxg2q3m2tb8m" path="res://assets/gui/icons/right.png" id="8_j2st0"]
+[ext_resource type="PackedScene" uid="uid://6rl8bcr45rgo" path="res://scenes/instrument_selection/instrument_selection_panel.tscn" id="5_fdmkr"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_u6878"]
 resource_local_to_scene = true
@@ -20,60 +17,6 @@ shader_parameter/static_power = 0.4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_utcdj"]
 bg_color = Color(0.0862745, 0.0313726, 0.176471, 1)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_0vvxe"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b60ok"]
-bg_color = Color(1, 1, 1, 0.0431373)
-corner_radius_top_left = 100
-corner_radius_top_right = 100
-corner_radius_bottom_right = 100
-corner_radius_bottom_left = 100
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3ay0s"]
-bg_color = Color(1, 1, 1, 0.290196)
-corner_radius_top_left = 100
-corner_radius_top_right = 100
-corner_radius_bottom_right = 100
-corner_radius_bottom_left = 100
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r5pn7"]
-bg_color = Color(1, 1, 1, 0.290196)
-border_color = Color(0.690196, 0.0784314, 0.670588, 0.764706)
-corner_radius_top_left = 100
-corner_radius_top_right = 100
-corner_radius_bottom_right = 100
-corner_radius_bottom_left = 100
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rundt"]
-content_margin_left = 50.0
-content_margin_top = 20.0
-content_margin_right = 50.0
-content_margin_bottom = 23.0
-bg_color = Color(0.760784, 0, 0.776471, 1)
-border_width_bottom = 5
-border_color = Color(0.54902, 0, 0.560784, 1)
-corner_radius_top_left = 25
-corner_radius_top_right = 25
-corner_radius_bottom_right = 25
-corner_radius_bottom_left = 25
-shadow_color = Color(1, 0.262745, 0.784314, 0.14902)
-shadow_size = 27
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_guqxe"]
-content_margin_left = 50.0
-content_margin_top = 20.0
-content_margin_right = 50.0
-content_margin_bottom = 23.0
-bg_color = Color(0.886275, 0, 0.905882, 1)
-border_width_bottom = 5
-border_color = Color(0.54902, 0, 0.560784, 1)
-corner_radius_top_left = 25
-corner_radius_top_right = 25
-corner_radius_bottom_right = 25
-corner_radius_bottom_left = 25
-shadow_color = Color(1, 0.337255, 0.792157, 0.168627)
-shadow_size = 25
 
 [node name="InstrumentSelection" type="Control"]
 layout_mode = 3
@@ -125,137 +68,9 @@ grow_vertical = 2
 [node name="LeftBar" parent="HBoxContainer" instance=ExtResource("4_2ntam")]
 layout_mode = 2
 
-[node name="Right" type="Control" parent="HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Title" type="Control" parent="HBoxContainer/Right"]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_bottom = 308.0
-grow_horizontal = 2
-
-[node name="Text" type="TextureRect" parent="HBoxContainer/Right/Title"]
-material = SubResource("ShaderMaterial_0vvxe")
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("6_nrcw0")
-stretch_mode = 3
-
-[node name="InstrumentMenu" type="Control" parent="HBoxContainer/Right"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 20.0
-offset_top = 183.0
-offset_right = -61.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/Right/InstrumentMenu"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Left" type="Control" parent="HBoxContainer/Right/InstrumentMenu/HBoxContainer"]
-custom_minimum_size = Vector2(80, 0)
-layout_mode = 2
-
-[node name="LeftBtn" type="Button" parent="HBoxContainer/Right/InstrumentMenu/HBoxContainer/Left"]
-custom_minimum_size = Vector2(65, 65)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -32.5
-offset_top = -32.5
-offset_right = 32.5
-offset_bottom = 32.5
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-focus_mode = 0
-theme_override_styles/normal = SubResource("StyleBoxFlat_b60ok")
-theme_override_styles/hover = SubResource("StyleBoxFlat_3ay0s")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_r5pn7")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_b60ok")
-theme_override_styles/focus = SubResource("StyleBoxFlat_b60ok")
-icon = ExtResource("7_572yt")
-icon_alignment = 1
-
-[node name="Middle" type="Control" parent="HBoxContainer/Right/InstrumentMenu/HBoxContainer"]
-clip_contents = true
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="InstrumentSelectionBox" parent="HBoxContainer/Right/InstrumentMenu/HBoxContainer/Middle" instance=ExtResource("7_aayu2")]
+[node name="InstrumentSelectionPanel" parent="HBoxContainer" instance=ExtResource("5_fdmkr")]
 unique_name_in_owner = true
-layout_mode = 1
-
-[node name="Right" type="Control" parent="HBoxContainer/Right/InstrumentMenu/HBoxContainer"]
-custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
-
-[node name="RightBtn" type="Button" parent="HBoxContainer/Right/InstrumentMenu/HBoxContainer/Right"]
-custom_minimum_size = Vector2(65, 65)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -40.0
-offset_top = -32.5
-offset_right = 25.0
-offset_bottom = 32.5
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-focus_mode = 0
-theme_override_styles/normal = SubResource("StyleBoxFlat_b60ok")
-theme_override_styles/hover = SubResource("StyleBoxFlat_3ay0s")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_r5pn7")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_b60ok")
-theme_override_styles/focus = SubResource("StyleBoxFlat_b60ok")
-icon = ExtResource("8_j2st0")
-icon_alignment = 1
-
-[node name="SelectBtn" type="Button" parent="HBoxContainer/Right"]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -89.0
-offset_top = -145.0
-offset_right = 89.0
-offset_bottom = -79.0
-grow_horizontal = 2
-grow_vertical = 0
-focus_mode = 0
-theme_override_font_sizes/font_size = 18
-theme_override_styles/normal = SubResource("StyleBoxFlat_rundt")
-theme_override_styles/hover = SubResource("StyleBoxFlat_guqxe")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_rundt")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_rundt")
-theme_override_styles/focus = SubResource("StyleBoxFlat_rundt")
-text = "Get that"
 
 [connection signal="script_changed" from="." to="." method="_on_script_changed"]
-[connection signal="pressed" from="HBoxContainer/Right/InstrumentMenu/HBoxContainer/Left/LeftBtn" to="." method="_on_left_btn_pressed"]
-[connection signal="pressed" from="HBoxContainer/Right/InstrumentMenu/HBoxContainer/Right/RightBtn" to="." method="_on_right_btn_pressed"]
-[connection signal="pressed" from="HBoxContainer/Right/SelectBtn" to="." method="_on_SelectBtn_pressed"]
+[connection signal="instrument_selected" from="HBoxContainer/InstrumentSelectionPanel" to="." method="_on_instrument_selection_panel_instrument_selected"]

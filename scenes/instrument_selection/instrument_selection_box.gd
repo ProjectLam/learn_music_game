@@ -1,12 +1,12 @@
 extends PanelContainer
 
+signal selected_item_changed(idata: InstrumentData)
+
 const ISELECT_ITEM = preload("res://scenes/instrument_selection/instrument_selection_item.tscn")
 
 @onready var items_container := %ItemsContainer
 
 @export_range(0.1, 1) var unselected_scale: float = 0.5: set = set_unselected_scale
-
-@export var auto_select := false
 
 var default_animation_duration := 0.18
 
@@ -192,8 +192,7 @@ func go_left() -> void:
 		disappearing_node_curr.visible = false
 	)
 	
-	if(auto_select):
-		select_current()
+	selected_item_changed.emit(get_selected_instrument_data())
 
 
 func go_right() -> void:
@@ -262,8 +261,7 @@ func go_right() -> void:
 		disappearing_node_curr.visible = false
 	)
 	
-	if(auto_select):
-		select_current()
+	selected_item_changed.emit(get_selected_instrument_data())
 
 
 func set_unselected_scale(p_scale: float) -> void:
@@ -275,8 +273,7 @@ func _on_items_container_item_rect_changed() -> void:
 	_process_items()
 
 
-func select_current() -> void:
+func get_selected_instrument_data() -> InstrumentData:
 	var curr_item := items_container.get_child(current_index)
 	var instrument_data: InstrumentData = curr_item.instrument_data
-	PlayerVariables.gameplay_instrument_data = instrument_data
-	PlayerVariables.save()
+	return instrument_data

@@ -12,27 +12,26 @@ enum MatchMakingStatus {
 	JOINED_MATCH, # after you create a match you join it.
 }
 
-enum GameStatus {
-	UNDEFINED,
-	DEFAULT,
-	STARTED
-}
 
-const GameStatusStrings := {
-	"default": GameStatus.DEFAULT,
-	"started": GameStatus.STARTED,
-}
 
 signal status_changed
 # note : game_status_changed is emited AFTER status_changed
 signal game_status_changed
 
+
 var match_counter := 0
 var status := MatchMakingStatus.OFFLINE:
 	set = set_status
 
-var game_status := GameStatus.UNDEFINED:
-	set = set_game_status
+
+var lam_match:
+	get = get_lam_match
+
+
+var game_status:
+	get = get_game_status
+#	set = set_game_status
+
 
 # Used to make sure only one request gets processed at any time.
 # Used with requests that affect stats and game_status
@@ -41,6 +40,10 @@ var processing_request := false
 
 # peer_id : User map
 var users: RefDict
+var users_old: RefDict
+
+# Note : If host changes join password after you join, you won't be informed.
+var join_password := ""
 
 func _ready():
 	GBackend.connection_status_changed.connect(_on_connection_status_changed)
@@ -57,24 +60,30 @@ func set_status(value: MatchMakingStatus) -> void:
 		
 		match(status):
 			MatchMakingStatus.JOINED_MATCH:
-				process_match_label()
+				pass
+#				lam_match.parse_label(get_label())
 			MatchMakingStatus.RECONNECTING:
 				push_error("Switching to Reconnecting not implemented yet")
 			_:
-				if game_status != GameStatus.UNDEFINED:
-					game_status = GameStatus.UNDEFINED
-					game_status_changed.emit()
+				pass
+#				if game_status != LAMMatch.GameStatus.UNDEFINED:
+#					game_status = LAMMatch.GameStatus.UNDEFINED
+#					game_status_changed.emit()
 
-
-func set_game_status(value: GameStatus) -> void:
-	if game_status != value:
-		game_status = value
+#
+#func set_game_status(value: GameStatus) -> void:
+#	if game_status != value:
+#		game_status = value
 		
 #		if game_status == GameStatus.UNDEFINED:
 #			users.dict.clear()
 
 
-func create_match_async(song: Song) -> int:
+func create_match_async(song: Song, p_j_pass:= "") -> int:
+	
+	if song == null:
+		return -1
+	
 	while processing_request:
 		await get_tree().process_frame
 	processing_request = true
@@ -94,9 +103,8 @@ func create_match_async(song: Song) -> int:
 			processing_request = false
 			return -1
 	status = MatchMakingStatus.CREATING_MATCH
-	processing_request = false
 	
-	
+	join_password = p_j_pass
 	
 	var match_params := {
 		# currently match is one on one so PlayerVariables is sued.
@@ -104,6 +112,7 @@ func create_match_async(song: Song) -> int:
 		# and there should be a lobby room for host to start game by choice.
 		"instrument": PlayerVariables.gameplay_instrument_name,
 		"song": song.get_identifier(),
+		"join_password": join_password,
 	}
 	var err = await GBackend.create_match_async("unnamed_match", match_params)
 	var init_err := await _init_match(err)
@@ -111,6 +120,7 @@ func create_match_async(song: Song) -> int:
 		return init_err
 	
 	print("Match creation succeeded")
+	processing_request = false
 	return OK
 
 
@@ -134,28 +144,17 @@ func _init_match(join_err: int) -> int:
 	
 	
 	users = GBackend.multiplayer_bridge._users_pid
+	users_old = GBackend.multiplayer_bridge._users_pid_old
 	
-	
-	var isntrument_name = get_label().get("instrument")
-	if not (isntrument_name in InstrumentList.instruments):
-		push_error("Instrument not found")
+	if not lam_match.is_valid():
 		status = MatchMakingStatus.LEAVING_MATCH
 		await GBackend.leave_match_async()
 		status = MatchMakingStatus.IDLE
 		return -1
+		
 	
-	var songid = GBackend.multiplayer_bridge.match_label.get("song")
-	if not (songid in PlayerVariables.songs):
-		# TDDO : later on song downloading will happen here.
-		push_error("Invalid song name")
-		status = MatchMakingStatus.LEAVING_MATCH
-		await GBackend.leave_match_async()
-		status = MatchMakingStatus.IDLE
-		return -1
-	
-	
-	SessionVariables.current_song = PlayerVariables.songs[songid]
-	SessionVariables.instrument = PlayerVariables.gameplay_instrument_name
+	SessionVariables.current_song = PlayerVariables.songs[lam_match.song_identifier]
+	SessionVariables.instrument = lam_match.instrument_name
 	
 	SessionVariables.single_player = false
 	
@@ -165,7 +164,7 @@ func _init_match(join_err: int) -> int:
 
 
 # returns OK on success
-func join_match_async(match_id: String) -> int:
+func join_match_async(match_id: String, p_j_pass: String = "") -> int:
 	while processing_request:
 		await get_tree().process_frame
 	processing_request = true
@@ -173,9 +172,13 @@ func join_match_async(match_id: String) -> int:
 	match status:
 		MatchMakingStatus.IDLE:
 			status = MatchMakingStatus.JOINING_MATCH
-			var ret := await GBackend.join_match_async(match_id)
+			var ret := await GBackend.join_match_async(match_id, p_j_pass)
 			var init_err := await _init_match(ret)
 			processing_request = false
+			if init_err == OK:
+				join_password = p_j_pass
+			else:
+				join_password = ""
 			return init_err
 		_:
 			push_error("Status [%s] not implemented while joining match" % status)
@@ -231,21 +234,16 @@ func _on_connection_status_changed():
 			push_error("invalid Backend connection status.")
 
 
+func _on_backend_match_changed():
+	_on_match_changed()
+
+
+func _on_match_changed():
+	pass
+
+
 func _on_game_status_changed():
-	process_match_label()
-
-
-func process_match_label():
-	var new_game_status = GameStatusStrings[get_label().get("game_status")]
-	# we use boolean values because signal emission needs to be done after all values have been updated.
-	var _game_status_changed := false
-	if game_status != new_game_status:
-		game_status = new_game_status
-		_game_status_changed = true
-	
-	# Signal emissions.
-	if _game_status_changed:
-		game_status_changed.emit()
+	game_status_changed.emit()
 
 
 # returns OK if it succeeds
@@ -255,7 +253,7 @@ func order_ready_async() -> int:
 		
 	processing_request = true
 	# for now we just let the host start the game in the backend.
-	if game_status != GameStatus.DEFAULT:
+	if game_status != LAMMatch.GameStatus.DEFAULT:
 		push_error("Invalid game transition.")
 		processing_request = false
 		return -1
@@ -265,8 +263,8 @@ func order_ready_async() -> int:
 	return err
 
 # give a list of current matches. can exclude matches that you can't join.
-func list_matches_async(only_allowed := true):
-	pass
+func list_matches_async() -> NakamaAPI.ApiMatchList:
+	return await GBackend.list_matches_async(1, -1, 100, "", "")
 
 
 func get_peer_username(peer_id: int) -> String:
@@ -311,3 +309,18 @@ func is_user_self(user: User):
 		return false
 	
 	return user.peer_id == multiplayer.get_unique_id()
+
+
+func get_lam_match() -> LAMMatch:
+	if not GBackend.multiplayer_bridge:
+		return null
+	return GBackend.multiplayer_bridge.lam_match
+
+
+func get_game_status() -> LAMMatch.GameStatus:
+	if not GBackend.multiplayer_bridge \
+		or not GBackend.multiplayer_bridge.lam_match \
+		or not GBackend.multiplayer_bridge.lam_match.is_valid(): 
+		return LAMMatch.GameStatus.UNDEFINED
+	
+	return lam_match.game_status

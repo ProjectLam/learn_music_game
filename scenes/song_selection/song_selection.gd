@@ -1,8 +1,9 @@
 extends Control
 class_name SongSelection
 
-signal item_selected
-signal item_played
+signal song_selected(song)
+signal go_back
+#signal item_played
 
 var cSongSelectionItem = preload("res://scenes/song_selection/song_selection_item.tscn")
 
@@ -31,6 +32,7 @@ var tween_x: Tween
 
 
 @export_range(0, 100) var h_space: int = 100
+@export_range(0.0,20000.0) var radius: float = 1500
 
 var h_ratio: int = 1
 
@@ -100,6 +102,7 @@ func load_items():
 				var song : Song = PlayerVariables.songs[songid]
 				print("Added song: ", song.title)
 				var nItem: SongSelectionItem = cSongSelectionItem.instantiate()
+				nItem.radius = radius
 				song_items_container.add_child(nItem)
 				nItem.connect("selected", _on_Item_selected)
 				nItem.find_child("NameLabel").text = song.title
@@ -169,7 +172,7 @@ func select_item(p_index: int, p_is_internal: bool = false) -> void:
 	var items_y = offset * item_height
 	items_y *= -1
 	
-	tween_y.tween_property(song_items_container, "position:y", items_y, 0.5)
+	tween_y.tween_property(song_items_container, "position:y", items_y, animation_duration)
 	_process_items()
 
 
@@ -192,8 +195,8 @@ func _process_items_vertically():
 			break
 		var nBox: PanelContainer = nItem.find_child("Box")
 		
-		nItem.custom_minimum_size.y = item_height
-		nBox.custom_minimum_size.y = item_height * 0.75
+#		nItem.custom_minimum_size.y = item_height
+#		nBox.custom_minimum_size.y = item_height * 0.75
 		
 		var y = i * item_height
 		nItem.position.y = y
@@ -218,8 +221,8 @@ func _process_items() -> void:
 			break
 		var nBox: PanelContainer = nItem.find_child("Box")
 		
-		nItem.custom_minimum_size.y = item_height
-		nBox.custom_minimum_size.y = item_height * 0.75
+#		nItem.custom_minimum_size.y = item_height
+#		nBox.custom_minimum_size.y = item_height * 0.75
 		
 		var y = i * item_height
 		tween_x.tween_property(nItem, "position:y", y, animation_duration)
@@ -234,24 +237,24 @@ func _process_items() -> void:
 		
 		var vr = get_viewport_rect().size.x / ProjectSettings.get("display/window/size/viewport_width")
 		
-		tween_x.tween_property(nItem, "position:x", j * h_space * h_ratio, animation_duration * 0.5 * i)
+#		tween_x.tween_property(nItem, "position:x", get_final_x(j, item_height), animation_duration)
 		
 		j -= 1
 	
 	var mi = offset + middle_i
 	var nMiddle = song_items_container.get_child(mi)
-	tween_x.tween_property(nMiddle, "position:x", 0, animation_duration)
+#	tween_x.tween_property(nMiddle, "position:x", 0, animation_duration)
 	
 	j = 1
-	
+
 	for i in range(offset + middle_i + 1, (offset + middle_i*2) + 1):
 		var nItem: SongSelectionItem = song_items_container.get_child(i)
 		if not nItem:
 			break
 		var nBox: PanelContainer = nItem.find_child("Box")
 
-		tween_x.tween_property(nItem, "position:x", j * h_space * h_ratio, animation_duration * 0.5 * i)
-		
+#		tween_x.tween_property(nItem, "position:x", get_final_x(j, item_height), animation_duration)
+
 		j += 1
 
 
@@ -296,18 +299,20 @@ func _on_Songs_item_rect_changed():
 
 
 func _on_Item_selected(p_selected: SongSelectionItem):
-#	var item_index = p_selected.get_index()
+	var item_index = p_selected.get_index()
 	
 	if p_selected != selected_item:
 		select_item(p_selected.get_index())
-		item_selected.emit(p_selected)
 	else:
-		item_played.emit(p_selected)
-		if selection_mode == SELECTION_MODE.PLAY:
-			SessionVariables.current_song = PlayerVariables.songs[p_selected.song.get_identifier()]
-			SessionVariables.instrument = PlayerVariables.gameplay_instrument_name
-			SessionVariables.single_player = true
-			get_tree().change_scene_to_file("res://scenes/performance.tscn")
+		song_selected.emit(p_selected.song)
+#		item_selected.emit(p_selected)
+#	else:
+#		item_played.emit(p_selected)
+#		if selection_mode == SELECTION_MODE.PLAY:
+#			SessionVariables.current_song = PlayerVariables.songs[p_selected.song.get_identifier()]
+#			SessionVariables.instrument = PlayerVariables.gameplay_instrument_name
+#			SessionVariables.single_player = true
+#			get_tree().change_scene_to_file("res://scenes/performance.tscn")
 		
 
 func _on_DownBtn_pressed():
@@ -322,8 +327,9 @@ func _on_item_rect_changed() -> void:
 	h_ratio = get_rect().size.x / ProjectSettings.get("display/window/size/viewport_width")
 
 
-func go_back():
-	get_tree().change_scene_to_file("res://scenes/instrument_menu/instrument_menu.tscn")
+func _on_go_back():
+	go_back.emit()
+#	get_tree().change_scene_to_file("res://scenes/instrument_menu/instrument_menu.tscn")
 
 
 func _on_visibility_changed():

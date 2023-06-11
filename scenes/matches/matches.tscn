@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://ba0n1dg0yxtpj"]
+[gd_scene load_steps=19 format=3 uid="uid://ba0n1dg0yxtpj"]
 
 [ext_resource type="Script" path="res://scenes/matches/matches.gd" id="1_ktp4o"]
 [ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="2_it6lb"]
 [ext_resource type="PackedScene" uid="uid://byvabor24b1r5" path="res://scenes/ui_elements/glass_panel_vlist.tscn" id="2_pke6e"]
-[ext_resource type="PackedScene" uid="uid://dl4nx74f03pxd" path="res://scenes/ui_elements/glass_panel.tscn" id="3_1c6a1"]
+[ext_resource type="PackedScene" uid="uid://b15ivw3lwhasd" path="res://scenes/ui_elements/basic_rounded_button_01.tscn" id="4_72ums"]
+[ext_resource type="Texture2D" uid="uid://cmvuayajrnukn" path="res://assets/gui/icons/refresh.png" id="5_rvdf1"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p2mpx"]
 
@@ -12,7 +13,77 @@ line_spacing = 0.0
 font = ExtResource("2_it6lb")
 font_size = 18
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7japh"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_852vv"]
+content_margin_left = 4.0
+content_margin_right = 4.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tpm5h"]
+content_margin_left = 4.0
+content_margin_right = 4.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jlmc2"]
+content_margin_left = 4.0
+content_margin_right = 4.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1fbiv"]
+content_margin_left = 4.0
+content_margin_right = 4.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_efpgx"]
+content_margin_left = 4.0
+content_margin_right = 4.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_231da"]
+content_margin_left = 4.0
+content_margin_right = 4.0
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_5bhsu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_npir4"]
+bg_color = Color(0, 0, 0, 1)
+border_width_top = 100
+border_color = Color(0, 0, 0, 0)
+border_blend = true
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+
+[sub_resource type="Animation" id="Animation_ikoli"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_1xmkt"]
+resource_name = "refreshing"
+length = 1.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.28319]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_rj8hj"]
+_data = {
+"RESET": SubResource("Animation_ikoli"),
+"refreshing": SubResource("Animation_1xmkt")
+}
 
 [node name="Matches" type="PanelContainer"]
 anchors_preset = 15
@@ -24,24 +95,37 @@ focus_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_p2mpx")
 script = ExtResource("1_ktp4o")
 
-[node name="glass_panel2" parent="." instance=ExtResource("2_pke6e")]
+[node name="RefreshTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 3.949
+one_shot = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="glass_panel" parent="VBoxContainer/MarginContainer" instance=ExtResource("2_pke6e")]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="glass_panel2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer/glass_panel"]
 layout_mode = 2
 
-[node name="Header" type="Control" parent="glass_panel2/VBoxContainer"]
+[node name="Header" type="Control" parent="VBoxContainer/MarginContainer/glass_panel/VBoxContainer"]
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="glass_panel2/VBoxContainer/Header"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/glass_panel/VBoxContainer/Header"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TitleLabel" type="Label" parent="glass_panel2/VBoxContainer/Header/HBoxContainer"]
+[node name="TitleLabel" type="Label" parent="VBoxContainer/MarginContainer/glass_panel/VBoxContainer/Header/HBoxContainer"]
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
 text = "MATCHES"
@@ -49,45 +133,106 @@ label_settings = SubResource("LabelSettings_ieun8")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Spacer" type="Control" parent="glass_panel2/VBoxContainer/Header/HBoxContainer"]
+[node name="Spacer" type="Control" parent="VBoxContainer/MarginContainer/glass_panel/VBoxContainer/Header/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Actions" type="HBoxContainer" parent="glass_panel2/VBoxContainer/Header/HBoxContainer"]
+[node name="Actions" type="VBoxContainer" parent="VBoxContainer/MarginContainer/glass_panel/VBoxContainer/Header/HBoxContainer"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 alignment = 1
 
-[node name="ShowAllBtn" type="Button" parent="glass_panel2/VBoxContainer/Header/HBoxContainer/Actions"]
-custom_minimum_size = Vector2(100, 0)
+[node name="AllowedFilter" type="CheckBox" parent="VBoxContainer/MarginContainer/glass_panel/VBoxContainer/Header/HBoxContainer/Actions"]
+unique_name_in_owner = true
 layout_mode = 2
-focus_mode = 0
-theme_override_colors/font_color = Color(0.980392, 0, 1, 1)
-theme_override_styles/normal = SubResource("StyleBoxEmpty_7japh")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_7japh")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_7japh")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_7japh")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_7japh")
-text = "Show All >"
+theme_override_styles/normal = SubResource("StyleBoxEmpty_852vv")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_tpm5h")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_jlmc2")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_1fbiv")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_efpgx")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_231da")
+button_pressed = true
+text = "Join Allowed"
 
-[node name="Content" type="ScrollContainer" parent="glass_panel2/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/MarginContainer/glass_panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Content" type="ScrollContainer" parent="VBoxContainer/MarginContainer/glass_panel/VBoxContainer/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 follow_focus = true
+horizontal_scroll_mode = 0
 
-[node name="Items" type="VBoxContainer" parent="glass_panel2/VBoxContainer/Content"]
+[node name="Items" type="VBoxContainer" parent="VBoxContainer/MarginContainer/glass_panel/VBoxContainer/MarginContainer/Content"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 0
 
-[node name="glass_panel" parent="." instance=ExtResource("3_1c6a1")]
-visible = false
+[node name="RefreshingPanel" type="Control" parent="VBoxContainer/MarginContainer/glass_panel/VBoxContainer/MarginContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="RefreshTimer" type="Timer" parent="."]
+[node name="TextureRect2" type="Panel" parent="VBoxContainer/MarginContainer/glass_panel/VBoxContainer/MarginContainer/RefreshingPanel"]
+modulate = Color(0.384314, 0.384314, 0.384314, 0.435294)
+material = SubResource("CanvasItemMaterial_5bhsu")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_npir4")
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/MarginContainer/glass_panel/VBoxContainer/MarginContainer/RefreshingPanel"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(25, 25)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("5_rvdf1")
+expand_mode = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="VBoxContainer/MarginContainer/glass_panel/VBoxContainer/MarginContainer/RefreshingPanel"]
+autoplay = "refreshing"
+libraries = {
+"": SubResource("AnimationLibrary_rj8hj")
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="RefreshButton" parent="VBoxContainer/HBoxContainer" instance=ExtResource("4_72ums")]
 unique_name_in_owner = true
-wait_time = 3.949
-one_shot = true
+layout_mode = 2
+size_flags_horizontal = 1
+text = "Refresh
+"
+icon = ExtResource("5_rvdf1")
+
+[node name="CreateMatchButton" parent="VBoxContainer/HBoxContainer" instance=ExtResource("4_72ums")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 1
+text = "Create Match
+"
+
+[node name="Dummy" type="Control" parent="VBoxContainer/HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
 
 [connection signal="timeout" from="RefreshTimer" to="." method="_on_refresh_timer_timeout"]
+[connection signal="toggled" from="VBoxContainer/MarginContainer/glass_panel/VBoxContainer/Header/HBoxContainer/Actions/AllowedFilter" to="." method="_on_allowed_filter_toggled"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/RefreshButton" to="." method="refresh_matches"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/CreateMatchButton" to="." method="_on_create_match_button_pressed"]

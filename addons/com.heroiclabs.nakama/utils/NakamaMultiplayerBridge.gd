@@ -1,7 +1,7 @@
 extends Node
 class_name NakamaMultiplayerBridge
 
-const version_index := 1
+const version_index := 2
 const retry_count := 0
 const ping_interval := 3.0
 var _ping_timer := 0.0
@@ -25,6 +25,7 @@ enum MetaMessageType {
 signal match_join_error(exception)
 signal match_joined()
 signal needs_reconnect()
+signal match_details_changed()
 signal game_status_changed()
 
 # Read-only variables.
@@ -41,7 +42,9 @@ var _match_id := ''
 var match_id: String:
 	get: return _match_id
 	set(_v): pass
-var match_label := {}
+#var match_label := {}
+var lam_match: LAMMatch:
+	set = set_lam_match
 var _multiplayer_peer: NakamaMultiplayerPeer = NakamaMultiplayerPeer.new()
 var multiplayer_peer: NakamaMultiplayerPeer:
 	get: return _multiplayer_peer
@@ -57,6 +60,7 @@ const OPCODE_MATCH_HANDLER_RPC: int = 9003
 var _my_session_id: String
 var _my_peer_id: int = 0
 var _users_pid := RefDict.new()
+var _users_pid_old := RefDict.new()
 var _users := {}
 var _matchmaker_ticket := ''
 
@@ -98,7 +102,7 @@ func try_validate_async() -> void:
 		valid = false
 		return
 
-	if int(index) > version_index:
+	if int(index) != version_index:
 		push_error("Server version index [%d] does not match with current version index [%d]" % [index, version_index])
 		valid = false
 		return
@@ -117,20 +121,12 @@ func get_version():
 	return null
 
 
-func parse_match_label(label_string: String) -> int:
-	var parsed_label = JSON.parse_string(label_string)
-	if parsed_label is Dictionary:
-		match_label = parsed_label
-		return OK
-	return -1
-
-
 func create_match_async(match_name: String, meta_data: Dictionary) -> NakamaRTAPI.Match:
 	
 	# join password
-	var join_password = meta_data.get("password","")
-	if not meta_data.has("password"):
-		meta_data["password"] = ""
+	var join_password = meta_data.get("join_password","")
+	if not meta_data.has("join_password"):
+		meta_data["join_password"] = ""
 	
 	if _match_state > MatchState.JOINING:
 		push_warning("Trying to create match before leaving the current one.")
@@ -141,6 +137,7 @@ func create_match_async(match_name: String, meta_data: Dictionary) -> NakamaRTAP
 		push_error("Connot create match while socket is closed")
 		return null
 	
+	_users_pid_old.dict.clear()
 	_match_state = MatchState.JOINING
 	meta_data["name"] = match_name
 #	multiplayer_peer.set_connection_status(MultiplayerPeer.CONNECTION_CONNECTING)
@@ -171,10 +168,12 @@ func create_match_async(match_name: String, meta_data: Dictionary) -> NakamaRTAP
 	
 	_match_id = join_res.match_id
 	_my_session_id = join_res.self_user.session_id
-	if parse_match_label(join_res.label) != OK:
+	var new_lam_match = LAMMatch.new(join_res.label)
+	if not new_lam_match.is_valid():
 		push_error("invalid match label")
-		match_label.clear()
 		# TODO : add more error handling
+	lam_match = new_lam_match
+	
 	for presence in join_res.presences:
 		print("adding Initial presence :", presence)
 		if presence.session_id == _my_session_id:
@@ -192,7 +191,9 @@ func create_match_async(match_name: String, meta_data: Dictionary) -> NakamaRTAP
 		return null
 
 
-func join_match_async(match_id: String, password = ""):
+func join_match_async(match_id: String, p_join_password = ""):
+	
+	
 	if _match_state > MatchState.JOINING:
 		push_warning("Trying to join match before leaving the current one.")
 		await leave_match_async()
@@ -201,10 +202,12 @@ func join_match_async(match_id: String, password = ""):
 	if _match_state == MatchState.SOCKET_CLOSED:
 		push_error("Connot join match while socket is closed")
 		return null
+	
+	_users_pid_old.dict.clear()
 	_match_state = MatchState.JOINING
 	
 	var metadata := {
-		"password": password
+		"join_password": p_join_password
 	}
 	
 	var join_res = await _nakama_socket.join_match_async(match_id, metadata)
@@ -222,10 +225,12 @@ func join_match_async(match_id: String, password = ""):
 		_on_presence_join(presence)
 	
 	
-	if parse_match_label(join_res.label) != OK:
+	var new_lam_match = LAMMatch.new(join_res.label)
+	if not new_lam_match.is_valid():
 		push_error("invalid match label")
-		match_label.clear()
 		# TODO : add more error handling
+	
+	lam_match = new_lam_match
 	
 	# _match_state is already set to joining.
 	# upon receiving session_d for peer_id 1 with 
@@ -252,47 +257,6 @@ func match_rpc_async(data: Dictionary) -> int :
 	else:
 		push_error("RPC sent while the NakamaMultiplayerBridge isn't connected!")
 		return -1
-
-
-#func start_matchmaking(ticket) -> void:
-#	if _match_state != MatchState.DISCONNECTED:
-#		push_error("Cannot start matchmaking when state is %s" % MatchState.keys()[_match_state])
-#		return
-#	if ticket.is_exception():
-#		push_error("Ticket with exception passed into start_matchmaking()")
-#		return
-#
-#	_match_state = MatchState.JOINING
-#	multiplayer_peer.set_connection_status(MultiplayerPeer.CONNECTION_CONNECTING)
-#
-#	_matchmaker_ticket = ticket.ticket
-
-#func _on_nakama_socket_received_matchmaker_matched(matchmaker_matched) -> void:
-#	if _matchmaker_ticket != matchmaker_matched.ticket:
-#		return
-#
-#	# Get a list of sorted session ids.
-#	var session_ids := []
-#	for matchmaker_user in matchmaker_matched.users:
-#		session_ids.append(matchmaker_user.presence.session_id)
-#	session_ids.sort()
-#
-#	var res = await _nakama_socket.join_matched_async(matchmaker_matched)
-#	if res.is_exception():
-#		match_join_error.emit(res.get_exception())
-#		leave()
-#		return
-#
-#	_setup_match(res)
-#
-#	# If our session is the first alphabetically, then we'll be the host.
-#	if _my_session_id == session_ids[0]:
-#		_setup_host()
-#
-#		# Add all of the existing peers.
-#		for presence in res.presences:
-#			if presence.session_id != _my_session_id:
-#				_host_add_peer(presence)
 
 
 func _on_nakama_socket_closed() -> void:
@@ -355,14 +319,15 @@ func _on_nakama_socket_received_match_presence(event) -> void:
 		if not _users.has(presence.session_id):
 			push_warning("A user left. But it's join event was not received.")
 			continue
-	
-		var peer_id = _users[presence.session_id].peer_id
+		
+		var user: User = _users[presence.session_id]
+		var peer_id = user.peer_id
 		
 		if peer_id:
 			_multiplayer_peer.peer_disconnected.emit(peer_id)
 			_users_pid.dict.erase(peer_id)
 		_users.erase(presence.session_id)
-
+		_users_pid_old.dict[peer_id] = user
 
 func _on_presence_join(presence: NakamaRTAPI.UserPresence):
 	if not _users.has(presence.session_id):
@@ -416,16 +381,8 @@ func _process_meta(data) -> void:
 
 
 func _process_meta_match_label_update(content):
-	var prev_label = match_label.duplicate(true)
-	var new_label_string = content.get("match_label")
-	if parse_match_label(new_label_string) != OK:
-		push_error("Meta update sent invalid match label")
-		match_label.clear()
-		# TODO : add more error handling
-	
-	if prev_label.get("game_status") != match_label.get("game_status"):
-		game_status_changed.emit()
-	
+	lam_match.parse_label(content.get("match_label"))
+	# TODO : add handling for invalid labels.
 
 
 func _process_meta_set_peer_map(content):
@@ -563,3 +520,35 @@ func _set_match_state(value: MatchState) -> void:
 			_:
 				if _multiplayer_peer._get_connection_status() != MultiplayerPeer.CONNECTION_DISCONNECTED:
 					_multiplayer_peer.set_connection_status(MultiplayerPeer.CONNECTION_DISCONNECTED)
+
+
+func _on_match_details_changed() -> void:
+	match_details_changed.emit()
+
+
+func _on_game_status_changed() -> void:
+	game_status_changed.emit()
+
+
+func set_lam_match(value: LAMMatch) -> void:
+	if lam_match != value:
+		if lam_match:
+			if lam_match.changed.is_connected(_on_match_details_changed):
+				lam_match.changed.disconnect(_on_match_details_changed)
+			
+			if lam_match.game_status_changed.is_connected(_on_game_status_changed):
+				lam_match.game_status_changed.disconnect(_on_game_status_changed)
+			
+		lam_match = value
+		
+		if not lam_match:
+			return
+		
+		if not lam_match.changed.is_connected(_on_match_details_changed):
+			lam_match.changed.connect(_on_match_details_changed)
+		
+		if not lam_match.game_status_changed.is_connected(_on_game_status_changed):
+			lam_match.game_status_changed.connect(_on_game_status_changed)
+		
+		_on_match_details_changed()
+		_on_game_status_changed()

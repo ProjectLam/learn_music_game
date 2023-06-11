@@ -1,18 +1,24 @@
-[gd_scene load_steps=14 format=3 uid="uid://bv37gq72fhn1c"]
+[gd_scene load_steps=20 format=3 uid="uid://bv37gq72fhn1c"]
 
 [ext_resource type="Script" path="res://scenes/matchmaking/matchmaking.gd" id="1_62mgw"]
 [ext_resource type="Texture2D" uid="uid://dxcxogdwflpig" path="res://assets/gui/main/background.png" id="2_i2m6c"]
 [ext_resource type="Shader" path="res://shaders/LightingBackground.gdshader" id="3_11mtd"]
 [ext_resource type="PackedScene" uid="uid://bh1htbm1t4nlb" path="res://scenes/ui_elements/light_layer/light_layer.tscn" id="3_esan8"]
 [ext_resource type="PackedScene" uid="uid://bpsr6id66vxk2" path="res://scenes/left_bar/left_bar.tscn" id="4_cayno"]
+[ext_resource type="PackedScene" uid="uid://kgpxv8yxnjo0" path="res://scenes/song_selection/song_selection_bg.tscn" id="5_pav4p"]
 [ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="5_pdkhr"]
-[ext_resource type="PackedScene" uid="uid://bvqgs74gtjvsj" path="res://scenes/instrument_menu/instrument_menu_action.tscn" id="8_mij85"]
 [ext_resource type="PackedScene" uid="uid://ba0n1dg0yxtpj" path="res://scenes/matches/matches.tscn" id="10_o03mo"]
 [ext_resource type="PackedScene" uid="uid://dl4nx74f03pxd" path="res://scenes/ui_elements/glass_panel.tscn" id="10_t33hw"]
+[ext_resource type="PackedScene" uid="uid://f6a8g2qh0dtg" path="res://scenes/ui_elements/line_edits/password_edit.tscn" id="12_cc6mp"]
 [ext_resource type="PackedScene" uid="uid://b2ew1c3swawaj" path="res://scenes/instrument_selection/instrument_selection_item.tscn" id="12_dm5k6"]
+[ext_resource type="PackedScene" uid="uid://b15ivw3lwhasd" path="res://scenes/ui_elements/basic_rounded_button_01.tscn" id="13_c55ko"]
 [ext_resource type="PackedScene" uid="uid://r5oy8h4p8suy" path="res://scenes/song_selection/song_selection.tscn" id="13_tr8mu"]
+[ext_resource type="PackedScene" uid="uid://cwr5sfnmp7808" path="res://scenes/ui_elements/square_button_01/square_button_01.tscn" id="14_a7kcl"]
+[ext_resource type="Texture2D" uid="uid://be3ioc0v3w1yd" path="res://assets/gui/icons/close.svg" id="15_eqg2y"]
+[ext_resource type="Script" path="res://scenes/matchmaking/join_failed_popup.gd" id="16_jjopf"]
+[ext_resource type="FontFile" uid="uid://cl8syiom7jxno" path="res://fonts/Montserrat-Regular.ttf" id="17_qaosw"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_mn1qg"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ym3uf"]
 resource_local_to_scene = true
 shader = ExtResource("3_11mtd")
 shader_parameter/indicate = true
@@ -52,67 +58,66 @@ texture = ExtResource("2_i2m6c")
 stretch_mode = 6
 
 [node name="LightLayer" parent="Background" instance=ExtResource("3_esan8")]
-material = SubResource("ShaderMaterial_mn1qg")
+material = SubResource("ShaderMaterial_ym3uf")
 layout_mode = 1
 
-[node name="LeftBar" parent="." instance=ExtResource("4_cayno")]
+[node name="SongSelectionBG" parent="." instance=ExtResource("5_pav4p")]
+unique_name_in_owner = true
+visible = false
 layout_mode = 1
-offset_top = -403.0
-offset_right = 152.0
-offset_bottom = 403.0
 
-[node name="Right" type="MarginContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 204.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 40
+
+[node name="LeftBar" parent="HBoxContainer" instance=ExtResource("4_cayno")]
+layout_mode = 2
+
+[node name="Right" type="MarginContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MatchesContainer" type="MarginContainer" parent="HBoxContainer/Right"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Right"]
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/Right/MatchesContainer"]
 layout_mode = 2
 
-[node name="Left" type="MarginContainer" parent="Right/HBoxContainer"]
+[node name="Left" type="MarginContainer" parent="HBoxContainer/Right/MatchesContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Right/HBoxContainer/Left"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/Right/MatchesContainer/HBoxContainer/Left"]
 layout_mode = 2
 
-[node name="Actions" type="VBoxContainer" parent="Right/HBoxContainer/Left/VBoxContainer"]
+[node name="Actions" type="VBoxContainer" parent="HBoxContainer/Right/MatchesContainer/HBoxContainer/Left/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 15
 
-[node name="Back" parent="Right/HBoxContainer/Left/VBoxContainer/Actions" instance=ExtResource("8_mij85")]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Back"
-metadata/_edit_group_ = true
-
-[node name="Create" parent="Right/HBoxContainer/Left/VBoxContainer/Actions" instance=ExtResource("8_mij85")]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Create a match"
-metadata/_edit_group_ = true
-
-[node name="Spacer3" type="Control" parent="Right/HBoxContainer/Left/VBoxContainer"]
+[node name="Spacer3" type="Control" parent="HBoxContainer/Right/MatchesContainer/HBoxContainer/Left/VBoxContainer"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 
-[node name="Matches" parent="Right/HBoxContainer/Left/VBoxContainer" instance=ExtResource("10_o03mo")]
+[node name="Matches" parent="HBoxContainer/Right/MatchesContainer/HBoxContainer/Left/VBoxContainer" instance=ExtResource("10_o03mo")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Spacer4" type="Control" parent="Right/HBoxContainer/Left/VBoxContainer"]
+[node name="Spacer4" type="Control" parent="HBoxContainer/Right/MatchesContainer/HBoxContainer/Left/VBoxContainer"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 
-[node name="Right" type="MarginContainer" parent="Right/HBoxContainer"]
+[node name="Right" type="MarginContainer" parent="HBoxContainer/Right/MatchesContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 100
@@ -120,15 +125,15 @@ theme_override_constants/margin_top = 100
 theme_override_constants/margin_right = 100
 theme_override_constants/margin_bottom = 100
 
-[node name="InstrumentBox" parent="Right/HBoxContainer/Right" instance=ExtResource("12_dm5k6")]
+[node name="InstrumentBox" parent="HBoxContainer/Right/MatchesContainer/HBoxContainer/Right" instance=ExtResource("12_dm5k6")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 1
 
-[node name="SongSelection" parent="." instance=ExtResource("13_tr8mu")]
+[node name="SongSelection" parent="HBoxContainer/Right" instance=ExtResource("13_tr8mu")]
 unique_name_in_owner = true
 visible = false
-layout_mode = 1
+layout_mode = 2
 selection_mode = 1
 
 [node name="PopupBG" type="PanelContainer" parent="."]
@@ -142,33 +147,13 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_n47vw")
 
-[node name="BackBufferCopy" type="BackBufferCopy" parent="PopupBG"]
-position = Vector2(160, 140)
-copy_mode = 2
-rect = Rect2(0, 0, 800, 400)
-
-[node name="CreatingMatchPopup" type="MarginContainer" parent="PopupBG"]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-
-[node name="glass_panel" parent="PopupBG/CreatingMatchPopup" instance=ExtResource("10_t33hw")]
-custom_minimum_size = Vector2(800, 400)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="Label" type="Label" parent="PopupBG/CreatingMatchPopup/glass_panel"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("5_pdkhr")
-theme_override_font_sizes/font_size = 50
-text = "Creating Match"
-horizontal_alignment = 1
-
 [node name="JoiningMatchPopup" type="MarginContainer" parent="PopupBG"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="PopupBG/JoiningMatchPopup"]
+copy_mode = 2
 
 [node name="glass_panel" parent="PopupBG/JoiningMatchPopup" instance=ExtResource("10_t33hw")]
 custom_minimum_size = Vector2(800, 400)
@@ -183,7 +168,134 @@ theme_override_font_sizes/font_size = 50
 text = "Joining Match"
 horizontal_alignment = 1
 
+[node name="JoinPasswordPopup" type="MarginContainer" parent="PopupBG"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="PopupBG/JoinPasswordPopup"]
+position = Vector2(160, 140)
+copy_mode = 2
+rect = Rect2(0, 0, 800, 400)
+
+[node name="Control" type="Control" parent="PopupBG/JoinPasswordPopup"]
+custom_minimum_size = Vector2(800, 400)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="glass_panel" parent="PopupBG/JoinPasswordPopup/Control" instance=ExtResource("10_t33hw")]
+custom_minimum_size = Vector2(800, 400)
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 800.0
+offset_bottom = 400.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="PopupBG/JoinPasswordPopup/Control/glass_panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_right = 40
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PopupBG/JoinPasswordPopup/Control/glass_panel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 40
+alignment = 1
+
+[node name="Label" type="Label" parent="PopupBG/JoinPasswordPopup/Control/glass_panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_pdkhr")
+theme_override_font_sizes/font_size = 40
+text = "Enter Join Password"
+horizontal_alignment = 1
+
+[node name="JoinPassword" parent="PopupBG/JoinPasswordPopup/Control/glass_panel/MarginContainer/VBoxContainer" instance=ExtResource("12_cc6mp")]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "Join Password"
+
+[node name="JoinPasswordJoinButton" parent="PopupBG/JoinPasswordPopup/Control/glass_panel/MarginContainer/VBoxContainer" instance=ExtResource("13_c55ko")]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Join Match
+"
+
+[node name="JoinPasswordCloseButton" parent="PopupBG/JoinPasswordPopup/Control" instance=ExtResource("14_a7kcl")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -52.0
+offset_top = 25.0
+offset_right = -25.0
+offset_bottom = 52.0
+grow_horizontal = 0
+icon = ExtResource("15_eqg2y")
+expand_icon = true
+
+[node name="JoinFailedPopup" type="MarginContainer" parent="PopupBG"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+script = ExtResource("16_jjopf")
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="PopupBG/JoinFailedPopup"]
+position = Vector2(160, 140)
+copy_mode = 2
+rect = Rect2(0, 0, 800, 400)
+
+[node name="Control" type="Control" parent="PopupBG/JoinFailedPopup"]
+custom_minimum_size = Vector2(800, 400)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="glass_panel" parent="PopupBG/JoinFailedPopup/Control" instance=ExtResource("10_t33hw")]
+custom_minimum_size = Vector2(800, 400)
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 800.0
+offset_bottom = 400.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PopupBG/JoinFailedPopup/Control/glass_panel"]
+layout_mode = 2
+theme_override_constants/separation = 40
+alignment = 1
+
+[node name="JoinFailedTitle" type="Label" parent="PopupBG/JoinFailedPopup/Control/glass_panel/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_pdkhr")
+theme_override_font_sizes/font_size = 50
+text = "failed to join match"
+horizontal_alignment = 1
+
+[node name="JoinFailedLabel" type="Label" parent="PopupBG/JoinFailedPopup/Control/glass_panel/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_fonts/font = ExtResource("17_qaosw")
+theme_override_font_sizes/font_size = 30
+text = "failed to join match"
+horizontal_alignment = 1
+
+[node name="JoinFailedOkButton" parent="PopupBG/JoinFailedPopup/Control/glass_panel/VBoxContainer" instance=ExtResource("13_c55ko")]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Ok
+"
+
 [connection signal="script_changed" from="." to="." method="_on_script_changed"]
-[connection signal="selected" from="Right/HBoxContainer/Left/VBoxContainer/Actions/Back" to="." method="_on_back_selected"]
-[connection signal="selected" from="Right/HBoxContainer/Left/VBoxContainer/Actions/Create" to="." method="_on_Create_selected"]
-[connection signal="match_selected" from="Right/HBoxContainer/Left/VBoxContainer/Matches" to="." method="_on_matches_match_selected"]
+[connection signal="create_match_pressed" from="HBoxContainer/Right/MatchesContainer/HBoxContainer/Left/VBoxContainer/Matches" to="." method="_on_matches_create_match_pressed"]
+[connection signal="join_not_allowed" from="HBoxContainer/Right/MatchesContainer/HBoxContainer/Left/VBoxContainer/Matches" to="." method="_on_matches_join_not_allowed"]
+[connection signal="match_selected" from="HBoxContainer/Right/MatchesContainer/HBoxContainer/Left/VBoxContainer/Matches" to="." method="_on_matches_match_selected"]
+[connection signal="protected_match_selected" from="HBoxContainer/Right/MatchesContainer/HBoxContainer/Left/VBoxContainer/Matches" to="." method="_on_matches_protected_match_selected"]
+[connection signal="pressed" from="PopupBG/JoinPasswordPopup/Control/glass_panel/MarginContainer/VBoxContainer/JoinPasswordJoinButton" to="." method="_on_join_password_join_button_pressed"]
+[connection signal="pressed" from="PopupBG/JoinPasswordPopup/Control/JoinPasswordCloseButton" to="." method="_on_join_password_close_button_pressed"]
+[connection signal="pressed" from="PopupBG/JoinFailedPopup/Control/glass_panel/VBoxContainer/JoinFailedOkButton" to="." method="_on_join_failed_ok_button_pressed"]

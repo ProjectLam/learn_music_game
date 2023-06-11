@@ -6,8 +6,11 @@ signal note_ended(frequency)
 signal chord_started(frequencies)
 signal chord_ended(frequencies)
 
+signal current_instrument_changed
 
-var current_instrument := 0
+
+var current_instrument := 0:
+	set = set_current_instrument
 var instrument_count := 0
 
 @onready var microphone_input = %MicrophoneInput
@@ -74,3 +77,9 @@ func get_instrument_index(instrument_name: String)->int:
 
 func get_instrument(index: int)->InputInstrument:
 	return get_child(index)
+
+
+func set_current_instrument(value) -> void:
+	if current_instrument != value:
+		current_instrument = value
+		current_instrument_changed.emit()

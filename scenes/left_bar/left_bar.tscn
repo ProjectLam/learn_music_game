@@ -1,37 +1,39 @@
-[gd_scene load_steps=22 format=3 uid="uid://bpsr6id66vxk2"]
+[gd_scene load_steps=21 format=3 uid="uid://bpsr6id66vxk2"]
 
-[ext_resource type="Texture2D" uid="uid://ctu1miqp425c5" path="res://assets/gui/icons/casette.png" id="1_fr83g"]
 [ext_resource type="Script" path="res://scenes/left_bar/left_bar.gd" id="1_gck2n"]
 [ext_resource type="Shader" path="res://shaders/canvas_alpha_to_blur.gdshader" id="2_k30ml"]
 [ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="2_norfk"]
+[ext_resource type="Texture2D" uid="uid://dotvkdu64344j" path="res://assets/gui/icons/casette.svg" id="3_6thwu"]
 [ext_resource type="Texture2D" uid="uid://cojmsogxnfbum" path="res://assets/gui/icons/page.png" id="4_aqkcr"]
-[ext_resource type="StyleBox" uid="uid://o85avtnh5o0a" path="res://scenes/ui_elements/glass_panel_dim.stylebox" id="4_pqaq0"]
 [ext_resource type="Texture2D" uid="uid://bcyql8pbvs5yj" path="res://assets/gui/icons/song.png" id="5_pf3wh"]
 [ext_resource type="Texture2D" uid="uid://cxpbdejhyhyxu" path="res://assets/gui/icons/lyrics.png" id="6_1kbv2"]
+[ext_resource type="Texture2D" uid="uid://cewj8er7rgjhq" path="res://assets/gui/icons/left.png" id="6_ehnaa"]
 [ext_resource type="PackedScene" uid="uid://dh113rx5texfk" path="res://scenes/ui_elements/circle_button_01/circle_button_01.tscn" id="7_uivr1"]
 [ext_resource type="Texture2D" uid="uid://de686ygqs5poa" path="res://assets/gui/icons/logout.png" id="8_mbv55"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fhuii"]
 content_margin_left = 60.0
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xj3g1"]
+shader = ExtResource("2_k30ml")
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ja2ug"]
-bg_color = Color(0.737255, 0.00392157, 0.917647, 0.133333)
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+bg_color = Color(0.294118, 0.180392, 0.431373, 0.439216)
 corner_radius_top_left = 100
 corner_radius_top_right = 100
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_q4pmb"]
-shader = ExtResource("2_k30ml")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kv4qc"]
-bg_color = Color(0.737255, 0.00392157, 0.917647, 0.133333)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qx7we"]
+bg_color = Color(0.227451, 0.141176, 0.333333, 0.439216)
 
 [sub_resource type="LabelSettings" id="LabelSettings_ypi7r"]
 font = ExtResource("2_norfk")
 font_size = 42
 font_color = Color(1, 1, 1, 0.192157)
 
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_6xruo"]
-blend_mode = 3
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_72rt8"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jryro"]
 shader = ExtResource("2_k30ml")
@@ -43,11 +45,8 @@ content_margin_bottom = 40.0
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6yw14"]
 bg_color = Color(1, 1, 1, 0.117647)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_xj3g1"]
-shader = ExtResource("2_k30ml")
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d6h5r"]
-bg_color = Color(0.737255, 0.00392157, 0.917647, 0.133333)
+bg_color = Color(0.294118, 0.180392, 0.431373, 0.439216)
 corner_radius_bottom_right = 100
 corner_radius_bottom_left = 100
 
@@ -70,23 +69,28 @@ mouse_filter = 0
 theme_override_constants/separation = 0
 
 [node name="Top" type="PanelContainer" parent="VBoxContainer"]
+material = SubResource("ShaderMaterial_xj3g1")
+custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ja2ug")
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Top"]
-material = SubResource("ShaderMaterial_q4pmb")
+[node name="TopTexture" type="TextureRect" parent="VBoxContainer/Top"]
+texture_filter = 4
 layout_mode = 2
+size_flags_vertical = 4
 mouse_filter = 2
-texture = ExtResource("1_fr83g")
+texture = ExtResource("3_6thwu")
+expand_mode = 5
 stretch_mode = 5
 
 [node name="Middle" type="PanelContainer" parent="VBoxContainer"]
-custom_minimum_size = Vector2(0, 75)
+material = SubResource("ShaderMaterial_xj3g1")
+custom_minimum_size = Vector2(92, 75)
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_kv4qc")
+theme_override_styles/panel = SubResource("StyleBoxFlat_qx7we")
 
 [node name="Empty" type="Control" parent="VBoxContainer/Middle"]
 visible = false
@@ -110,10 +114,9 @@ text = "LAM PROJECT"
 label_settings = SubResource("LabelSettings_ypi7r")
 
 [node name="Content" type="PanelContainer" parent="VBoxContainer/Middle"]
-material = SubResource("CanvasItemMaterial_6xruo")
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = ExtResource("4_pqaq0")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_72rt8")
 
 [node name="Menu" type="PanelContainer" parent="VBoxContainer/Middle/Content"]
 material = SubResource("ShaderMaterial_jryro")
@@ -127,6 +130,11 @@ size_flags_vertical = 4
 mouse_filter = 2
 theme_override_constants/separation = 25
 alignment = 1
+
+[node name="BackButton" parent="VBoxContainer/Middle/Content/Menu/VBoxContainer" instance=ExtResource("7_uivr1")]
+layout_mode = 2
+tooltip_text = "Go back"
+icon = ExtResource("6_ehnaa")
 
 [node name="IstrumentMenuButton" parent="VBoxContainer/Middle/Content/Menu/VBoxContainer" instance=ExtResource("7_uivr1")]
 layout_mode = 2
@@ -168,6 +176,7 @@ custom_minimum_size = Vector2(0, 175)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_d6h5r")
 
+[connection signal="pressed" from="VBoxContainer/Middle/Content/Menu/VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/Middle/Content/Menu/VBoxContainer/IstrumentMenuButton" to="." method="_on_istrument_menu_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/Middle/Content/Menu/VBoxContainer/PlaySongButton" to="." method="_on_play_song_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/Middle/Content/Menu/VBoxContainer/MatchmakingButton" to="." method="_on_matchmaking_button_pressed"]

@@ -15,7 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://de686ygqs5poa" path="res://assets/gui/icons/logout.png" id="11_quq3v"]
 [ext_resource type="PackedScene" uid="uid://b2ew1c3swawaj" path="res://scenes/instrument_selection/instrument_selection_item.tscn" id="12_p1ru3"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_r2fi2"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ft4cb"]
 resource_local_to_scene = true
 shader = ExtResource("3_f3xdb")
 shader_parameter/indicate = true
@@ -58,7 +58,7 @@ texture = ExtResource("2_hvina")
 stretch_mode = 6
 
 [node name="LightLayer" parent="Background" instance=ExtResource("3_4tmb3")]
-material = SubResource("ShaderMaterial_r2fi2")
+material = SubResource("ShaderMaterial_ft4cb")
 layout_mode = 1
 
 [node name="LeftBar" parent="." instance=ExtResource("4_jve2t")]

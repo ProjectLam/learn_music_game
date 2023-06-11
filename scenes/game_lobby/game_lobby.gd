@@ -3,6 +3,8 @@ extends Control
 @onready var start_ready_button = %StartReadyButton
 
 func _ready():
+	SceneStack.clear()
+	
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	if MatchManager.status != MatchManager.MatchMakingStatus.CONNECTING \
 		and MatchManager.status != MatchManager.MatchMakingStatus.JOINED_MATCH:
@@ -71,5 +73,10 @@ func _on_start_ready_button_pressed():
 
 
 func _on_game_status_changed():
-	if MatchManager.game_status == MatchManager.GameStatus.STARTED:
+	if MatchManager.game_status == LAMMatch.GameStatus.STARTED:
 		_switch_to_game_start()
+
+
+func _on_quit_match_button_pressed():
+	MatchManager.leave_match_async()
+	get_tree().change_scene_to_file("res://scenes/matchmaking/matchmaking.tscn")

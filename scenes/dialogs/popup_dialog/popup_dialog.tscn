@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://ceba6hp7fvk5"]
+[gd_scene load_steps=13 format=3 uid="uid://ceba6hp7fvk5"]
 
 [ext_resource type="Script" path="res://scenes/dialogs/popup_dialog/popup_dialog.gd" id="1_l1ecu"]
 [ext_resource type="Texture2D" uid="uid://4jhy1ls4ta6u" path="res://assets/gui/blur.jpg" id="2_2inud"]
@@ -8,6 +8,7 @@
 [ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="3_pi8px"]
 [ext_resource type="PackedScene" uid="uid://cwr5sfnmp7808" path="res://scenes/ui_elements/square_button_01/square_button_01.tscn" id="4_3v0h7"]
 [ext_resource type="Animation" uid="uid://bxdor4i0qqn5r" path="res://scenes/dialogs/popup_dialog/RESET.res" id="4_nsnu8"]
+[ext_resource type="Texture2D" uid="uid://be3ioc0v3w1yd" path="res://assets/gui/icons/close.svg" id="9_rvu4u"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_halb4"]
 
@@ -113,6 +114,7 @@ offset_top = 25.0
 offset_right = -25.0
 offset_bottom = 52.0
 grow_horizontal = 0
+icon = ExtResource("9_rvu4u")
 expand_icon = true
 
 [node name="ClickBlocker" type="Control" parent="."]

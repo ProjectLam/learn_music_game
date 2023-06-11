@@ -45,7 +45,9 @@ func _on_Learn_selected() -> void:
 
 
 func _on_Play_selected() -> void:
-	get_tree().change_scene_to_file("res://scenes/song_selection/song_selection.tscn")
+	SceneStack.stack_data[SceneStack.MATCH_CREATION_MODE] = MatchCreation.Modes.SINGLE_PLAYER
+	get_tree().change_scene_to_file("res://scenes/matchmaking/match_creation.tscn")
+#	get_tree().change_scene_to_file("res://scenes/song_selection/song_selection.tscn")
 
 
 func _on_Matches_selected() -> void:

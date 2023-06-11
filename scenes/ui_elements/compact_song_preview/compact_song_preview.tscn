@@ -1,0 +1,66 @@
+[gd_scene load_steps=5 format=3 uid="uid://dcuwyk5e6co0q"]
+
+[ext_resource type="Script" path="res://scenes/ui_elements/compact_song_preview/compact_song_preview.gd" id="1_4efxw"]
+[ext_resource type="Texture2D" uid="uid://bcyql8pbvs5yj" path="res://assets/gui/icons/song.png" id="2_2yibc"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_djyua"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qjbcq"]
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
+
+[node name="compact_song_preview" type="PanelContainer"]
+custom_minimum_size = Vector2(400, 120)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -10.0
+offset_bottom = -38.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_djyua")
+script = ExtResource("1_4efxw")
+
+[node name="ButtonBg" type="Button" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"cs_preview_panel"
+
+[node name="SelectASong" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.168627, 0.168627, 1)
+theme_override_font_sizes/font_size = 30
+text = "Select a song"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SongPreviewPanel" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_qjbcq")
+
+[node name="VBoxContainer" type="HBoxContainer" parent="SongPreviewPanel"]
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_constants/separation = 20
+
+[node name="TextureRect" type="TextureRect" parent="SongPreviewPanel/VBoxContainer"]
+layout_mode = 2
+texture = ExtResource("2_2yibc")
+expand_mode = 3
+
+[node name="SongNameLabel" type="Label" parent="SongPreviewPanel/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 30
+text = "Song Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="ButtonBg" to="." method="_on_button_bg_pressed"]

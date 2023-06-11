@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://t8vajiottp28"]
+[gd_scene load_steps=33 format=3 uid="uid://t8vajiottp28"]
 
 [ext_resource type="Script" path="res://scenes/performance.gd" id="1_2i2o3"]
 [ext_resource type="PackedScene" uid="uid://koljkcrt3kjj" path="res://scenes/song_loader/song_loader.tscn" id="2_45rtj"]
@@ -11,6 +11,8 @@
 [ext_resource type="Script" path="res://scenes/ingame_scores.gd" id="8_npdy5"]
 [ext_resource type="Shader" path="res://shaders/canvas_alpha_to_blur.gdshader" id="9_03eff"]
 [ext_resource type="PackedScene" path="res://scenes/rich_text_flow/rich_text_flow.tscn" id="10_3n7l4"]
+[ext_resource type="PackedScene" uid="uid://dl4nx74f03pxd" path="res://scenes/ui_elements/glass_panel.tscn" id="12_y25jn"]
+[ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="13_juusf"]
 
 [sub_resource type="Environment" id="Environment_dudjq"]
 background_mode = 1
@@ -60,8 +62,8 @@ buffer = PackedFloat32Array(1, 0, 0, 0, 0, 1, 0, -0.231236, 0, 0, 1, 0, 1, 0, 0,
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_j84wq"]
 top_radius = 0.0
-bottom_radius = 25.0
-height = 100.0
+bottom_radius = 37.5
+height = 150.0
 
 [sub_resource type="Gradient" id="Gradient_u2qph"]
 offsets = PackedFloat32Array(0, 0.62259)
@@ -86,13 +88,6 @@ shader_parameter/color = Color(0.0666667, 0.215686, 0.266667, 1)
 shader_parameter/noise_texture = SubResource("NoiseTexture2D_4pjh5")
 shader_parameter/gradient_texture = SubResource("GradientTexture1D_brc8k")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5d8mf"]
-bg_color = Color(0, 0, 0, 0.313726)
-corner_radius_top_left = 100
-corner_radius_top_right = 100
-corner_radius_bottom_right = 100
-corner_radius_bottom_left = 100
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tn2jr"]
 shader = ExtResource("9_03eff")
 
@@ -104,6 +99,16 @@ content_margin_bottom = 20.0
 bg_color = Color(0.737255, 0.00392157, 0.917647, 0.133333)
 corner_radius_top_right = 20
 corner_radius_bottom_right = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3vu77"]
+bg_color = Color(0, 0, 0, 0.384314)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5d8mf"]
+bg_color = Color(0, 0, 0, 0.313726)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
 
 [node name="Performance" type="Node3D"]
 script = ExtResource("1_2i2o3")
@@ -121,7 +126,7 @@ shadow_enabled = true
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.961262, 0.275637, 0, -0.275637, 0.961261, 0, 9, 15)
 current = true
-fov = 61.0
+fov = 105.0
 script = ExtResource("2_qtcyo")
 noise = SubResource("FastNoiseLite_vkhm1")
 piano_position = Vector3(0, 9, 15)
@@ -197,20 +202,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="QuitButton" type="Button" parent="CanvasLayer/UI"]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -82.0
-offset_top = 16.0
-offset_right = -16.0
-offset_bottom = 79.0
-grow_horizontal = 0
-theme_override_styles/normal = SubResource("StyleBoxFlat_5d8mf")
-icon = ExtResource("6_d47nm")
-icon_alignment = 1
-
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/UI"]
 layout_mode = 1
 anchors_preset = 15
@@ -259,7 +250,77 @@ unique_name_in_owner = true
 layout_mode = 2
 fit_content = true
 
-[connection signal="pressed" from="CanvasLayer/UI/QuitButton" to="." method="_on_QuitBtn_pressed"]
+[node name="PopupBG" type="PanelContainer" parent="CanvasLayer/UI"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_3vu77")
+
+[node name="WaitingForPlayersPopup" type="MarginContainer" parent="CanvasLayer/UI/PopupBG"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="CanvasLayer/UI/PopupBG/WaitingForPlayersPopup"]
+position = Vector2(160, 140)
+copy_mode = 2
+rect = Rect2(0, 0, 800, 400)
+
+[node name="glass_panel" parent="CanvasLayer/UI/PopupBG/WaitingForPlayersPopup" instance=ExtResource("12_y25jn")]
+custom_minimum_size = Vector2(800, 400)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="CanvasLayer/UI/PopupBG/WaitingForPlayersPopup/glass_panel"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("13_juusf")
+theme_override_font_sizes/font_size = 50
+text = "Waiting for other players."
+horizontal_alignment = 1
+
+[node name="LoadingSongPopup" type="MarginContainer" parent="CanvasLayer/UI/PopupBG"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="CanvasLayer/UI/PopupBG/LoadingSongPopup"]
+position = Vector2(160, 140)
+copy_mode = 2
+rect = Rect2(0, 0, 800, 400)
+
+[node name="glass_panel" parent="CanvasLayer/UI/PopupBG/LoadingSongPopup" instance=ExtResource("12_y25jn")]
+custom_minimum_size = Vector2(800, 400)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="CanvasLayer/UI/PopupBG/LoadingSongPopup/glass_panel"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("13_juusf")
+theme_override_font_sizes/font_size = 50
+text = "Loading Song"
+horizontal_alignment = 1
+
+[node name="QuitButton" type="Button" parent="CanvasLayer/UI"]
+layout_mode = 2
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -82.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = 79.0
+grow_horizontal = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_5d8mf")
+icon = ExtResource("6_d47nm")
+icon_alignment = 1
+
 [connection signal="pressed" from="CanvasLayer/UI/MarginContainer/PausePlayButton" to="." method="_on_pause_play_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/UI/QuitButton" to="." method="_on_QuitBtn_pressed"]
 
 [editable path="CanvasLayer/UI/ChatBox"]

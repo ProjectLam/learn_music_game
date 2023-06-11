@@ -1,8 +1,9 @@
-[gd_scene load_steps=24 format=3]
+[gd_scene load_steps=25 format=3 uid="uid://urn5jnaygnap"]
 
 [ext_resource type="Script" path="res://scenes/game_lobby/game_lobby.gd" id="1_biyfc"]
 [ext_resource type="Texture2D" uid="uid://dxcxogdwflpig" path="res://assets/gui/main/background.png" id="1_f8xbt"]
 [ext_resource type="Shader" path="res://shaders/LightingBackground.gdshader" id="2_dfmqi"]
+[ext_resource type="PackedScene" uid="uid://kgpxv8yxnjo0" path="res://scenes/song_selection/song_selection_bg.tscn" id="2_gotda"]
 [ext_resource type="PackedScene" uid="uid://bpsr6id66vxk2" path="res://scenes/left_bar/left_bar.tscn" id="3_6nvfy"]
 [ext_resource type="Texture2D" uid="uid://4jhy1ls4ta6u" path="res://assets/gui/blur.jpg" id="4_4wboe"]
 [ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="5_hjdi7"]
@@ -98,7 +99,11 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_biyfc")
 
+[node name="Background" parent="." instance=ExtResource("2_gotda")]
+layout_mode = 1
+
 [node name="TextureRect" type="TextureRect" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -108,6 +113,7 @@ grow_vertical = 2
 texture = ExtResource("1_f8xbt")
 
 [node name="LightLayer" type="Panel" parent="."]
+visible = false
 material = SubResource("ShaderMaterial_as5wc")
 layout_mode = 2
 offset_left = 1.0
@@ -142,12 +148,12 @@ theme_override_constants/separation = 10
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/Panels/PanelsVBox"]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/separation = 10
+theme_override_constants/separation = 40
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 10
+theme_override_constants/separation = 40
 
 [node name="GameInfo" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer" instance=ExtResource("5_tqolk")]
 layout_mode = 2
@@ -214,6 +220,7 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.3
+theme_override_constants/separation = 20
 
 [node name="glass_panel" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer2" instance=ExtResource("9_k3g2w")]
 layout_mode = 2
@@ -347,4 +354,10 @@ layout_mode = 2
 text = "Start Match
 "
 
+[node name="QuitMatchButton" parent="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer2" instance=ExtResource("9_mgxxf")]
+layout_mode = 2
+text = "Quit Match
+"
+
 [connection signal="pressed" from="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer2/StartReadyButton" to="." method="_on_start_ready_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/Panels/PanelsVBox/HBoxContainer/VBoxContainer2/QuitMatchButton" to="." method="_on_quit_match_button_pressed"]

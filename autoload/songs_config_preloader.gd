@@ -34,7 +34,7 @@ func load_remote_songs():
 				is_song_preload_completed = true
 				song_preload_completed.emit()
 				return
-		
+	
 	
 	for key in GBackend.remote_songs_info:
 		var song_info = GBackend.remote_songs_info[key]

@@ -41,6 +41,7 @@ FocusManager="*res://autoload/focus_manager.gd"
 MatchManager="*res://autoload/match_manager.gd"
 ShaderGlobals="*res://autoload/shader_globals.gd"
 Users="*res://autoload/users.gd"
+SceneStack="*res://autoload/scene_stack.gd"
 
 [debug]
 

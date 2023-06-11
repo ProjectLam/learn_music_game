@@ -9,6 +9,11 @@ extends Node3D
 @onready var vfx = %VFX
 @onready var chat_box = %ChatBox
 @onready var chat_text = %RichTextLabel
+@onready var popup_bg = %PopupBG
+@onready var loading_song_popup = %LoadingSongPopup
+@onready var waiting_for_players_popup = %WaitingForPlayersPopup
+
+@onready var popups := [loading_song_popup, waiting_for_players_popup]
 
 var test_song_path := "res://Arlow - How Do You Know [NCS Release].mp3"
 
@@ -27,22 +32,40 @@ var paused := true:
 	set = set_paused
 
 
+var awaiting_song_load := false:
+	set = set_awaiting_song_load
+
+# TODO : we might be waiting for game start but required users might exit the game. add reevaluations.
+var awaiting_game_start := false:
+	set = set_awaiting_game_start
+
+
 func _ready():
-	multiplayer.peer_connected.connect(_on_user_connected)
-	multiplayer.peer_disconnected.connect(_on_user_disconnected)
-	multiplayer.server_disconnected.connect(_on_server_disconnected)
-	multiplayer.connected_to_server.connect(_on_connected_to_server)
+	loading_song_popup.visible = awaiting_song_load
+	
 	
 	song_loader.song_loaded.connect(_on_song_loaded)
 	
 	
 	if not SessionVariables.single_player:
+		awaiting_game_start = true
+		multiplayer.peer_connected.connect(_on_user_connected)
+		multiplayer.peer_disconnected.connect(_on_user_disconnected)
+		multiplayer.server_disconnected.connect(_on_server_disconnected)
+		multiplayer.connected_to_server.connect(_on_connected_to_server)
+		
 		assert(multiplayer.has_multiplayer_peer())
 		var cstate = multiplayer.multiplayer_peer.get_connection_status()
+		
 		if cstate == MultiplayerPeer.CONNECTION_CONNECTED:
-			ingame_users[get_user_id(multiplayer.get_unique_id())] = self_user
+			# already connected.
+			var user: User = MatchManager.users.dict[multiplayer.get_unique_id()]
+			self_user.user = user
+			ingame_users[user.user_id] = self_user
 			reload_network_users()
 		else:
+			# we will wait for _on_connected_to_server.
+			push_error("After the implementation of game lobby, when entering the game multiplayeAPI should be already connected to server.")
 			ingame_scores_viewer.reload_users({"self": self_user})
 	else:
 		ingame_scores_viewer.reload_users({"self": self_user})
@@ -53,6 +76,7 @@ func _ready():
 	current_song = SessionVariables.current_song
 	
 	if current_song == null && SessionVariables.load_test_song:
+		awaiting_song_load = true
 		var current_stream = song_loader.load_mp3_from_path(test_song_path)
 		audio_stream.stream = current_stream
 		audio_stream.play()
@@ -69,6 +93,7 @@ func _ready():
 	_on_connect_instrument()
 	
 	_on_song_changed()
+	refresh_popup_bg()
 	
 	is_ready = true
 
@@ -104,16 +129,23 @@ func _on_song_changed():
 		print("performance song changed to none")
 	var current_stream:AudioStream
 	if current_song:
+		awaiting_song_load = true
 		song_loader.load_song(current_song)
 	else:
 		print("No song selected")
 
 
 func _on_song_loaded(song: Song) -> void:
+	if not awaiting_song_load:
+		print("Song [%s] loaded." % song.title)
+		return
+	
 	if song != current_song:
 		# Not the song we're looking for.
 		print("Song [%s] loaded but it's not the intended song." % song.title)
 		return
+	
+	awaiting_song_load = false
 	
 	audio_stream.stream = song_loader.get_main_stream(song)
 	self_user.ready_status = target_ready_state
@@ -121,7 +153,10 @@ func _on_song_loaded(song: Song) -> void:
 	if is_everyone_ready():
 		print("All clients seem to be ready.")
 		_on_game_start()
-
+	else:
+		if not awaiting_song_load:
+			waiting_for_players_popup.show()
+			refresh_popup_bg()
 
 func is_everyone_ready() -> bool:
 	if SessionVariables.single_player:
@@ -134,7 +169,7 @@ func is_everyone_ready() -> bool:
 		print("Not connected yet. Cannot check for ready status.")
 		return false
 	
-	# check to see if anybody is ready
+	# check to see if anybody is not ready
 	for uid in ingame_users:
 		var iuser: IngameUser = ingame_users[uid]
 		if iuser.ready_status != IngameUser.ReadyStatus.READY:
@@ -145,6 +180,7 @@ func is_everyone_ready() -> bool:
 
 func _on_game_start():
 	print("Starting game")
+	awaiting_game_start = false
 	sync_audiostream_remote(true, 0.0)
 
 
@@ -269,29 +305,33 @@ func _on_pause_play_button_pressed():
 
 
 # returns an array of all user identifiers.
-func get_all_network_users() -> PackedStringArray:
+func get_all_network_users() -> Array[User]:
 	var users: PackedInt32Array = multiplayer.get_peers()
 	users.append(multiplayer.get_unique_id())
-	var ret: PackedStringArray
+	var ret: Array[User]
 	ret.resize(users.size())
 	for index in users.size():
-		ret[index] = get_user_id(users[index])
+		var user: User = MatchManager.users.dict[users[index]]
+		ret[index] = user
 	return ret
 
 
 func reload_network_users():
 	var users := get_all_network_users()
 	for iuser in users:
-		if not ingame_users.has(iuser):
+		if not ingame_users.has(iuser.user_id):
 			_add_new_user(iuser)
 	ingame_scores_viewer.reload_users(ingame_users)
 
 
-func _add_new_user(uid) -> IngameUser:
+func _add_new_user(user: User) -> IngameUser:
 	var new_iuser = IngameUser.new()
-	ingame_users[uid] = new_iuser
+	# add entry
+	ingame_users[user.user_id] = new_iuser
+	# reload ui.
 	ingame_scores_viewer.reload_users(ingame_users)
 	new_iuser.ready_status_changed.connect(_on_users_ready_changed)
+	
 	return new_iuser
 
 
@@ -315,12 +355,22 @@ func _on_user_connected(peer_id: int):
 		for iuser in ingame_users:
 			udata[iuser] = iuser.get_data()
 		rpc("_set_all_user_data", udata)
-	add_chat_notification("%s connected." % get_user_id(peer_id))
+	
+	var user: User = MatchManager.users.dict[peer_id]
+	# ui notification to let us know a user has connected.
+	add_chat_notification("%s connected." % user.username)
 
 
 func _on_user_disconnected(peer_id: int):
 	reload_network_users()
-	add_chat_notification("%s disconnected" % get_user_id(peer_id))
+	var user: User = MatchManager.users_old.dict[peer_id]
+	add_chat_notification("%s disconnected" % user.username)
+	
+	if peer_id == get_multiplayer_authority():
+		# TODO :
+		# multiplayer authority has disconnected. this is a problem till we design a full authoritative model.
+		push_error("Host disconnected. State not implemented.")
+		MatchManager.leave_match_async()
 
 
 func _on_server_disconnected() -> void:
@@ -329,7 +379,8 @@ func _on_server_disconnected() -> void:
 
 
 func _on_connected_to_server() -> void:
-	ingame_users[get_user_id(multiplayer.get_unique_id())] = self_user
+	var user: User = MatchManager.users.dict[multiplayer.get_unique_id()]
+	ingame_users[user.user_id] = self_user
 	reload_network_users()
 
 
@@ -356,6 +407,7 @@ func broadcast_all_user_data() -> void:
 
 @rpc("authority", "call_remote", "reliable") func _set_all_user_data(data) -> void:
 	print("rpc _set_all_user_data called by {%s} with {%s}" % [multiplayer.get_remote_sender_id(), data])
+	var suser: User = MatchManager.users.dict[multiplayer.get_unique_id()]
 	for key in data:
 		if not (key is String):
 			# invalid key
@@ -364,7 +416,7 @@ func broadcast_all_user_data() -> void:
 		var iuser: IngameUser
 		if ingame_users.has(key):
 			iuser = ingame_users[key]
-		elif key == get_user_id(multiplayer.get_unique_id()):
+		elif key == suser.user_id:
 			ingame_users[key] = self_user
 			iuser = self_user
 		else:
@@ -382,7 +434,9 @@ func broadcast_all_user_data() -> void:
 @rpc("any_peer", "call_remote", "reliable") func _set_user_data(data) -> void:
 	print("received remote _set_user_data call with [id = %d, data = %s]" % 
 			[multiplayer.get_remote_sender_id(), data])
-	var uid :String = get_user_id(multiplayer.get_remote_sender_id())
+	
+	var suser: User = MatchManager.users.dict[multiplayer.get_remote_sender_id()]
+	var uid :String = suser.user_id
 	if not (data is Dictionary):
 		push_error("invalid user data for uid [%s]" % uid)
 		return
@@ -411,17 +465,54 @@ func _on_good_note_started(note_index: int, time_error: float) -> void:
 
 
 # temporary unique user id generator. will be replaced with a user id system.
-func get_user_id(peer_id: int) -> String:
-	var username: String = MatchManager.get_peer_username(peer_id)
-	if username != "":
-		return username
-	else:
-		# TODO : this changes the username of the users that have left.
-		#  add a global profile cache for user profiles and use that for usernames.
-		return "user_%s" % peer_id
+#func get_user_id(peer_id: int) -> String:
+#	var username: String = MatchManager.get_peer_user_id(peer_id)
+#	if username != "":
+#		return username
+#	else:
+#		# TODO : this changes the username of the users that have left.
+#		#  add a global profile cache for user profiles and use that for usernames.
+#		return "user_%s" % peer_id
 		
 
 
 func add_chat_notification(message: String) -> void:
 	chat_text.text += "\n%s" % message
 	chat_box.refresh()
+
+
+func refresh_popup_bg():
+	if not is_inside_tree():
+		return
+	
+	for control in popups:
+		if control.visible:
+			popup_bg.visible = true
+			return
+	
+	popup_bg.visible = false
+
+
+func set_awaiting_song_load(value: bool) -> void:
+	if awaiting_song_load != value:
+		awaiting_song_load = value
+		if is_instance_valid(loading_song_popup):
+			loading_song_popup.visible = awaiting_song_load
+			if not awaiting_song_load and awaiting_game_start:
+				waiting_for_players_popup.show()
+			refresh_popup_bg()
+
+
+func set_awaiting_game_start(value: bool) -> void:
+	if awaiting_game_start != value:
+		awaiting_game_start = value
+		
+		if is_instance_valid(waiting_for_players_popup):
+			if awaiting_game_start:
+				if not awaiting_song_load and awaiting_game_start:
+					waiting_for_players_popup.show()
+					refresh_popup_bg()
+			else:
+				waiting_for_players_popup.hide()
+				refresh_popup_bg()
+				

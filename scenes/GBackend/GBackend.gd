@@ -128,9 +128,9 @@ func init_remote_songs_json_url():
 		var jscript_eval = _js_godotGame.getSongsManifest()
 		if jscript_eval is String:
 			remote_songs_json_url = jscript_eval
-	#else:
-	#	remote_songs_json_url = "http://127.0.0.1/songs.json"
-	pass
+	else:
+		# TODO : must allow this origin in web version.
+		remote_songs_json_url = "https://golden-semolina-9e69fc.netlify.app/songs.json"
 
 
 # use 'await await_finit()' to wait for full initialization.
@@ -331,6 +331,10 @@ func _on_received_match_presence(p_presence: NakamaRTAPI.MatchPresenceEvent) -> 
 
 func list_matches_async(min_players : int = 1, max_players : int = -1, limit : int = 100,
 		label : String = "", query : String = "") -> NakamaAPI.ApiMatchList:
+	
+	if not session or not session.is_valid():
+		return NakamaAPI.ApiMatchList.new()
+	
 	var maxpl
 	if max_players > 0:
 		maxpl = max_players
@@ -378,7 +382,7 @@ func leave_match_async() -> void:
 
 
 # returns OK if it succeeds. this will be replaced with an error later.
-func join_match_async(p_match_id: String) -> int:
+func join_match_async(p_match_id: String, p_join_password: String = "") -> int:
 	await await_finit()
 	if connection_status in [CONNECTION_STATUS.CONNECTING, CONNECTION_STATUS.CONNECTING]:
 		push_error("Trying to create match while connection is not established. Disable access from the UI")
@@ -392,7 +396,7 @@ func join_match_async(p_match_id: String) -> int:
 		else:
 			Dialogs.connection_failed_dialog.open()
 		return -1
-	await multiplayer_bridge.join_match_async(p_match_id)
+	await multiplayer_bridge.join_match_async(p_match_id, p_join_password)
 	if multiplayer_bridge.match_state != NakamaMultiplayerBridge.MatchState.CONNECTED:
 		Dialogs.join_match_failed_dialog.open()
 		return -1
@@ -416,6 +420,7 @@ func _on_song_json_file_received(json_string: String):
 func set_connection_status(value) -> void:
 	if connection_status != value:
 		connection_status = value
+		assert(value != CONNECTION_STATUS.DISCONNECTED)
 		refresh()
 		connection_status_changed.emit()
 
@@ -460,6 +465,7 @@ func _on_file_offline_dialog_response(params: Dictionary) -> void:
 	match(option.to_lower()):
 		"yes":
 			file_src_mode = FILE_SRC_MODE.OFFLINE
+			remote_songs_json_received.emit({})
 		"no":
 			pass
 

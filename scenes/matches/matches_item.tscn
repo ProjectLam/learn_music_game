@@ -52,10 +52,12 @@ script = ExtResource("1_anwtr")
 [node name="OddPanel" parent="." instance=ExtResource("2_u82bc")]
 unique_name_in_owner = true
 layout_mode = 2
+mouse_filter = 1
 
 [node name="EvenPanel" parent="." instance=ExtResource("3_6myts")]
 unique_name_in_owner = true
 layout_mode = 2
+mouse_filter = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -76,11 +78,11 @@ vertical_alignment = 1
 [node name="AvatarImage" type="TextureRect" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 texture = ExtResource("3_s7kml")
+expand_mode = 3
 stretch_mode = 5
 
 [node name="Details" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
 alignment = 1
 
 [node name="NameLabel" type="Label" parent="VBoxContainer/HBoxContainer/Details"]
@@ -103,29 +105,47 @@ unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1
 theme_override_colors/font_color = Color(0.988235, 0, 0.466667, 1)
-theme_override_fonts/font = ExtResource("4_7gtxg")
 text = "Song Name"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/separation = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="GameStatusLabel" type="RichTextLabel" parent="VBoxContainer/HBoxContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 1
+bbcode_enabled = true
+text = "[right][/right]"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
 
 [node name="LockedIcon" type="TextureRect" parent="VBoxContainer/HBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(40, 0)
 layout_mode = 2
 size_flags_vertical = 4
+tooltip_text = "Password protected"
 texture = ExtResource("7_1n6sd")
 expand_mode = 5
 stretch_mode = 5
 
 [node name="PlayersCountLabel" type="Label" parent="VBoxContainer/HBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 mouse_filter = 1
 theme_type_variation = &"matches_item_pc_label"
 text = "0"
 label_settings = SubResource("LabelSettings_dqhvv")
+horizontal_alignment = 1
 script = ExtResource("8_rken6")
 
 [node name="Spacer" type="Control" parent="VBoxContainer/HBoxContainer"]

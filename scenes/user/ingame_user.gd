@@ -2,6 +2,7 @@ extends Resource
 
 class_name IngameUser
 
+var user: User
 
 # In future in between valus can be used to show a loading progress if needed.
 enum ReadyStatus {
