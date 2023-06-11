@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dj6q8o76cf5vf"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hvsm8"]
+
+[node name="OddPanel" type="Panel"]
+theme_override_styles/panel = SubResource("StyleBoxEmpty_hvsm8")

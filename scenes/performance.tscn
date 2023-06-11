@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://t8vajiottp28"]
+[gd_scene load_steps=30 format=3 uid="uid://t8vajiottp28"]
 
 [ext_resource type="Script" path="res://scenes/performance.gd" id="1_2i2o3"]
 [ext_resource type="PackedScene" uid="uid://koljkcrt3kjj" path="res://scenes/song_loader/song_loader.tscn" id="2_45rtj"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://de686ygqs5poa" path="res://assets/gui/icons/logout.png" id="6_d47nm"]
 [ext_resource type="Texture2D" uid="uid://cr6tvdv0ve6cv" path="res://addons/gut/gui/play.png" id="7_28teg"]
 [ext_resource type="Script" path="res://scenes/ingame_scores.gd" id="8_npdy5"]
+[ext_resource type="Shader" path="res://shaders/canvas_alpha_to_blur.gdshader" id="9_03eff"]
 [ext_resource type="PackedScene" path="res://scenes/rich_text_flow/rich_text_flow.tscn" id="10_3n7l4"]
 
 [sub_resource type="Environment" id="Environment_dudjq"]
@@ -92,12 +93,15 @@ corner_radius_top_right = 100
 corner_radius_bottom_right = 100
 corner_radius_bottom_left = 100
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tn2jr"]
+shader = ExtResource("9_03eff")
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fluv1"]
 content_margin_left = 20.0
 content_margin_top = 20.0
 content_margin_right = 20.0
 content_margin_bottom = 20.0
-bg_color = Color(0.235294, 0.188235, 0.823529, 0.243137)
+bg_color = Color(0.737255, 0.00392157, 0.917647, 0.133333)
 corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 
@@ -228,7 +232,7 @@ icon = ExtResource("7_28teg")
 icon_alignment = 1
 
 [node name="IngameUsersPanel" type="PanelContainer" parent="CanvasLayer/UI"]
-modulate = Color(1, 1, 1, 0.431373)
+material = SubResource("ShaderMaterial_tn2jr")
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.2

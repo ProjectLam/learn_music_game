@@ -17,7 +17,6 @@
 shader = ExtResource("3_ry738")
 shader_parameter/indicate = true
 shader_parameter/size = null
-shader_parameter/lighting_point = Vector2(0.5, 0.5)
 shader_parameter/indicating_power = 1.0
 shader_parameter/radius_base = 0.5
 shader_parameter/static_power = 0.4

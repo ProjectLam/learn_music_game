@@ -38,6 +38,8 @@ GBackend="*res://scenes/GBackend/GBackend.tscn"
 InstrumentDetails="*res://autoload/instrument_details.gd"
 SongsConfigPreloader="*res://autoload/songs_config_preloader.tscn"
 FocusManager="*res://autoload/focus_manager.gd"
+MatchManager="*res://autoload/match_manager.gd"
+ShaderGlobals="*res://autoload/shader_globals.gd"
 
 [debug]
 
@@ -88,3 +90,26 @@ media_seek_backward={
 renderer/rendering_method="mobile"
 anti_aliasing/quality/msaa_3d=2
 mesh_lod/lod_change/threshold_pixels=0.0
+
+[shader_globals]
+
+MOUSE_POSITION={
+"type": "vec2",
+"value": Vector2(0, 0)
+}
+panel_blur={
+"type": "float",
+"value": 2.5
+}
+viewport_size={
+"type": "ivec2",
+"value": Vector2i(0, 0)
+}
+mouse_position={
+"type": "vec2",
+"value": Vector2(0, 0)
+}
+lighting_point={
+"type": "vec2",
+"value": Vector2(0, 0)
+}

@@ -1,6 +1,8 @@
 extends PanelContainer
 class_name Matches
 
+signal match_selected(match_id: String)
+
 const MATCH_ITEM_SCENE = preload("res://scenes/matches/matches_item.tscn")
 
 @export var style_odd: StyleBox
@@ -90,18 +92,20 @@ func _on_refresh_timer_timeout() -> void:
 	refresh_timer.start()
 
 
-var joining_match := false
+#var joining_match := false
 func _on_match_item_selected(match_id: String) -> void:
-	if joining_match:
-		return
-	joining_match = true
-	print("Match selected: ", match_id)
-	SessionVariables.single_player = false
-	var err = await GBackend.join_match_async(match_id)
-	if err:
-		joining_match = false
-		return
-	get_tree().change_scene_to_file("res://scenes/performance.tscn")
+	match_selected.emit(match_id)
+#	if joining_matcmh:
+#		return
+#	joining_match = true
+#
+#	print("Match selected: ", match_id)
+#	SessionVariables.single_player = false
+#	var err = await GBackend.join_match_async(match_id)
+#	if err:
+#		joining_match = false
+#		return
+#	get_tree().change_scene_to_file("res://scenes/performance.tscn")
 
 
 func _on_focus_entered():

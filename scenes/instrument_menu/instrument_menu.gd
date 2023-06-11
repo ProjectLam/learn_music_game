@@ -65,9 +65,5 @@ func _on_Quit_selected() -> void:
 #	get_tree().change_scene_to_file("res://scenes/instrument_selection/instrument_selection.tscn")
 
 
-func _on_BackBtn_pressed() -> void:
-	request_go_back()
-
-
 func _on_instrument_box_pressed():
-	get_tree().change_scene_to_file("res://scenes/instrument_selection/instrument_selection.tscn")
+	request_go_back()

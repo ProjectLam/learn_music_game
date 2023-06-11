@@ -18,6 +18,14 @@ script = ExtResource("1_7treo")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
+[node name="BlockingPanel" type="PanelContainer" parent="CanvasLayer"]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="UI" type="Control" parent="CanvasLayer"]
 unique_name_in_owner = true
 layout_mode = 3
@@ -64,7 +72,7 @@ focus_close = true
 [node name="LoginFailedDialog" parent="CanvasLayer/UI" instance=ExtResource("2_vltmc")]
 unique_name_in_owner = true
 layout_mode = 1
-options = Array[String](["Ok"])
+options = Array[String](["Try again", "Continue Offline"])
 title = "Login Failed"
 message = "Your email or password were wrong!"
 focus_close = true

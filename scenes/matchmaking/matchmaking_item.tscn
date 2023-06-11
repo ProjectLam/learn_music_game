@@ -14,10 +14,10 @@ border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
 border_color = Color(1, 0.823529, 0.964706, 0.2)
-corner_radius_top_left = 1024
-corner_radius_top_right = 1024
-corner_radius_bottom_right = 1024
-corner_radius_bottom_left = 1024
+corner_radius_top_left = 39
+corner_radius_top_right = 39
+corner_radius_bottom_right = 39
+corner_radius_bottom_left = 39
 
 [sub_resource type="LabelSettings" id="LabelSettings_hh1sg"]
 line_spacing = 0.0
@@ -28,23 +28,26 @@ font_size = 30
 bg_color = Color(0.760784, 0, 0.776471, 1)
 border_width_bottom = 5
 border_color = Color(0.54902, 0, 0.560784, 1)
-corner_radius_top_left = 1024
-corner_radius_top_right = 1024
-corner_radius_bottom_right = 1024
-corner_radius_bottom_left = 1024
+corner_radius_top_left = 29
+corner_radius_top_right = 29
+corner_radius_bottom_right = 29
+corner_radius_bottom_left = 29
 shadow_color = Color(1, 0.262745, 0.784314, 0.14902)
 shadow_size = 27
 
 [node name="MatchmakingItem" type="PanelContainer"]
 custom_minimum_size = Vector2(0, 80)
+offset_right = 420.0
+offset_bottom = 80.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_qdthk")
 script = ExtResource("1_qc4gi")
 
 [node name="Background" type="TextureRect" parent="."]
+visible = false
 self_modulate = Color(1, 1, 1, 0.0862745)
 layout_mode = 2
 texture = ExtResource("2_5jav5")
-ignore_texture_size = true
+expand_mode = 1
 stretch_mode = 6
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
@@ -62,7 +65,7 @@ layout_mode = 2
 custom_minimum_size = Vector2(34, 0)
 layout_mode = 2
 texture = ExtResource("3_ojel7")
-ignore_texture_size = true
+expand_mode = 1
 stretch_mode = 5
 
 [node name="Spacer2" type="Control" parent="HBoxContainer/HBoxContainer"]

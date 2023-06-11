@@ -1,5 +1,6 @@
-[gd_scene load_steps=15 format=3 uid="uid://bvqgs74gtjvsj"]
+[gd_scene load_steps=18 format=3 uid="uid://bvqgs74gtjvsj"]
 
+[ext_resource type="Shader" path="res://shaders/canvas_alpha_to_blur.gdshader" id="1_pj2an"]
 [ext_resource type="Texture2D" uid="uid://4jhy1ls4ta6u" path="res://assets/gui/blur.jpg" id="1_ptohn"]
 [ext_resource type="Script" path="res://scenes/instrument_menu/instrument_menu_action.gd" id="1_w063x"]
 [ext_resource type="Texture2D" uid="uid://cmdd61q57jiu" path="res://assets/gui/icons/course.png" id="2_2snoy"]
@@ -7,17 +8,23 @@
 [ext_resource type="FontFile" uid="uid://df06bw7a1s1u7" path="res://fonts/Montserrat-Bold.ttf" id="4_xujib"]
 [ext_resource type="Texture2D" uid="uid://dfxg2q3m2tb8m" path="res://assets/gui/icons/right.png" id="5_uwb5d"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_eru7n"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7i40i"]
+shader = ExtResource("1_pj2an")
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qdthk"]
-bg_color = Color(0.282353, 0.192157, 0.454902, 0.8)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(1, 0.823529, 0.964706, 0.2)
-corner_radius_top_left = 1024
-corner_radius_top_right = 1024
-corner_radius_bottom_right = 1024
-corner_radius_bottom_left = 1024
+bg_color = Color(0.737255, 0.00392157, 0.917647, 0.133333)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.823529, 0.964706, 0.388235)
+border_blend = true
+corner_radius_top_left = 39
+corner_radius_top_right = 39
+corner_radius_bottom_right = 39
+corner_radius_bottom_left = 39
 
 [sub_resource type="LabelSettings" id="LabelSettings_hh1sg"]
 line_spacing = 0.0
@@ -25,13 +32,16 @@ font = ExtResource("3_saf71")
 font_size = 30
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yje14"]
-bg_color = Color(0.760784, 0, 0.776471, 1)
-border_width_bottom = 5
-border_color = Color(0.54902, 0, 0.560784, 1)
-corner_radius_top_left = 1024
-corner_radius_top_right = 1024
-corner_radius_bottom_right = 1024
-corner_radius_bottom_left = 1024
+bg_color = Color(0.980392, 0, 1, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 6
+border_color = Color(0.776471, 0, 0.796078, 1)
+corner_radius_top_left = 29
+corner_radius_top_right = 29
+corner_radius_bottom_right = 29
+corner_radius_bottom_left = 29
 shadow_color = Color(1, 0.262745, 0.784314, 0.14902)
 shadow_size = 27
 
@@ -41,65 +51,89 @@ shadow_size = 27
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_637n0"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qkujt"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7m2s7"]
-bg_color = Color(1, 1, 1, 0.196078)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dlimb"]
+bg_color = Color(0.258824, 0.25098, 0.278431, 0.454902)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
 border_color = Color(1, 0.823529, 0.964706, 0.2)
-corner_radius_top_left = 1024
-corner_radius_top_right = 1024
-corner_radius_bottom_right = 1024
-corner_radius_bottom_left = 1024
+corner_radius_top_left = 39
+corner_radius_top_right = 39
+corner_radius_bottom_right = 39
+corner_radius_bottom_left = 39
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7m2s7"]
+bg_color = Color(1, 1, 1, 0.0784314)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 0.823529, 0.964706, 0.2)
+corner_radius_top_left = 39
+corner_radius_top_right = 39
+corner_radius_bottom_right = 39
+corner_radius_bottom_left = 39
 
 [node name="InstrumentMenuAction" type="PanelContainer"]
-custom_minimum_size = Vector2(0, 80)
-theme_override_styles/panel = SubResource("StyleBoxFlat_qdthk")
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 343.0
+offset_bottom = 79.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_eru7n")
 script = ExtResource("1_w063x")
+text = "Learn A Song"
+icon = ExtResource("2_2snoy")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="BackPanel" type="PanelContainer" parent="."]
+material = SubResource("ShaderMaterial_7i40i")
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qdthk")
+
+[node name="Background" type="TextureRect" parent="BackPanel"]
+visible = false
 self_modulate = Color(1, 1, 1, 0.0862745)
 layout_mode = 2
 texture = ExtResource("1_ptohn")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="BackPanel"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="BackPanel/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Spacer" type="Control" parent="HBoxContainer/HBoxContainer"]
+[node name="Spacer" type="Control" parent="BackPanel/HBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(15, 0)
 layout_mode = 2
 
-[node name="Icon" type="TextureRect" parent="HBoxContainer/HBoxContainer"]
+[node name="Icon" type="TextureRect" parent="BackPanel/HBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(34, 0)
 layout_mode = 2
 texture = ExtResource("2_2snoy")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Spacer2" type="Control" parent="HBoxContainer/HBoxContainer"]
+[node name="Spacer2" type="Control" parent="BackPanel/HBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="BackPanel/HBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-text = "LEARN A SONG"
+text = "Learn A Song"
 label_settings = SubResource("LabelSettings_hh1sg")
 vertical_alignment = 1
 
-[node name="Right" type="CenterContainer" parent="HBoxContainer/HBoxContainer"]
+[node name="Right" type="CenterContainer" parent="BackPanel/HBoxContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="SelectBtn" type="Button" parent="HBoxContainer/HBoxContainer/Right"]
+[node name="SelectBtn" type="Button" parent="BackPanel/HBoxContainer/HBoxContainer/Right"]
 custom_minimum_size = Vector2(65, 65)
 layout_mode = 2
 focus_mode = 0
@@ -113,7 +147,7 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_yje14")
 icon = ExtResource("5_uwb5d")
 icon_alignment = 1
 
-[node name="Spacer3" type="Control" parent="HBoxContainer/HBoxContainer"]
+[node name="Spacer3" type="Control" parent="BackPanel/HBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(5, 0)
 layout_mode = 2
 
@@ -123,8 +157,9 @@ layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_pg5ld")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_j6egy")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_637n0")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_qkujt")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_dlimb")
 theme_override_styles/focus = SubResource("StyleBoxFlat_7m2s7")
 
 [connection signal="mouse_entered" from="ButtonOverlay" to="." method="_on_button_overlay_mouse_entered"]
+[connection signal="mouse_exited" from="ButtonOverlay" to="." method="_on_button_overlay_mouse_exited"]
 [connection signal="pressed" from="ButtonOverlay" to="." method="_on_button_overlay_pressed"]

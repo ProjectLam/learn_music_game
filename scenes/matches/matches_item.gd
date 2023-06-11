@@ -11,6 +11,8 @@ const ANIMATION_DURATION := 0.15
 @onready var instrument_label = %InstrumentLabel
 @onready var focus_overlay = %FocusOverlay
 @onready var playing_tween: Tween
+@onready var even_panel = %EvenPanel
+@onready var odd_panel = %OddPanel
 
 
 var style_odd: StyleBox
@@ -41,6 +43,7 @@ func _ready():
 	instrument_label.text = instrument_name
 	song_label.text = song_identifier
 	players_count_label.text = str(player_count)
+	refresh()
 
 
 func _process(delta):
@@ -62,38 +65,84 @@ func _gui_input(event):
 		accept_event()
 
 
+@onready var prev_has_focus := has_focus()
+func refresh() -> void:
+	if not is_inside_tree():
+		return
+	
+	match_name = "invalid name"
+	song_identifier = ""
+	instrument_name = ""
+	if not (paresd_label is Dictionary):
+		push_error("Invalid match label detected")
+	else:
+		var lname = paresd_label.get("name")
+		if not (lname is String):
+			push_error("Ivalid match name")
+		else:
+			match_name = lname
+		var lsongid = paresd_label.get("song")
+		if not (lsongid is String):
+			push_error("Invalid song identifier")
+		else:
+			song_identifier = lsongid
+		var linsname = paresd_label.get("instrument")
+		if not (linsname is String):
+			push_error("Invalid instrument name")
+		else:
+			instrument_name = linsname.get_basename()
+	
+	if prev_has_focus != has_focus():
+		if has_focus():
+			skip_click = true
+			var anim_duration = ANIMATION_DURATION
+			if playing_tween:
+				playing_tween.pause()
+				var spent_time := playing_tween.get_total_elapsed_time()
+				var remaining_time = max(ANIMATION_DURATION - spent_time,0)
+				anim_duration = max(ANIMATION_DURATION - remaining_time, 0)
+				playing_tween.kill()
+			var tween := get_tree().create_tween()
+			
+			tween.tween_property(focus_overlay, "modulate:a", 1.0, anim_duration)
+			playing_tween = tween
+		else:
+			skip_click = false
+			var anim_duration = ANIMATION_DURATION
+			if playing_tween:
+				playing_tween.pause()
+				var spent_time := playing_tween.get_total_elapsed_time()
+				var remaining_time = max(ANIMATION_DURATION - spent_time,0)
+				anim_duration = max(ANIMATION_DURATION - remaining_time, 0)
+				playing_tween.kill()
+			var tween := get_tree().create_tween()
+			
+			tween.tween_property(focus_overlay, "modulate:a", 0.0, anim_duration)
+			
+			playing_tween = tween
+	
+	prev_has_focus = has_focus()
+	if get_index() % 2 == 0:
+		even_panel.show()
+		odd_panel.hide()
+	else:
+		even_panel.hide()
+		odd_panel.show()
+
+
 func set_apimatch(value: NakamaAPI.ApiMatch) -> void:
 	if apimatch != value:
 		apimatch = value
 		match_id = apimatch.match_id
 		player_count = apimatch.size
 		paresd_label = JSON.parse_string(apimatch.label)
+#		refresh()
 
 
 func set_parsed_label(value):
 	if paresd_label != value:
 		paresd_label = value
-		match_name = "invalid name"
-		song_identifier = ""
-		instrument_name = ""
-		if not (paresd_label is Dictionary):
-			push_error("Invalid match label detected")
-		else:
-			var lname = paresd_label.get("name")
-			if not (lname is String):
-				push_error("Ivalid match name")
-			else:
-				match_name = lname
-			var lsongid = paresd_label.get("song")
-			if not (lsongid is String):
-				push_error("Invalid song identifier")
-			else:
-				song_identifier = lsongid
-			var linsname = paresd_label.get("instrument")
-			if not (linsname is String):
-				push_error("Invalid instrument name")
-			else:
-				instrument_name = linsname.get_basename()
+		refresh()
 
 
 func set_instrument_name(value: String) -> void:
@@ -129,31 +178,8 @@ func set_match_name(value: String) -> void:
 
 
 func _on_focus_entered():
-	skip_click = true
-	var anim_duration = ANIMATION_DURATION
-	if playing_tween:
-		playing_tween.pause()
-		var spent_time := playing_tween.get_total_elapsed_time()
-		var remaining_time = max(ANIMATION_DURATION - spent_time,0)
-		anim_duration = max(ANIMATION_DURATION - remaining_time, 0)
-		playing_tween.kill()
-	var tween := get_tree().create_tween()
-	
-	tween.tween_property(focus_overlay, "modulate:a", 1.0, anim_duration)
-	playing_tween = tween
+	refresh()
 
 
 func _on_focus_exited():
-	skip_click = false
-	var anim_duration = ANIMATION_DURATION
-	if playing_tween:
-		playing_tween.pause()
-		var spent_time := playing_tween.get_total_elapsed_time()
-		var remaining_time = max(ANIMATION_DURATION - spent_time,0)
-		anim_duration = max(ANIMATION_DURATION - remaining_time, 0)
-		playing_tween.kill()
-	var tween := get_tree().create_tween()
-	
-	tween.tween_property(focus_overlay, "modulate:a", 0.0, anim_duration)
-	
-	playing_tween = tween
+	refresh()

@@ -26,7 +26,7 @@ func _ready():
 		else:
 			bt_node.focus_mode = FOCUS_NONE
 		bt_node.text = opt
-		bt_node.pressed.connect(func (): _on_option_selected({"option": opt}))
+		bt_node.pressed.connect(func (): _on_option_selected({"option": opt.to_lower().to_snake_case()}))
 		v_box.add_child(bt_node)
 #
 	title_node.text = title

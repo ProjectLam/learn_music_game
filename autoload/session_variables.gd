@@ -31,7 +31,9 @@ signal instrument_changed
 
 
 func sync_remote():
-	assert(get_multiplayer_authority() == multiplayer.get_unique_id())
+	if get_multiplayer_authority() != multiplayer.get_unique_id():
+		push_error("Not Multiplayer Authority")
+		return
 	var sync_dict := {}
 	for k in synch_variables:
 		sync_dict[k] = get(k)

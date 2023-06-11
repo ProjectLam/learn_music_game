@@ -10,6 +10,7 @@ var instrument_data: InstrumentData: set = set_instrument_data
 @onready var songs_number = %SongsNumber
 @onready var courses_number = %CoursesNumber
 @onready var info = %Info
+@onready var circle = %Circle
 
 var is_ready:= false
 
@@ -25,14 +26,14 @@ func _ready():
 	reload()
 
 
-func _process(delta):
-	var x = get_viewport().get_mouse_position().x / get_viewport_rect().size.x
-	var y = get_viewport().get_mouse_position().y / get_viewport_rect().size.y
-	var pos = Vector2(x, y)
-	
-	$Circle.material = $Circle.material.duplicate()
-	
-	$Circle.material.set_shader_parameter("lighting_point", pos)
+#func _process(delta):
+#	var x = get_viewport().get_mouse_position().x / get_viewport_rect().size.x
+#	var y = get_viewport().get_mouse_position().y / get_viewport_rect().size.y
+#	var pos = Vector2(x, y)
+#
+#	circle.material = circle.material.duplicate()
+#
+#	circle.material.set_shader_parameter("lighting_point", pos)
 
 
 func set_instrument_data(ndata: InstrumentData):
@@ -63,11 +64,11 @@ func get_info_visible() -> bool:
 
 
 func _on_mouse_entered():
-	$Circle.material.set_shader_parameter("indicate", true)
+	circle.material.set_shader_parameter("indicate", true)
 
 
 func _on_mouse_exited():
-	$Circle.material.set_shader_parameter("indicate", false)
+	circle.material.set_shader_parameter("indicate", false)
 
 
 func _on_overlay_button_pressed():

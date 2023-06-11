@@ -1,7 +1,7 @@
 extends Control
 
-var blocking := false:
-	set = set_blocking
+@onready var blocking_panel = %BlockingPanel
+
 
 func _ready():
 	
@@ -16,20 +16,11 @@ func refresh_visibilities():
 			b = true
 			break
 	
-	blocking = b
+	blocking_panel.visible = b
 
 
 func _on_child_visibility_changed(child: Node):
 	refresh_visibilities()
-
-
-func set_blocking(value: bool) -> void:
-	if blocking != value:
-		blocking = value
-		if blocking:
-			mouse_filter = Control.MOUSE_FILTER_STOP
-		else:
-			mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 
 func disable_all() -> void:

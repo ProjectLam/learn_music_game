@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://dl4nx74f03pxd"]
+
+[ext_resource type="Shader" path="res://shaders/canvas_alpha_to_blur.gdshader" id="1_dqtv0"]
+[ext_resource type="StyleBox" uid="uid://dapyqdqmdvwsn" path="res://scenes/ui_elements/glass_panel.stylebox" id="2_x680c"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dym83"]
+shader = ExtResource("1_dqtv0")
+
+[node name="glass_panel" type="PanelContainer"]
+material = SubResource("ShaderMaterial_dym83")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("2_x680c")

@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://d3o4oipt5jw2b"]
+
+[ext_resource type="StyleBox" uid="uid://o85avtnh5o0a" path="res://scenes/ui_elements/glass_panel_dim.stylebox" id="1_gc5y6"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_yby5w"]
+blend_mode = 3
+
+[node name="EvenPanel" type="Panel"]
+material = SubResource("CanvasItemMaterial_yby5w")
+theme_override_styles/panel = ExtResource("1_gc5y6")

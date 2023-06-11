@@ -1,9 +1,11 @@
-[gd_scene load_steps=17 format=3 uid="uid://bpsr6id66vxk2"]
+[gd_scene load_steps=22 format=3 uid="uid://bpsr6id66vxk2"]
 
 [ext_resource type="Texture2D" uid="uid://ctu1miqp425c5" path="res://assets/gui/icons/casette.png" id="1_fr83g"]
 [ext_resource type="Script" path="res://scenes/left_bar/left_bar.gd" id="1_gck2n"]
+[ext_resource type="Shader" path="res://shaders/canvas_alpha_to_blur.gdshader" id="2_k30ml"]
 [ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="2_norfk"]
 [ext_resource type="Texture2D" uid="uid://cojmsogxnfbum" path="res://assets/gui/icons/page.png" id="4_aqkcr"]
+[ext_resource type="StyleBox" uid="uid://o85avtnh5o0a" path="res://scenes/ui_elements/glass_panel_dim.stylebox" id="4_pqaq0"]
 [ext_resource type="Texture2D" uid="uid://bcyql8pbvs5yj" path="res://assets/gui/icons/song.png" id="5_pf3wh"]
 [ext_resource type="Texture2D" uid="uid://cxpbdejhyhyxu" path="res://assets/gui/icons/lyrics.png" id="6_1kbv2"]
 [ext_resource type="PackedScene" uid="uid://dh113rx5texfk" path="res://scenes/ui_elements/circle_button_01/circle_button_01.tscn" id="7_uivr1"]
@@ -13,19 +15,26 @@
 content_margin_left = 60.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ja2ug"]
-bg_color = Color(1, 1, 1, 0.145098)
+bg_color = Color(0.737255, 0.00392157, 0.917647, 0.133333)
 corner_radius_top_left = 100
 corner_radius_top_right = 100
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_q4pmb"]
+shader = ExtResource("2_k30ml")
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kv4qc"]
-bg_color = Color(1, 1, 1, 0.0509804)
+bg_color = Color(0.737255, 0.00392157, 0.917647, 0.133333)
 
 [sub_resource type="LabelSettings" id="LabelSettings_ypi7r"]
 font = ExtResource("2_norfk")
 font_size = 42
 font_color = Color(1, 1, 1, 0.192157)
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pnn2a"]
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_6xruo"]
+blend_mode = 3
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jryro"]
+shader = ExtResource("2_k30ml")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sa53t"]
 content_margin_top = 40.0
@@ -34,8 +43,11 @@ content_margin_bottom = 40.0
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6yw14"]
 bg_color = Color(1, 1, 1, 0.117647)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xj3g1"]
+shader = ExtResource("2_k30ml")
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d6h5r"]
-bg_color = Color(1, 1, 1, 0.145098)
+bg_color = Color(0.737255, 0.00392157, 0.917647, 0.133333)
 corner_radius_bottom_right = 100
 corner_radius_bottom_left = 100
 
@@ -47,6 +59,7 @@ offset_top = -328.5
 offset_right = 92.0
 offset_bottom = 328.5
 grow_vertical = 2
+size_flags_vertical = 4
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_fhuii")
 script = ExtResource("1_gck2n")
@@ -57,12 +70,12 @@ mouse_filter = 0
 theme_override_constants/separation = 0
 
 [node name="Top" type="PanelContainer" parent="VBoxContainer"]
-custom_minimum_size = Vector2(0, 175)
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ja2ug")
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/Top"]
+material = SubResource("ShaderMaterial_q4pmb")
 layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("1_fr83g")
@@ -97,11 +110,13 @@ text = "LAM PROJECT"
 label_settings = SubResource("LabelSettings_ypi7r")
 
 [node name="Content" type="PanelContainer" parent="VBoxContainer/Middle"]
+material = SubResource("CanvasItemMaterial_6xruo")
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxEmpty_pnn2a")
+theme_override_styles/panel = ExtResource("4_pqaq0")
 
 [node name="Menu" type="PanelContainer" parent="VBoxContainer/Middle/Content"]
+material = SubResource("ShaderMaterial_jryro")
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_sa53t")
@@ -148,6 +163,7 @@ layout_mode = 2
 icon = ExtResource("8_mbv55")
 
 [node name="Bottom" type="PanelContainer" parent="VBoxContainer"]
+material = SubResource("ShaderMaterial_xj3g1")
 custom_minimum_size = Vector2(0, 175)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_d6h5r")

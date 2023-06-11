@@ -255,7 +255,7 @@ func media_seek(forward: bool) -> void:
 
 
 func _on_QuitBtn_pressed() -> void:
-	await GBackend.leave_async()
+	await GBackend.leave_match_async()
 	get_tree().change_scene_to_file("res://scenes/instrument_selection/instrument_selection.tscn")
 
 
