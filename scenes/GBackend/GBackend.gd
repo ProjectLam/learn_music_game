@@ -26,6 +26,9 @@ var host = "nakama.projectlam.org"
 var port = 7352
 var server_key = "projectlam"
 
+# set to true to avoid a login dialog.
+var dev_user_pass := false
+
 # song loading
 var remote_songs_json_url := ""
 var remote_songs_info: Dictionary = {}
@@ -240,12 +243,21 @@ func check_nakama_dev_values() -> void:
 			if dev["nakama"].has("test_user"):
 				user_email = dev["nakama"]["test_user"]["email"]
 				user_password = dev["nakama"]["test_user"]["password"]
+				dev_user_pass = true
 	
+	var dmail := false
+	var dpass := false
 	if CmdArgs.arguments.has("email"):
+		dmail = true
 		user_email = CmdArgs.arguments["email"]
+		
 	
 	if CmdArgs.arguments.has("password"):
+		dpass = true
 		user_password = CmdArgs.arguments["password"]
+	
+	if dmail and dpass:
+		dev_user_pass = true
 
 
 func open_js_login_dialog():
@@ -501,11 +513,11 @@ func try_login_async():
 		if is_js_enabled:
 			open_js_login_dialog()
 			cancelled = await login_set
-		else:
+		elif not dev_user_pass:
 			
-			# NOTE : comment out these two lines for a quick run in development.
 			Dialogs.login_dialog.open()
 			cancelled = await login_set
+		
 	
 	# setting new session.
 	if not cancelled:
