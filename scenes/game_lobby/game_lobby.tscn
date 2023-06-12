@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scenes/game_lobby/game_lobby.gd" id="1_biyfc"]
 [ext_resource type="Texture2D" uid="uid://dxcxogdwflpig" path="res://assets/gui/main/background.png" id="1_f8xbt"]
 [ext_resource type="Shader" path="res://shaders/LightingBackground.gdshader" id="2_dfmqi"]
-[ext_resource type="PackedScene" uid="uid://kgpxv8yxnjo0" path="res://scenes/song_selection/song_selection_bg.tscn" id="2_gotda"]
+[ext_resource type="PackedScene" path="res://scenes/song_selection/song_selection_bg.tscn" id="2_gotda"]
 [ext_resource type="PackedScene" uid="uid://bpsr6id66vxk2" path="res://scenes/left_bar/left_bar.tscn" id="3_6nvfy"]
 [ext_resource type="Texture2D" uid="uid://4jhy1ls4ta6u" path="res://assets/gui/blur.jpg" id="4_4wboe"]
 [ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="5_hjdi7"]

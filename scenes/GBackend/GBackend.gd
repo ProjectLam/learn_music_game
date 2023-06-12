@@ -79,6 +79,9 @@ func _ready():
 		_on_file_offline_dialog_response)
 	Dialogs.login_failed_dialog.option_selected.connect(
 		_on_login_failed_dialog_option_selected)
+	Dialogs.login_dialog.option_selected.connect(
+		_on_login_dialog_option_selected
+	)
 	
 	refresh()
 	
@@ -420,7 +423,6 @@ func _on_song_json_file_received(json_string: String):
 func set_connection_status(value) -> void:
 	if connection_status != value:
 		connection_status = value
-		assert(value != CONNECTION_STATUS.DISCONNECTED)
 		refresh()
 		connection_status_changed.emit()
 
@@ -500,8 +502,10 @@ func try_login_async():
 			open_js_login_dialog()
 			cancelled = await login_set
 		else:
-			# TODO : add a login dialog before loggin in.
-			pass
+			
+			# NOTE : comment out these two lines for a quick run in development.
+			Dialogs.login_dialog.open()
+			cancelled = await login_set
 	
 	# setting new session.
 	if not cancelled:
@@ -561,3 +565,33 @@ func _on_game_status_changed():
 #func _process(delta):
 #	if Input.is_action_just_pressed("ui_up"):
 #		var payload = await socket.rpc_async_parsed("get_versionn", {})
+
+
+func _on_login_dialog_option_selected(params : Dictionary):
+	var opt = params.get("option")
+	match(opt):
+		PopupBase.OPTION_CLOSE:
+			Dialogs.login_dialog.close()
+			login_set.emit(true)
+		PopupBase.OPTION_REGISTER:
+			# TODO : not implemented yet.
+			push_warning("Registering page not implemented yet.")
+			Dialogs.login_dialog.close()
+			login_set.emit(true)
+#			Dialogs.login_dialog.close()
+#			Dialogs.register_dialog.open()
+		PopupBase.OPTION_LOGIN:
+			Dialogs.login_dialog.close()
+			var p_email = params.get("email")
+			if p_email is String:
+				user_email = p_email
+			
+			var p_password = params.get("password")
+			if p_password is String:
+				user_password = p_password
+			
+			login_set.emit(false)
+		_:
+			push_error("Invalid option selected for login dialog")
+			login_set.emit(true)
+			

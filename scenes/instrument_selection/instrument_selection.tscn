@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://dxcxogdwflpig" path="res://assets/gui/main/background.png" id="2_i41le"]
 [ext_resource type="Shader" path="res://shaders/LightingBackground.gdshader" id="3_hqkqb"]
 [ext_resource type="PackedScene" uid="uid://bpsr6id66vxk2" path="res://scenes/left_bar/left_bar.tscn" id="4_2ntam"]
-[ext_resource type="PackedScene" uid="uid://6rl8bcr45rgo" path="res://scenes/instrument_selection/instrument_selection_panel.tscn" id="5_fdmkr"]
+[ext_resource type="PackedScene" path="res://scenes/instrument_selection/instrument_selection_panel.tscn" id="5_fdmkr"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_u6878"]
 resource_local_to_scene = true

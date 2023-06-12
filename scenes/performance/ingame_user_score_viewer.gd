@@ -27,12 +27,17 @@ func _ready():
 	is_ready = true
 
 
+func _process(delta):
+	refresh()
+
+
 func refresh():
 	if not is_ready:
 		return
 	if(iuser):
-		uname_label.text = iuser.user.username
+		uname_label.text = iuser.user.username if iuser.user else "Me"
 		uscore_label.text = "%d" % iuser.score
+
 
 func _on_iuser_changed():
 	if not is_ready:

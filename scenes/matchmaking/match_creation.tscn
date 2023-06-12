@@ -1,6 +1,6 @@
-[gd_scene load_steps=13 format=3 uid="uid://m3kem8yv2tjv"]
+[gd_scene load_steps=13 format=3 uid="uid://c0uyyn87hhsjx"]
 
-[ext_resource type="PackedScene" uid="uid://kgpxv8yxnjo0" path="res://scenes/song_selection/song_selection_bg.tscn" id="1_78bma"]
+[ext_resource type="PackedScene" path="res://scenes/song_selection/song_selection_bg.tscn" id="1_78bma"]
 [ext_resource type="Script" path="res://scenes/matchmaking/match_creation.gd" id="1_ns6eg"]
 [ext_resource type="PackedScene" uid="uid://bpsr6id66vxk2" path="res://scenes/left_bar/left_bar.tscn" id="2_robjm"]
 [ext_resource type="PackedScene" uid="uid://r5oy8h4p8suy" path="res://scenes/song_selection/song_selection.tscn" id="3_fjo8l"]
@@ -10,7 +10,7 @@
 [ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="5_6xkhb"]
 [ext_resource type="PackedScene" uid="uid://dcuwyk5e6co0q" path="res://scenes/ui_elements/compact_song_preview/compact_song_preview.tscn" id="5_ksw1l"]
 [ext_resource type="PackedScene" uid="uid://f6a8g2qh0dtg" path="res://scenes/ui_elements/line_edits/password_edit.tscn" id="6_a3oio"]
-[ext_resource type="PackedScene" uid="uid://6rl8bcr45rgo" path="res://scenes/instrument_selection/instrument_selection_panel.tscn" id="8_ssqce"]
+[ext_resource type="PackedScene" path="res://scenes/instrument_selection/instrument_selection_panel.tscn" id="8_ssqce"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t1k3g"]
 bg_color = Color(0, 0, 0, 0.384314)

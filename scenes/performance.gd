@@ -66,7 +66,7 @@ func _ready():
 		else:
 			# we will wait for _on_connected_to_server.
 			push_error("After the implementation of game lobby, when entering the game multiplayeAPI should be already connected to server.")
-			ingame_scores_viewer.reload_users({"self": self_user})
+#			ingame_scores_viewer.reload_users({"self": self_user})
 	else:
 		ingame_scores_viewer.reload_users({"self": self_user})
 	
@@ -328,6 +328,7 @@ func _add_new_user(user: User) -> IngameUser:
 	var new_iuser = IngameUser.new()
 	# add entry
 	ingame_users[user.user_id] = new_iuser
+	new_iuser.user = user
 	# reload ui.
 	ingame_scores_viewer.reload_users(ingame_users)
 	new_iuser.ready_status_changed.connect(_on_users_ready_changed)
@@ -363,7 +364,10 @@ func _on_user_connected(peer_id: int):
 
 func _on_user_disconnected(peer_id: int):
 	reload_network_users()
-	var user: User = MatchManager.users_old.dict[peer_id]
+	
+	var user: User = MatchManager.users.dict.get(peer_id)
+	if not user:
+		user = MatchManager.users_old.dict.get(peer_id)
 	add_chat_notification("%s disconnected" % user.username)
 	
 	if peer_id == get_multiplayer_authority():

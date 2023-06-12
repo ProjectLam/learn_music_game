@@ -260,6 +260,7 @@ libraries = {
 "": SubResource("AnimationLibrary_dna21")
 }
 
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Form/Buttons/LoginButton" to="." method="_on_login_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Form/Buttons/ForgotPasswordButton" to="." method="_on_forgot_password_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Socials/FacebookButton" to="." method="_on_facebook_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Socials/TwitterButton" to="." method="_on_twitter_button_pressed"]
