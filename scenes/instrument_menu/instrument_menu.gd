@@ -41,7 +41,7 @@ func request_go_back():
 
 
 func _on_Learn_selected() -> void:
-	get_tree().change_scene_to_file("res://scenes/song_selection/song_selection.tscn")
+	_on_Play_selected()
 
 
 func _on_Play_selected() -> void:
