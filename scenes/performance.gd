@@ -12,6 +12,7 @@ extends Node3D
 @onready var popup_bg = %PopupBG
 @onready var loading_song_popup = %LoadingSongPopup
 @onready var waiting_for_players_popup = %WaitingForPlayersPopup
+@onready var loading_progress_label = %LoadingProgressLabel
 
 @onready var popups := [loading_song_popup, waiting_for_players_popup]
 
@@ -112,6 +113,19 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("media_seek_backward"):
 		print("seeking backward by %s seconds" % seek_amount)
 		media_seek(false)
+	
+	if awaiting_song_load:
+		var request = song_loader.loading_requests.get(current_song)
+		if not is_instance_valid(request) or not request.has_method("get_downloaded_bytes") or not request.has_method("get_total_bytes"):
+			loading_progress_label.visible = false
+		else:
+			var totalbytes: int = request.get_total_bytes()
+			var downloaded: int = request.get_downloaded_bytes()
+			loading_progress_label.visible = true
+			if totalbytes > 0:
+				loading_progress_label.text = "%s/%s KB" % [downloaded/1000, totalbytes/1000]
+			else:
+				loading_progress_label.text = "Fetching..."
 
 
 func print_song_loading_debug(to_print):

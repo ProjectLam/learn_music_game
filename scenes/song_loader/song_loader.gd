@@ -8,7 +8,7 @@ var loading := {}
 # (Song : { main_stream: Audio stream, preview_stream : Audio stream)) pair
 var loaded := {}
 
-
+var loading_requests := {}
 # Initiates loading a new song.
 # Returns true if force_reload is false and song is already loaded.
 func load_song(new_song: Song, force_reload: bool = false):
@@ -50,6 +50,7 @@ func load_song(new_song: Song, force_reload: bool = false):
 			# add the new node to allow automatic pullling and resource handling. this way if the
 			# song loader node is destroyed, loaderRequest will be freed as well.
 			add_child(loaderRequest)
+			loading_requests[new_song] = loaderRequest
 
 
 func _on_song_buffer_loaded(song: Song, buffer):
