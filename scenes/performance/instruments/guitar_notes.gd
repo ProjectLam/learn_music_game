@@ -14,7 +14,7 @@ extends InstrumentNotes
 @export var fret_offset: float
 
 
-func spawn_note(note_data: Note, note_index: int):
+func spawn_note(note_data: NoteBase, note_index: int):
 	super.spawn_note(note_data, note_index)
 	
 	var note = note_scene.instantiate()

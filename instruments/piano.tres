@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=4 format=3 uid="uid://bkxfwoqjr02ah"]
+[gd_resource type="Resource" script_class="InstrumentData" load_steps=4 format=3 uid="uid://bkxfwoqjr02ah"]
 
 [ext_resource type="Script" path="res://instruments/instrument_data.gd" id="1_anhq8"]
 [ext_resource type="Texture2D" uid="uid://dfypaisktoctn" path="res://assets/gui/main/Piano.png" id="1_gmase"]
@@ -6,10 +6,10 @@
 
 [resource]
 script = ExtResource("1_anhq8")
-instrument_name = "piano"
 instrument_label = "Piano"
 family = 4
-tuning_pitches = null
+tuning_pitches = Array[int]([])
 transposition = 0
 icon = ExtResource("1_gmase")
 performance_scene = ExtResource("2_p7kjv")
+marker_positions = Array[Vector2i]([])

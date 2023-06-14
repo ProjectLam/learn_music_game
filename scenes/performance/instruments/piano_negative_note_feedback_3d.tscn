@@ -1,0 +1,70 @@
+[gd_scene load_steps=12 format=3 uid="uid://c5kfpp5675fnk"]
+
+[ext_resource type="Script" path="res://scenes/performance/instruments/piano_note_feedback_3d.gd" id="1_qcs5k"]
+[ext_resource type="Shader" path="res://shaders/piano_note_feedback_bg_3d.gdshader" id="2_fs2io"]
+
+[sub_resource type="Curve" id="Curve_ayxxe"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.492038, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_he70k"]
+texture_mode = 1
+curve = SubResource("Curve_ayxxe")
+
+[sub_resource type="Gradient" id="Gradient_3w7jp"]
+offsets = PackedFloat32Array(0, 0.0654545, 0.909091, 1)
+colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_no558"]
+gradient = SubResource("Gradient_3w7jp")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_60hch"]
+render_priority = 0
+shader = ExtResource("2_fs2io")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/uv1_scale = Vector3(1, 1, 1)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(1, 1, 1)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/lf = 1.0
+shader_parameter/texture_albedo = SubResource("GradientTexture1D_no558")
+shader_parameter/life_albedo = SubResource("CurveTexture_he70k")
+
+[sub_resource type="Gradient" id="Gradient_fc08i"]
+offsets = PackedFloat32Array(0, 0.5)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_2oc24"]
+gradient = SubResource("Gradient_fc08i")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_77piw"]
+direction = Vector3(0, -1, 0)
+spread = 0.0
+gravity = Vector3(0, 0, 0)
+color = Color(0.901961, 0, 0.0156863, 1)
+color_ramp = SubResource("GradientTexture1D_2oc24")
+turbulence_noise_scale = 0.0
+turbulence_noise_speed = Vector3(0.5, 0, 0.5)
+turbulence_influence_min = 0.0
+turbulence_influence_max = 0.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_l83ea"]
+size = Vector2(1, -10)
+center_offset = Vector3(0, -5, 0)
+
+[node name="piano_negative_note_feedback_3d" type="Node3D"]
+script = ExtResource("1_qcs5k")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+unique_name_in_owner = true
+material_override = SubResource("ShaderMaterial_60hch")
+emitting = false
+amount = 1
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 60
+interpolate = false
+fract_delta = false
+visibility_aabb = AABB(-1.749, -3.326, -1.637, 3.497, 4.755, 3.273)
+process_material = SubResource("ParticleProcessMaterial_77piw")
+draw_pass_1 = SubResource("QuadMesh_l83ea")

@@ -1,12 +1,10 @@
 class_name InstrumentNotes
 extends Node3D
 
-
 signal note_started(note_data)
 signal note_ended(note_data)
 signal good_note_started(note_index: int, timing_error: float)
 signal game_finished
-
 
 @export var note_scene: PackedScene
 @export var chord_scene: PackedScene
@@ -14,16 +12,17 @@ signal game_finished
 @export var spawn_distance: float = 48
 @export var note_speed: float = 10.0
 
+@onready var note_visuals: Node3D = get_node_or_null("%NoteVisuals")
 
 var _song_data: Song
 # The notes you see on screen
-#var _notes: Array[Note]
-var _spawned_notes: Array[Note]
+#var _notes: Array[NoteBase]
+var _spawned_notes: Array[NoteBase]
 # Used for tracking player performance
-var _performance_notes: Array[Note]
+var _performance_notes: Array[NoteBase]
 var _performance_note_index: int = 0
 # Indices of notes the player is currently playing
-var _current_note_indices: Array[int]
+var _current_note_indices := {}
 
 var look_ahead: float = spawn_distance / note_speed
 var time: float = 0.0
@@ -42,6 +41,14 @@ var finished := true:
 var paused := true:
 	set = set_paused
 
+
+var last_expected: NoteBase:
+	set = set_last_expected
+var expected_chord_pressed := []
+
+# TODO : used to ignore mistakes for destroyed wrong chord.
+var last_destroyed_note: NoteBase
+var last_expected_failed := false
 
 func _ready():
 	refresh_set_process()
@@ -202,7 +209,7 @@ func _is_missed_note(note_index: int):
 
 
 # Abstract, override in child class
-func spawn_note(note_data: Note, note_index: int):
+func spawn_note(note_data: NoteBase, note_index: int):
 	if Debug.print_note:
 		print("Spawning Note [idx=%d,time=%d]" % [note_index, note_data.time])
 
@@ -221,8 +228,11 @@ func clear() -> void:
 
 func _on_input_note_started(pitch: float):
 	# Pitch will already be quantized at this point
-	var expected = _performance_notes[_performance_note_index]
-	var time_difference = expected.time - time
+	if _performance_note_index >= _performance_notes.size():
+		return
+	
+	last_expected = _performance_notes[_performance_note_index]
+	var time_difference = last_expected.time - time
 	
 	if time_difference > early_max_error:
 		_on_invalid_note()
@@ -231,43 +241,62 @@ func _on_input_note_started(pitch: float):
 	
 	var timing_error = abs(time_difference) / missed_max_error if time_difference < 0 else time_difference / early_max_error
 	
-	if expected is Chord:
+	if last_expected is Chord:
 		# This means we're using either MIDI or keyboard input and the notes come in separately
-		if expected.has_pitch(pitch):
+		var chord_pitches = last_expected.get_pitches()
+		if chord_pitches.has(pitch):
 			# This is a good note
-			expected.play_pitch(pitch)
-			if expected.num_notes_remaining() == 0:
+			if not expected_chord_pressed.has(pitch):
+				expected_chord_pressed.append(pitch)
+#			last_expected.play_pitch(pitch)
+				
+			if last_expected.get_pitches().size() == expected_chord_pressed.size():
+				# All notes for the chord have started correctly.
 				_on_good_note_start(_performance_note_index, timing_error)
-				_current_note_indices.append(_performance_note_index)
+				_current_note_indices[_performance_note_index] = chord_pitches
 				_play_note(_performance_note_index)
-				note_started.emit(expected)
+				note_started.emit(last_expected)
+				_performance_note_index += 1
+			elif last_expected_failed and (last_destroyed_note is Chord) and last_destroyed_note.has_pitch(pitch):
+				# do nothing.
+				return
 			else:
 				_on_wrong_pitch(_performance_note_index, timing_error)
-				_destroy_note(_performance_note_index)
+#				_destroy_note(_performance_note_index)
 	else:
-		if pitch == expected.get_pitch():
+		if pitch == last_expected.get_pitch():
 			_on_good_note_start(_performance_note_index, timing_error)
-			_current_note_indices.append(_performance_note_index)
+			_current_note_indices[_performance_note_index] = true
 			_play_note(_performance_note_index)
-			note_started.emit(expected)
+			note_started.emit(last_expected)
+			_performance_note_index += 1
 		else:
 			_on_wrong_pitch(_performance_note_index, timing_error)
-			_destroy_note(_performance_note_index)
-		
-		_performance_note_index += 1
+#			_destroy_note(_performance_note_index)
 
 
 func _on_input_note_ended(pitch: float):
-	var expected: Note
+	var expected: NoteBase
 	var expected_index: int = -1
 	
-	for i in _current_note_indices.size():
-		var note = _performance_notes[_current_note_indices[i]]
-		if note.get_pitch() == pitch:
+	for index in _current_note_indices:
+		var note = _performance_notes[index]
+		if note is Chord:
+			var notes = _current_note_indices[index]
+			if notes.has(pitch):
+				notes.erase(pitch)
+				if notes.size() == 0:
+					expected = note
+					expected_index = index
+					_current_note_indices.erase(index)
+				else:
+					return
+		elif note is Note and note.get_pitch() == pitch:
 			expected = note
-			expected_index = _current_note_indices[i]
-			_current_note_indices.remove_at(i)
-			break
+			expected_index = index
+			_current_note_indices.erase(index)
+		else:
+			return
 	
 	if expected_index == -1:
 		return
@@ -300,7 +329,8 @@ func _destroy_note(index: int):
 	for note in get_children():
 		if note.index == index:
 			note.destroy()
-			break
+			return
+	print("Trying to destroy non exsistent note :", index)
 
 
 ################################################################################
@@ -351,3 +381,10 @@ func _on_invalid_note():
 	
 	if Debug.print_note:
 		print("Played a note while there's nothing to play")
+
+
+func set_last_expected(value: NoteBase) -> void:
+	if last_expected != value:
+		last_expected = value
+		expected_chord_pressed.clear()
+		last_expected_failed = false

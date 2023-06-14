@@ -7,6 +7,7 @@ var index: int = -1
 var speed: float = 10.0
 var is_playing: bool = false: set = set_is_playing, get = get_is_playing
 var instrument_notes
+var note_visuals: Node3D
 
 
 var color: Color: set = set_color
@@ -26,16 +27,14 @@ func play():
 func end(successful: bool):
 	# The player played and ended this note. Do something pretty, destroy.
 	if successful:
-		# Reward player
-		pass
+		positive_feedback()
 	else:
-		# Show negative feedback animation/effect
-		pass
+		negative_feedback()
 	queue_free()
 
 
 func destroy():
-	# The player missed this note. Destroy it, maybe play a feedback animation.
+	negative_feedback()
 	queue_free()
 
 
@@ -55,3 +54,12 @@ func set_is_playing(value: bool):
 
 func get_is_playing() -> bool:
 	return is_playing
+
+
+# Abastract
+func positive_feedback() -> void:
+	pass
+
+# Abstract
+func negative_feedback() -> void:
+	pass

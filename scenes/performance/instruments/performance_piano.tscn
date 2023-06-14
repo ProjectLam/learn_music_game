@@ -1015,4 +1015,8 @@ modulate = Color(0, 0, 0, 1)
 text = ";"
 font_size = 150
 
+[node name="NoteVisuals" type="Node3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.48836, 0)
+
 [editable path="piano"]

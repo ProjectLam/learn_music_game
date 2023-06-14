@@ -17,7 +17,7 @@ func _ready():
 
 
 # TODO : utilize map_note for slide.
-func spawn_note(note_data: Note, note_index: int):
+func spawn_note(note_data: NoteBase, note_index: int):
 	super.spawn_note(note_data, note_index)
 	var mappedsfret = instrument_data.map_note(note_data.string, note_data.fret)
 	var string = mappedsfret.x

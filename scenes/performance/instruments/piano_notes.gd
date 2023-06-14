@@ -8,7 +8,7 @@ signal note_destroyed()
 var last_center: float = 0.0
 
 
-func spawn_note(note_data: Note, note_index: int):
+func spawn_note(note_data: NoteBase, note_index: int):
 	super.spawn_note(note_data, note_index)
 	
 	var note = note_scene.instantiate()
@@ -24,6 +24,7 @@ func spawn_note(note_data: Note, note_index: int):
 	note.duration = note_data.sustain
 	note.index = note_index
 	note.instrument_notes = self
+	note.note_visuals = note_visuals
 	
 	# Signals
 	note.tree_exited.connect(on_note_destroyed)

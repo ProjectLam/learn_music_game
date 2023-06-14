@@ -1,4 +1,4 @@
-extends Note
+extends NoteBase
 class_name Chord
 
 
@@ -26,6 +26,8 @@ var strum: Strum
 var fret_hand_mute: bool
 #@TODO Not sure what high density means, but it seems to correlate with strumming down (for which we also have the strum parameter, so still not sure)
 var high_density: bool
+
+var played_pitches := []
 
 
 var string_chromatic_indices = [
