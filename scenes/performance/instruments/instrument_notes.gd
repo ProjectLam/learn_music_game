@@ -5,6 +5,8 @@ signal note_started(note_data)
 signal note_ended(note_data)
 signal good_note_started(note_index: int, timing_error: float)
 signal game_finished
+signal song_started
+signal song_paused
 
 @export var note_scene: PackedScene
 @export var chord_scene: PackedScene
@@ -17,23 +19,32 @@ signal game_finished
 var _song_data: Song
 # The notes you see on screen
 #var _notes: Array[NoteBase]
-var _spawned_notes: Array[NoteBase]
 # Used for tracking player performance
 var _performance_notes: Array[NoteBase]
-var _performance_note_index: int = 0
+var _performance_note_index: int = -1:
+	set(value):
+		_performance_note_index = value
+		assert(_performance_note_index < 0 or _performance_note_index == _performance_notes.size() or spawned_note_nodes.has(_performance_note_index))
+
 # Indices of notes the player is currently playing
-var _current_note_indices := {}
+# (pitch : start time)
+var _current_pitches := {}
+# (pitch : { start: start time, end: end time} )
+var _pitch_history := {}
 
 var look_ahead: float = spawn_distance / note_speed
 var time: float = 0.0
 var end_time: float = 0.0
 # start of the range of notes that haven't spawned yet.
-var spawn_index := 0
+var spawn_index := -1:
+	set(value):
+		spawn_index = value
+		assert(spawn_index >= -1)
+		
 
 # Notes that have passed by this amount of time will count as missed
-var missed_max_error: float = 0.5
 # If the player plays but the next note is more than this amount of time out, it will not be counted as played
-var early_max_error: float = 0.5
+var error_margin: float = 1.0
 
 var finished := true:
 	set = set_finished
@@ -42,44 +53,97 @@ var paused := true:
 	set = set_paused
 
 
-var last_expected: NoteBase:
-	set = set_last_expected
-var expected_chord_pressed := []
-
 # TODO : used to ignore mistakes for destroyed wrong chord.
 var last_destroyed_note: NoteBase
 var last_expected_failed := false
+
+var spawned_note_nodes := {}
+
+var current_good_notes := {}
 
 func _ready():
 	refresh_set_process()
 
 
 func _process(delta):
-	time += delta
+	for n in spawned_note_nodes:
+		assert(n <= spawn_index)
+	
+	var next_time = time + delta
+	if time < 0.0 and next_time >= 0.0:
+		# sign changed.
+		time = next_time
+		song_started.emit()
+	time = next_time
+	var end_time = time + look_ahead
 	var c = 0
-	for note_index in range(spawn_index, _performance_notes.size()):
+	for note_index in range(spawn_index + 1, _performance_notes.size()):
 		c += 1
 		var note := _performance_notes[note_index]
 		if note.time > (time + look_ahead):
 			break
-		spawn_index += 1
-		_spawned_notes.append(note)
 		# This indexing is a bit awkward. Is it even needed?
 		if note is Chord:
-			spawn_chord(note as Chord, _spawned_notes.size() - 1)
+			spawn_chord(note_index)
 		else:
-			spawn_note(note, _spawned_notes.size() - 1)
+			spawn_note(note_index)
 	
-	while _is_missed_note(_performance_note_index):
-		_on_missed_note(_performance_note_index)
-		_destroy_note(_performance_note_index)
-		_performance_note_index += 1
+	for n in spawned_note_nodes:
+		assert(n <= spawn_index)
 	
-#	if _notes.size() == 0 and _performance_notes.size() == _performance_note_index:
+	for index in range(max(_performance_note_index, 0), spawn_index + 1):
+		var next_note: NoteBase = _performance_notes[index]
+		assert(spawned_note_nodes.has(index))
+		if next_note.time < time:
+			_end_note(index, false)
+			_on_missed_note(index)
+			# TODO : later we might implement good start but bad end mechanism. for now we just remove.
+			if next_note is Note:
+				var pitch: float = next_note.get_pitch()
+				_current_pitches.erase(pitch)
+				_pitch_history.erase(pitch)
+			elif next_note is Chord:
+				for pitch in next_note.get_pitches():
+					_current_pitches.erase(pitch)
+					_pitch_history.erase(pitch)
+			
+			_performance_note_index = min(index + 1, _performance_notes.size())
+		else:
+			var snote = spawned_note_nodes.get(index)
+			if snote == null:
+				push_error("Note does not exist")
+				continue
+			# TODO : move set clip to the refresh function.
+			if snote is Node3D:
+				snote.set("clip", (time - next_note.time)/next_note.sustain)
+			else:
+				for csnote in snote:
+					csnote.set("clip", (time - next_note.time)/next_note.sustain)
+	
 	if time > end_time:
 		print("game finished!")
 		set_process(false)
 		game_finished.emit()
+	
+	for n in spawned_note_nodes:
+		assert(n <= spawn_index)
+	
+	refresh_note_nodes()
+
+
+func refresh_note_nodes():
+	for index in spawned_note_nodes:
+		var snote = spawned_note_nodes[index]
+		var note = _performance_notes[index]
+		if snote is Node3D:
+			snote.position.z = -get_note_offset(note.time)
+		else:
+			for csnote in snote:
+				csnote.position.z = -get_note_offset(note.time)
+
+func get_note_offset(note_time: float) -> float:
+#	return spawn_distance
+	return spawn_distance*(note_time - time)/look_ahead
 
 
 func set_finished(value: bool) -> void:
@@ -91,6 +155,11 @@ func set_finished(value: bool) -> void:
 func set_paused(value: bool) -> void:
 	if paused != value:
 		paused = value
+		if paused:
+			song_paused.emit()
+		else:
+			if time > 0.0:
+				song_started.emit()
 		refresh_set_process()
 
 
@@ -98,14 +167,14 @@ func refresh_set_process():
 	set_process(not paused && not finished)
 
 
-func start_game(song_data: Song):
+func start_game(song_data: Song, delay := 15.0):
 	if finished:
 		_song_data = song_data
 		_performance_notes = song_data.get_notes_and_chords_for_difficulty()
-		_spawned_notes = []
+		spawn_index = -1
 	#	_performance_notes = _notes.duplicate()
-		_performance_note_index = 0
-		time = 0.0
+		_performance_note_index = -1
+		time = - delay
 		end_time = _performance_notes.back().time + look_ahead
 		
 		if not InstrumentInput.note_started.is_connected(
@@ -114,6 +183,9 @@ func start_game(song_data: Song):
 		if not InstrumentInput.note_ended.is_connected(_on_input_note_ended):
 			InstrumentInput.note_ended.connect(_on_input_note_ended)
 		finished = false
+	
+	if time >= 0.0:
+		song_started.emit()
 	paused = false
 
 
@@ -123,107 +195,122 @@ func seek(seek_time: float) -> void:
 	#  their trigger time. Implement this range to respawn them.
 	if abs(time - seek_time) < 0.01:
 		return
-	clear()
+#	clear()
 	var prev_time = time
 	var prev_spawn_idx = spawn_index
 	var prev_note_idx = _performance_note_index
-	time = clamp(seek_time, 0, end_time)
-	var spawn_note = _performance_notes[spawn_index]
-	var perf_note = _performance_notes[_performance_note_index]
-	var max_index := _performance_notes.size() - 1
-	# TODO : add error margins for undo and skip.
-	if time < prev_time:
-		# seeking backward. untested.
-		while perf_note.time > time:
-			# TODO : remove from _spawned_notes.
-			_on_undo_note(_performance_note_index)
-			if _performance_note_index > 0:
-				_performance_note_index -= 1
-				perf_note = _performance_notes[_performance_note_index]
-			else:
-				break
-		# Undoing notes is done, now we will move forward and respawn visible notes.
-		var visible_begin = _performance_note_index + 1
-		var visible_end = visible_begin
-		_spawned_notes = _performance_notes.slice(0, visible_begin)
-		spawn_note = _performance_notes[visible_begin]
-		while spawn_note.time < time + look_ahead:
-			# note is in view:
-			if visible_end < max_index:
-				visible_end += 1
-				spawn_note = _performance_notes[visible_end]
-			else:
-				break
-		for index in range(visible_begin, visible_end):
-			spawn_note = _performance_notes[index]
-			_spawned_notes.append(spawn_note)
-			if spawn_note is Chord:
-				spawn_chord(spawn_note as Chord, _spawned_notes.size() - 1)
-			else:
-				spawn_note(spawn_note, _spawned_notes.size() - 1)
-			
-	elif time > prev_time:
-		# seeking forward.
-		while perf_note.time < time:
-			_on_note_skipped(spawn_index)
-			if _performance_note_index <= max_index:
-				_performance_note_index += 1
-				perf_note = _performance_notes[_performance_note_index]
-			else:
-				# all notes are skipped.
-				return
-		_spawned_notes = _performance_notes.slice(0, _performance_note_index)
-		var visible_begin = _performance_note_index
-		var visible_end = visible_begin
-		spawn_note = _performance_notes[visible_end]
-		# looking for notes that are in the visible range.
-		while spawn_note.time < time + look_ahead:
-			if visible_end <= max_index:
-				visible_end += 1
-				spawn_note = _performance_notes[visible_end]
-			else:
-				break
-		for index in range(visible_begin, visible_end):
-			spawn_note = _performance_notes[index]
-			_spawned_notes.append(spawn_note)
-			if spawn_note is Chord:
-				spawn_chord(spawn_note as Chord, _spawned_notes.size() - 1)
-			else:
-				spawn_note(spawn_note, _spawned_notes.size() - 1)
-			
+	time = min(seek_time, end_time)
+	
+	var vnotes_range := get_visible_note_range()
+	
+	var a = spawn_index
+	
+	var pv_spawn = spawned_note_nodes.duplicate()
+	
+	for index in range(int(max(_performance_note_index, 0)), spawn_index + 1):
+		destroy_note(index)
+	
+	spawn_index = max(_performance_note_index - 1, -1)
+	
+	assert(spawned_note_nodes.is_empty())
+	
+	for index in range(vnotes_range.x, vnotes_range.y):
+		var respawn_note = _performance_notes[index]
+		if respawn_note is Note:
+			spawn_note(index)
+		else:
+			spawn_chord(index)
+	
+	for index in range(vnotes_range.x, _performance_note_index):
+		_on_undo_note(index)
+	
+	for index in range(max(_performance_note_index, 0), vnotes_range.y):
+		_on_note_skipped(index)
+	
+	for index in range(max(_performance_note_index, 0), vnotes_range.x):
+		_on_note_skipped(index)
+	
+	if vnotes_range.y != 0:
+		_performance_note_index = vnotes_range.x
+	else:
+		_performance_note_index = -1
+	
+	if not paused:
+		if time < 0.0:
+			if prev_time >= 0.0:
+				song_paused.emit()
+		else:
+			song_started.emit()
+	
+
+
+func get_visible_note_range() -> Vector2i:
+	if _performance_notes.size() == 0:
+		return Vector2i()
+		
+	
+	var begin: int = max(max(_performance_note_index, 0), 0)
+	var cnote = _performance_notes[begin]
+	if cnote.time < time:
+		while cnote.time < time and begin != _performance_notes.size():
+			begin += 1
+			cnote = _performance_notes[begin]
+		
+		begin -= 1
+	else:
+		while cnote.time > time and begin != 0:
+			begin -= 1
+			cnote = _performance_notes[begin]
+	
+		if begin != 0:
+			begin += 1
+	
+	var end := begin + 1
+	cnote = _performance_notes[end]
+	var etime = time + look_ahead
+	while true:
+		if cnote.time >= etime:
+			break
+		end += 1
+		
+		if end >= _performance_notes.size():
+			break
+		
+		cnote = _performance_notes[end]
+	
+	end -= 1
+	
+	return Vector2i(begin, end)
 
 
 func _on_note_skipped(note_index: int):
 	pass
 
 
-func _is_missed_note(note_index: int):
-	if note_index >= _performance_notes.size():
-		return false
+func spawn_note(note_index: int):
+#	if Debug.print_note:
+#		print("Spawning Note [idx=%d]" % [note_index])
 	
-	if _performance_notes[note_index] is Chord:
-		# For now let's return the same as when it isn't a chord, but I think this might need different checks
-		return _performance_notes[note_index].time + _performance_notes[note_index].sustain < time - missed_max_error
-	else:
-		return _performance_notes[note_index].time + _performance_notes[note_index].sustain < time - missed_max_error
+	var prev_note = spawned_note_nodes.get(note_index)
+	assert(prev_note == null)
+#	if prev_note:
+#		ass
+#		push_warning("Respawning note")
+#		prev_note.queue_free()
+#		spawned_note_nodes.erase(note_index)
+	
+	spawn_index = max(note_index, spawn_index)
 
 
-# Abstract, override in child class
-func spawn_note(note_data: NoteBase, note_index: int):
+func spawn_chord(note_index: int):
 	if Debug.print_note:
-		print("Spawning Note [idx=%d,time=%d]" % [note_index, note_data.time])
-
-
-# Abstract, override in child class
-func spawn_chord(chord_data: Chord, note_index: int):
-	pass
-
-
-# Abstract, override in deriving class.
-# Clears all spawned notes and chords.
-func clear() -> void:
-	_spawned_notes.clear()
-	spawn_index = 0
+		print("Spawning chord [idx=%d]" % [note_index])
+	
+	var prev_chord = spawned_note_nodes.get(note_index)
+	
+	assert(prev_chord == null)
+	
+	spawn_index = max(note_index, spawn_index)
 
 
 func _on_input_note_started(pitch: float):
@@ -231,111 +318,89 @@ func _on_input_note_started(pitch: float):
 	if _performance_note_index >= _performance_notes.size():
 		return
 	
-	last_expected = _performance_notes[_performance_note_index]
-	var time_difference = last_expected.time - time
+	if _current_pitches.has(pitch):
+		_on_input_note_ended(pitch)
 	
-	if time_difference > early_max_error:
-		_on_invalid_note()
-		# Returning so _performance_note_index isn't incremented
-		return
+	var expected := _performance_notes[_performance_note_index]
 	
-	var timing_error = abs(time_difference) / missed_max_error if time_difference < 0 else time_difference / early_max_error
-	
-	if last_expected is Chord:
-		# This means we're using either MIDI or keyboard input and the notes come in separately
-		var chord_pitches = last_expected.get_pitches()
-		if chord_pitches.has(pitch):
-			# This is a good note
-			if not expected_chord_pressed.has(pitch):
-				expected_chord_pressed.append(pitch)
-#			last_expected.play_pitch(pitch)
-				
-			if last_expected.get_pitches().size() == expected_chord_pressed.size():
-				# All notes for the chord have started correctly.
-				_on_good_note_start(_performance_note_index, timing_error)
-				_current_note_indices[_performance_note_index] = chord_pitches
-				_play_note(_performance_note_index)
-				note_started.emit(last_expected)
-				_performance_note_index += 1
-			elif last_expected_failed and (last_destroyed_note is Chord) and last_destroyed_note.has_pitch(pitch):
-				# do nothing.
-				return
-			else:
-				_on_wrong_pitch(_performance_note_index, timing_error)
-#				_destroy_note(_performance_note_index)
-	else:
-		if pitch == last_expected.get_pitch():
-			_on_good_note_start(_performance_note_index, timing_error)
-			_current_note_indices[_performance_note_index] = true
-			_play_note(_performance_note_index)
-			note_started.emit(last_expected)
-			_performance_note_index += 1
-		else:
-			_on_wrong_pitch(_performance_note_index, timing_error)
-#			_destroy_note(_performance_note_index)
+	if expected is Note:
+		if expected.get_pitch() == pitch:
+			_current_pitches[pitch] = time
+			var tdiff = expected.time - time
+			var timing_error = abs(tdiff) / error_margin
+			if timing_error < 1.0:
+				_on_good_note_start(max(_performance_note_index, 0), timing_error)
+	elif expected is Chord:
+		var has_all := true
+		var good := true
+		for epitch in expected.get_pitches():
+			if epitch == pitch:
+				_current_pitches[pitch] = time
+				continue
+			var cpitch = _current_pitches.get(epitch)
+			
+			if cpitch == null:
+				has_all = false
+				good = false
+			
+			var st_time = cpitch["start_time"]
 
 
 func _on_input_note_ended(pitch: float):
-	var expected: NoteBase
-	var expected_index: int = -1
-	
-	for index in _current_note_indices:
-		var note = _performance_notes[index]
-		if note is Chord:
-			var notes = _current_note_indices[index]
-			if notes.has(pitch):
-				notes.erase(pitch)
-				if notes.size() == 0:
-					expected = note
-					expected_index = index
-					_current_note_indices.erase(index)
-				else:
-					return
-		elif note is Note and note.get_pitch() == pitch:
-			expected = note
-			expected_index = index
-			_current_note_indices.erase(index)
-		else:
-			return
-	
-	if expected_index == -1:
+	var st_time = _current_pitches.get(pitch)
+	if st_time == null:
 		return
 	
-	var time_difference = expected.time - time
-	var timing_error = abs(time_difference) / missed_max_error if time_difference < 0 else time_difference / early_max_error
+	if _performance_note_index < 0 or _performance_note_index > _performance_notes.size():
+		return
 	
-	_on_good_note_end(expected_index, timing_error)
-	_end_note(expected_index, abs(timing_error) < 1)
-	note_ended.emit(expected)
+	var expected: NoteBase = _performance_notes[_performance_note_index]
+	
+	if expected is Note:
+		var expected_pitch = expected.get_pitch()
+		if expected_pitch == pitch:
+			finalize_note(_performance_note_index, st_time, time)
+#		else:
+#			wrong_pitch_ended(pitch)
+	elif expected is Chord:
+		var expected_pitches = expected.get_pitches()
+		var includes := {}
+		if pitch in expected_pitches:
+			var all_included := true
+			for epitch in expected_pitches:
+				if epitch == pitch:
+					continue
+				
+				var phis = _pitch_history.get(epitch)
+				if not phis:
+					all_included = false
+					break
+				else:
+					includes[epitch] = phis
+			
+			if not all_included:
+				return
+		
+		includes[pitch] = { "start_time": st_time, "end_time": time }
+		finalize_chord(_performance_note_index, includes)
 
 
 func _play_note(index: int):
-	for note in get_children():
-		if note.index == index:
-			note.play()
-			break
-
-
-func _end_note(index: int, successful: bool):
-	if Debug.print_note:
-		print("Ending note with index ", index)
-	for note in get_children():
-		if note.index == index:
-			note.end(successful)
-			break
-
-
-func _destroy_note(index: int):
-	for note in get_children():
-		if note.index == index:
-			note.destroy()
-			return
-	print("Trying to destroy non exsistent note :", index)
-
+	var snote = spawned_note_nodes.get(index)
+	if not snote:
+		push_warning("Cannot play non existent note")
+		return
+	
+	if snote is Node3D:
+		snote.play()
+	else:
+		for csnote in snote:
+			csnote.play()
 
 ################################################################################
 # Events triggered by gameplay, implement these for positive/negative effects
 ################################################################################
+
 
 func _on_good_note_start(note_index: int, timing_error: float):
 	# Timing is never perfect, but gets close. timing_error will be normalized, based on
@@ -383,8 +448,79 @@ func _on_invalid_note():
 		print("Played a note while there's nothing to play")
 
 
-func set_last_expected(value: NoteBase) -> void:
-	if last_expected != value:
-		last_expected = value
-		expected_chord_pressed.clear()
-		last_expected_failed = false
+func _end_note(index: int, successful: bool):
+#	if Debug.print_note:
+#		print("Ending note with index ", index)
+	
+	var snote = spawned_note_nodes[index]
+	spawned_note_nodes.erase(index)
+	
+#	if not snote:
+#		push_error("Trying to end non existent note.")
+	
+	if snote is Node3D:
+		snote.end(successful)
+	else:
+		for csnote in snote:
+			csnote.end(successful)
+
+
+func finalize_note(index: int, start_time: float, end_time: float) -> void:
+	var note: Note = _performance_notes[index]
+	
+	var start_time_difference: float = (note.time - error_margin) - start_time
+	var start_timing_error: float = abs(start_time_difference) / error_margin
+	
+	var end_time_difference: float = (note.time + note.sustain - error_margin) - end_time
+	var end_timing_error: float = abs(end_time_difference) / error_margin
+	
+	var good_note: bool = abs(start_timing_error) < 1
+	if good_note:
+		_on_good_note_end(index, end_timing_error)
+		
+	_end_note(index, good_note)
+	_performance_note_index = index + 1
+
+
+func finalize_chord(index: int, includes: Dictionary) -> void:
+	var chord: Chord = _performance_notes[index]
+	
+	var etime = chord.time + chord.sustain
+	
+	var good_chord_st := true
+	var good_chord_ed := true
+	var total_eterr := 0.0
+	for pitch in chord.get_pitches():
+		var pdata = includes.get(pitch)
+		
+		if pdata == null:
+			# invalid call, entry is missing.
+			push_error("Invalid call to finalize_chord, entry is missing.")
+			return
+		
+		var start_time_diff = chord.time - pdata["start_time"]
+		var end_time_diff = etime - pdata["end_time"]
+		
+		var start_timing_error = abs(start_time_diff) / error_margin
+		var end_timing_error = abs(end_time_diff) / error_margin
+		
+		good_chord_st = good_chord_st and start_timing_error < 1.0
+		good_chord_ed = good_chord_ed and end_timing_error < 1.0
+		
+		total_eterr = max(end_timing_error, total_eterr)
+	
+	if good_chord_st:
+		_on_good_note_end(index, total_eterr)
+	
+	_end_note(index, good_chord_st)
+
+
+func destroy_note(index: int) -> void:
+	var snote = spawned_note_nodes[index]
+	spawned_note_nodes.erase(index)
+	
+	if snote is Node3D:
+		snote.queue_free()
+	else: 
+		for csnote in snote:
+			csnote.queue_free()

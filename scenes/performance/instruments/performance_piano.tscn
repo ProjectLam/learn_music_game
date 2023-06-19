@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://bfeas0r8kqnyo"]
+[gd_scene load_steps=20 format=3 uid="uid://bfeas0r8kqnyo"]
 
 [ext_resource type="Shader" path="res://scenes/performance/lane.gdshader" id="1_d17bu"]
 [ext_resource type="Script" path="res://scenes/performance/instruments/performance_piano.gd" id="1_vwgk5"]
@@ -42,6 +42,25 @@ render_priority = 0
 shader = ExtResource("1_d17bu")
 shader_parameter/color = Color(0.619608, 0.211765, 0.211765, 1)
 shader_parameter/brightness = 0.5
+
+[sub_resource type="Gradient" id="Gradient_esujw"]
+offsets = PackedFloat32Array(0, 0.258065, 0.784946, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.5, 0.5, 0.5, 1, 0.5, 0.5, 0.5, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_wryhc"]
+gradient = SubResource("Gradient_esujw")
+fill_from = Vector2(0, 1)
+fill_to = Vector2(0, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_23rnj"]
+blend_mode = 1
+albedo_color = Color(0.168627, 0.458824, 0.0980392, 1)
+albedo_texture = SubResource("GradientTexture2D_wryhc")
+
+[sub_resource type="QuadMesh" id="QuadMesh_ybmi8"]
+size = Vector2(51.87, 2)
+center_offset = Vector3(2.944, 0, -1)
+orientation = 1
 
 [node name="PerformancePiano" type="Node3D"]
 script = ExtResource("1_vwgk5")
@@ -587,6 +606,7 @@ script = ExtResource("4_8kycb")
 key_nodes = Array[NodePath]([NodePath("key_a_0"), NodePath("key_a_sharp_0"), NodePath("key_b_0"), NodePath("key_c_1"), NodePath("key_c_sharp_1"), NodePath("key_d_1"), NodePath("key_d_sharp_1"), NodePath("key_e_1"), NodePath("key_f_1"), NodePath("key_f_sharp_1"), NodePath("key_g_1"), NodePath("key_g_sharp_1"), NodePath("key_a_1"), NodePath("key_a_sharp_1"), NodePath("key_b_1"), NodePath("key_c_2"), NodePath("key_c_sharp_2"), NodePath("key_d_2"), NodePath("key_d_sharp_2"), NodePath("key_e_2"), NodePath("key_f_2"), NodePath("key_f_sharp_2"), NodePath("key_g_2"), NodePath("key_g_sharp_2"), NodePath("key_a_2"), NodePath("key_a_sharp_2"), NodePath("key_b_2"), NodePath("key_c_3"), NodePath("key_c_sharp_3"), NodePath("key_d_3"), NodePath("key_d_sharp_3"), NodePath("key_e_3"), NodePath("key_f_3"), NodePath("key_f_sharp_3"), NodePath("key_g_3"), NodePath("key_g_sharp_3"), NodePath("key_a_3"), NodePath("key_a_sharp_3"), NodePath("key_b_3"), NodePath("key_c_4"), NodePath("key_c_sharp_4"), NodePath("key_d_4"), NodePath("key_d_sharp_4"), NodePath("key_e_4"), NodePath("key_f_4"), NodePath("key_f_sharp_4"), NodePath("key_g_4"), NodePath("key_g_sharp_4"), NodePath("key_a_4"), NodePath("key_a_sharp_4"), NodePath("key_b_4"), NodePath("key_c_5"), NodePath("key_c_sharp_5"), NodePath("key_d_5"), NodePath("key_d_sharp_5"), NodePath("key_e_5"), NodePath("key_f_5"), NodePath("key_f_sharp_5"), NodePath("key_g_5"), NodePath("key_g_sharp_5"), NodePath("key_a_5"), NodePath("key_a_sharp_5"), NodePath("key_b_5"), NodePath("key_c_6"), NodePath("key_c_sharp_6"), NodePath("key_d_6"), NodePath("key_d_sharp_6"), NodePath("key_e_6"), NodePath("key_f_6"), NodePath("key_f_sharp_6"), NodePath("key_g_6"), NodePath("key_g_sharp_6"), NodePath("key_a_6"), NodePath("key_a_sharp_6"), NodePath("key_b_6"), NodePath("key_c_7"), NodePath("key_c_sharp_7"), NodePath("key_d_7"), NodePath("key_e_sharp_7"), NodePath("key_e_7"), NodePath("key_f_7"), NodePath("key_F_sharp_7"), NodePath("key_g_7"), NodePath("key_g_sharp_7"), NodePath("key_a_7"), NodePath("key_a_sharp_7"), NodePath("key_b_7"), NodePath("key_c_8")])
 
 [node name="Notes" type="Node3D" parent="."]
+unique_name_in_owner = true
 script = ExtResource("4_0scbe")
 note_scene = ExtResource("5_mrvpn")
 
@@ -1018,5 +1038,10 @@ font_size = 150
 [node name="NoteVisuals" type="Node3D" parent="."]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.48836, 0)
+
+[node name="PressArea" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
+material_override = SubResource("StandardMaterial3D_23rnj")
+mesh = SubResource("QuadMesh_ybmi8")
 
 [editable path="piano"]

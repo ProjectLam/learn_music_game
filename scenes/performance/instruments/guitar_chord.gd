@@ -43,6 +43,6 @@ func reposition_chord():
 			notes[frequency].position.x = min_x - 1
 
 
-func set_duration(value: float):
-	duration = value
-	duration_tail.scale.z = value * speed
+func set_end_point(value: Vector3):
+	super.set_end_point(value)
+	duration_tail.scale.z = -value.z

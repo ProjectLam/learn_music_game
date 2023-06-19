@@ -11,13 +11,13 @@ func set_color(value):
 #	$DurationTail/MeshInstance3D.material_override.albedo_color = 0.5 * value
 
 
-func set_duration(value):
-	duration = value
-	$DurationTail.scale.z = value * speed
+func set_end_point(value):
+	super.set_end_point(value)
+	$DurationTail.scale.z = -value.z
 
 
 func _ready():
-	pass
+	$DurationTail.scale.z = -end_point.z
 #	$MeshInstance3D.material_override = $MeshInstance3D.material_override.duplicate()
 #	$DurationTail/MeshInstance3D.material_override = $DurationTail/MeshInstance3D.material_override.duplicate()
 

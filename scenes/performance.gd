@@ -23,7 +23,8 @@ var ingame_users := {}
 # the state that we intend to go to after the song loads.
 var target_ready_state := IngameUser.ReadyStatus.READY
 
-var performance_instrument: PerformanceInstrument
+var performance_instrument: PerformanceInstrument:
+	set = set_performance_instrument
 
 # seek amount is 1 second for testing.
 var seek_amount := 1.0
@@ -40,6 +41,7 @@ var awaiting_song_load := false:
 var awaiting_game_start := false:
 	set = set_awaiting_game_start
 
+var start_delay := 5.0;
 
 func _ready():
 	loading_song_popup.visible = awaiting_song_load
@@ -195,7 +197,7 @@ func is_everyone_ready() -> bool:
 func _on_game_start():
 	print("Starting game")
 	awaiting_game_start = false
-	sync_audiostream_remote(true, 0.0)
+	sync_audiostream_remote(true, -start_delay)
 
 
 func sync_audiostream_remote(p_playing: bool, p_seek):
@@ -209,7 +211,6 @@ func sync_audiostream_remote(p_playing: bool, p_seek):
 func set_paused(value: bool) -> void:
 	if paused != value:
 		paused = value
-		audio_stream.stream_paused = paused
 		performance_instrument.notes.paused = paused
 
 
@@ -261,14 +262,12 @@ func _on_instrument_changed():
 
 func _seek(time: float = 0):
 	if not paused:
-		audio_stream.play(time)
 		if is_instance_valid(performance_instrument):
 			performance_instrument.start_game(current_song)
 			performance_instrument.notes.paused = false
 			performance_instrument.seek(time)
 	else:
 		performance_instrument.start_game(current_song)
-		audio_stream.stream_paused = true
 		performance_instrument.seek(time)
 		performance_instrument.notes.paused = true
 	
@@ -533,4 +532,27 @@ func set_awaiting_game_start(value: bool) -> void:
 			else:
 				waiting_for_players_popup.hide()
 				refresh_popup_bg()
-				
+
+
+func _on_performance_song_started() -> void:
+	if current_song:
+		audio_stream.play(performance_instrument.get_time())
+
+
+func _on_performance_song_paused() -> void:
+	audio_stream.stream_paused = true
+
+
+func set_performance_instrument(value) -> void:
+	if performance_instrument != value:
+		if performance_instrument:
+			if performance_instrument.song_paused.is_connected(_on_performance_song_paused):
+				performance_instrument.song_paused.disconnect(_on_performance_song_paused)
+			if performance_instrument.song_started.is_connected(_on_performance_song_started):
+				performance_instrument.song_started.disconnect(_on_performance_song_started)
+		performance_instrument = value
+		
+		if performance_instrument:
+			performance_instrument.song_paused.connect(_on_performance_song_paused)
+			performance_instrument.song_started.connect(_on_performance_song_started)
+		

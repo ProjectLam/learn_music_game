@@ -9,10 +9,10 @@ func set_color(value):
 	note_tail.material_override.set_shader_parameter("albedo", Color(value.r, value.g, value.b, 0.5))
 
 
-func set_duration(value):
-	duration = value
-	$DurationTail.scale.z = value * speed
-	note_tail.length = value * speed
+func set_end_point(value):
+	super.set_end_point(value)
+	$DurationTail.scale.z = -value.z
+	note_tail.length = -value.z
 
 
 func _ready():

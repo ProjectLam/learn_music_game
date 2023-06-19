@@ -18,7 +18,7 @@ func spawn_note(note_data: NoteBase, note_index: int):
 	super.spawn_note(note_data, note_index)
 	
 	var note = note_scene.instantiate()
-	note.speed = note_speed
+#	note.speed = note_speed
 	add_child(note)
 	note.position = Vector3(
 		fret_offset + fret_spacing * note_data.fret,
@@ -51,7 +51,7 @@ func spawn_chord(chord_data: Chord, note_index: int):
 	super.spawn_chord(chord_data, note_index)
 	
 	var chord = chord_scene.instantiate()
-	chord.speed = note_speed
+#	chord.speed = note_speed
 	add_child(chord)
 	chord.position = Vector3(0, 0, -note_speed * (chord_data.time - time))
 	chord.instrument_notes = self

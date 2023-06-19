@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://t8vajiottp28"]
+[gd_scene load_steps=34 format=3 uid="uid://t8vajiottp28"]
 
 [ext_resource type="Script" path="res://scenes/performance.gd" id="1_2i2o3"]
 [ext_resource type="PackedScene" uid="uid://koljkcrt3kjj" path="res://scenes/song_loader/song_loader.tscn" id="2_45rtj"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://scenes/performance/speaker.gd" id="5_5sxnp"]
 [ext_resource type="Texture2D" uid="uid://de686ygqs5poa" path="res://assets/gui/icons/logout.png" id="6_d47nm"]
 [ext_resource type="Texture2D" uid="uid://cr6tvdv0ve6cv" path="res://addons/gut/gui/play.png" id="7_28teg"]
+[ext_resource type="Script" path="res://scenes/tmp.gd" id="7_l4dsd"]
 [ext_resource type="Script" path="res://scenes/ingame_scores.gd" id="8_npdy5"]
 [ext_resource type="Shader" path="res://shaders/canvas_alpha_to_blur.gdshader" id="9_03eff"]
 [ext_resource type="PackedScene" path="res://scenes/rich_text_flow/rich_text_flow.tscn" id="10_3n7l4"]
@@ -201,6 +202,18 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/UI"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_top = 40.0
+offset_right = 20.0
+grow_horizontal = 2
+text = "TMP"
+script = ExtResource("7_l4dsd")
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/UI"]
 layout_mode = 1

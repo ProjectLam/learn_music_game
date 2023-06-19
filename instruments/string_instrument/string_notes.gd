@@ -17,21 +17,21 @@ func _ready():
 
 
 # TODO : utilize map_note for slide.
-func spawn_note(note_data: NoteBase, note_index: int):
-	super.spawn_note(note_data, note_index)
+func spawn_note(note_index: int):
+	super.spawn_note(note_index)
+	var note_data: Note = _performance_notes[note_index]
 	var mappedsfret = instrument_data.map_note(note_data.string, note_data.fret)
 	var string = mappedsfret.x
 	var fret = mappedsfret.y
 	var note = note_scene.instantiate()
-	note.speed = note_speed
 	add_child(note)
 	note.position = Vector3(
 		_get_fret_x(fret),
 		_get_string_y(string),
-		-note_speed * (note_data.time - time)
+		-get_note_offset(note_data.time)
 	)
 	note.color = string_colors[string]
-	note.duration = note_data.sustain
+	note.end_point = Vector3(note.position.x, note.position.y, -get_note_offset(note_data.time + note_data.sustain) - position.z)
 	note.index = note_index
 	note.instrument_notes = self
 	
@@ -57,17 +57,20 @@ func spawn_note(note_data: NoteBase, note_index: int):
 					- note_data.fret))
 	
 	note.render()
+	
+	spawned_note_nodes[note_index] = note
 
 
 # TODO : chords may not be fully implemented.
-func spawn_chord(chord_data: Chord, note_index: int):
-	super.spawn_chord(chord_data, note_index)
-	
+func spawn_chord(note_index: int):
+	super.spawn_chord(note_index)
+	var chord_data: Chord = _performance_notes[note_index]
 	var chord = chord_scene.instantiate()
 	chord.speed = note_speed
 	add_child(chord)
-	chord.position = Vector3(0, 0, -note_speed * (chord_data.time - time))
+	chord.position = Vector3(0, 0, -get_note_offset(chord_data.time))
 	chord.instrument_notes = self
+	chord.end_point = Vector3(chord.position.x, chord.position.y, -get_note_offset(chord_data.time + chord_data.sustain) - position.z)
 	var frets := chord_data.get_frets()
 	for string in frets.size():
 		if frets[string] == -1:
@@ -77,6 +80,8 @@ func spawn_chord(chord_data: Chord, note_index: int):
 		chord.add_note(Vector3(_get_fret_x(frets[string]), _get_string_y(string), 0), string_colors[string], pitch)
 		if frets[string] == 0:
 			chord.switch_to_open(pitch)
+	
+	spawned_note_nodes[note_index] = chord
 
 
 func _get_string_y(string) -> float:
