@@ -44,7 +44,7 @@ var spawn_index := -1:
 
 # Notes that have passed by this amount of time will count as missed
 # If the player plays but the next note is more than this amount of time out, it will not be counted as played
-var error_margin: float = 1.0
+var error_margin: float = 0.25
 
 var finished := true:
 	set = set_finished
@@ -202,18 +202,19 @@ func seek(seek_time: float) -> void:
 	time = min(seek_time, end_time)
 	
 	var vnotes_range := get_visible_note_range()
-	
-	var a = spawn_index
-	
-	var pv_spawn = spawned_note_nodes.duplicate()
-	
-	for index in range(int(max(_performance_note_index, 0)), spawn_index + 1):
+
+	# destroy all current notes.
+	# loop has shide effect, it has to use keys()
+	for index in spawned_note_nodes.keys():
 		destroy_note(index)
+		assert(not spawned_note_nodes.has(index))
 	
+	# no note spawned.
 	spawn_index = max(_performance_note_index - 1, -1)
 	
 	assert(spawned_note_nodes.is_empty())
 	
+	# spawn all visible notes.
 	for index in range(vnotes_range.x, vnotes_range.y):
 		var respawn_note = _performance_notes[index]
 		if respawn_note is Note:
@@ -221,12 +222,12 @@ func seek(seek_time: float) -> void:
 		else:
 			spawn_chord(index)
 	
+	# undo all early notes that had previously passed
 	for index in range(vnotes_range.x, _performance_note_index):
 		_on_undo_note(index)
 	
-	for index in range(max(_performance_note_index, 0), vnotes_range.y):
-		_on_note_skipped(index)
 	
+	# skip all late notes.
 	for index in range(max(_performance_note_index, 0), vnotes_range.x):
 		_on_note_skipped(index)
 	
@@ -249,36 +250,44 @@ func get_visible_note_range() -> Vector2i:
 		return Vector2i()
 		
 	
-	var begin: int = max(max(_performance_note_index, 0), 0)
+	var begin: int = max(max(min(_performance_note_index, _performance_notes.size() - 1), 0), 0)
 	var cnote = _performance_notes[begin]
 	if cnote.time < time:
-		while cnote.time < time and begin != _performance_notes.size():
+		while true:
+			if cnote.time > time:
+				begin -= 1
+				break
+			
 			begin += 1
+			if begin == _performance_notes.size():
+				return Vector2i(begin, begin)
+			
 			cnote = _performance_notes[begin]
-		
-		begin -= 1
 	else:
-		while cnote.time > time and begin != 0:
+		while true:
+			if cnote.time <= time:
+				begin += 1
+				begin = min(begin, _performance_notes.size())
+				break
+			
+			if begin == 0:
+				break
+			
 			begin -= 1
 			cnote = _performance_notes[begin]
 	
-		if begin != 0:
-			begin += 1
-	
-	var end := begin + 1
+	var end := begin
 	cnote = _performance_notes[end]
 	var etime = time + look_ahead
 	while true:
 		if cnote.time >= etime:
 			break
+		
 		end += 1
 		
-		if end >= _performance_notes.size():
+		if end == _performance_notes.size():
 			break
-		
 		cnote = _performance_notes[end]
-	
-	end -= 1
 	
 	return Vector2i(begin, end)
 
@@ -291,13 +300,7 @@ func spawn_note(note_index: int):
 #	if Debug.print_note:
 #		print("Spawning Note [idx=%d]" % [note_index])
 	
-	var prev_note = spawned_note_nodes.get(note_index)
-	assert(prev_note == null)
-#	if prev_note:
-#		ass
-#		push_warning("Respawning note")
-#		prev_note.queue_free()
-#		spawned_note_nodes.erase(note_index)
+	assert(not spawned_note_nodes.has(note_index))
 	
 	spawn_index = max(note_index, spawn_index)
 
@@ -306,27 +309,30 @@ func spawn_chord(note_index: int):
 	if Debug.print_note:
 		print("Spawning chord [idx=%d]" % [note_index])
 	
-	var prev_chord = spawned_note_nodes.get(note_index)
-	
-	assert(prev_chord == null)
+	assert(not spawned_note_nodes.has(note_index))
 	
 	spawn_index = max(note_index, spawn_index)
 
 
 func _on_input_note_started(pitch: float):
 	# Pitch will already be quantized at this point
-	if _performance_note_index >= _performance_notes.size():
-		return
+	
 	
 	if _current_pitches.has(pitch):
 		_on_input_note_ended(pitch)
+	
+	if _performance_note_index >= _performance_notes.size():
+		return
+	
+	if _performance_note_index < 0:
+		return
 	
 	var expected := _performance_notes[_performance_note_index]
 	
 	if expected is Note:
 		if expected.get_pitch() == pitch:
 			_current_pitches[pitch] = time
-			var tdiff = expected.time - time
+			var tdiff = expected.time - time - error_margin
 			var timing_error = abs(tdiff) / error_margin
 			if timing_error < 1.0:
 				_on_good_note_start(max(_performance_note_index, 0), timing_error)
@@ -351,7 +357,11 @@ func _on_input_note_ended(pitch: float):
 	if st_time == null:
 		return
 	
-	if _performance_note_index < 0 or _performance_note_index > _performance_notes.size():
+	_current_pitches.erase(pitch)
+	_pitch_history.erase(pitch)
+	
+	if _performance_note_index < 0 or _performance_note_index >= _performance_notes.size():
+		_current_pitches.erase(pitch)
 		return
 	
 	var expected: NoteBase = _performance_notes[_performance_note_index]
@@ -465,7 +475,7 @@ func _end_note(index: int, successful: bool):
 			csnote.end(successful)
 
 
-func finalize_note(index: int, start_time: float, end_time: float) -> void:
+func finalize_note(index: int, start_time: float, end_time: float) -> bool:
 	var note: Note = _performance_notes[index]
 	
 	var start_time_difference: float = (note.time - error_margin) - start_time
@@ -477,12 +487,15 @@ func finalize_note(index: int, start_time: float, end_time: float) -> void:
 	var good_note: bool = abs(start_timing_error) < 1
 	if good_note:
 		_on_good_note_end(index, end_timing_error)
+		_end_note(index, good_note)
+		_performance_note_index = index + 1
+		return true
+	else:
+		return false
 		
-	_end_note(index, good_note)
-	_performance_note_index = index + 1
 
 
-func finalize_chord(index: int, includes: Dictionary) -> void:
+func finalize_chord(index: int, includes: Dictionary) -> bool:
 	var chord: Chord = _performance_notes[index]
 	
 	var etime = chord.time + chord.sustain
@@ -496,7 +509,7 @@ func finalize_chord(index: int, includes: Dictionary) -> void:
 		if pdata == null:
 			# invalid call, entry is missing.
 			push_error("Invalid call to finalize_chord, entry is missing.")
-			return
+			return false
 		
 		var start_time_diff = chord.time - pdata["start_time"]
 		var end_time_diff = etime - pdata["end_time"]
@@ -511,8 +524,11 @@ func finalize_chord(index: int, includes: Dictionary) -> void:
 	
 	if good_chord_st:
 		_on_good_note_end(index, total_eterr)
-	
-	_end_note(index, good_chord_st)
+		_end_note(index, good_chord_st)
+		_performance_note_index = index + 1
+		return true
+	else:
+		return false
 
 
 func destroy_note(index: int) -> void:

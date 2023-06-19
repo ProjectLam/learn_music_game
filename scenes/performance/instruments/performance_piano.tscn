@@ -1,11 +1,32 @@
-[gd_scene load_steps=20 format=3 uid="uid://bfeas0r8kqnyo"]
+[gd_scene load_steps=21 format=3 uid="uid://bfeas0r8kqnyo"]
 
 [ext_resource type="Shader" path="res://scenes/performance/lane.gdshader" id="1_d17bu"]
 [ext_resource type="Script" path="res://scenes/performance/instruments/performance_piano.gd" id="1_vwgk5"]
 [ext_resource type="PackedScene" uid="uid://c0unhxdn4b50r" path="res://models/instruments/piano.glb" id="2_jfq7w"]
+[ext_resource type="Script" path="res://scenes/performance/instruments/PressArea.gd" id="2_me2rq"]
 [ext_resource type="Script" path="res://scenes/performance/instruments/piano_notes.gd" id="4_0scbe"]
 [ext_resource type="Script" path="res://models/instruments/piano_model_data.gd" id="4_8kycb"]
 [ext_resource type="PackedScene" uid="uid://cwnmxqldm8kpr" path="res://scenes/performance/instruments/piano_note.tscn" id="5_mrvpn"]
+
+[sub_resource type="Gradient" id="Gradient_esujw"]
+offsets = PackedFloat32Array(0, 0.258065, 0.784946, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.5, 0.5, 0.5, 1, 0.5, 0.5, 0.5, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_wryhc"]
+gradient = SubResource("Gradient_esujw")
+fill_from = Vector2(0, 1)
+fill_to = Vector2(0, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_23rnj"]
+blend_mode = 1
+albedo_color = Color(0.168627, 0.458824, 0.0980392, 1)
+albedo_texture = SubResource("GradientTexture2D_wryhc")
+
+[sub_resource type="QuadMesh" id="QuadMesh_ybmi8"]
+resource_local_to_scene = true
+size = Vector2(51.87, 2)
+center_offset = Vector3(2.944, 0, -1)
+orientation = 1
 
 [sub_resource type="QuadMesh" id="QuadMesh_jsx2x"]
 size = Vector2(0.8, 48)
@@ -43,27 +64,14 @@ shader = ExtResource("1_d17bu")
 shader_parameter/color = Color(0.619608, 0.211765, 0.211765, 1)
 shader_parameter/brightness = 0.5
 
-[sub_resource type="Gradient" id="Gradient_esujw"]
-offsets = PackedFloat32Array(0, 0.258065, 0.784946, 1)
-colors = PackedColorArray(1, 1, 1, 1, 0.5, 0.5, 0.5, 1, 0.5, 0.5, 0.5, 1, 1, 1, 1, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_wryhc"]
-gradient = SubResource("Gradient_esujw")
-fill_from = Vector2(0, 1)
-fill_to = Vector2(0, 0)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_23rnj"]
-blend_mode = 1
-albedo_color = Color(0.168627, 0.458824, 0.0980392, 1)
-albedo_texture = SubResource("GradientTexture2D_wryhc")
-
-[sub_resource type="QuadMesh" id="QuadMesh_ybmi8"]
-size = Vector2(51.87, 2)
-center_offset = Vector3(2.944, 0, -1)
-orientation = 1
-
 [node name="PerformancePiano" type="Node3D"]
 script = ExtResource("1_vwgk5")
+
+[node name="PressArea" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
+material_override = SubResource("StandardMaterial3D_23rnj")
+mesh = SubResource("QuadMesh_ybmi8")
+script = ExtResource("2_me2rq")
 
 [node name="Lanes" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23, 0, 0)
@@ -1038,10 +1046,5 @@ font_size = 150
 [node name="NoteVisuals" type="Node3D" parent="."]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.48836, 0)
-
-[node name="PressArea" type="MeshInstance3D" parent="."]
-unique_name_in_owner = true
-material_override = SubResource("StandardMaterial3D_23rnj")
-mesh = SubResource("QuadMesh_ybmi8")
 
 [editable path="piano"]
