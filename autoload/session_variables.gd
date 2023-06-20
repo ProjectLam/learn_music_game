@@ -8,6 +8,9 @@ var current_song: Song
 
 var single_player := true
 
+# endless maches are for testing.
+var endless := false
+
 var song_identifier: String :
 	set(sid):
 		var n_song = PlayerVariables.songs.get(sid)
@@ -24,6 +27,7 @@ var song_identifier: String :
 const synch_variables := {
 	"song_identifier": true,
 	"instrument": true,
+	"endless": true,
 }
 
 signal song_changed

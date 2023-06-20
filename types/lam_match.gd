@@ -29,6 +29,7 @@ var match_name := ""
 var password_proceted := false
 var game_status := GameStatus.UNDEFINED
 var allow_join_after_start := false
+var endless := false
 
 var invalid := true
 
@@ -146,6 +147,15 @@ func parse_label(new_label: String) -> bool:
 			if allow_join_after_start != lallow_join_after_start:
 				allow_join_after_start = lallow_join_after_start
 				_changed = true
+		
+		var lendless = parsed_label.get("endless")
+		if not (lendless is bool):
+			lendless = false
+		
+		if lendless != endless:
+				endless = lendless
+				_changed = true
+		
 	
 	_changed = _changed or _game_status_changed
 	invalid = _invlaid

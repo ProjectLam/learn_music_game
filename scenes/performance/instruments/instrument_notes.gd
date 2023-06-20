@@ -4,9 +4,9 @@ extends Node3D
 signal note_started(note_data)
 signal note_ended(note_data)
 signal good_note_started(note_index: int, timing_error: float)
-signal game_finished
 signal song_started
 signal song_paused
+signal song_end_reached
 
 @export var note_scene: PackedScene
 @export var chord_scene: PackedScene
@@ -69,6 +69,7 @@ func _process(delta):
 	for n in spawned_note_nodes:
 		assert(n <= spawn_index)
 	
+	var prev_time = time
 	var next_time = time + delta
 	if time < 0.0 and next_time >= 0.0:
 		# sign changed.
@@ -87,7 +88,7 @@ func _process(delta):
 			spawn_chord(note_index)
 		else:
 			spawn_note(note_index)
-	
+			
 	for n in spawned_note_nodes:
 		assert(n <= spawn_index)
 	
@@ -120,10 +121,10 @@ func _process(delta):
 				for csnote in snote:
 					csnote.set("clip", (time - next_note.time)/next_note.sustain)
 	
-	if time > end_time:
-		print("game finished!")
-		set_process(false)
-		game_finished.emit()
+#	if time > end_time:
+#		print("game finished!")
+#		set_process(false)
+#		game_finished.emit()
 	
 	for n in spawned_note_nodes:
 		assert(n <= spawn_index)
@@ -202,7 +203,6 @@ func seek(seek_time: float) -> void:
 	time = min(seek_time, end_time)
 	
 	var vnotes_range := get_visible_note_range()
-
 	# destroy all current notes.
 	# loop has shide effect, it has to use keys()
 	for index in spawned_note_nodes.keys():
@@ -222,6 +222,7 @@ func seek(seek_time: float) -> void:
 		else:
 			spawn_chord(index)
 	
+	spawn_index = max(vnotes_range.y - 1, -1)
 	# undo all early notes that had previously passed
 	for index in range(vnotes_range.x, _performance_note_index):
 		_on_undo_note(index)
@@ -255,7 +256,7 @@ func get_visible_note_range() -> Vector2i:
 	if cnote.time < time:
 		while true:
 			if cnote.time > time:
-				begin -= 1
+#				begin -= 1
 				break
 			
 			begin += 1

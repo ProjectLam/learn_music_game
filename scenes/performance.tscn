@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://t8vajiottp28"]
+[gd_scene load_steps=35 format=3 uid="uid://t8vajiottp28"]
 
 [ext_resource type="Script" path="res://scenes/performance.gd" id="1_2i2o3"]
 [ext_resource type="PackedScene" uid="uid://koljkcrt3kjj" path="res://scenes/song_loader/song_loader.tscn" id="2_45rtj"]
@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" path="res://scenes/rich_text_flow/rich_text_flow.tscn" id="10_3n7l4"]
 [ext_resource type="PackedScene" uid="uid://dl4nx74f03pxd" path="res://scenes/ui_elements/glass_panel.tscn" id="12_y25jn"]
 [ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="13_juusf"]
+[ext_resource type="Script" path="res://scenes/performance/end_match_player_scores.gd" id="14_8x24c"]
 
 [sub_resource type="Environment" id="Environment_dudjq"]
 background_mode = 1
@@ -298,6 +299,7 @@ horizontal_alignment = 1
 
 [node name="LoadingSongPopup" type="MarginContainer" parent="CanvasLayer/UI/PopupBG"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 
 [node name="BackBufferCopy" type="BackBufferCopy" parent="CanvasLayer/UI/PopupBG/LoadingSongPopup"]
@@ -331,6 +333,53 @@ theme_override_font_sizes/font_size = 50
 text = "Loading Song"
 horizontal_alignment = 1
 
+[node name="MatchEndPopup" type="MarginContainer" parent="CanvasLayer/UI/PopupBG"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="CanvasLayer/UI/PopupBG/MatchEndPopup"]
+position = Vector2(160, 140)
+copy_mode = 2
+rect = Rect2(0, 0, 800, 400)
+
+[node name="glass_panel" parent="CanvasLayer/UI/PopupBG/MatchEndPopup" instance=ExtResource("12_y25jn")]
+custom_minimum_size = Vector2(800, 400)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/UI/PopupBG/MatchEndPopup/glass_panel"]
+layout_mode = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="MatchEndedLabel" type="Label" parent="CanvasLayer/UI/PopupBG/MatchEndPopup/glass_panel/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("13_juusf")
+theme_override_font_sizes/font_size = 50
+text = "Match Ended"
+horizontal_alignment = 1
+
+[node name="TitleRow" type="HBoxContainer" parent="CanvasLayer/UI/PopupBG/MatchEndPopup/glass_panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/UI/PopupBG/MatchEndPopup/glass_panel/VBoxContainer/TitleRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Player Name"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="CanvasLayer/UI/PopupBG/MatchEndPopup/glass_panel/VBoxContainer/TitleRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Score"
+horizontal_alignment = 1
+
+[node name="EndMatchPlayerScores" type="VBoxContainer" parent="CanvasLayer/UI/PopupBG/MatchEndPopup/glass_panel/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+script = ExtResource("14_8x24c")
+
 [node name="QuitButton" type="Button" parent="CanvasLayer/UI"]
 layout_mode = 2
 anchor_left = 1.0
@@ -344,6 +393,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_5d8mf")
 icon = ExtResource("6_d47nm")
 icon_alignment = 1
 
+[connection signal="finished" from="AudioStreamPlayer" to="." method="_on_audio_stream_player_finished"]
 [connection signal="pressed" from="CanvasLayer/UI/MarginContainer/PausePlayButton" to="." method="_on_pause_play_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/UI/QuitButton" to="." method="_on_QuitBtn_pressed"]
 

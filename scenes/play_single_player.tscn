@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://bpb2febs8ptvr"]
+[gd_scene format=3 uid="uid://d15d7fekq5h30"]
 
 [node name="play_single_player" type="Control"]
 layout_mode = 3

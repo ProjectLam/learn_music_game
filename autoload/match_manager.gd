@@ -155,7 +155,7 @@ func _init_match(join_err: int) -> int:
 	
 	SessionVariables.current_song = PlayerVariables.songs[lam_match.song_identifier]
 	SessionVariables.instrument = lam_match.instrument_name
-	
+	SessionVariables.endless = lam_match.endless
 	SessionVariables.single_player = false
 	
 	status = MatchMakingStatus.JOINED_MATCH

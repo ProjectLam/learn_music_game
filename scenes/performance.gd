@@ -13,8 +13,10 @@ extends Node3D
 @onready var loading_song_popup = %LoadingSongPopup
 @onready var waiting_for_players_popup = %WaitingForPlayersPopup
 @onready var loading_progress_label = %LoadingProgressLabel
+@onready var end_match_player_scores = %EndMatchPlayerScores
+@onready var match_end_popup = %MatchEndPopup
 
-@onready var popups := [loading_song_popup, waiting_for_players_popup]
+@onready var popups := [loading_song_popup, waiting_for_players_popup, match_end_popup]
 
 var test_song_path := "res://Arlow - How Do You Know [NCS Release].mp3"
 
@@ -41,9 +43,18 @@ var awaiting_song_load := false:
 var awaiting_game_start := false:
 	set = set_awaiting_game_start
 
+
+var match_ended := false
+
 var start_delay := 5.0;
 
 func _ready():
+	
+	for popup in popups:
+		popup.hide()
+	
+	refresh_popup_bg()
+	
 	loading_song_popup.visible = awaiting_song_load
 	
 	
@@ -71,7 +82,8 @@ func _ready():
 			push_error("After the implementation of game lobby, when entering the game multiplayeAPI should be already connected to server.")
 #			ingame_scores_viewer.reload_users({"self": self_user})
 	else:
-		ingame_scores_viewer.reload_users({"self": self_user})
+		ingame_users = { "self": self_user }
+		ingame_scores_viewer.reload_users(ingame_users)
 	
 	SessionVariables.song_changed.connect(_on_song_changed)
 	SessionVariables.instrument_changed.connect(_on_instrument_changed)
@@ -102,6 +114,10 @@ func _ready():
 
 
 func _process(delta: float) -> void:
+	
+	if match_ended:
+		return
+	
 	if Input.is_action_pressed("ui_cancel"):
 		MatchManager.leave_match_async()
 		get_tree().change_scene_to_file("res://scenes/instrument_selection/instrument_selection.tscn")
@@ -136,6 +152,9 @@ func print_song_loading_debug(to_print):
 
 
 func _on_song_changed():
+	if match_ended:
+		return
+	
 	self_user.ready_status = IngameUser.ReadyStatus.NOT_READY
 	try_sync_user_data()
 	current_song = SessionVariables.current_song
@@ -152,6 +171,9 @@ func _on_song_changed():
 
 
 func _on_song_loaded(song: Song) -> void:
+	if match_ended:
+		return
+	
 	if not awaiting_song_load:
 		print("Song [%s] loaded." % song.title)
 		return
@@ -175,6 +197,9 @@ func _on_song_loaded(song: Song) -> void:
 			refresh_popup_bg()
 
 func is_everyone_ready() -> bool:
+	if match_ended:
+		return false
+	
 	if SessionVariables.single_player:
 		return self_user.ready_status == IngameUser.ReadyStatus.READY
 	
@@ -195,12 +220,18 @@ func is_everyone_ready() -> bool:
 
 
 func _on_game_start():
+	if match_ended:
+		return
+	
 	print("Starting game")
 	awaiting_game_start = false
 	sync_audiostream_remote(true, -start_delay)
 
 
 func sync_audiostream_remote(p_playing: bool, p_seek):
+	if match_ended:
+		return
+	
 	if not SessionVariables.single_player:
 		assert(multiplayer.has_multiplayer_peer())
 		rpc("_sync_audiostream_remote", p_playing, p_seek, -1)
@@ -222,6 +253,8 @@ func is_music_playing() -> bool:
 # play/pause state, then the clients will try to relay pause requests to each other so that 
 # everyone ends up pausing. 
 @rpc("any_peer", "call_local", "reliable") func _sync_audiostream_remote(p_playing: bool, p_seek: float, relay_source):
+	if match_ended:
+		return
 	if multiplayer.get_unique_id() == relay_source:
 		return
 	if is_music_playing() == p_playing:
@@ -247,6 +280,9 @@ func is_music_playing() -> bool:
 
 
 func _on_instrument_changed():
+	if match_ended:
+		return
+	
 	if performance_instrument:
 		push_error("Changing performance instrument mid game is unsupported")
 		return
@@ -261,6 +297,9 @@ func _on_instrument_changed():
 
 
 func _seek(time: float = 0):
+	if match_ended:
+		return
+	
 	if not paused:
 		if is_instance_valid(performance_instrument):
 			performance_instrument.start_game(current_song)
@@ -275,6 +314,9 @@ func _seek(time: float = 0):
 
 # performs a pause/play action.
 func media_pause_play():
+	if match_ended:
+		return
+	
 	if not SessionVariables.single_player:
 		assert(multiplayer.has_multiplayer_peer())
 		await GBackend.await_connection()
@@ -287,6 +329,9 @@ func media_pause_play():
 
 
 func media_seek(forward: bool) -> void:
+	if match_ended:
+		return
+	
 	var _seek := seek_amount
 	if not forward:
 		_seek *= -1
@@ -314,6 +359,9 @@ func _exit_tree():
 
 
 func _on_pause_play_button_pressed():
+	if match_ended:
+		return
+	
 	media_pause_play()
 
 
@@ -350,11 +398,17 @@ func _add_new_user(user: User) -> IngameUser:
 
 
 func try_pause_game() -> void:
+	if match_ended:
+		return
+	
 	if is_music_playing():
 		sync_audiostream_remote(false, 0.0)
 
 
 func _on_users_ready_changed() -> void:
+	if match_ended:
+		return
+	
 	print("Users ready status changed.")
 	if is_everyone_ready():
 		_on_game_start()
@@ -363,6 +417,9 @@ func _on_users_ready_changed() -> void:
 
 
 func _on_user_connected(peer_id: int):
+	if match_ended:
+		return
+	
 	reload_network_users()
 	if is_multiplayer_authority():
 		var udata := {}
@@ -391,17 +448,26 @@ func _on_user_disconnected(peer_id: int):
 
 
 func _on_server_disconnected() -> void:
+	if match_ended:
+		return
+	
 	# TODO
 	pass
 
 
 func _on_connected_to_server() -> void:
+	if match_ended:
+		return
+	
 	var user: User = MatchManager.users.dict[multiplayer.get_unique_id()]
 	ingame_users[user.user_id] = self_user
 	reload_network_users()
 
 
 func update_user_data(uid: String) -> void:
+	if match_ended:
+		return
+	
 	# user data for has changed.
 	if not SessionVariables.single_player:
 		assert(multiplayer.has_multiplayer_peer())
@@ -411,6 +477,9 @@ func update_user_data(uid: String) -> void:
 
 
 func broadcast_all_user_data() -> void:
+	if match_ended:
+		return
+	
 	if not SessionVariables.single_player:
 		assert(multiplayer.has_multiplayer_peer())
 		await GBackend.await_connection()
@@ -446,6 +515,7 @@ func broadcast_all_user_data() -> void:
 			continue
 		iuser.parse_data(udata)
 	ingame_scores_viewer.reload_users(ingame_users)
+	end_match_player_scores.reload_users(ingame_users)
 
 
 @rpc("any_peer", "call_remote", "reliable") func _set_user_data(data) -> void:
@@ -462,9 +532,13 @@ func broadcast_all_user_data() -> void:
 		return
 	ingame_users[uid].parse_data(data)
 	ingame_scores_viewer.reload_users(ingame_users)
+	end_match_player_scores.reload_users(ingame_users)
 
 
 func _on_connect_instrument() -> void:
+	if match_ended:
+		return
+	
 	if performance_instrument:
 		performance_instrument.notes.good_note_started.connect(_on_good_note_started)
 
@@ -476,7 +550,11 @@ func try_sync_user_data() -> void:
 		if multiplayer.multiplayer_peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED:
 			rpc("_set_user_data", self_user.get_data())
 
+
 func _on_good_note_started(note_index: int, time_error: float) -> void:
+	if match_ended:
+		return
+	
 	self_user._on_good_note(note_index, time_error)
 	try_sync_user_data()
 
@@ -511,6 +589,9 @@ func refresh_popup_bg():
 
 
 func set_awaiting_song_load(value: bool) -> void:
+	if match_ended:
+		return
+	
 	if awaiting_song_load != value:
 		awaiting_song_load = value
 		if is_instance_valid(loading_song_popup):
@@ -521,6 +602,9 @@ func set_awaiting_song_load(value: bool) -> void:
 
 
 func set_awaiting_game_start(value: bool) -> void:
+	if match_ended:
+		return
+	
 	if awaiting_game_start != value:
 		awaiting_game_start = value
 		
@@ -535,8 +619,13 @@ func set_awaiting_game_start(value: bool) -> void:
 
 
 func _on_performance_song_started() -> void:
+	if match_ended:
+		return
 	if current_song:
-		audio_stream.play(performance_instrument.get_time())
+		if performance_instrument.get_time() > audio_stream.stream.get_length():
+			audio_stream.stream_paused = true
+		else:
+			audio_stream.play(performance_instrument.get_time())
 
 
 func _on_performance_song_paused() -> void:
@@ -544,6 +633,9 @@ func _on_performance_song_paused() -> void:
 
 
 func set_performance_instrument(value) -> void:
+	if match_ended:
+		return
+	
 	if performance_instrument != value:
 		if performance_instrument:
 			if performance_instrument.song_paused.is_connected(_on_performance_song_paused):
@@ -556,3 +648,30 @@ func set_performance_instrument(value) -> void:
 			performance_instrument.song_paused.connect(_on_performance_song_paused)
 			performance_instrument.song_started.connect(_on_performance_song_started)
 		
+
+func _on_song_end_reached() -> void:
+	
+	if SessionVariables.endless:
+		# do nothing.
+		return
+	
+	match_ended = true
+	
+	self_user.ready_status = IngameUser.ReadyStatus.ENDED_PLAYING
+	try_sync_user_data()
+	
+	for popup in popups:
+		if popup != match_end_popup:
+			popup.visible = false
+	
+	match_end_popup.show()
+	
+	refresh_popup_bg()
+	
+	end_match_player_scores.reload_users(ingame_users)
+
+
+func _on_audio_stream_player_finished():
+	_on_song_end_reached()
+	
+#	_on_song_changed() you can call this to restart the match. not sure if it's the best option.

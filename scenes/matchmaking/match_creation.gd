@@ -111,6 +111,7 @@ func _on_create_match_button_pressed():
 			SessionVariables.instrument = instrument_data.instrument_name
 			SessionVariables.current_song = song
 			SessionVariables.single_player = true
+			SessionVariables.endless = false # TODO : add endless mode.
 			get_tree().change_scene_to_file("res://scenes/performance.tscn")
 	
 	
