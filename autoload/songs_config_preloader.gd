@@ -11,6 +11,7 @@ signal song_preloaded(song: Song)
 const FILE_REQUEST_SCENE := preload("res://scenes/networking/remote_file_access/remote_file_request.tscn")
 @onready var remote_file_requests = %RemoteFileRequests
 
+# FIXME : if parsing fails, returned song should be null. and that should be handled.
 
 func _ready():
 	load_songs()

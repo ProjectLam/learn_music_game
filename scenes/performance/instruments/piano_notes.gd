@@ -52,6 +52,7 @@ func spawn_chord(note_index: int):
 		
 		note.index = note_index
 		note.instrument_notes = self
+		note.note_visuals = note_visuals
 		
 		notes.append(note)
 	

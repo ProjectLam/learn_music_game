@@ -115,18 +115,18 @@ func _parse_xml(parser: XMLParser) -> Song:
 		var chord_template := Song.SongChordTemplate.new()
 		chord_template.display_name = chord_template_tag.attributes["displayName"]
 		chord_template.chord_name = chord_template_tag.attributes["chordName"]
-		chord_template.fret_0 = chord_template_tag.attributes["fret0"].to_int()
-		chord_template.fret_1 = chord_template_tag.attributes["fret1"].to_int()
-		chord_template.fret_2 = chord_template_tag.attributes["fret2"].to_int()
-		chord_template.fret_3 = chord_template_tag.attributes["fret3"].to_int()
-		chord_template.fret_4 = chord_template_tag.attributes["fret4"].to_int()
-		chord_template.fret_5 = chord_template_tag.attributes["fret5"].to_int()
-		chord_template.finger_0 = chord_template_tag.attributes["finger0"].to_int()
-		chord_template.finger_1 = chord_template_tag.attributes["finger1"].to_int()
-		chord_template.finger_2 = chord_template_tag.attributes["finger2"].to_int()
-		chord_template.finger_3 = chord_template_tag.attributes["finger3"].to_int()
-		chord_template.finger_4 = chord_template_tag.attributes["finger4"].to_int()
-		chord_template.finger_5 = chord_template_tag.attributes["finger5"].to_int()
+		chord_template.fret_0 = chord_template_tag.attributes.get("fret0", "0").to_int()
+		chord_template.fret_1 = chord_template_tag.attributes.get("fret1", "0").to_int()
+		chord_template.fret_2 = chord_template_tag.attributes.get("fret2", "0").to_int()
+		chord_template.fret_3 = chord_template_tag.attributes.get("fret3", "0").to_int()
+		chord_template.fret_4 = chord_template_tag.attributes.get("fret4", "0").to_int()
+		chord_template.fret_5 = chord_template_tag.attributes.get("fret5", "0").to_int()
+		chord_template.finger_0 = chord_template_tag.attributes.get("finger0","0").to_int()
+		chord_template.finger_1 = chord_template_tag.attributes.get("finger1","0").to_int()
+		chord_template.finger_2 = chord_template_tag.attributes.get("finger2","0").to_int()
+		chord_template.finger_3 = chord_template_tag.attributes.get("finger3","0").to_int()
+		chord_template.finger_4 = chord_template_tag.attributes.get("finger4","0").to_int()
+		chord_template.finger_5 = chord_template_tag.attributes.get("finger5","0").to_int()
 		song.chord_templates.append(chord_template)
 	
 	print_rich("[b]XML Parser:[/b] [i]Need to add fretHandMuteTemplate data here, but no idea what that is yet[/i]")
@@ -289,43 +289,43 @@ func _parse_xml(parser: XMLParser) -> Song:
 		for chord_tag in level_tag.get_element_by_name("chords").get_elements_by_name("chord"):
 			var chord := Song.SongLevel.SongLevelChord.new()
 			chord.time = chord_tag.attributes["time"].to_float()
-			chord.link_next = chord_tag.attributes["linkNext"] == "1"
-			chord.accent = chord_tag.attributes["accent"] == "1"
+			chord.link_next = chord_tag.attributes.get("linkNext", "0") == "1"
+			chord.accent = chord_tag.attributes.get("accent", "0") == "1"
 			chord.chord_id = chord_tag.attributes["chordId"].to_int()
-			chord.fret_hand_mute = chord_tag.attributes["fretHandMute"] == "1"
-			chord.high_density = chord_tag.attributes["highDensity"] == "1"
-			chord.ignore = chord_tag.attributes["ignore"] == "1"
-			chord.palm_mute = chord_tag.attributes["palmMute"] == "1"
-			chord.hopo = chord_tag.attributes["hopo"] == "1"
-			chord.strum = chord_tag.attributes["strum"]
+			chord.fret_hand_mute = chord_tag.attributes.get("fretHandMute", "0") == "1"
+			chord.high_density = chord_tag.attributes.get("highDensity", "0") == "1"
+			chord.ignore = chord_tag.attributes.get("ignore", "0") == "1"
+			chord.palm_mute = chord_tag.attributes.get("palmMute", "0") == "1"
+			chord.hopo = chord_tag.attributes.get("hopo", "0") == "1"
+			chord.strum = chord_tag.attributes.get("strum", "down")
 			chord.chord_notes = []
 			for chord_note_tag in chord_tag.get_elements_by_name("chordNote"):
 				var chord_note := Song.SongLevel.SongLevelChord.SongLevelChordNote.new()
 				chord_note.time = chord_note_tag.attributes["time"].to_float()
-				chord_note.link_next = chord_note_tag.attributes["linkNext"] == "1"
-				chord_note.accent = chord_note_tag.attributes["accent"] == "1"
-				chord_note.bend = chord_note_tag.attributes["bend"] == "1"
-				chord_note.fret = chord_note_tag.attributes["fret"].to_int()
-				chord_note.hammer_on = chord_note_tag.attributes["hammerOn"] == "1"
-				chord_note.harmonic = chord_note_tag.attributes["harmonic"] == "1"
-				chord_note.hopo = chord_note_tag.attributes["hopo"] == "1"
-				chord_note.ignore = chord_note_tag.attributes["ignore"] == "1"
-				chord_note.left_hand = chord_note_tag.attributes["leftHand"].to_int()
-				chord_note.mute = chord_note_tag.attributes["mute"] == "1"
-				chord_note.palm_mute = chord_note_tag.attributes["palmMute"] == "1"
-				chord_note.pluck = chord_note_tag.attributes["pluck"].to_int()
-				chord_note.pull_off = chord_note_tag.attributes["pullOff"] == "1"
-				chord_note.slap = chord_note_tag.attributes["slap"].to_int()
-				chord_note.slide_to = chord_note_tag.attributes["slideTo"].to_int()
-				chord_note.string = chord_note_tag.attributes["string"].to_int()
-				chord_note.sustain = chord_note_tag.attributes["sustain"].to_float()
-				chord_note.tremolo = chord_note_tag.attributes["tremolo"] == "1"
-				chord_note.harmonic_pinch = chord_note_tag.attributes["harmonicPinch"] == "1"
-				chord_note.pick_direction = chord_note_tag.attributes["pickDirection"] == "1"
-				chord_note.right_hand = chord_note_tag.attributes["rightHand"].to_int()
-				chord_note.slide_unpitch_to = chord_note_tag.attributes["slideUnpitchTo"].to_int()
-				chord_note.tap = chord_note_tag.attributes["tap"] == "1"
-				chord_note.vibrato = chord_note_tag.attributes["vibrato"] == "1"
+				chord_note.link_next = chord_note_tag.attributes.get("linkNext","0") == "1"
+				chord_note.accent = chord_note_tag.attributes.get("accent", "0") == "1"
+				chord_note.bend = chord_note_tag.attributes.get("bend", "0") == "1"
+				chord_note.fret = chord_note_tag.attributes.get("fret", "0").to_int()
+				chord_note.hammer_on = chord_note_tag.attributes.get("hammerOn", "0") == "1"
+				chord_note.harmonic = chord_note_tag.attributes.get("harmonic", "0") == "1"
+				chord_note.hopo = chord_note_tag.attributes.get("hopo", "0") == "1"
+				chord_note.ignore = chord_note_tag.attributes.get("ignore", "0") == "1"
+				chord_note.left_hand = chord_note_tag.attributes.get("leftHand", "0").to_int()
+				chord_note.mute = chord_note_tag.attributes.get("mute", "0") == "1"
+				chord_note.palm_mute = chord_note_tag.attributes.get("palmMute","0") == "1"
+				chord_note.pluck = chord_note_tag.attributes.get("pluck", "0").to_int()
+				chord_note.pull_off = chord_note_tag.attributes.get("pullOff", "0") == "1"
+				chord_note.slap = chord_note_tag.attributes.get("slap", "0").to_int()
+				chord_note.slide_to = chord_note_tag.attributes.get("slideTo", "0").to_int()
+				chord_note.string = chord_note_tag.attributes.get("string", "0").to_int()
+				chord_note.sustain = chord_note_tag.attributes.get("sustain", "0").to_float()
+				chord_note.tremolo = chord_note_tag.attributes.get("tremolo", "0") == "1"
+				chord_note.harmonic_pinch = chord_note_tag.attributes.get("harmonicPinch", "0") == "1"
+				chord_note.pick_direction = chord_note_tag.attributes.get("pickDirection", "0") == "1"
+				chord_note.right_hand = chord_note_tag.attributes.get("rightHand", "0").to_int()
+				chord_note.slide_unpitch_to = chord_note_tag.attributes.get("slideUnpitchTo", "0").to_int()
+				chord_note.tap = chord_note_tag.attributes.get("tap", "0") == "1"
+				chord_note.vibrato = chord_note_tag.attributes.get("vibrato", "0") == "1"
 				chord.chord_notes.append(chord_note)
 			level.chords.append(chord)
 		song.levels.append(level)
