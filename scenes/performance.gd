@@ -15,6 +15,7 @@ extends Node3D
 @onready var loading_progress_label = %LoadingProgressLabel
 @onready var end_match_player_scores = %EndMatchPlayerScores
 @onready var match_end_popup = %MatchEndPopup
+@onready var restart_match_button = %RestartMatchButton
 
 @onready var popups := [loading_song_popup, waiting_for_players_popup, match_end_popup]
 
@@ -63,6 +64,7 @@ func _ready():
 	
 	if not SessionVariables.single_player:
 		awaiting_game_start = true
+		restart_match_button.visible = false
 		multiplayer.peer_connected.connect(_on_user_connected)
 		multiplayer.peer_disconnected.connect(_on_user_disconnected)
 		multiplayer.server_disconnected.connect(_on_server_disconnected)
@@ -82,6 +84,7 @@ func _ready():
 			push_error("After the implementation of game lobby, when entering the game multiplayeAPI should be already connected to server.")
 #			ingame_scores_viewer.reload_users({"self": self_user})
 	else:
+		restart_match_button.visible = true
 		ingame_users = { "self": self_user }
 		ingame_scores_viewer.reload_users(ingame_users)
 	
@@ -675,3 +678,22 @@ func _on_audio_stream_player_finished():
 	_on_song_end_reached()
 	
 #	_on_song_changed() you can call this to restart the match. not sure if it's the best option.
+
+
+func restart_match():
+	if SessionVariables.single_player:
+		match_ended = false
+		match_end_popup.hide()
+		refresh_popup_bg()
+		
+		self_user.score = 0
+		self_user.ready_status = IngameUser.ReadyStatus.READY
+		_seek(-start_delay)
+		
+		ingame_scores_viewer.reload_users(ingame_users)
+	else:
+		push_error("Match restart for multiplayer not implemented yet.")
+
+
+func _on_restart_match_button_pressed():
+	restart_match()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://t8vajiottp28"]
+[gd_scene load_steps=37 format=3 uid="uid://t8vajiottp28"]
 
 [ext_resource type="Script" path="res://scenes/performance.gd" id="1_2i2o3"]
 [ext_resource type="PackedScene" uid="uid://koljkcrt3kjj" path="res://scenes/song_loader/song_loader.tscn" id="2_45rtj"]
@@ -15,6 +15,8 @@
 [ext_resource type="PackedScene" uid="uid://dl4nx74f03pxd" path="res://scenes/ui_elements/glass_panel.tscn" id="12_y25jn"]
 [ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="13_juusf"]
 [ext_resource type="Script" path="res://scenes/performance/end_match_player_scores.gd" id="14_8x24c"]
+[ext_resource type="PackedScene" uid="uid://b15ivw3lwhasd" path="res://scenes/ui_elements/basic_rounded_button_01.tscn" id="14_rvi86"]
+[ext_resource type="Texture2D" uid="uid://dj37lrfcaogvs" path="res://assets/gui/icons/refresh.svg" id="15_afhci"]
 
 [sub_resource type="Environment" id="Environment_dudjq"]
 background_mode = 1
@@ -360,6 +362,16 @@ theme_override_font_sizes/font_size = 50
 text = "Match Ended"
 horizontal_alignment = 1
 
+[node name="RestartMatchButton" parent="CanvasLayer/UI/PopupBG/MatchEndPopup/glass_panel/VBoxContainer" instance=ExtResource("14_rvi86")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Restart Match
+"
+icon = ExtResource("15_afhci")
+expand_icon = true
+
 [node name="TitleRow" type="HBoxContainer" parent="CanvasLayer/UI/PopupBG/MatchEndPopup/glass_panel/VBoxContainer"]
 layout_mode = 2
 
@@ -395,6 +407,7 @@ icon_alignment = 1
 
 [connection signal="finished" from="AudioStreamPlayer" to="." method="_on_audio_stream_player_finished"]
 [connection signal="pressed" from="CanvasLayer/UI/MarginContainer/PausePlayButton" to="." method="_on_pause_play_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/UI/PopupBG/MatchEndPopup/glass_panel/VBoxContainer/RestartMatchButton" to="." method="_on_restart_match_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/UI/QuitButton" to="." method="_on_QuitBtn_pressed"]
 
 [editable path="CanvasLayer/UI/ChatBox"]

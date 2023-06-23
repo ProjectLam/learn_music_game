@@ -1,9 +1,10 @@
-[gd_scene load_steps=19 format=3 uid="uid://ba0n1dg0yxtpj"]
+[gd_scene load_steps=20 format=3 uid="uid://ba0n1dg0yxtpj"]
 
 [ext_resource type="Script" path="res://scenes/matches/matches.gd" id="1_ktp4o"]
 [ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="2_it6lb"]
 [ext_resource type="PackedScene" uid="uid://byvabor24b1r5" path="res://scenes/ui_elements/glass_panel_vlist.tscn" id="2_pke6e"]
 [ext_resource type="PackedScene" uid="uid://b15ivw3lwhasd" path="res://scenes/ui_elements/basic_rounded_button_01.tscn" id="4_72ums"]
+[ext_resource type="Texture2D" uid="uid://dj37lrfcaogvs" path="res://assets/gui/icons/refresh.svg" id="4_dfm3a"]
 [ext_resource type="Texture2D" uid="uid://cmvuayajrnukn" path="res://assets/gui/icons/refresh.png" id="5_rvdf1"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p2mpx"]
@@ -198,8 +199,9 @@ grow_vertical = 2
 pivot_offset = Vector2(25, 25)
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture = ExtResource("5_rvdf1")
+texture = ExtResource("4_dfm3a")
 expand_mode = 1
+stretch_mode = 5
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="VBoxContainer/MarginContainer/glass_panel/VBoxContainer/MarginContainer/RefreshingPanel"]
 autoplay = "refreshing"
