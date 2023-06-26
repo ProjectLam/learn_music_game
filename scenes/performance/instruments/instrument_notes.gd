@@ -7,6 +7,7 @@ signal good_note_started(note_index: int, timing_error: float)
 signal song_started
 signal song_paused
 signal song_end_reached
+signal song_changed
 
 @export var note_scene: PackedScene
 @export var chord_scene: PackedScene
@@ -16,7 +17,11 @@ signal song_end_reached
 
 @onready var note_visuals: Node3D = get_node_or_null("%NoteVisuals")
 
-var _song_data: Song
+var _song_data: Song:
+	set = set_song_data
+
+
+var used_pitches: PackedFloat64Array = []
 # The notes you see on screen
 #var _notes: Array[NoteBase]
 # Used for tracking player performance
@@ -33,7 +38,8 @@ var _current_pitches := {}
 var _pitch_history := {}
 
 var look_ahead: float = spawn_distance / note_speed
-var time: float = 0.0
+var time: float = 0.0:
+	set = set_time
 var end_time: float = 0.0
 # start of the range of notes that haven't spawned yet.
 var spawn_index := -1:
@@ -71,11 +77,11 @@ func _process(delta):
 	
 	var prev_time = time
 	var next_time = time + delta
-	if time < 0.0 and next_time >= 0.0:
+	time = next_time
+	if (prev_time + error_margin) < 0.0 and (next_time + error_margin) >= 0.0:
 		# sign changed.
 		time = next_time
 		song_started.emit()
-	time = next_time
 	var end_time = time + look_ahead
 	var c = 0
 	for note_index in range(spawn_index + 1, _performance_notes.size()):
@@ -159,7 +165,7 @@ func set_paused(value: bool) -> void:
 		if paused:
 			song_paused.emit()
 		else:
-			if time > 0.0:
+			if get_audio_time() > 0.0:
 				song_started.emit()
 		refresh_set_process()
 
@@ -171,7 +177,6 @@ func refresh_set_process():
 func start_game(song_data: Song, delay := 15.0):
 	if finished:
 		_song_data = song_data
-		_performance_notes = song_data.get_notes_and_chords_for_difficulty()
 		spawn_index = -1
 	#	_performance_notes = _notes.duplicate()
 		_performance_note_index = -1
@@ -185,7 +190,7 @@ func start_game(song_data: Song, delay := 15.0):
 			InstrumentInput.note_ended.connect(_on_input_note_ended)
 		finished = false
 	
-	if time >= 0.0:
+	if get_audio_time() >= 0.0:
 		song_started.emit()
 	paused = false
 
@@ -238,8 +243,8 @@ func seek(seek_time: float) -> void:
 		_performance_note_index = -1
 	
 	if not paused:
-		if time < 0.0:
-			if prev_time >= 0.0:
+		if get_audio_time() < 0.0:
+			if (prev_time + error_margin) >= 0.0:
 				song_paused.emit()
 		else:
 			song_started.emit()
@@ -541,3 +546,33 @@ func destroy_note(index: int) -> void:
 	else: 
 		for csnote in snote:
 			csnote.queue_free()
+
+
+func set_song_data(value: Song) -> void:
+	if _song_data != value:
+		_song_data = value
+		
+		used_pitches.clear()
+		_performance_notes = _song_data.get_notes_and_chords_for_difficulty()
+		var unotes := {}
+		
+		for note in _performance_notes:
+			if note is Note:
+				unotes[note.get_pitch()] = true
+			elif note is Chord:
+				for pitch in note.get_pitches():
+					unotes[pitch] = true
+		
+		used_pitches = unotes.keys()
+		
+		song_changed.emit()
+
+
+func get_audio_time() -> float:
+	return time + error_margin
+
+
+func set_time(value: float) -> void:
+	if time != value:
+		time = value
+		

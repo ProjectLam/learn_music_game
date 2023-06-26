@@ -239,8 +239,8 @@ func sync_audiostream_remote(p_playing: bool, p_seek):
 		assert(multiplayer.has_multiplayer_peer())
 		rpc("_sync_audiostream_remote", p_playing, p_seek, -1)
 	else:
-		paused = not p_playing
 		_seek(p_seek)
+		paused = not p_playing
 
 func set_paused(value: bool) -> void:
 	if paused != value:
@@ -625,10 +625,10 @@ func _on_performance_song_started() -> void:
 	if match_ended:
 		return
 	if current_song:
-		if performance_instrument.get_time() > audio_stream.stream.get_length():
+		if performance_instrument.get_audio_time() > audio_stream.stream.get_length():
 			audio_stream.stream_paused = true
 		else:
-			audio_stream.play(performance_instrument.get_time())
+			audio_stream.play(performance_instrument.get_audio_time())
 
 
 func _on_performance_song_paused() -> void:
@@ -675,7 +675,8 @@ func _on_song_end_reached() -> void:
 
 
 func _on_audio_stream_player_finished():
-	_on_song_end_reached()
+	if not paused:
+		_on_song_end_reached()
 	
 #	_on_song_changed() you can call this to restart the match. not sure if it's the best option.
 

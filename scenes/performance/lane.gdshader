@@ -10,4 +10,5 @@ void fragment() {
 	gradient = -4.0 * gradient * gradient + 4.0 * gradient;
 	gradient *= UV.y;
 	ALBEDO = brightness * color.rgb * gradient;
+	
 }

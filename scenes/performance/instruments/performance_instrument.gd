@@ -39,6 +39,10 @@ func get_time() -> float:
 	return notes.time
 
 
+func get_audio_time() -> float:
+	return notes.get_audio_time()
+
+
 func on_note_started(note_data):
 	note_started.emit(note_data)
 

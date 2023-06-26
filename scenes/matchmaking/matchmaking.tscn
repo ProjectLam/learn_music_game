@@ -18,7 +18,7 @@
 [ext_resource type="Script" path="res://scenes/matchmaking/join_failed_popup.gd" id="16_jjopf"]
 [ext_resource type="FontFile" uid="uid://cl8syiom7jxno" path="res://fonts/Montserrat-Regular.ttf" id="17_qaosw"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_prnqa"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g2lmo"]
 resource_local_to_scene = true
 shader = ExtResource("3_11mtd")
 shader_parameter/indicate = true
@@ -58,7 +58,7 @@ texture = ExtResource("2_i2m6c")
 stretch_mode = 6
 
 [node name="LightLayer" parent="Background" instance=ExtResource("3_esan8")]
-material = SubResource("ShaderMaterial_prnqa")
+material = SubResource("ShaderMaterial_g2lmo")
 layout_mode = 1
 
 [node name="SongSelectionBG" parent="." instance=ExtResource("5_pav4p")]
