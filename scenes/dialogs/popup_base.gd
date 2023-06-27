@@ -67,6 +67,7 @@ func _input(event):
 
 
 func open():
+	print("called open on dialog :", get_path())
 	if disabled:
 		return
 	await await_ready()
@@ -105,6 +106,7 @@ func try_grab_focus():
 
 
 func close():
+	print("called close on dialog :", get_path())
 	await await_ready()
 	print("Closing dialog :", get_path())
 	if done:

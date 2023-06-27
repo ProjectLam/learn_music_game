@@ -12,32 +12,23 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_dl5kw")
 script = ExtResource("1_5tv66")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
-offset_right = 258.0
-offset_bottom = 1080.0
+layout_mode = 2
 
 [node name="uname_label" type="Label" parent="HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
-offset_top = 529.0
-offset_right = 100.0
-offset_bottom = 550.0
+layout_mode = 2
 clip_text = true
 
 [node name="separator label" type="Label" parent="HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
-offset_left = 104.0
-offset_top = 528.0
-offset_right = 204.0
-offset_bottom = 552.0
+layout_mode = 2
 text = ":"
 clip_text = true
 
 [node name="uscore_label" type="Label" parent="HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 0)
-offset_left = 208.0
-offset_top = 529.0
-offset_right = 258.0
-offset_bottom = 550.0
+layout_mode = 2
 horizontal_alignment = 2

@@ -1,0 +1,70 @@
+[gd_scene load_steps=12 format=3 uid="uid://tb2iu78rrek2"]
+
+[ext_resource type="Script" path="res://scenes/performance/instruments/piano_note_feedback_3d.gd" id="1_mrmnu"]
+[ext_resource type="Shader" path="res://shaders/piano_note_feedback_bg_3d.gdshader" id="3_dlbyx"]
+
+[sub_resource type="Curve" id="Curve_8yysp"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.492038, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_aetpw"]
+texture_mode = 1
+curve = SubResource("Curve_8yysp")
+
+[sub_resource type="Gradient" id="Gradient_ei3bt"]
+offsets = PackedFloat32Array(0, 0.0654545, 0.909091, 1)
+colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_e5qn2"]
+gradient = SubResource("Gradient_ei3bt")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_trwl5"]
+render_priority = 0
+shader = ExtResource("3_dlbyx")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/uv1_scale = Vector3(1, 1, 1)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(1, 1, 1)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/lf = 1.0
+shader_parameter/texture_albedo = SubResource("GradientTexture1D_e5qn2")
+shader_parameter/life_albedo = SubResource("CurveTexture_aetpw")
+
+[sub_resource type="Gradient" id="Gradient_fc08i"]
+offsets = PackedFloat32Array(0, 0.5)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_2oc24"]
+gradient = SubResource("Gradient_fc08i")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_csas4"]
+direction = Vector3(0, -1, 0)
+spread = 0.0
+gravity = Vector3(0, 0, 0)
+color = Color(0, 0.698039, 0.788235, 1)
+color_ramp = SubResource("GradientTexture1D_2oc24")
+turbulence_noise_scale = 0.0
+turbulence_noise_speed = Vector3(0.5, 0, 0.5)
+turbulence_influence_min = 0.0
+turbulence_influence_max = 0.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_4w63o"]
+size = Vector2(1, 10)
+center_offset = Vector3(0, 5, 0)
+
+[node name="piano_positive_note_feedback_3d" type="Node3D"]
+script = ExtResource("1_mrmnu")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+unique_name_in_owner = true
+material_override = SubResource("ShaderMaterial_trwl5")
+emitting = false
+amount = 1
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 60
+interpolate = false
+fract_delta = false
+visibility_aabb = AABB(-1.749, -3.326, -1.637, 3.497, 4.755, 3.273)
+process_material = SubResource("ParticleProcessMaterial_csas4")
+draw_pass_1 = SubResource("QuadMesh_4w63o")

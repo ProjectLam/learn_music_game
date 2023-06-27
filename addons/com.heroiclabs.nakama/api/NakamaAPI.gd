@@ -1662,7 +1662,7 @@ class ApiMatchList extends NakamaAsyncResult:
 	}
 
 	# A number of matches corresponding to a list operation.
-	var _matches
+	var _matches := []
 	var matches : Array:
 		get:
 			return Array() if not _matches is Array else Array(_matches)
@@ -5602,6 +5602,8 @@ class ApiClient extends RefCounted:
 		var uri = "%s%s%s" % [_base_uri, urlpath, "?" + query_params if query_params else ""]
 		var method = "GET"
 		var headers = {}
+		# p_session was null.
+		# FIXED : by checking in GBackend for p_session.
 		var header = "Bearer %s" % p_session.token
 		headers["Authorization"] = header
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://0x4fl5frrefp"]
+[gd_scene load_steps=20 format=3 uid="uid://0x4fl5frrefp"]
 
 [ext_resource type="Script" path="res://scenes/dialogs/login_dialog/login_dialog.gd" id="1_rcm27"]
 [ext_resource type="PackedScene" uid="uid://dl4nx74f03pxd" path="res://scenes/ui_elements/glass_panel.tscn" id="2_1q1xt"]
@@ -20,22 +20,6 @@
 [sub_resource type="LabelSettings" id="LabelSettings_gl7oe"]
 font = ExtResource("3_tn1uw")
 font_size = 40
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_whjt8"]
-content_margin_left = 75.0
-content_margin_top = 30.0
-content_margin_right = 75.0
-content_margin_bottom = 30.0
-bg_color = Color(0.607843, 0.505882, 0.847059, 0.12549)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(1, 0.823529, 0.964706, 0.2)
-corner_radius_top_left = 1000
-corner_radius_top_right = 1000
-corner_radius_bottom_right = 1000
-corner_radius_bottom_left = 1000
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2m76u"]
 
@@ -108,7 +92,6 @@ theme_override_constants/separation = 30
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1
-theme_override_styles/normal = SubResource("StyleBoxFlat_whjt8")
 placeholder_text = "Email"
 
 [node name="Icon" type="TextureRect" parent="MarginContainer/VBoxContainer/Form/EmailInput"]
@@ -128,7 +111,6 @@ texture = ExtResource("4_sv2m6")
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1
-theme_override_styles/normal = SubResource("StyleBoxFlat_whjt8")
 placeholder_text = "Password"
 secret = true
 
@@ -278,6 +260,7 @@ libraries = {
 "": SubResource("AnimationLibrary_dna21")
 }
 
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Form/Buttons/LoginButton" to="." method="_on_login_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Form/Buttons/ForgotPasswordButton" to="." method="_on_forgot_password_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Socials/FacebookButton" to="." method="_on_facebook_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Socials/TwitterButton" to="." method="_on_twitter_button_pressed"]

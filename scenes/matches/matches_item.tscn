@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://d2o0s3qn8v70o"]
+[gd_scene load_steps=17 format=3 uid="uid://d2o0s3qn8v70o"]
 
 [ext_resource type="Script" path="res://scenes/matches/matches_item.gd" id="1_anwtr"]
 [ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="2_3q4ai"]
@@ -6,6 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://d3o4oipt5jw2b" path="res://scenes/ui_elements/glass_panel_element_even.tscn" id="3_6myts"]
 [ext_resource type="Texture2D" uid="uid://ctu1miqp425c5" path="res://assets/gui/icons/casette.png" id="3_s7kml"]
 [ext_resource type="FontFile" uid="uid://df06bw7a1s1u7" path="res://fonts/Montserrat-Bold.ttf" id="4_7gtxg"]
+[ext_resource type="Texture2D" uid="uid://bkl735o4now4n" path="res://assets/gui/icons/locked.png" id="7_1n6sd"]
+[ext_resource type="Script" path="res://scenes/matches/players_count_label.gd" id="8_rken6"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bnxlh"]
 
@@ -20,17 +22,6 @@ font_size = 23
 
 [sub_resource type="LabelSettings" id="LabelSettings_owifg"]
 font = ExtResource("4_7gtxg")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8gexu"]
-content_margin_left = 20.0
-content_margin_top = 10.0
-content_margin_right = 20.0
-content_margin_bottom = 10.0
-bg_color = Color(0.980392, 0, 0.796078, 0.282353)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
 
 [sub_resource type="LabelSettings" id="LabelSettings_dqhvv"]
 line_spacing = 0.0
@@ -61,10 +52,12 @@ script = ExtResource("1_anwtr")
 [node name="OddPanel" parent="." instance=ExtResource("2_u82bc")]
 unique_name_in_owner = true
 layout_mode = 2
+mouse_filter = 1
 
 [node name="EvenPanel" parent="." instance=ExtResource("3_6myts")]
 unique_name_in_owner = true
 layout_mode = 2
+mouse_filter = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -85,11 +78,11 @@ vertical_alignment = 1
 [node name="AvatarImage" type="TextureRect" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 texture = ExtResource("3_s7kml")
+expand_mode = 3
 stretch_mode = 5
 
 [node name="Details" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
 alignment = 1
 
 [node name="NameLabel" type="Label" parent="VBoxContainer/HBoxContainer/Details"]
@@ -112,16 +105,48 @@ unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1
 theme_override_colors/font_color = Color(0.988235, 0, 0.466667, 1)
-theme_override_fonts/font = ExtResource("4_7gtxg")
 text = "Song Name"
 
-[node name="PlayersCountLabel" type="Label" parent="VBoxContainer/HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="GameStatusLabel" type="RichTextLabel" parent="VBoxContainer/HBoxContainer/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1
-theme_override_styles/normal = SubResource("StyleBoxFlat_8gexu")
+bbcode_enabled = true
+text = "[right][/right]"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="LockedIcon" type="TextureRect" parent="VBoxContainer/HBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Password protected"
+texture = ExtResource("7_1n6sd")
+expand_mode = 5
+stretch_mode = 5
+
+[node name="PlayersCountLabel" type="Label" parent="VBoxContainer/HBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+mouse_filter = 1
+theme_type_variation = &"matches_item_pc_label"
 text = "0"
 label_settings = SubResource("LabelSettings_dqhvv")
+horizontal_alignment = 1
+script = ExtResource("8_rken6")
 
 [node name="Spacer" type="Control" parent="VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(20, 0)

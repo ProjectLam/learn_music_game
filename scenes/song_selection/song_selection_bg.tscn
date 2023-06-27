@@ -1,0 +1,45 @@
+[gd_scene load_steps=5 format=3 uid="uid://kgpxv8yxnjo0"]
+
+[ext_resource type="Texture2D" uid="uid://c4e8lna5vxx00" path="res://assets/gui/song_selection/songs-bg.png" id="1_km6eq"]
+[ext_resource type="Shader" path="res://shaders/LightingBackground.gdshader" id="2_dnlus"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dnfnr"]
+shader = ExtResource("2_dnlus")
+shader_parameter/indicate = true
+shader_parameter/size = null
+shader_parameter/indicating_power = 1.0
+shader_parameter/radius_base = 0.5
+shader_parameter/static_power = 0.4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4bkvg"]
+bg_color = Color(0.0862745, 0.0313726, 0.176471, 1)
+
+[node name="Background" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("1_km6eq")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Layer" type="Panel" parent="."]
+material = SubResource("ShaderMaterial_dnfnr")
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_4bkvg")

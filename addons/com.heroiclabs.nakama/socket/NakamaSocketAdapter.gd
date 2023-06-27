@@ -6,7 +6,7 @@ class_name NakamaSocketAdapter
 
 var _ws := WebSocketPeer.new()
 var _ws_last_state := WebSocketPeer.STATE_CLOSED
-var _timeout : int = 30
+var _timeout : int = 5
 var _start : int = 0
 var logger = NakamaLogger.new()
 

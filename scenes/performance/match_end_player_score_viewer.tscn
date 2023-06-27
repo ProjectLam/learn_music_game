@@ -1,0 +1,43 @@
+[gd_scene load_steps=5 format=3 uid="uid://br03dw24e2xob"]
+
+[ext_resource type="Script" path="res://scenes/performance/match_end_player_score_viewer.gd" id="1_lhg4t"]
+[ext_resource type="PackedScene" uid="uid://d3o4oipt5jw2b" path="res://scenes/ui_elements/glass_panel_element_even.tscn" id="2_ac7o2"]
+[ext_resource type="PackedScene" uid="uid://dj6q8o76cf5vf" path="res://scenes/ui_elements/glass_panel_element_odd.tscn" id="3_rfh27"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vfs5c"]
+
+[node name="match_end_player_score_viewer" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_vfs5c")
+script = ExtResource("1_lhg4t")
+
+[node name="EvenPanel" parent="." instance=ExtResource("2_ac7o2")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="OddPanel" parent="." instance=ExtResource("3_rfh27")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_alignment = 1
+clip_text = true
+
+[node name="ScoreLabel" type="Label" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_alignment = 1
+clip_text = true

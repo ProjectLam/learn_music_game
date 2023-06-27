@@ -37,4 +37,4 @@ func _process(delta):
 	if(is_instance_valid(request_node)):
 		progress_label.text = "%s/%s" % [
 				request_node.get_downloaded_bytes(), 
-				request_node.get_remaining_bytes()]
+				request_node.get_total_bytes()]

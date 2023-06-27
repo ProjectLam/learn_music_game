@@ -6,7 +6,6 @@
 process_mode = 3
 editor_description = "Continuously tries till it succeeds in downloading the requested file."
 script = ExtResource("1_5su86")
-request_headers = PackedStringArray()
 
 [node name="HTTPRequest" type="HTTPRequest" parent="."]
 unique_name_in_owner = true

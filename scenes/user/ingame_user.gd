@@ -2,13 +2,14 @@ extends Resource
 
 class_name IngameUser
 
+var user: User
 
 # In future in between valus can be used to show a loading progress if needed.
 enum ReadyStatus {
 	NOT_READY = 0,
-	READY = 100
+	READY = 100,
+	ENDED_PLAYING = 200,
 }
-
 
 var _score: float = 0
 var score: float :
@@ -20,6 +21,7 @@ var _ready_status: ReadyStatus = ReadyStatus.NOT_READY
 var ready_status: ReadyStatus:
 	set = set_ready_status,
 	get = get_ready_status
+
 
 signal score_changed
 signal ready_status_changed

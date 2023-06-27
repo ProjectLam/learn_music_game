@@ -1,0 +1,56 @@
+[gd_scene load_steps=10 format=3 uid="uid://btalhr1g8hxcy"]
+
+[ext_resource type="Script" path="res://scenes/user_status/glass_panel_user_status.gd" id="1_21mtu"]
+[ext_resource type="PackedScene" uid="uid://d3o4oipt5jw2b" path="res://scenes/ui_elements/glass_panel_element_even.tscn" id="2_0fuh5"]
+[ext_resource type="PackedScene" uid="uid://dj6q8o76cf5vf" path="res://scenes/ui_elements/glass_panel_element_odd.tscn" id="3_yk1xl"]
+[ext_resource type="PackedScene" uid="uid://dbmcfqkvtqhf2" path="res://scenes/user_status/user_status.tscn" id="4_hwqfk"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_58mtu"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_vrdwg"]
+blend_mode = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_trc25"]
+bg_color = Color(0.847059, 0.811765, 1, 1)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_r6p3h"]
+blend_mode = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eoqpm"]
+bg_color = Color(1, 0.690196, 0.694118, 1)
+
+[node name="glass_panel_player_status" type="PanelContainer"]
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_58mtu")
+script = ExtResource("1_21mtu")
+
+[node name="EvenPanel" parent="." instance=ExtResource("2_0fuh5")]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="OddPanel" parent="." instance=ExtResource("3_yk1xl")]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="HostPanel" type="Panel" parent="."]
+unique_name_in_owner = true
+material = SubResource("CanvasItemMaterial_vrdwg")
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_trc25")
+
+[node name="SelfPanel" type="Panel" parent="."]
+unique_name_in_owner = true
+visible = false
+material = SubResource("CanvasItemMaterial_r6p3h")
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_eoqpm")
+
+[node name="user_status" parent="." instance=ExtResource("4_hwqfk")]
+unique_name_in_owner = true
+layout_mode = 2

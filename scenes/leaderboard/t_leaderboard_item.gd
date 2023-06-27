@@ -1,5 +1,5 @@
 extends Object
-class_name TLeaderboardItem
+#class_name TLeaderboardItem
 
 var rank: int = -1: set = set_rank
 var user: TUser = null: set = set_user

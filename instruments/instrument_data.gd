@@ -141,7 +141,7 @@ const default_string_pitches: Array[Chromatic] = [
 const default_fret_count := 12
 
 func get_default_tune(string: int, fret: int) -> Chromatic:
-	assert(string > 0 and string < default_string_pitches.size())
+	assert(string >= 0 and string < default_string_pitches.size())
 	var base = default_string_pitches[string]
 	return base + fret
 

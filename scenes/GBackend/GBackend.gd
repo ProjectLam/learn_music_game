@@ -26,6 +26,9 @@ var host = "nakama.projectlam.org"
 var port = 7352
 var server_key = "projectlam"
 
+# set to true to avoid a login dialog.
+var dev_user_pass := false
+
 # song loading
 var remote_songs_json_url := ""
 var remote_songs_info: Dictionary = {}
@@ -60,6 +63,7 @@ signal received_match_state(p_state)
 signal remote_songs_json_received
 signal login_set(cancelled: bool)
 signal connection_status_changed
+signal game_status_changed()
 
 func _init():
 	if is_js_enabled:
@@ -78,6 +82,9 @@ func _ready():
 		_on_file_offline_dialog_response)
 	Dialogs.login_failed_dialog.option_selected.connect(
 		_on_login_failed_dialog_option_selected)
+	Dialogs.login_dialog.option_selected.connect(
+		_on_login_dialog_option_selected
+	)
 	
 	refresh()
 	
@@ -127,9 +134,9 @@ func init_remote_songs_json_url():
 		var jscript_eval = _js_godotGame.getSongsManifest()
 		if jscript_eval is String:
 			remote_songs_json_url = jscript_eval
-	#else:
-	#	remote_songs_json_url = "http://127.0.0.1/songs.json"
-	pass
+	else:
+		# TODO : must allow this origin in web version.
+		remote_songs_json_url = "https://golden-semolina-9e69fc.netlify.app/songs.json"
 
 
 # use 'await await_finit()' to wait for full initialization.
@@ -186,7 +193,10 @@ func _init_multiplayer_bridge():
 	if is_instance_valid(multiplayer_bridge):
 		multiplayer_bridge.match_join_error.disconnect(_on_match_join_error)
 		multiplayer_bridge.match_joined.disconnect(_on_match_joined)
-		multiplayer_bridge.queue_free()
+		multiplayer_bridge.game_status_changed.disconnect(_on_game_status_changed)
+		remove_child(multiplayer_bridge)
+		
+		multiplayer_bridge.free()
 		
 	multiplayer_bridge = await NakamaMultiplayerBridge.new(socket)
 	
@@ -203,6 +213,7 @@ func _init_multiplayer_bridge():
 		
 		multiplayer_bridge.match_join_error.connect(_on_match_join_error)
 		multiplayer_bridge.match_joined.connect(_on_match_joined)
+		multiplayer_bridge.game_status_changed.connect(_on_game_status_changed)
 		add_child(multiplayer_bridge)
 		multiplayer_bridge._multiplayer_peer.set_connection_status(MultiplayerPeer.CONNECTION_CONNECTING)
 		multiplayer.set_multiplayer_peer(multiplayer_bridge.multiplayer_peer)
@@ -232,12 +243,21 @@ func check_nakama_dev_values() -> void:
 			if dev["nakama"].has("test_user"):
 				user_email = dev["nakama"]["test_user"]["email"]
 				user_password = dev["nakama"]["test_user"]["password"]
+				dev_user_pass = true
 	
+	var dmail := false
+	var dpass := false
 	if CmdArgs.arguments.has("email"):
+		dmail = true
 		user_email = CmdArgs.arguments["email"]
+		
 	
 	if CmdArgs.arguments.has("password"):
+		dpass = true
 		user_password = CmdArgs.arguments["password"]
+	
+	if dmail and dpass:
+		dev_user_pass = true
 
 
 func open_js_login_dialog():
@@ -326,6 +346,10 @@ func _on_received_match_presence(p_presence: NakamaRTAPI.MatchPresenceEvent) -> 
 
 func list_matches_async(min_players : int = 1, max_players : int = -1, limit : int = 100,
 		label : String = "", query : String = "") -> NakamaAPI.ApiMatchList:
+	
+	if not session or not session.is_valid():
+		return NakamaAPI.ApiMatchList.new()
+	
 	var maxpl
 	if max_players > 0:
 		maxpl = max_players
@@ -373,7 +397,7 @@ func leave_match_async() -> void:
 
 
 # returns OK if it succeeds. this will be replaced with an error later.
-func join_match_async(p_match_id: String) -> int:
+func join_match_async(p_match_id: String, p_join_password: String = "") -> int:
 	await await_finit()
 	if connection_status in [CONNECTION_STATUS.CONNECTING, CONNECTION_STATUS.CONNECTING]:
 		push_error("Trying to create match while connection is not established. Disable access from the UI")
@@ -387,7 +411,7 @@ func join_match_async(p_match_id: String) -> int:
 		else:
 			Dialogs.connection_failed_dialog.open()
 		return -1
-	await multiplayer_bridge.join_match_async(p_match_id)
+	await multiplayer_bridge.join_match_async(p_match_id, p_join_password)
 	if multiplayer_bridge.match_state != NakamaMultiplayerBridge.MatchState.CONNECTED:
 		Dialogs.join_match_failed_dialog.open()
 		return -1
@@ -455,6 +479,7 @@ func _on_file_offline_dialog_response(params: Dictionary) -> void:
 	match(option.to_lower()):
 		"yes":
 			file_src_mode = FILE_SRC_MODE.OFFLINE
+			remote_songs_json_received.emit({})
 		"no":
 			pass
 
@@ -488,9 +513,11 @@ func try_login_async():
 		if is_js_enabled:
 			open_js_login_dialog()
 			cancelled = await login_set
-		else:
-			# TODO : add a login dialog before loggin in.
-			pass
+		elif not dev_user_pass:
+			
+			Dialogs.login_dialog.open()
+			cancelled = await login_set
+		
 	
 	# setting new session.
 	if not cancelled:
@@ -542,3 +569,41 @@ func session_is_valid() -> bool:
 
 func _on_socket_connection_error(p_error):
 	pass
+
+
+func _on_game_status_changed():
+	game_status_changed.emit()
+
+#func _process(delta):
+#	if Input.is_action_just_pressed("ui_up"):
+#		var payload = await socket.rpc_async_parsed("get_versionn", {})
+
+
+func _on_login_dialog_option_selected(params : Dictionary):
+	var opt = params.get("option")
+	match(opt):
+		PopupBase.OPTION_CLOSE:
+			Dialogs.login_dialog.close()
+			login_set.emit(true)
+		PopupBase.OPTION_REGISTER:
+			# TODO : not implemented yet.
+			push_warning("Registering page not implemented yet.")
+			Dialogs.login_dialog.close()
+			login_set.emit(true)
+#			Dialogs.login_dialog.close()
+#			Dialogs.register_dialog.open()
+		PopupBase.OPTION_LOGIN:
+			Dialogs.login_dialog.close()
+			var p_email = params.get("email")
+			if p_email is String:
+				user_email = p_email
+			
+			var p_password = params.get("password")
+			if p_password is String:
+				user_password = p_password
+			
+			login_set.emit(false)
+		_:
+			push_error("Invalid option selected for login dialog")
+			login_set.emit(true)
+			

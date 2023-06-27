@@ -41,9 +41,10 @@ func _on_register_dialog_option_selected(params : Dictionary):
 
 
 func _on_login_dialog_option_selected(params : Dictionary):
-	var opt = params.get("option")
-	if opt == PopupBase.OPTION_CLOSE:
-		login_dialog.close()
+	pass
+#	var opt = params.get("option")
+#	if opt == PopupBase.OPTION_CLOSE:
+#		login_dialog.close()
 
 
 func _on_connection_failed_dialog_option_selected(params : Dictionary):

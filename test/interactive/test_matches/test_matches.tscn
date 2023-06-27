@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://bh1htbm1t4nlb" path="res://scenes/ui_elements/light_layer/light_layer.tscn" id="3_rmqth"]
 [ext_resource type="Shader" path="res://shaders/LightingBackground.gdshader" id="4_odsak"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_o1txi"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_w7gfw"]
 resource_local_to_scene = true
 shader = ExtResource("4_odsak")
 shader_parameter/indicate = true
@@ -43,7 +43,7 @@ texture = ExtResource("2_lbye7")
 stretch_mode = 6
 
 [node name="LightLayer" parent="Background" instance=ExtResource("3_rmqth")]
-material = SubResource("ShaderMaterial_o1txi")
+material = SubResource("ShaderMaterial_w7gfw")
 layout_mode = 1
 
 [node name="Matches" parent="." instance=ExtResource("1_xepu4")]

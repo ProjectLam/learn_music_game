@@ -1,9 +1,7 @@
-[gd_scene load_steps=22 format=3 uid="uid://r5oy8h4p8suy"]
+[gd_scene load_steps=16 format=3 uid="uid://r5oy8h4p8suy"]
 
 [ext_resource type="Script" path="res://scenes/song_selection/song_selection.gd" id="1_w4sd3"]
-[ext_resource type="Texture2D" uid="uid://c4e8lna5vxx00" path="res://assets/gui/song_selection/songs-bg.png" id="2_wl6ga"]
-[ext_resource type="Shader" path="res://shaders/LightingBackground.gdshader" id="3_ry738"]
-[ext_resource type="PackedScene" uid="uid://bpsr6id66vxk2" path="res://scenes/left_bar/left_bar.tscn" id="4_bgttp"]
+[ext_resource type="PackedScene" uid="uid://kgpxv8yxnjo0" path="res://scenes/song_selection/song_selection_bg.tscn" id="2_k8p3r"]
 [ext_resource type="Texture2D" uid="uid://d1xyolkxthdp1" path="res://assets/gui/icons/down.png" id="5_cr51n"]
 [ext_resource type="Texture2D" uid="uid://1uht5wqqvkkv" path="res://assets/gui/icons/up.png" id="6_xy0pm"]
 [ext_resource type="Texture2D" uid="uid://dncor6oxblufk" path="res://assets/gui/song_selection/song-cover-frame.png" id="7_gdab5"]
@@ -12,17 +10,6 @@
 [ext_resource type="PackedScene" uid="uid://kcofab2hm5wo" path="res://scenes/leaderboard/leaderboard.tscn" id="13_txwuv"]
 [ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="14_h6ddd"]
 [ext_resource type="FontFile" uid="uid://df06bw7a1s1u7" path="res://fonts/Montserrat-Bold.ttf" id="15_fnnqe"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_dnfnr"]
-shader = ExtResource("3_ry738")
-shader_parameter/indicate = true
-shader_parameter/size = null
-shader_parameter/indicating_power = 1.0
-shader_parameter/radius_base = 0.5
-shader_parameter/static_power = 0.4
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4bkvg"]
-bg_color = Color(0.0862745, 0.0313726, 0.176471, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_edjyj"]
 bg_color = Color(0.980392, 0, 1, 1)
@@ -60,14 +47,6 @@ font_size = 22
 line_spacing = 0.0
 font = ExtResource("15_fnnqe")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fa7sp"]
-bg_color = Color(0.545098, 0, 0.505882, 0.27451)
-border_color = Color(0.992157, 0, 0.909804, 0.643137)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yhh6w"]
-bg_color = Color(0.631373, 0.4, 0.647059, 0.27451)
-border_color = Color(0.992157, 0, 0.909804, 0.643137)
-
 [node name="SongSelection" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -77,63 +56,18 @@ grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 2
 script = ExtResource("1_w4sd3")
+animation_duration = 0.5
+radius = 800.0
 
-[node name="Background" type="Control" parent="."]
+[node name="Background" parent="." instance=ExtResource("2_k8p3r")]
+visible = false
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="TextureRect" type="TextureRect" parent="Background"]
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("2_wl6ga")
-expand_mode = 1
-stretch_mode = 6
-
-[node name="Layer" type="Panel" parent="Background"]
-material = SubResource("ShaderMaterial_dnfnr")
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_4bkvg")
-
-[node name="LeftBar" parent="." instance=ExtResource("4_bgttp")]
-layout_mode = 1
-
-[node name="Label" parent="LeftBar/VBoxContainer/Middle/Empty" index="0"]
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 255.0
-offset_bottom = 46.0
-grow_horizontal = 1
-grow_vertical = 1
-
-[node name="PanelContainer" parent="LeftBar/VBoxContainer/Middle/Content/Menu/VBoxContainer/Sep" index="0"]
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 0.0
-offset_right = 0.0
-grow_horizontal = 1
-grow_vertical = 1
 
 [node name="Right" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 204.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -146,8 +80,10 @@ grow_horizontal = 0
 grow_vertical = 2
 
 [node name="Circle" type="TextureRect" parent="Right/Songs"]
-layout_mode = 0
-anchor_left = 0.615
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 0
@@ -156,13 +92,12 @@ texture = ExtResource("12_5xcv7")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="Items" type="Control" parent="Right/Songs"]
+[node name="Items" type="Control" parent="Right/Songs/Circle"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 48.0
-offset_right = -35.28
+offset_left = -120.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -301,8 +236,6 @@ grow_vertical = 2
 
 [node name="leaderboard" parent="Right/SongDetails/Leaderboard" instance=ExtResource("13_txwuv")]
 layout_mode = 1
-style_odd = SubResource("StyleBoxFlat_fa7sp")
-style_even = SubResource("StyleBoxFlat_yhh6w")
 
 [node name="HBoxContainer" parent="Right/SongDetails/Leaderboard/leaderboard/VBoxContainer/Header" index="0"]
 anchor_right = 0.0
@@ -315,5 +248,4 @@ grow_vertical = 1
 [connection signal="pressed" from="Right/Songs/Buttons/DownBtn" to="." method="_on_DownBtn_pressed"]
 [connection signal="pressed" from="Right/Songs/Buttons/UpBtn" to="." method="_on_UpBtn_pressed"]
 
-[editable path="LeftBar"]
 [editable path="Right/SongDetails/Leaderboard/leaderboard"]

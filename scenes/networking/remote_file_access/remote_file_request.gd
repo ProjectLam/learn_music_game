@@ -88,7 +88,7 @@ func get_downloaded_bytes():
 	return http_request.get_downloaded_bytes()
 
 
-func get_remaining_bytes():
+func get_total_bytes():
 	return http_request.get_body_size()
 
 

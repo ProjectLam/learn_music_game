@@ -1,7 +1,10 @@
 extends Control
 
+@onready var start_ready_button = %StartReadyButton
 
 func _ready():
+	SceneStack.clear()
+	
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	if MatchManager.status != MatchManager.MatchMakingStatus.CONNECTING \
 		and MatchManager.status != MatchManager.MatchMakingStatus.JOINED_MATCH:
@@ -9,6 +12,15 @@ func _ready():
 	prev_match_manager_status = MatchManager.MatchMakingStatus.CONNECTING
 	
 	refresh()
+	
+	MatchManager.game_status_changed.connect(_on_game_status_changed)
+	
+	if not is_multiplayer_authority():
+		start_ready_button.disabled = true
+
+#func _process(delta):
+#	if Input.is_action_just_pressed("ui_up"):
+#		refresh()
 
 
 func request_finish(request_code: int) -> bool:
@@ -26,9 +38,9 @@ func refresh():
 	# temporary implementation for 1 on 1 match.
 	var peers := multiplayer.get_peers()
 	# our own peer won't be included.
-	if peers.size() > 0:
-		_switch_to_game_start()
-		return
+#	if peers.size() > 0:
+#		_switch_to_game_start()
+#		return
 	
 	if prev_match_manager_status != MatchManager.status:
 		match(MatchManager.status):
@@ -53,3 +65,18 @@ func _on_peer_connected(peer_id : int):
 #	if multiplayer.get_unique_id() == get_multiplayer_authority():
 #
 #		get_tree().change_scene_to_file("res://scenes/performance.tscn")
+
+
+func _on_start_ready_button_pressed():
+	# TODO: Add button changes while request is being processed
+	MatchManager.order_ready_async()
+
+
+func _on_game_status_changed():
+	if MatchManager.game_status == LAMMatch.GameStatus.STARTED:
+		_switch_to_game_start()
+
+
+func _on_quit_match_button_pressed():
+	MatchManager.leave_match_async()
+	get_tree().change_scene_to_file("res://scenes/matchmaking/matchmaking.tscn")

@@ -1,5 +1,4 @@
 extends Object
-class_name TUser
 
 var id: String = ""
 var username: String = ""
