@@ -45,4 +45,6 @@ func reposition_chord():
 
 func set_end_point(value: Vector3):
 	super.set_end_point(value)
+	# for now we disable tails because they aren't fully implemented.
+	value.z = 0
 	duration_tail.scale.z = -value.z

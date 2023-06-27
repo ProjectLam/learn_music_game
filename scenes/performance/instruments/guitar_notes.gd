@@ -14,21 +14,27 @@ extends InstrumentNotes
 @export var fret_offset: float
 
 
-func spawn_note(note_data: NoteBase, note_index: int):
-	super.spawn_note(note_data, note_index)
-	
+#func _ready():
+#	position.z -= get_audio_delay_spacing()
+
+
+func spawn_note(note_index: int):
+	super.spawn_note(note_index)
+	var note_data: Note = _performance_notes[note_index]
 	var note = note_scene.instantiate()
 #	note.speed = note_speed
+	var position_index: int = NoteFrequency.CHROMATIC.find(note_data.get_pitch())
 	add_child(note)
 	note.position = Vector3(
 		fret_offset + fret_spacing * note_data.fret,
 		_get_string_y(note_data.string),
-		-note_speed * (note_data.time - time)
+		-get_note_offset(note_data.time)
 	)
 	note.color = string_colors[note_data.string]
-	note.duration = note_data.sustain
 	note.index = note_index
+	note.end_point = Vector3(note.position.x, note.position.y, -get_note_offset(note_data.time + note_data.sustain) - note.position.z)
 	note.instrument_notes = self
+#	note.note_visuals = note_visuals
 	
 	if note_data.fret == 0:
 		# Open string
@@ -47,13 +53,14 @@ func spawn_note(note_data: NoteBase, note_index: int):
 	note.render()
 
 
-func spawn_chord(chord_data: Chord, note_index: int):
-	super.spawn_chord(chord_data, note_index)
-	
+func spawn_chord(note_index: int):
+	super.spawn_chord(note_index)
+	var chord_data: Chord = _performance_notes[note_index]
 	var chord = chord_scene.instantiate()
 #	chord.speed = note_speed
 	add_child(chord)
 	chord.position = Vector3(0, 0, -note_speed * (chord_data.time - time))
+	chord.end_point = Vector3(chord.position.x, chord.position.y, -get_note_offset(chord_data.time + chord_data.sustain) - chord.position.z)
 	chord.instrument_notes = self
 	var frets := chord_data.get_frets()
 	for string in frets.size():

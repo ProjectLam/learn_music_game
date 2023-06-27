@@ -11,6 +11,9 @@ func set_color(value):
 
 func set_end_point(value):
 	super.set_end_point(value)
+	# for now we disable tails because they aren't fully implemented.
+	value.z = 0.0
+	
 	$DurationTail.scale.z = -value.z
 	note_tail.length = -value.z
 

@@ -4,7 +4,7 @@ extends MeshInstance3D
 
 func _ready():
 	var st: float = 0
-	var ed: float = notes.spawn_distance*(2.0*notes.error_margin/notes.look_ahead)
+	var ed: float = notes.get_audio_delay_spacing()
 	var zoff := -(ed + st)*0.5
 	
 	mesh.center_offset.z = zoff

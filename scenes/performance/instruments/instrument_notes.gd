@@ -78,7 +78,7 @@ func _process(delta):
 	var prev_time = time
 	var next_time = time + delta
 	time = next_time
-	if (prev_time + error_margin) < 0.0 and (next_time + error_margin) >= 0.0:
+	if (prev_time + get_audio_delay()) < 0.0 and (next_time + get_audio_delay()) >= 0.0:
 		# sign changed.
 		time = next_time
 		song_started.emit()
@@ -244,7 +244,7 @@ func seek(seek_time: float) -> void:
 	
 	if not paused:
 		if get_audio_time() < 0.0:
-			if (prev_time + error_margin) >= 0.0:
+			if (prev_time + get_audio_delay()) >= 0.0:
 				song_paused.emit()
 		else:
 			song_started.emit()
@@ -569,10 +569,18 @@ func set_song_data(value: Song) -> void:
 
 
 func get_audio_time() -> float:
-	return time + error_margin
+	return time + get_audio_delay()
 
 
 func set_time(value: float) -> void:
 	if time != value:
 		time = value
 		
+
+
+func get_audio_delay():
+	return error_margin
+
+
+func get_audio_delay_spacing() -> float:
+	return spawn_distance*(2.0*get_audio_delay()/look_ahead)

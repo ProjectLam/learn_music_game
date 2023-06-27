@@ -14,6 +14,8 @@ extends InstrumentNotes
 func _ready():
 	super._ready()
 	refresh()
+	
+	position.z += get_audio_delay_spacing()
 
 
 # TODO : utilize map_note for slide.
