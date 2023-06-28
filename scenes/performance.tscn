@@ -8,7 +8,7 @@
 [ext_resource type="Script" path="res://scenes/performance/speaker.gd" id="5_5sxnp"]
 [ext_resource type="Texture2D" uid="uid://de686ygqs5poa" path="res://assets/gui/icons/logout.png" id="6_d47nm"]
 [ext_resource type="Texture2D" uid="uid://cr6tvdv0ve6cv" path="res://addons/gut/gui/play.png" id="7_28teg"]
-[ext_resource type="Script" path="res://scenes/tmp.gd" id="7_l4dsd"]
+[ext_resource type="Script" path="res://scenes/timer.gd" id="7_s1013"]
 [ext_resource type="Script" path="res://scenes/ingame_scores.gd" id="8_npdy5"]
 [ext_resource type="Shader" path="res://shaders/canvas_alpha_to_blur.gdshader" id="9_03eff"]
 [ext_resource type="PackedScene" path="res://scenes/rich_text_flow/rich_text_flow.tscn" id="10_3n7l4"]
@@ -216,7 +216,7 @@ offset_top = 40.0
 offset_right = 20.0
 grow_horizontal = 2
 text = "TMP"
-script = ExtResource("7_l4dsd")
+script = ExtResource("7_s1013")
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/UI"]
 layout_mode = 1
