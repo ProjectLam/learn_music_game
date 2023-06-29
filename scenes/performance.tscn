@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://d2gldggtmt5ml"]
+[gd_scene load_steps=38 format=3 uid="uid://d2gldggtmt5ml"]
 
 [ext_resource type="Script" path="res://scenes/performance.gd" id="1_2i2o3"]
 [ext_resource type="PackedScene" uid="uid://koljkcrt3kjj" path="res://scenes/song_loader/song_loader.tscn" id="2_45rtj"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://de686ygqs5poa" path="res://assets/gui/icons/logout.png" id="6_d47nm"]
 [ext_resource type="Texture2D" uid="uid://cr6tvdv0ve6cv" path="res://addons/gut/gui/play.png" id="7_28teg"]
 [ext_resource type="Script" path="res://scenes/timer.gd" id="7_s1013"]
+[ext_resource type="Script" path="res://scenes/InputLabel.gd" id="8_mnpvr"]
 [ext_resource type="Script" path="res://scenes/ingame_scores.gd" id="8_npdy5"]
 [ext_resource type="Shader" path="res://shaders/canvas_alpha_to_blur.gdshader" id="9_03eff"]
 [ext_resource type="PackedScene" path="res://scenes/rich_text_flow/rich_text_flow.tscn" id="10_3n7l4"]
@@ -206,17 +207,25 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Label" type="Label" parent="CanvasLayer/UI"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/UI"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -20.0
-offset_top = 40.0
-offset_right = 20.0
+anchor_right = 1.0
+offset_top = 20.0
+offset_bottom = 24.0
 grow_horizontal = 2
+alignment = 1
+
+[node name="TimeLabel" type="Label" parent="CanvasLayer/UI/VBoxContainer"]
+layout_mode = 2
 text = "TMP"
+horizontal_alignment = 1
 script = ExtResource("7_s1013")
+
+[node name="InputLabel" type="Label" parent="CanvasLayer/UI/VBoxContainer"]
+layout_mode = 2
+horizontal_alignment = 1
+script = ExtResource("8_mnpvr")
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/UI"]
 layout_mode = 1
@@ -301,7 +310,6 @@ horizontal_alignment = 1
 
 [node name="LoadingSongPopup" type="MarginContainer" parent="CanvasLayer/UI/PopupBG"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 
 [node name="BackBufferCopy" type="BackBufferCopy" parent="CanvasLayer/UI/PopupBG/LoadingSongPopup"]
@@ -322,13 +330,6 @@ alignment = 1
 
 [node name="LoadingProgressLabel" type="Label" parent="CanvasLayer/UI/PopupBG/LoadingSongPopup/glass_panel/VBoxContainer"]
 unique_name_in_owner = true
-layout_mode = 2
-theme_override_fonts/font = ExtResource("13_juusf")
-theme_override_font_sizes/font_size = 50
-text = "Loading Song"
-horizontal_alignment = 1
-
-[node name="Label" type="Label" parent="CanvasLayer/UI/PopupBG/LoadingSongPopup/glass_panel/VBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("13_juusf")
 theme_override_font_sizes/font_size = 50
