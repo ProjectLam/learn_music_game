@@ -31,7 +31,7 @@ func get_instrument_by_name(inst_name : String) -> InstrumentData:
 	if instruments.has(inst_name):
 		return instruments[inst_name]
 	var inst : InstrumentData = instruments.values()[0]
-	push_error("Instrument not found, defaulting to %s" % inst.instrument_name)
+	push_error("Instrument %s not found, defaulting to %s" % [inst_name, inst.instrument_name])
 	return inst
 
 
