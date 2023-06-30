@@ -6,7 +6,7 @@ var cNotesItem = preload("res://scenes/tuner/notes_item.tscn")
 @export var pitch_freq: float = 440
 @export var freq_start_div: float = 1
 @export var freq_end_div: float = 1
-@export var volume_sensitivity := 0.5
+@export var volume_sensitivity := 0.005
 @export_range(0.01,1.0) var note_font_size_ratio := 0.05
 
 @onready var note_items = %Notes.find_child("Items")
@@ -74,6 +74,7 @@ func note_freq_range(i: int) -> Vector2:
 var tween
 var prev_i = -1
 func _process(delta):
+	print_debug(InstrumentInput.microphone_input.current_peaks)
 	if InstrumentInput.microphone_input.current_peaks.size() != 0:
 		var freq = 0.0
 		var freq_volume = 0.0
@@ -132,7 +133,7 @@ func _process(delta):
 #		sub_freq_ratio = 1.0
 		var stick_angle = stick_start + (stick_range * sub_freq_ratio)
 		var stick_radians = deg_to_rad(stick_angle)
-		
+		print_debug(stick_radians)
 #		tween.tween_property(stick, "rotation", stick_radians, 0.25)
 		stick.rotation = stick_radians
 		tween.play()
