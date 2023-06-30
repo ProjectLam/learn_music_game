@@ -1,6 +1,11 @@
 class_name InstrumentNotes
 extends Node3D
 
+enum DIFFICULTY {
+	BASIC_TRIGGER,
+	
+}
+
 signal note_started(note_data)
 signal note_ended(note_data)
 signal good_note_started(note_index: int, timing_error: float)
@@ -16,6 +21,8 @@ signal song_changed
 @export var note_speed: float = 10.0
 
 @onready var note_visuals: Node3D = get_node_or_null("%NoteVisuals")
+
+var difficulty: DIFFICULTY = DIFFICULTY.BASIC_TRIGGER
 
 var _song_data: Song:
 	set = set_song_data
@@ -356,6 +363,9 @@ func _on_input_note_started(pitch: float):
 				good = false
 			
 			var st_time = cpitch["start_time"]
+	
+	if difficulty == DIFFICULTY.BASIC_TRIGGER:
+		call_deferred("_on_input_note_ended", pitch)
 
 
 func _on_input_note_ended(pitch: float):
