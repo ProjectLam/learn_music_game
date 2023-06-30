@@ -29,7 +29,7 @@ func _on_logout_button_pressed():
 
 func request_finish(request_code: int) -> bool:
 	var curr_scene := get_tree().current_scene
-	if curr_scene.has_method("request_finish"):
+	if curr_scene != self and curr_scene.has_method("request_finish"):
 		return await curr_scene.request_finish(request_code)
 	else:
 		return true
@@ -38,7 +38,8 @@ func request_finish(request_code: int) -> bool:
 func _on_play_song_button_pressed():
 	var finished = await request_finish(REQUEST_PLAY_SONG)
 	if finished:
-		get_tree().change_scene_to_file("res://scenes/song_selection/song_selection.tscn")
+		SceneStack.stack_data[SceneStack.MATCH_CREATION_MODE] = MatchCreation.Modes.SINGLE_PLAYER
+		get_tree().change_scene_to_file("res://scenes/matchmaking/match_creation.tscn")
 
 
 func _on_matchmaking_button_pressed():
@@ -61,9 +62,9 @@ func _on_istrument_menu_button_pressed():
 
 func _on_back_button_pressed():
 	var current_scene = get_tree().current_scene
-	if current_scene.has_method("request_go_back"):
+	if current_scene != self and current_scene.has_method("request_go_back"):
 		current_scene.request_go_back()
-	elif current_scene.has_method("go_back"):
+	elif current_scene != self and current_scene.has_method("go_back"):
 		current_scene.go_back()
 	else:
 		SceneStack.go_back()
