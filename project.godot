@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Lam-dj"
-run/main_scene="res://scenes/instrument_selection/instrument_selection.tscn"
+run/main_scene="res://scenes/instrument_menu/instrument_menu.tscn"
 config/features=PackedStringArray("4.0", "Mobile")
 run/main_scene.web="res://scenes/instrument_selection/instrument_selection.tscn"
 
