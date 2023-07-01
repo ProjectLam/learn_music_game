@@ -19,6 +19,7 @@ fill_to = Vector2(0, 0)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_23rnj"]
 blend_mode = 1
+depth_draw_mode = 2
 albedo_color = Color(0.168627, 0.458824, 0.0980392, 1)
 albedo_texture = SubResource("GradientTexture2D_wryhc")
 
@@ -63,6 +64,7 @@ script = ExtResource("1_vwgk5")
 
 [node name="PressArea" type="MeshInstance3D" parent="."]
 unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.14458, 0)
 material_override = SubResource("StandardMaterial3D_23rnj")
 mesh = SubResource("QuadMesh_ybmi8")
 script = ExtResource("2_me2rq")
