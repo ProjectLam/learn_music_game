@@ -160,6 +160,7 @@ skeleton = NodePath("../../..")
 surface_material_override/0 = SubResource("ShaderMaterial_igkue")
 
 [node name="Notes" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.71697)
 script = ExtResource("3_60h86")
 string_colors = PackedColorArray(0.682353, 0, 0, 1, 0.682353, 0.682353, 0, 1, 0, 0, 0.682353, 1, 0.682353, 0.498039, 0, 1, 0, 0.682353, 0, 1, 0.682353, 0, 0.623529, 1)
 string_spacing = 0.36
