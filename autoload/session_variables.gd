@@ -11,6 +11,9 @@ var single_player := true
 # endless maches are for testing.
 var endless := false
 
+# currently for development uses only.
+var custom_audio_offset : float = 0.0
+
 var song_identifier: String :
 	set(sid):
 		var n_song = PlayerVariables.songs.get(sid)

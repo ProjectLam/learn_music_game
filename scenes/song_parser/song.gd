@@ -46,6 +46,7 @@ var sections: Array[SongSection]
 var events: Array[SongEvent]
 var transcription_track: SongTranscriptionTrack
 var levels: Array[SongLevel]
+var audio_offset: float = 0.0
 
 
 func get_notes_and_chords_for_difficulty(difficulty: int = -1) -> Array[NoteBase]:

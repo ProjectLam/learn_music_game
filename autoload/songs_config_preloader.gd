@@ -40,18 +40,24 @@ func load_remote_songs():
 	for key in GBackend.remote_songs_info:
 		var song_info = GBackend.remote_songs_info[key]
 		if not (song_info is Dictionary):
-			push_error("Invalid remote song info. Skipping...")
+			push_error("Invalid remote song info. Skipping %s" % key)
 			continue
 		var lead_xml_url = song_info.get("lead_xml_url")
 		var song_file_url = song_info.get("song_file_url")
+		var audio_offset = song_info.get("audio_offset", 0.0)
 		if not (lead_xml_url is String):
-			push_error("Invalid remote song xml url. Skipping...")
+			push_error("Invalid remote song xml url. Skipping %s" % key)
 			continue
 		if not (song_file_url is String):
-			push_error("Invalid remote song url. Skipping...")
+			push_error("Invalid remote song url. Skipping %s" % key)
 			continue
+		
+		if not (audio_offset is float):
+			push_error("Invalid entry for audio_offset in json descriptor. Skipping %s" % key)
+			continue
+		
 		var new_xml_request = FILE_REQUEST_SCENE.instantiate()
-		new_xml_request.request_completed.connect(func(buffer) : _on_lead_xml_received(song_file_url, buffer))
+		new_xml_request.request_completed.connect(func(buffer) : _on_lead_xml_received(song_file_url, buffer, audio_offset))
 		new_xml_request.target_url = GBackend.remote_songs_json_url.get_base_dir().path_join(lead_xml_url)
 		remote_file_requests.add_child(new_xml_request)
 	
@@ -102,9 +108,10 @@ func load_local_songs():
 			_handle_local_song_zip(sfile_path)
 
 
-func _on_lead_xml_received(song_file_path, xml_buffer):
+func _on_lead_xml_received(song_file_path, xml_buffer, audio_offset: float):
 	var sp := SongParser.new()
 	var song = sp.parse_xml_from_buffer(xml_buffer)
+	song.audio_offset = audio_offset
 	if(song):
 		song.song_music_file = song_file_path
 		song.song_music_file_access = GBackend.song_remote_access
