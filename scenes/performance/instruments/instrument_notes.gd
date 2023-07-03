@@ -74,7 +74,12 @@ var spawned_note_nodes := {}
 
 var current_good_notes := {}
 
+var custom_audio_offset := 0.0
+
 func _ready():
+	# currently used for development purposes only.
+	custom_audio_offset = SessionVariables.custom_audio_offset
+	
 	refresh_set_process()
 
 
@@ -589,7 +594,8 @@ func set_time(value: float) -> void:
 
 
 func get_audio_delay():
-	return error_margin
+#	print_debug(_song_data)
+	return error_margin - custom_audio_offset - (_song_data.audio_offset if _song_data else 0.0)
 
 
 func get_audio_delay_spacing() -> float:

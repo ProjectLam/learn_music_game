@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://bfeas0r8kqnyo"]
+[gd_scene load_steps=22 format=3 uid="uid://bfeas0r8kqnyo"]
 
 [ext_resource type="Shader" path="res://scenes/performance/lane.gdshader" id="1_d17bu"]
 [ext_resource type="Script" path="res://scenes/performance/instruments/performance_piano.gd" id="1_vwgk5"]
@@ -9,8 +9,8 @@
 [ext_resource type="PackedScene" uid="uid://cwnmxqldm8kpr" path="res://scenes/performance/instruments/piano_note.tscn" id="5_mrvpn"]
 
 [sub_resource type="Gradient" id="Gradient_esujw"]
-offsets = PackedFloat32Array(0, 0.258065, 0.784946, 1)
-colors = PackedColorArray(1, 1, 1, 1, 0.5, 0.5, 0.5, 1, 0.5, 0.5, 0.5, 1, 1, 1, 1, 1)
+offsets = PackedFloat32Array(0, 0.2, 0.45, 0.5, 0.55, 0.8, 1)
+colors = PackedColorArray(0.0980392, 0.458824, 0.156863, 1, 0.0352941, 0.160784, 0.054902, 1, 0.32, 0.0704, 0.0704, 1, 0.611765, 0.129412, 0.611765, 1, 0.32, 0.0704, 0.0704, 1, 0.0352941, 0.160784, 0.054902, 1, 0.0966, 0.46, 0.157167, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_wryhc"]
 gradient = SubResource("Gradient_esujw")
@@ -20,7 +20,6 @@ fill_to = Vector2(0, 0)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_23rnj"]
 blend_mode = 1
 depth_draw_mode = 2
-albedo_color = Color(0.168627, 0.458824, 0.0980392, 1)
 albedo_texture = SubResource("GradientTexture2D_wryhc")
 
 [sub_resource type="QuadMesh" id="QuadMesh_ybmi8"]
@@ -28,6 +27,18 @@ resource_local_to_scene = true
 size = Vector2(51.87, 2)
 center_offset = Vector3(2.944, 0, -1)
 orientation = 1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xpssk"]
+render_priority = -3
+blend_mode = 1
+depth_draw_mode = 2
+no_depth_test = true
+shading_mode = 0
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_hmgoj"]
+size = Vector2(51.87, 2)
+center_offset = Vector3(2.944, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_nvaay"]
 render_priority = 0
@@ -68,6 +79,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.14458, 0)
 material_override = SubResource("StandardMaterial3D_23rnj")
 mesh = SubResource("QuadMesh_ybmi8")
 script = ExtResource("2_me2rq")
+
+[node name="TriggerLine" type="MeshInstance3D" parent="PressArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.858698, -0.901122)
+visible = false
+material_override = SubResource("StandardMaterial3D_xpssk")
+mesh = SubResource("PlaneMesh_hmgoj")
 
 [node name="Lanes" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23, 0, 0)
