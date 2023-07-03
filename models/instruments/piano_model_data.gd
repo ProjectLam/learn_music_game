@@ -28,6 +28,8 @@ func on_note_started(frequency: float):
 
 func on_note_ended(frequency: float):
 	var note_index: int = NoteFrequency.CHROMATIC.find(frequency)
+	if note_index >= key_nodes.size():
+		return
 	var key: Node3D = get_node(key_nodes[note_index]) as Node3D
 	var prev_tween = tweens.get(key)
 	if prev_tween:
