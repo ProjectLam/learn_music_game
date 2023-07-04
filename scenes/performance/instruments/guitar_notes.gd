@@ -15,7 +15,7 @@ extends InstrumentNotes
 
 
 #func _ready():
-#	position.z -= get_audio_delay_spacing()
+#	position.z -= get_press_area_spacing()
 
 
 func spawn_note(note_index: int):

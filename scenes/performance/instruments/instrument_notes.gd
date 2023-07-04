@@ -57,8 +57,7 @@ var spawn_index := -1:
 
 # Notes that have passed by this amount of time will count as missed
 # If the player plays but the next note is more than this amount of time out, it will not be counted as played
-var error_margin: float = 0.25
-
+@export_range(0.05,1.0) var error_margin: float = 0.25
 var finished := true:
 	set = set_finished
 
@@ -598,5 +597,5 @@ func get_audio_delay():
 	return error_margin - custom_audio_offset - (_song_data.audio_offset if _song_data else 0.0)
 
 
-func get_audio_delay_spacing() -> float:
-	return spawn_distance*(2.0*get_audio_delay()/look_ahead)
+func get_press_area_spacing() -> float:
+	return spawn_distance*(2.0*error_margin/look_ahead)

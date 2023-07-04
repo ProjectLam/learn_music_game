@@ -72,7 +72,7 @@ size_flags_horizontal = 3
 
 [node name="AudioOffsetEdit" type="LineEdit" parent="Background/VBox/DevOptions/VBox/HBoxContainer"]
 layout_mode = 2
-tooltip_text = "Adds an offset to the audio. meant for finding out the right offset for a song."
+tooltip_text = "F"
 theme_override_styles/normal = SubResource("StyleBoxFlat_ow2un")
 theme_override_styles/focus = SubResource("StyleBoxFlat_ow2un")
 theme_override_styles/read_only = SubResource("StyleBoxFlat_ow2un")

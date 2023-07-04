@@ -21,8 +21,8 @@ func set_end_point(value):
 func _ready():
 	$MeshInstance3D.material_override = $MeshInstance3D.material_override.duplicate()
 	$OpenString.material_override = $MeshInstance3D.material_override
-	note_tail.material_override = note_tail.material_override.duplicate()
-	$DurationTail/OpenStringTail.material_override = note_tail.material_override
+#	note_tail.material_override = note_tail.material_override.duplicate()
+#	$DurationTail/OpenStringTail.material_override = note_tail.material_override
 
 
 func switch_to_open():
@@ -47,4 +47,5 @@ func set_slide_unpitched(to: float):
 
 
 func render():
-	note_tail.render()
+	pass
+#	note_tail.render()

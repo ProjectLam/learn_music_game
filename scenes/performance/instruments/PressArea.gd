@@ -5,7 +5,7 @@ extends MeshInstance3D
 
 func _ready():
 	var st: float = 0
-	var ed: float = notes.get_audio_delay_spacing()
+	var ed: float = notes.get_press_area_spacing()
 	var zoff := -(ed + st)*0.5
 	
 	trigger_line.position.z = zoff
