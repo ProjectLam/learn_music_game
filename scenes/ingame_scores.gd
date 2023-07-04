@@ -5,10 +5,11 @@ const SCORE_VIEWER := preload("res://scenes/performance/ingame_user_score_viewer
 
 func reload_users(ingame_users: Dictionary) -> void:
 	for child in get_children():
-		remove_child(child)
-		child.free()
+		child.queue_free()
+#		remove_child(child)
+#		child.free()
 		
-	load_users(ingame_users)
+	call_deferred("load_users",ingame_users)
 
 
 func load_users(ingame_users: Dictionary) -> void:

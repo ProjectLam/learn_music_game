@@ -194,9 +194,10 @@ func _init_multiplayer_bridge():
 		multiplayer_bridge.match_join_error.disconnect(_on_match_join_error)
 		multiplayer_bridge.match_joined.disconnect(_on_match_joined)
 		multiplayer_bridge.game_status_changed.disconnect(_on_game_status_changed)
-		remove_child(multiplayer_bridge)
-		
-		multiplayer_bridge.free()
+#		remove_child(multiplayer_bridge)
+		multiplayer_bridge.name = "tmp"
+		multiplayer_bridge.queue_free()
+#		multiplayer_bridge.free()
 		
 	multiplayer_bridge = await NakamaMultiplayerBridge.new(socket)
 	
