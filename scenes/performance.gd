@@ -117,7 +117,7 @@ func _ready():
 
 
 func _process(delta: float) -> void:
-	
+	print_debug("A", " : ", get_stack())
 	if match_ended:
 		return
 	
@@ -147,14 +147,19 @@ func _process(delta: float) -> void:
 				loading_progress_label.text = "%s/%s KB" % [downloaded/1000, totalbytes/1000]
 			else:
 				loading_progress_label.text = "Fetching..."
+	print_debug("B", " : ", get_stack())
 
 
 func print_song_loading_debug(to_print):
+	print_debug("C", " : ", get_stack())
 	if should_print_song_loading_debugs:
 		print(to_print)
+	
+	print_debug("D", " : ", get_stack())
 
 
 func _on_song_changed():
+	print_debug("E", " : ", get_stack())
 	if match_ended:
 		return
 	
@@ -171,9 +176,12 @@ func _on_song_changed():
 		song_loader.load_song(current_song)
 	else:
 		print("No song selected")
+	
+	print_debug("F", " : ", get_stack())
 
 
 func _on_song_loaded(song: Song) -> void:
+	print_debug("G", " : ", get_stack())
 	if match_ended:
 		return
 	
@@ -198,8 +206,11 @@ func _on_song_loaded(song: Song) -> void:
 		if not awaiting_song_load:
 			waiting_for_players_popup.show()
 			refresh_popup_bg()
+	
+	print_debug("H", " : ", get_stack())
 
 func is_everyone_ready() -> bool:
+	print_debug("J", " : ", get_stack())
 	if match_ended:
 		return false
 	
@@ -217,21 +228,26 @@ func is_everyone_ready() -> bool:
 	for uid in ingame_users:
 		var iuser: IngameUser = ingame_users[uid]
 		if iuser.ready_status != IngameUser.ReadyStatus.READY:
+			print_debug("K1", " : ", get_stack())
 			return false
 	
+	print_debug("K2", " : ", get_stack())
 	return true  
 
 
 func _on_game_start():
+	print_debug("L", " : ", get_stack())
 	if match_ended:
 		return
 	
 	print("Starting game")
 	awaiting_game_start = false
 	sync_audiostream_remote(true, -start_delay)
+	print_debug("M", " : ", get_stack())
 
 
 func sync_audiostream_remote(p_playing: bool, p_seek):
+	print_debug("N", " : ", get_stack())
 	if match_ended:
 		return
 	
@@ -241,15 +257,20 @@ func sync_audiostream_remote(p_playing: bool, p_seek):
 	else:
 		_seek(p_seek)
 		paused = not p_playing
+	
+	print_debug("O", " : ", get_stack())
 
 func set_paused(value: bool) -> void:
+	print_debug("P", " : ", get_stack())
 	if paused != value:
 		paused = value
 		_seek(performance_instrument.notes.time)
 #		performance_instrument.notes.paused = paused
+	print_debug("Q", " : ", get_stack())
 
 
 func is_music_playing() -> bool:
+	print_debug("R", " : ", get_stack())
 	return not paused
 
 
@@ -257,6 +278,7 @@ func is_music_playing() -> bool:
 # play/pause state, then the clients will try to relay pause requests to each other so that 
 # everyone ends up pausing. 
 @rpc("any_peer", "call_local", "reliable") func _sync_audiostream_remote(p_playing: bool, p_seek: float, relay_source):
+	print_debug("S", " : ", get_stack())
 	if match_ended:
 		return
 	if multiplayer.get_unique_id() == relay_source:
@@ -281,26 +303,33 @@ func is_music_playing() -> bool:
 			if multiplayer.get_unique_id() != multiplayer.get_remote_sender_id():
 				# relay pause command to sychronize state.
 				rpc("_sync_audiostream_remote", p_playing, p_seek, multiplayer.get_remote_sender_id())
+	print_debug("T", " : ", get_stack())
 
 
 func _on_instrument_changed():
+	print_debug("U", " : ", get_stack())
 	if match_ended:
 		return
 	
+	print_debug("V", " : ", get_stack())
 	if performance_instrument:
 		push_error("Changing performance instrument mid game is unsupported")
 		return
 	
+	print_debug("W", " : ", get_stack())
 	if not is_ready:
 		return
 	
+	print_debug("X", " : ", get_stack())
 	var instrument_data := InstrumentList.get_instrument_by_name(SessionVariables.instrument)
 	performance_instrument = instrument_data.create_performance_node()
 	add_child(performance_instrument)
 	_on_connect_instrument()
+	print_debug("Y", " : ", get_stack())
 
 
 func _seek(time: float = 0):
+	print_debug("Z", " : ", get_stack())
 	if match_ended:
 		return
 	
@@ -314,10 +343,13 @@ func _seek(time: float = 0):
 		performance_instrument.seek(time)
 		performance_instrument.notes.paused = true
 	
+	print_debug("A2", " : ", get_stack())
+	
 
 
 # performs a pause/play action.
 func media_pause_play():
+	print_debug("B2", " : ", get_stack())
 	if match_ended:
 		return
 	
@@ -329,10 +361,12 @@ func media_pause_play():
 			return
 	
 	paused = is_music_playing()
+	print_debug("C2", " : ", get_stack())
 #	_seek(audio_stream.get_playback_position())
 
 
 func media_seek(forward: bool) -> void:
+	print_debug("D2", " : ", get_stack())
 	if match_ended:
 		return
 	
@@ -351,26 +385,33 @@ func media_seek(forward: bool) -> void:
 			return
 	
 	_seek(final_time)
+	print_debug("E2", " : ", get_stack())
 
 
 func _on_QuitBtn_pressed() -> void:
+	print_debug("F2", " : ", get_stack())
 	await GBackend.leave_match_async()
 	get_tree().change_scene_to_file("res://scenes/instrument_selection/instrument_selection.tscn")
+	print_debug("G2", " : ", get_stack())
 
 
 func _exit_tree():
+	print_debug("H2", " : ", get_stack())
 	performance_instrument = null
 
 
 func _on_pause_play_button_pressed():
+	print_debug("J2", " : ", get_stack())
 	if match_ended:
 		return
 	
 	media_pause_play()
+	print_debug("K2", " : ", get_stack())
 
 
 # returns an array of all user identifiers.
 func get_all_network_users() -> Array[User]:
+	print_debug("R2", " : ", get_stack())
 	var users: PackedInt32Array = multiplayer.get_peers()
 	users.append(multiplayer.get_unique_id())
 	var ret: Array[User]
@@ -378,18 +419,23 @@ func get_all_network_users() -> Array[User]:
 	for index in users.size():
 		var user: User = MatchManager.users.dict[users[index]]
 		ret[index] = user
+	
+	print_debug("S2", " : ", get_stack())
 	return ret
 
 
 func reload_network_users():
+	print_debug("T2", " : ", get_stack())
 	var users := get_all_network_users()
 	for iuser in users:
 		if not ingame_users.has(iuser.user_id):
 			_add_new_user(iuser)
 	ingame_scores_viewer.reload_users(ingame_users)
+	print_debug("U2", " : ", get_stack())
 
 
 func _add_new_user(user: User) -> IngameUser:
+	print_debug("V2", " : ", get_stack())
 	var new_iuser = IngameUser.new()
 	# add entry
 	ingame_users[user.user_id] = new_iuser
@@ -397,19 +443,23 @@ func _add_new_user(user: User) -> IngameUser:
 	# reload ui.
 	ingame_scores_viewer.reload_users(ingame_users)
 	new_iuser.ready_status_changed.connect(_on_users_ready_changed)
-	
+	print_debug("W2", " : ", get_stack())
 	return new_iuser
 
 
 func try_pause_game() -> void:
+	print_debug("X2", " : ", get_stack())
 	if match_ended:
 		return
 	
 	if is_music_playing():
 		sync_audiostream_remote(false, 0.0)
+	
+	print_debug("Y2", " : ", get_stack())
 
 
 func _on_users_ready_changed() -> void:
+	print_debug("Z2", " : ", get_stack())
 	if match_ended:
 		return
 	
@@ -418,9 +468,12 @@ func _on_users_ready_changed() -> void:
 		_on_game_start()
 	else:
 		try_pause_game()
+	
+	print_debug("A3", " : ", get_stack())
 
 
 func _on_user_connected(peer_id: int):
+	print_debug("A4", " : ", get_stack())
 	if match_ended:
 		return
 	
@@ -434,9 +487,12 @@ func _on_user_connected(peer_id: int):
 	var user: User = MatchManager.users.dict[peer_id]
 	# ui notification to let us know a user has connected.
 	add_chat_notification("%s connected." % user.username)
+	
+	print_debug("A5", " : ", get_stack())
 
 
 func _on_user_disconnected(peer_id: int):
+	print_debug("A6", " : ", get_stack())
 	reload_network_users()
 	
 	var user: User = MatchManager.users.dict.get(peer_id)
@@ -449,26 +505,33 @@ func _on_user_disconnected(peer_id: int):
 		# multiplayer authority has disconnected. this is a problem till we design a full authoritative model.
 		push_error("Host disconnected. State not implemented.")
 		MatchManager.leave_match_async()
+	
+	print_debug("A7", " : ", get_stack())
 
 
 func _on_server_disconnected() -> void:
+	print_debug("A8", " : ", get_stack())
 	if match_ended:
 		return
 	
+	print_debug("A9", " : ", get_stack())
 	# TODO
 	pass
 
 
 func _on_connected_to_server() -> void:
+	print_debug("A10", " : ", get_stack())
 	if match_ended:
 		return
 	
 	var user: User = MatchManager.users.dict[multiplayer.get_unique_id()]
 	ingame_users[user.user_id] = self_user
 	reload_network_users()
+	print_debug("A11", " : ", get_stack())
 
 
 func update_user_data(uid: String) -> void:
+	print_debug("A12", " : ", get_stack())
 	if match_ended:
 		return
 	
@@ -478,9 +541,12 @@ func update_user_data(uid: String) -> void:
 		await GBackend.await_connection()
 		if multiplayer.multiplayer_peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED:
 			rpc("_set_user_data", self_user.get_data())
+	
+	print_debug("A13", " : ", get_stack())
 
 
 func broadcast_all_user_data() -> void:
+	print_debug("A14", " : ", get_stack())
 	if match_ended:
 		return
 	
@@ -493,9 +559,12 @@ func broadcast_all_user_data() -> void:
 			for iuser in ingame_users:
 				udata[iuser] = iuser.get_data()
 			rpc("_set_all_user_data", udata)
+	
+	print_debug("A15", " : ", get_stack())
 
 
 @rpc("authority", "call_remote", "reliable") func _set_all_user_data(data) -> void:
+	print_debug("A16", " : ", get_stack())
 	print("rpc _set_all_user_data called by {%s} with {%s}" % [multiplayer.get_remote_sender_id(), data])
 	var suser: User = MatchManager.users.dict[multiplayer.get_unique_id()]
 	for key in data:
@@ -520,9 +589,12 @@ func broadcast_all_user_data() -> void:
 		iuser.parse_data(udata)
 	ingame_scores_viewer.reload_users(ingame_users)
 	end_match_player_scores.reload_users(ingame_users)
+	
+	print_debug("A17", " : ", get_stack())
 
 
 @rpc("any_peer", "call_remote", "reliable") func _set_user_data(data) -> void:
+	print_debug("A19", " : ", get_stack())
 	print("received remote _set_user_data call with [id = %d, data = %s]" % 
 			[multiplayer.get_remote_sender_id(), data])
 	
@@ -540,27 +612,37 @@ func broadcast_all_user_data() -> void:
 
 
 func _on_connect_instrument() -> void:
+	print_debug("A20", " : ", get_stack())
 	if match_ended:
 		return
 	
 	if performance_instrument:
 		performance_instrument.notes.good_note_started.connect(_on_good_note_started)
+	
+	print_debug("A21", " : ", get_stack())
 
 
 func try_sync_user_data() -> void:
+	print_debug("A22", " : ", get_stack())
 	if not SessionVariables.single_player:
 		assert(multiplayer.has_multiplayer_peer())
 		await GBackend.await_connection()
 		if multiplayer.multiplayer_peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED:
 			rpc("_set_user_data", self_user.get_data())
+	
+	print_debug("A23", " : ", get_stack())
 
 
 func _on_good_note_started(note_index: int, time_error: float) -> void:
+	
+	print_debug("A24", " : ", get_stack())
 	if match_ended:
 		return
 	
 	self_user._on_good_note(note_index, time_error)
 	try_sync_user_data()
+	
+	print_debug("A25", " : ", get_stack())
 
 
 # temporary unique user id generator. will be replaced with a user id system.
@@ -576,11 +658,14 @@ func _on_good_note_started(note_index: int, time_error: float) -> void:
 
 
 func add_chat_notification(message: String) -> void:
+	print_debug("A26", " : ", get_stack())
 	chat_text.text += "\n%s" % message
 	chat_box.refresh()
+	print_debug("A27", " : ", get_stack())
 
 
 func refresh_popup_bg():
+	print_debug("A28", " : ", get_stack())
 	if not is_inside_tree():
 		return
 	
@@ -590,9 +675,11 @@ func refresh_popup_bg():
 			return
 	
 	popup_bg.visible = false
+	print_debug("A29", " : ", get_stack())
 
 
 func set_awaiting_song_load(value: bool) -> void:
+	print_debug("A30", " : ", get_stack())
 	if match_ended:
 		return
 	
@@ -603,9 +690,12 @@ func set_awaiting_song_load(value: bool) -> void:
 			if not awaiting_song_load and awaiting_game_start:
 				waiting_for_players_popup.show()
 			refresh_popup_bg()
+	
+	print_debug("A31", " : ", get_stack())
 
 
 func set_awaiting_game_start(value: bool) -> void:
+	print_debug("A32", " : ", get_stack())
 	if match_ended:
 		return
 	
@@ -620,9 +710,12 @@ func set_awaiting_game_start(value: bool) -> void:
 			else:
 				waiting_for_players_popup.hide()
 				refresh_popup_bg()
+	
+	print_debug("A33", " : ", get_stack())
 
 
 func _on_performance_song_started() -> void:
+	print_debug("A34", " : ", get_stack())
 	if match_ended:
 		return
 	if current_song:
@@ -630,13 +723,17 @@ func _on_performance_song_started() -> void:
 			audio_stream.stream_paused = true
 		else:
 			audio_stream.play(performance_instrument.get_audio_time())
+	
+	print_debug("A35", " : ", get_stack())
 
 
 func _on_performance_song_paused() -> void:
+	print_debug("A36", " : ", get_stack())
 	audio_stream.stream_paused = true
 
 
 func set_performance_instrument(value) -> void:
+	print_debug("A37", " : ", get_stack())
 	if match_ended:
 		return
 	
@@ -651,10 +748,11 @@ func set_performance_instrument(value) -> void:
 		if performance_instrument:
 			performance_instrument.song_paused.connect(_on_performance_song_paused)
 			performance_instrument.song_started.connect(_on_performance_song_started)
-		
+	
+	print_debug("A38", " : ", get_stack())
 
 func _on_song_end_reached() -> void:
-	
+	print_debug("A29", " : ", get_stack())
 	if SessionVariables.endless:
 		# do nothing.
 		return
@@ -673,16 +771,20 @@ func _on_song_end_reached() -> void:
 	refresh_popup_bg()
 	
 	end_match_player_scores.reload_users(ingame_users)
+	print_debug("A40", " : ", get_stack())
 
 
 func _on_audio_stream_player_finished():
+	print_debug("A41", " : ", get_stack())
 	if not paused:
 		_on_song_end_reached()
+	print_debug("A42", " : ", get_stack())
 	
 #	_on_song_changed() you can call this to restart the match. not sure if it's the best option.
 
 
 func restart_match():
+	print_debug("A43", " : ", get_stack())
 	if SessionVariables.single_player:
 		match_ended = false
 		match_end_popup.hide()
@@ -695,7 +797,11 @@ func restart_match():
 		ingame_scores_viewer.reload_users(ingame_users)
 	else:
 		push_error("Match restart for multiplayer not implemented yet.")
+	
+	print_debug("A44", " : ", get_stack())
 
 
 func _on_restart_match_button_pressed():
+	print_debug("A45", " : ", get_stack())
 	restart_match()
+	print_debug("A46", " : ", get_stack())

@@ -453,7 +453,9 @@ func _process_godot_rpc(data) -> void:
 	# forward packet for built in processing.
 	var from_peer_id = _users[from_session_id].peer_id
 	
+	print_debug("Z 11113 : ", get_stack())
 	_multiplayer_peer.deliver_packet(Marshalls.base64_to_raw(data.data), from_peer_id)
+	print_debug("Z 11114 : ", get_stack())
 
 
 # sends godot rpc buffers around.
@@ -475,7 +477,9 @@ func _on_multiplayer_peer_packet_generated(peer_id: int, buffer: PackedByteArray
 			"target_presence": target_presence,
 			"data": Marshalls.raw_to_base64(buffer),
 		})
+		print_debug("Z 11111 : ", get_stack())
 		_nakama_socket.send_match_state_async(_match_id, OPCODE_RPC_GODOT, data, target_presences)
+		print_debug("Z 11112 : ", get_stack())
 	else:
 		push_error("RPC sent while the NakamaMultiplayerBridge isn't connected!")
 
