@@ -20,18 +20,18 @@ func _ready():
 	$DurationTail.scale.z = -end_point.z
 #	$MeshInstance3D.material_override = $MeshInstance3D.material_override.duplicate()
 #	$DurationTail/MeshInstance3D.material_override = $DurationTail/MeshInstance3D.material_override.duplicate()
+#
+#func negative_feedback():
+#	if note_visuals:
+#		var nnode = NEGATIVE_FEEDBACK_SCENE.instantiate()
+#
+#		note_visuals.add_child(nnode)
+#		nnode.global_position = global_position
 
-func negative_feedback():
-	if note_visuals:
-		var nnode = NEGATIVE_FEEDBACK_SCENE.instantiate()
-		
-		note_visuals.add_child(nnode)
-		nnode.global_position = global_position
 
-
-func positive_feedback():
-	if note_visuals:
-		var nnode = POSITIVE_FEEDBACK_SCENE.instantiate()
-		
-		note_visuals.add_child(nnode)
-		nnode.global_position = global_position
+#func positive_feedback():
+#	if note_visuals:
+#		var nnode = POSITIVE_FEEDBACK_SCENE.instantiate()
+#
+#		note_visuals.add_child(nnode)
+#		nnode.global_position = global_position
