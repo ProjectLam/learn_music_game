@@ -147,12 +147,12 @@ func get_default_tune(string: int, fret: int) -> Chromatic:
 
 
 # TODO: add string mapping that correspond to guitar strings for other instruments.
-func map_note(string,fret) -> Vector2:
+func map_string_note(string,fret) -> Vector2i:
 	if (
 			tuning_pitches.size() > string and default_string_pitches[string] == tuning_pitches[string]
 			and get_real_fret_count() == default_fret_count):
 		# no conversion needed
-		return Vector2(string,fret)
+		return Vector2i(string,fret)
 	var tune = get_default_tune(string, fret)
 	# Add more fingering logic here if neede.
 	

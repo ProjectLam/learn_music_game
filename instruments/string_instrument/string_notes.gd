@@ -15,14 +15,14 @@ func _ready():
 	super._ready()
 	refresh()
 	
-	position.z += get_audio_delay_spacing()
+	position.z += get_press_area_spacing()
 
 
-# TODO : utilize map_note for slide.
+# TODO : utilize map_string_note for slide.
 func spawn_note(note_index: int):
 	super.spawn_note(note_index)
 	var note_data: Note = _performance_notes[note_index]
-	var mappedsfret = instrument_data.map_note(note_data.string, note_data.fret)
+	var mappedsfret = instrument_data.map_string_note(note_data.string, note_data.fret)
 	var string = mappedsfret.x
 	var fret = mappedsfret.y
 	var note = note_scene.instantiate()
@@ -33,7 +33,7 @@ func spawn_note(note_index: int):
 		-get_note_offset(note_data.time)
 	)
 	note.color = string_colors[string]
-	note.end_point = Vector3(note.position.x, note.position.y, -get_note_offset(note_data.time + note_data.sustain) - position.z)
+	note.end_point = Vector3(note.position.x, note.position.y, -get_note_offset(note_data.time) - position.z)
 	note.index = note_index
 	note.instrument_notes = self
 	

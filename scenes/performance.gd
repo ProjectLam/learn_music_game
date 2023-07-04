@@ -245,7 +245,8 @@ func sync_audiostream_remote(p_playing: bool, p_seek):
 func set_paused(value: bool) -> void:
 	if paused != value:
 		paused = value
-		performance_instrument.notes.paused = paused
+		_seek(performance_instrument.notes.time)
+#		performance_instrument.notes.paused = paused
 
 
 func is_music_playing() -> bool:
