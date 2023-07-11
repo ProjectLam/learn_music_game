@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dyposltgd7vvg"]
+[gd_scene load_steps=17 format=3 uid="uid://dyposltgd7vvg"]
 
 [ext_resource type="Script" path="res://instruments/string_instrument/string_instrument.gd" id="1_eo8an"]
 [ext_resource type="Script" path="res://instruments/string_instrument/strings.gd" id="1_vqd15"]
@@ -12,9 +12,88 @@
 [ext_resource type="PackedScene" uid="uid://bkhapivckj6d5" path="res://instruments/string_instrument/marker_scene.tscn" id="8_eggfd"]
 [ext_resource type="PackedScene" uid="uid://7wmbsua6umrl" path="res://scenes/performance/instruments/guitar_note.tscn" id="11_1tu5n"]
 [ext_resource type="PackedScene" uid="uid://d1j5vy3wif4qo" path="res://scenes/performance/instruments/guitar_chord.tscn" id="12_p46nm"]
+[ext_resource type="Script" path="res://instruments/string_instrument/string_letters.gd" id="13_tfnqf"]
+[ext_resource type="PackedScene" uid="uid://dbtmk51bhly6" path="res://scenes/gui_3d/straight_line_3d.tscn" id="14_jlthu"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ft4ao"]
+resource_local_to_scene = true
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0, 0, 0, 0.808)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_6kqs0"]
+resource_local_to_scene = true
+top_radius = 0.032
+bottom_radius = 0.032
+height = 1.36699
 
 [node name="StringInstrument" type="Node3D"]
 script = ExtResource("1_eo8an")
+
+[node name="KeyboardKeys" type="Node3D" parent="."]
+visible = false
+
+[node name="StringLetters" type="Node3D" parent="KeyboardKeys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.119, 0, 0)
+script = ExtResource("13_tfnqf")
+string_index = 5
+x_offset = -0.212
+pointer_alpha = 0.808
+
+[node name="Q" type="Label3D" parent="KeyboardKeys/StringLetters"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.56246, 1.39869, 0)
+pixel_size = 0.0075
+text = "Q"
+
+[node name="A" type="Label3D" parent="KeyboardKeys/StringLetters"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.56246, 0.998691, 0)
+pixel_size = 0.0075
+text = "A"
+
+[node name="Z" type="Label3D" parent="KeyboardKeys/StringLetters"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.56246, 0.598688, 0)
+pixel_size = 0.0075
+text = "Z"
+
+[node name="QPointer" parent="KeyboardKeys/StringLetters" instance=ExtResource("14_jlthu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.119, 0.810714, 0.0196444)
+start_padding = 0.237
+end_padding = 0.0
+color = Color(0, 0, 0, 0.808)
+start_position = NodePath("../Q")
+end_position = NodePath("../QStringPos")
+
+[node name="MeshContainer" parent="KeyboardKeys/StringLetters/QPointer" index="0"]
+transform = Transform3D(-0.0986441, -0.388565, -0.916126, 0, 0.920615, -0.390469, 0.995123, -0.0385174, -0.0908133, -0.838169, 0.947402, 0.063949)
+
+[node name="MeshNode" parent="KeyboardKeys/StringLetters/QPointer/MeshContainer" index="0"]
+material_override = SubResource("StandardMaterial3D_ft4ao")
+mesh = SubResource("CylinderMesh_6kqs0")
+
+[node name="APointer" parent="KeyboardKeys/StringLetters" instance=ExtResource("14_jlthu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.119, 0.567857, 0.0600433)
+start_padding = 0.237
+end_padding = 0.0
+color = Color(0, 0, 0, 0.808)
+start_position = NodePath("../A")
+end_position = NodePath("../AStringPos")
+
+[node name="ZPointer" parent="KeyboardKeys/StringLetters" instance=ExtResource("14_jlthu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.119, 0.325, 0.114602)
+start_padding = 0.237
+end_padding = 0.0
+color = Color(0, 0, 0, 0.808)
+start_position = NodePath("../Z")
+end_position = NodePath("../ZStringPos")
+
+[node name="QStringPos" type="Node3D" parent="KeyboardKeys/StringLetters"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.093, 2.025, 0.145664)
+
+[node name="AStringPos" type="Node3D" parent="KeyboardKeys/StringLetters"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.093, 1.78214, 0.0868621)
+
+[node name="ZStringPos" type="Node3D" parent="KeyboardKeys/StringLetters"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.093, 1.53929, 0.0381742)
 
 [node name="Strings" type="Node3D" parent="."]
 unique_name_in_owner = true
@@ -29,7 +108,7 @@ curvature_radius = 1.5
 
 [node name="Frets" type="Node3D" parent="."]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.36734)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.545202)
 script = ExtResource("4_dgaed")
 fret_scene = ExtResource("5_2of8n")
 nut_scene = ExtResource("5_2of8n")
@@ -54,3 +133,5 @@ note_scene = ExtResource("11_1tu5n")
 chord_scene = ExtResource("12_p46nm")
 
 [connection signal="changed" from="Frets" to="Strings" method="_on_frets_changed"]
+
+[editable path="KeyboardKeys/StringLetters/QPointer"]

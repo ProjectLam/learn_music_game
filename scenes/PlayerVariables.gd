@@ -40,6 +40,13 @@ func _ready():
 		selected_hw_instrument = config.get_value("hardware", "selected_instrument", selected_hw_instrument)
 		gameplay_instrument_name = config.get_value("gameplay", "selected_instrument_name", gameplay_instrument_name)
 		print("finished loading config")
+	
+	if AudioServer.get_input_device_list().has(selected_input_device):
+		AudioServer.input_device = selected_input_device
+	else:
+		selected_input_device = AudioServer.input_device
+	
+	InstrumentInput.select_instrument_name(selected_hw_instrument)
 
 
 func save():

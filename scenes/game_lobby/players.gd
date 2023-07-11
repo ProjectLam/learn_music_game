@@ -16,8 +16,9 @@ func _ready():
 
 func reload():
 	for c in get_children():
-		remove_child(c)
-		c.free()
+		c.queue_free()
+#		remove_child(c)
+#		c.free()
 	
 	self_status_node = USER_STATUS_SCENE.instantiate()
 	var self_user = MatchManager.users.dict[multiplayer.get_unique_id()]
@@ -55,5 +56,6 @@ func _on_peer_disconnected(peer_id: int) -> void:
 
 func _refresh_children():
 	for c in get_children():
-		if c.has_method("refresh"):
-			c.refresh()
+		if not c.is_queued_for_deletion():
+			if c.has_method("refresh"):
+				c.refresh()

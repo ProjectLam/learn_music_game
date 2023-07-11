@@ -12,9 +12,10 @@ extends InstrumentNotes
 
 
 func _ready():
+	InstrumentInput.mode = InputInstrument.Modes.KEYBOARD
+	
 	super._ready()
 	refresh()
-	
 	position.z += get_press_area_spacing()
 
 

@@ -184,3 +184,10 @@ func set_uniform_spacing(value: bool) -> void:
 		if uniform_spacing:
 			string_positions = []
 		refresh()
+
+
+func get_string_color(index: int) -> Color:
+	if index >= string_colors.size():
+		return Color.BLACK
+	else:
+		return string_colors[index]

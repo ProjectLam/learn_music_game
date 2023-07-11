@@ -4,8 +4,9 @@ const SCORE_VIEWER_SCENE := preload("res://scenes/performance/match_end_player_s
 
 func reload_users(_iusers: Dictionary):
 	for c in get_children():
-		remove_child(c)
-		c.free()
+		c.queue_free()
+#		remove_child(c)
+#		c.free()
 	
 	for iuser in _iusers:
 		var inode = SCORE_VIEWER_SCENE.instantiate()

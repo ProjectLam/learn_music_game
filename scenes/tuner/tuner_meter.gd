@@ -74,7 +74,6 @@ func note_freq_range(i: int) -> Vector2:
 var tween
 var prev_i = -1
 func _process(delta):
-	print_debug(InstrumentInput.microphone_input.current_peaks)
 	if InstrumentInput.microphone_input.current_peaks.size() != 0:
 		var freq = 0.0
 		var freq_volume = 0.0
@@ -133,7 +132,5 @@ func _process(delta):
 #		sub_freq_ratio = 1.0
 		var stick_angle = stick_start + (stick_range * sub_freq_ratio)
 		var stick_radians = deg_to_rad(stick_angle)
-		print_debug(stick_radians)
-#		tween.tween_property(stick, "rotation", stick_radians, 0.25)
 		stick.rotation = stick_radians
 		tween.play()
