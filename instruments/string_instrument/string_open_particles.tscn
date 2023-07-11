@@ -1,0 +1,45 @@
+[gd_scene load_steps=9 format=3 uid="uid://cp51npecugyj8"]
+
+[ext_resource type="Texture2D" uid="uid://dp6bcgiorl707" path="res://assets/vfx/string_emission.png" id="1_230gf"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u6e73"]
+resource_local_to_scene = true
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_230gf")
+
+[sub_resource type="Gradient" id="Gradient_1otmv"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.743284, 1)
+colors = PackedColorArray(0.775063, 0.775063, 0.775063, 1, 0.302495, 0.302495, 0.302495, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_dqgit"]
+gradient = SubResource("Gradient_1otmv")
+
+[sub_resource type="Curve" id="Curve_atece"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 1, Vector2(1, 1), 0.0, 0.0, 1, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_8pa0g"]
+width = 32
+curve = SubResource("Curve_atece")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_js4jy"]
+resource_local_to_scene = true
+gravity = Vector3(0, 0, -9.8)
+scale_curve = SubResource("CurveTexture_8pa0g")
+color_ramp = SubResource("GradientTexture1D_dqgit")
+
+[sub_resource type="QuadMesh" id="QuadMesh_d3fqv"]
+size = Vector2(50, 2)
+orientation = 1
+
+[node name="OpenStringParticles" type="GPUParticles3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.6157, 1.99006, 0)
+material_override = SubResource("StandardMaterial3D_u6e73")
+emitting = false
+amount = 6
+process_material = SubResource("ParticleProcessMaterial_js4jy")
+draw_pass_1 = SubResource("QuadMesh_d3fqv")

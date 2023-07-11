@@ -20,7 +20,9 @@ autoplay = true
 bus = &"Record"
 
 [node name="MidiInput" type="Node" parent="."]
+unique_name_in_owner = true
 script = ExtResource("3_e7eyk")
 
 [node name="ComputerKeyboardInput" type="Node" parent="."]
+unique_name_in_owner = true
 script = ExtResource("3_nascm")

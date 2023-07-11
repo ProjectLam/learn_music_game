@@ -139,120 +139,6 @@ func _on_new_frame_processed(delta, last_pure_raw_peaks):
 		
 		if trigger:
 			start_note(chromatic)
-	
-
-#func _on_new_frame_processed(delta, last_pure_raw_peaks):
-#	time_passed += delta
-#	if not is_active:
-#		return
-#	var total_magnitude: float = GAudioServerManager.get_volume(20.0, 22000.0)
-#	var total_energy: float = clamp((60.0 + linear_to_db(total_magnitude)) / 60.0, 0, 1)
-#
-#	var min_frequency: float
-#	var max_frequency: float
-#	var volume: float
-#
-#	var previous_inputs = inputs.duplicate()
-#	inputs = []
-#	var prev_last_raw_peak := last_raw_peaks
-#	last_raw_peaks = last_pure_raw_peaks
-#	var peaks := adjust_and_filter_peaks(last_raw_peaks)
-##	var prev_peaks := current_peaks.duplicate(true)
-#	old_peaks_2 = old_peaks
-#	old_peaks = current_peaks.duplicate(true)
-#	print_debug(peaks)
-#	var peak_chromatics: PackedInt32Array = []
-#	for peak in peaks:
-#		peak_chromatics.append(int(peak.z))
-#
-#	var cp_keys = current_peaks.keys()
-#	for peak_chr in cp_keys:
-#		# TODO : replace with binary search. maybe even resue peak_frequencies.
-#		var peak = current_peaks[peak_chr]
-#		if not (peak_chr in peak_chromatics):
-#			if peak["start_state"] == START_STATE.STARTED:
-#				# the note will be removed in the next audio frame.
-##				end_note(peak_chr)
-#				current_peaks[peak_chr]["start_state"] = START_STATE.STOPPING
-#				current_peaks[peak_chr]["volume"] = peak["volume"]*0.5
-#				current_peaks[peak_chr]["duration"] += delta
-#			else:
-#				current_peaks.erase(peak_chr)
-#		elif peak["start_state"] == START_STATE.STOPPING:
-#			peak["start_state"] = START_STATE.STARTED
-#
-#	var pc = current_peaks.duplicate(true)
-#	for peak in peaks:
-#		var prev_volume := 0.0
-#		var current_volume := 0.0
-#		var prev_duration := 0.0
-#		var current_duration := 0.0
-#		var chromatic := int(peak.z)
-#		var retrigger := false
-#		if current_peaks.has(chromatic):
-#			var start_state: START_STATE = current_peaks[chromatic]["start_state"]
-#			var prev_peak = current_peaks[chromatic]
-#			prev_volume = prev_peak["volume"]
-#			current_volume = peak.y
-#			current_peaks[chromatic]["volume"] = current_volume
-#			current_peaks[chromatic]["frequency"] = peak.x
-#			prev_duration = current_peaks[chromatic]["duration"]
-#			var next_duration = prev_duration + delta
-#			current_peaks[chromatic]["duration"] = next_duration
-#			if start_state == START_STATE.STARTING and next_duration > note_transition_trigger:
-#				current_peaks[chromatic]["start_state"] = START_STATE.STARTED
-#				start_note(chromatic)
-#				if Debug.print_note:
-#					print("Microphone input note %s(%s, %s Hz) started at frame :" % [NoteFrequency.CHROMATIC_NAMES[peak.z], peak.z, str(peak.x)], Engine.get_frames_drawn(), ", clearity =", current_volume, ", time =", time_passed)
-#			elif prev_duration != 0:
-#				var prev_peak_2 = old_peaks_2.get(chromatic)
-#				if prev_peak_2:
-#					var prev_vol_2 = prev_peak_2["volume"]
-#
-#					if prev_vol_2 < prev_volume and current_volume < prev_volume:
-#						if Debug.print_note:
-#							print("Microphone input. note %d retrigger detected. spike ratio : %s" % [chromatic, str(current_volume/prev_volume)])
-#						retrigger = true
-#		else:
-#			retrigger = true
-#
-#			# start notes that have been sustained for long enough.
-#		if retrigger:
-#			# new peak
-#			current_volume = peak.y
-#			if current_volume > volume_start_threshold:
-#				current_peaks[chromatic] = {
-#					"frequency": peak.x,
-#					"volume": current_volume,
-#					"duration": 0,
-#					"start_state": START_STATE.NONE,
-#				}
-#				var fmag =  GAudioServerManager.get_volume(peak.x*0.3, peak.x*3.0)
-#				var ferg = clamp((60.0 + linear_to_db(fmag)) / 60.0, 0, 1)
-#				var mvol := 0.0
-#				for peak_chr in current_peaks:
-#					var pvol = current_peaks[peak_chr]["volume"]
-#					if pvol > mvol:
-#						mvol = pvol
-#				if (total_energy > last_total_energy or peak.y > 0.95*ferg) and peak.y > mvol*0.9 :
-##					if last_started_note_chromatic != chromatic or last_started_note_timstamp >= min_retrigger_interval:
-#					current_peaks[chromatic]["start_state"] = START_STATE.STARTING
-#
-#	for peak_chr in current_peaks.keys():
-#		var start_state: START_STATE = current_peaks[peak_chr]["start_state"]
-#		if start_state != START_STATE.STARTING:
-#			continue
-#		var current_volume: float = current_peaks[peak_chr]["volume"]
-#		if current_volume < volume_start_threshold:
-#			current_peaks[peak_chr]["start_state"] = START_STATE.NONE
-#		else:
-#			var prev_peak = current_peaks.get(peak_chr - 12)
-#			if prev_peak:
-#				var pp_volume = prev_peak["volume"]
-#				if pp_volume > 0.3*current_volume:
-#					current_peaks.erase(peak_chr)
-#
-#	last_total_energy = total_energy
 
 
 func weight_volume(frequency, volume) -> float:
@@ -264,13 +150,23 @@ func get_volume(freq) -> float:
 
 
 func end_note(chromatic) -> void:
-	note_ended.emit(NoteFrequency.CHROMATIC[chromatic])
+	match(mode):
+		Modes.KEYBOARD:
+			note_ended.emit(NoteFrequency.CHROMATIC[chromatic])
+		Modes.FRET:
+			var string_fret = chromatic_index_to_fret(chromatic)
+			fret_ended.emit(string_fret.x, string_fret.y)
 
 
 func start_note(chromatic) -> void:
 	last_started_note_chromatic = chromatic
 	last_started_note_timstamp = time_passed
-	note_started.emit(NoteFrequency.CHROMATIC[chromatic])
+	match(mode):
+		Modes.KEYBOARD:
+			note_started.emit(NoteFrequency.CHROMATIC[chromatic])
+		Modes.FRET:
+			var string_fret = chromatic_index_to_fret(chromatic)
+			fret_started.emit(string_fret.x, string_fret.y)
 
 
 func adjust_and_filter_peaks(peaks) -> PackedVector3Array:
@@ -334,3 +230,9 @@ func get_inputs()->Array:
 
 func _on_deactivated() -> void:
 	current_peaks.clear()
+
+
+func get_device_names() -> PackedStringArray:
+	return [
+		AudioServer.input_device
+	]

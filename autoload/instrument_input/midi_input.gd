@@ -37,11 +37,26 @@ func get_inputs()->Array:
 func _input(event):
 	if event is InputEventMIDI and (event.message == MIDI_MESSAGE_NOTE_ON or event.message == MIDI_MESSAGE_NOTE_OFF):
 		var chromatic_index = event.pitch + MIDI_OFFSET
+		var string_fret = chromatic_index_to_fret(chromatic_index)
 		if chromatic_index < 0 or chromatic_index >= NoteFrequency.CHROMATIC.size():
 			return
-		if event.message == MIDI_MESSAGE_NOTE_ON and notes[chromatic_index] != 1:
-			notes[chromatic_index] = 1
-			note_started.emit(NoteFrequency.CHROMATIC[event.pitch + MIDI_OFFSET])
-		elif event.message == MIDI_MESSAGE_NOTE_OFF and notes[chromatic_index] != 0:
-			notes[chromatic_index] = 0
-			note_ended.emit(NoteFrequency.CHROMATIC[event.pitch + MIDI_OFFSET])
+		match(mode):
+			Modes.KEYBOARD:
+				if event.message == MIDI_MESSAGE_NOTE_ON and notes[chromatic_index] != 1:
+					notes[chromatic_index] = 1
+					note_started.emit(NoteFrequency.CHROMATIC[event.pitch + MIDI_OFFSET])
+				elif event.message == MIDI_MESSAGE_NOTE_OFF and notes[chromatic_index] != 0:
+					notes[chromatic_index] = 0
+					note_ended.emit(NoteFrequency.CHROMATIC[event.pitch + MIDI_OFFSET])
+			Modes.FRET:
+				if event.message == MIDI_MESSAGE_NOTE_ON and notes[chromatic_index] != 1:
+					notes[chromatic_index] = 1
+					fret_started.emit(string_fret.x, string_fret.y)
+				elif event.message == MIDI_MESSAGE_NOTE_OFF and notes[chromatic_index] != 0:
+					notes[chromatic_index] = 0
+					fret_ended.emit(string_fret.x, string_fret.y)
+				
+
+
+func get_device_names() -> PackedStringArray:
+	return OS.get_connected_midi_inputs()

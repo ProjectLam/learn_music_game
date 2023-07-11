@@ -71,7 +71,7 @@ var last_expected_failed := false
 
 var spawned_note_nodes := {}
 
-var current_good_notes := {}
+var _good_note_ends := {}
 
 var custom_audio_offset := 0.0
 
@@ -189,6 +189,7 @@ func start_game(song_data: Song, delay := 15.0):
 	if finished:
 		_song_data = song_data
 		spawn_index = -1
+		_good_note_ends.clear()
 	#	_performance_notes = _notes.duplicate()
 		_performance_note_index = -1
 		time = - delay
@@ -447,7 +448,7 @@ func _on_good_note_end(note_index: int, timing_error: float):
 	# missed_max_error and early_max_error. timing_error can be > 1 when the note is long
 	# and was ended very early or very late.
 	# Be mindful that notes with a duration of 0 will never have both a perfect start and perfect end
-	
+	_good_note_ends[note_index] = timing_error
 	if Debug.print_note:
 		print("Good note ended with an index of ", note_index, " and a timing error of ", timing_error)
 
@@ -593,7 +594,6 @@ func set_time(value: float) -> void:
 
 
 func get_audio_delay():
-#	print_debug(_song_data)
 	return error_margin - custom_audio_offset - (_song_data.audio_offset if _song_data else 0.0)
 
 

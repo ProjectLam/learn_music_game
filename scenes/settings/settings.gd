@@ -1,15 +1,25 @@
 extends Control
 
-@onready var home_dir_label = %HomeDirLabel
+@onready var audio_device = %AudioDevice as OptionButton
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	home_dir_label.text = "Put songs in : %s" % OS.get_user_data_dir()
+	refresh()
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
+const refresh_interval := 60
+var refresh_counter := 0
 func _process(delta):
-	pass
+	refresh_counter += 1
+	if refresh_counter == refresh_interval:
+		refresh_counter = 0
+		refresh()
+
+
+func refresh():
+	if not is_inside_tree():
+		return
+	
+	_init_audio_devices()
 
 
 func go_back():
@@ -20,9 +30,16 @@ func go_back():
 		hide()
 
 
-func request_go_back():
-	go_back()
+func _init_audio_devices():
+	audio_device.clear()
+	for device in AudioServer.get_input_device_list():
+		audio_device.add_item(device)
+		if device == AudioServer.input_device:
+			audio_device.selected = audio_device.item_count - 1
 
 
-func _on_quit_button_pressed():
-	request_go_back()
+func _on_audio_device_item_selected(index):
+	var dev_name: String = audio_device.get_item_text(index)
+	AudioServer.input_device = dev_name
+	PlayerVariables.selected_input_device = dev_name
+	PlayerVariables.save()

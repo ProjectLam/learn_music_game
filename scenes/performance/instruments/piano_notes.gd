@@ -8,6 +8,11 @@ signal note_destroyed()
 var last_center: float = 0.0
 
 
+func _ready():
+	InstrumentInput.mode = InputInstrument.Modes.KEYBOARD
+	super._ready()
+
+
 func spawn_note(note_index: int):
 	super.spawn_note(note_index)
 	var note_data: Note = _performance_notes[note_index]

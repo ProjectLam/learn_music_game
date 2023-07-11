@@ -11,8 +11,9 @@ signal song_paused
 @onready var notes = $Notes
 
 func _ready():
-	notes.song_started.connect(_on_song_started)
-	notes.song_paused.connect(_on_song_paused)
+	if not Engine.is_editor_hint():
+		notes.song_started.connect(_on_song_started)
+		notes.song_paused.connect(_on_song_paused)
 
 
 func _process(_delta):

@@ -1,0 +1,46 @@
+[gd_scene load_steps=10 format=3 uid="uid://8yrmodbth1mx"]
+
+[ext_resource type="Texture2D" uid="uid://dp6bcgiorl707" path="res://assets/vfx/string_emission.png" id="1_jb2t7"]
+[ext_resource type="Script" path="res://instruments/string_instrument/string_particles.gd" id="2_t7pva"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u6e73"]
+resource_local_to_scene = true
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_jb2t7")
+
+[sub_resource type="Gradient" id="Gradient_qtxyg"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.743284, 1)
+colors = PackedColorArray(0.775063, 0.775063, 0.775063, 1, 0.302495, 0.302495, 0.302495, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_nnv3u"]
+gradient = SubResource("Gradient_qtxyg")
+
+[sub_resource type="Curve" id="Curve_ool8o"]
+_data = [Vector2(0, 0.148014), 0.0, 0.851986, 0, 1, Vector2(1, 1), 0.851986, 0.0, 1, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_4605j"]
+width = 32
+curve = SubResource("Curve_ool8o")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_lid78"]
+gravity = Vector3(0, 0, -9.8)
+scale_curve = SubResource("CurveTexture_4605j")
+color_ramp = SubResource("GradientTexture1D_nnv3u")
+
+[sub_resource type="QuadMesh" id="QuadMesh_jnn0s"]
+size = Vector2(5, 2)
+orientation = 1
+
+[node name="FertParticles" type="GPUParticles3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.20872, 1.99006, 0)
+material_override = SubResource("StandardMaterial3D_u6e73")
+amount = 6
+process_material = SubResource("ParticleProcessMaterial_lid78")
+draw_pass_1 = SubResource("QuadMesh_jnn0s")
+script = ExtResource("2_t7pva")
+mesh_size = Vector2(5, 2)
