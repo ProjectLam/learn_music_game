@@ -62,4 +62,5 @@ visible = false
 mesh = SubResource("CylinderMesh_1v8w5")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+visible = false
 mesh = SubResource("SphereMesh_kihgv")

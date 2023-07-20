@@ -28,7 +28,7 @@ func refresh():
 	var fret_spacing = frets.get_fret_x_spacing()
 	for fret_index in frets.fret_count:
 		var lane_node = lane_scene.instantiate()
-		var xloc = -global_position.x + frets.get_note_global_x(fret_index)
+		var xloc = -global_position.x + frets.get_note_global_x(fret_index + 1)
 		lane_node.position.x = xloc
 		lane_node.set("fret_spacing", fret_spacing)
 		add_child(lane_node)

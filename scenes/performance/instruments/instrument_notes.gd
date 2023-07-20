@@ -13,6 +13,10 @@ signal song_started
 signal song_paused
 signal song_end_reached
 signal song_changed
+signal input_note_started
+signal input_note_ended
+signal input_fret_started
+signal input_fret_ended
 
 @export var note_scene: PackedScene
 @export var chord_scene: PackedScene
@@ -21,6 +25,10 @@ signal song_changed
 @export var note_speed: float = 10.0
 
 @onready var note_visuals: Node3D = get_node_or_null("%NoteVisuals")
+@onready var instrument_data: InstrumentData
+
+# search up to next 10 notes to choose fret for the note.
+const FRET_MATCH_DEPTH := 10
 
 var difficulty: DIFFICULTY = DIFFICULTY.BASIC_TRIGGER
 
@@ -41,6 +49,10 @@ var _performance_note_index: int = -1:
 # Indices of notes the player is currently playing
 # (pitch : start time)
 var _current_pitches := {}
+var _active_input_pitches := {}
+var _prev_active_input_pitches := {}
+var _active_frets := {}
+var _prev_active_frets := {}
 # (pitch : { start: start time, end: end time} )
 var _pitch_history := {}
 
@@ -74,6 +86,8 @@ var spawned_note_nodes := {}
 var _good_note_ends := {}
 
 var custom_audio_offset := 0.0
+
+var _current_frets: Array[Vector2i] = []
 
 func _ready():
 	# currently used for development purposes only.
@@ -138,15 +152,85 @@ func _process(delta):
 				for csnote in snote:
 					csnote.set("clip", (time - next_note.time)/next_note.sustain)
 	
-#	if time > end_time:
-#		print("game finished!")
-#		set_process(false)
-#		game_finished.emit()
-	
 	for n in spawned_note_nodes:
 		assert(n <= spawn_index)
 	
 	refresh_note_nodes()
+	_process_frets(delta)
+
+
+func _process_frets(delta: float) -> void:
+	var cf := _current_frets.duplicate()
+	_current_frets.clear()
+	
+	if instrument_data:
+		for chromatic in _active_input_pitches.keys():
+			var fret := translate_chromatic_to_fret(chromatic)
+			var direct_fret = _active_input_pitches[chromatic]
+			var pitch := NoteFrequency.CHROMATIC[chromatic]
+			if not _prev_active_input_pitches.has(chromatic):
+				# process pitch start
+				input_note_started.emit(chromatic)
+				if not _active_frets.has(fret):
+					_active_frets[fret] = direct_fret
+					if InstrumentInput.is_input_direct_fret():
+						input_fret_started.emit(direct_fret.x, direct_fret.y)
+					else:
+						input_fret_started.emit(fret.x, fret.y)
+	#				_on_input_fret_started(fret.x, fret.y)
+			else:
+				# check for fret change.
+				if not _active_frets.has(fret):
+					for afret in _active_frets.keys():
+						var apitch := instrument_data.get_tune(afret.x, afret.y)
+						if apitch == pitch:
+							var direct_afret = _active_frets[afret]
+							_active_frets.erase(afret)
+							if InstrumentInput.is_input_direct_fret():
+								input_fret_ended.emit(direct_fret.x, direct_fret.y)
+							else:
+								input_fret_ended.emit(afret.x, afret.y)
+					_active_frets[fret] = true
+					if InstrumentInput.is_input_direct_fret():
+						input_fret_started.emit(direct_fret.x, direct_fret.y)
+					else:
+						input_fret_started.emit(fret.x, fret.y)
+		
+		
+		for chromatic in _prev_active_input_pitches.keys():
+			if not _active_input_pitches.has(chromatic):
+				# process end pitch.
+	#			var pitch := NoteFrequency.CHROMATIC[chromatic]
+				input_note_ended.emit(chromatic)
+				
+				for afret in _active_frets.keys():
+					var direct_fret = _active_frets[afret]
+					var achromatic := instrument_data.get_tune(afret.x, afret.y)
+					if achromatic == chromatic:
+						_active_frets.erase(afret)
+						
+						if InstrumentInput.is_input_direct_fret():
+							input_fret_ended.emit(direct_fret.x, direct_fret.y)
+						else:
+							input_fret_ended.emit(afret.x, afret.y)
+		
+	else:
+		for chromatic in _active_input_pitches.keys():
+			var pitch := NoteFrequency.CHROMATIC[chromatic]
+			if not _prev_active_input_pitches.has(chromatic):
+				# process pitch start
+				input_note_started.emit(chromatic)
+		for chromatic in _prev_active_input_pitches.keys():
+			if not _active_input_pitches.has(chromatic):
+				# process end pitch.
+	#			var pitch := NoteFrequency.CHROMATIC[chromatic]
+				input_note_ended.emit(chromatic)
+	
+	_prev_active_input_pitches = _active_input_pitches.duplicate()
+#	_active_input_pitches = {}
+	
+	
+#	for note in _current_pitches
 
 
 func refresh_note_nodes():
@@ -200,6 +284,10 @@ func start_game(song_data: Song, delay := 15.0):
 			InstrumentInput.note_started.connect(_on_input_note_started)
 		if not InstrumentInput.note_ended.is_connected(_on_input_note_ended):
 			InstrumentInput.note_ended.connect(_on_input_note_ended)
+		if not InstrumentInput.fret_started.is_connected(_on_input_fret_started):
+			InstrumentInput.fret_started.connect(_on_input_fret_started)
+		if not InstrumentInput.fret_ended.is_connected(_on_input_fret_ended):
+			InstrumentInput.fret_ended.connect(_on_input_fret_ended)
 		finished = false
 	
 	if get_audio_time() >= 0.0:
@@ -332,12 +420,17 @@ func spawn_chord(note_index: int):
 	spawn_index = max(note_index, spawn_index)
 
 
-func _on_input_note_started(pitch: float):
+func _on_input_note_started(pitch: float, p_string: int = 0, p_fret: int = 0):
+	if not is_processing():
+		return
+	
+	var chromatic = NoteFrequency.CHROMATIC.find(pitch)
 	# Pitch will already be quantized at this point
-	
-	
+	if chromatic >= 0:
+		_active_input_pitches[chromatic] = Vector2i(p_string, p_fret)
 	if _current_pitches.has(pitch):
-		_on_input_note_ended(pitch)
+		_on_note_ended(pitch)
+	
 	
 	if _performance_note_index >= _performance_notes.size():
 		return
@@ -370,10 +463,31 @@ func _on_input_note_started(pitch: float):
 			var st_time = cpitch["start_time"]
 	
 	if difficulty == DIFFICULTY.BASIC_TRIGGER:
-		call_deferred("_on_input_note_ended", pitch)
+		call_deferred("_on_note_ended", pitch, false)
 
 
-func _on_input_note_ended(pitch: float):
+func _on_input_fret_started(p_string: int, p_fret: int) -> void:
+	if not is_processing():
+		return
+	if instrument_data:
+		var pitch = NoteFrequency.CHROMATIC[instrument_data.get_tune(p_string, p_fret)]
+		_on_input_note_started(pitch, p_string, p_fret)
+		
+#	input_fret_started.emit(p_string, p_fret)
+	pass
+
+
+#func _on_input_fret_note_started(p_string: int, p_fret: int) -> void:
+#
+
+func _on_input_note_ended(pitch: float) -> void:
+	var chromatic := NoteFrequency.CHROMATIC.find(pitch)
+	if chromatic >= 0:
+		_active_input_pitches.erase(chromatic)
+	_on_note_ended(pitch)
+
+
+func _on_note_ended(pitch: float):
 	var st_time = _current_pitches.get(pitch)
 	if st_time == null:
 		return
@@ -414,6 +528,14 @@ func _on_input_note_ended(pitch: float):
 		
 		includes[pitch] = { "start_time": st_time, "end_time": time }
 		finalize_chord(_performance_note_index, includes)
+
+
+func _on_input_fret_ended(p_string: int, p_fret: int) -> void:
+	if instrument_data:
+		var pitch = NoteFrequency.CHROMATIC[instrument_data.get_tune(p_string, p_fret)]
+		_on_input_note_ended(pitch)
+#	input_fret_ended.emit(p_string, p_fret)
+	pass
 
 
 func _play_note(index: int):
@@ -599,3 +721,54 @@ func get_audio_delay():
 
 func get_press_area_spacing() -> float:
 	return spawn_distance*(2.0*error_margin/look_ahead)
+
+
+func translate_chromatic_to_fret(chromatic: int) -> Vector2i:
+	var pitch := NoteFrequency.CHROMATIC[chromatic]
+	if instrument_data == null:
+		return Vector2i(0,0)
+
+
+	for index in range(_performance_note_index, min(_performance_note_index + FRET_MATCH_DEPTH, _performance_notes.size() - 1)):
+		var note_data: NoteBase = _performance_notes[index]
+		
+		if note_data is Note:
+			var note_pitch: float = note_data.get_pitch()
+			if note_pitch != pitch:
+				continue
+			
+			var mappedsfret = instrument_data.map_string_note(note_data.string, note_data.fret)
+			var string = mappedsfret.x
+			var fret = mappedsfret.y
+			return Vector2i(string, fret)
+		elif note_data is Chord:
+			var note_frets: Array[int] = note_data.get_frets()
+			for string in note_frets.size():
+				var fret = note_frets[string]
+				if fret == -1:
+					continue
+				
+				var fpitch: float = note_data.get_pitch_for_string(string)
+				if fpitch == pitch:
+					return Vector2i(string, fret)
+
+
+	var min_fret := 9999
+	var min_sring := -1
+	# note was not found. we will choose the lowest distance.
+	for string_index in instrument_data.tuning_pitches.size():
+		var string_chromatic := instrument_data.tuning_pitches[string_index]
+		var fdistance := chromatic - string_chromatic
+		if fdistance < 0:
+			continue
+		
+		if fdistance < min_fret:
+			min_fret = fdistance
+			min_sring = string_index
+
+
+	if min_sring >= 0:
+		assert(instrument_data.get_tune(min_sring, min_fret) == chromatic)
+		return Vector2i(min_sring, min_fret)
+	else:
+		return Vector2i(0,0)

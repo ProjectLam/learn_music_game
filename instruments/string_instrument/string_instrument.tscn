@@ -1,11 +1,13 @@
-[gd_scene load_steps=17 format=3 uid="uid://dyposltgd7vvg"]
+[gd_scene load_steps=19 format=3 uid="uid://dyposltgd7vvg"]
 
 [ext_resource type="Script" path="res://instruments/string_instrument/string_instrument.gd" id="1_eo8an"]
 [ext_resource type="Script" path="res://instruments/string_instrument/strings.gd" id="1_vqd15"]
+[ext_resource type="Script" path="res://instruments/string_instrument/keyboard_keys.gd" id="2_cqryf"]
 [ext_resource type="PackedScene" uid="uid://154vi63fbykf" path="res://instruments/string_instrument/string_scene.tscn" id="2_tk1yq"]
 [ext_resource type="Script" path="res://instruments/string_instrument/frets.gd" id="4_dgaed"]
 [ext_resource type="Script" path="res://instruments/string_instrument/string_notes.gd" id="4_t2mvm"]
 [ext_resource type="PackedScene" path="res://instruments/string_instrument/fret_mesh.tscn" id="5_2of8n"]
+[ext_resource type="Script" path="res://instruments/string_instrument/KeyboardVFX.gd" id="5_71l21"]
 [ext_resource type="Script" path="res://instruments/string_instrument/lanes.gd" id="5_rpnvn"]
 [ext_resource type="PackedScene" uid="uid://d3d5rumdr4oic" path="res://instruments/string_instrument/lane_scene.tscn" id="6_wmbf5"]
 [ext_resource type="Script" path="res://instruments/string_instrument/markers.gd" id="7_li1tq"]
@@ -25,46 +27,45 @@ albedo_color = Color(0, 0, 0, 0.808)
 resource_local_to_scene = true
 top_radius = 0.032
 bottom_radius = 0.032
-height = 1.36699
+height = 2.23572
 
 [node name="StringInstrument" type="Node3D"]
 script = ExtResource("1_eo8an")
 
 [node name="KeyboardKeys" type="Node3D" parent="."]
-visible = false
+script = ExtResource("2_cqryf")
 
 [node name="StringLetters" type="Node3D" parent="KeyboardKeys"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.119, 0, 0)
 script = ExtResource("13_tfnqf")
-string_index = 5
 x_offset = -0.212
 pointer_alpha = 0.808
 
 [node name="Q" type="Label3D" parent="KeyboardKeys/StringLetters"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.56246, 1.39869, 0)
-pixel_size = 0.0075
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.37097, 1.96038, 0)
+pixel_size = 0.015
 text = "Q"
 
 [node name="A" type="Label3D" parent="KeyboardKeys/StringLetters"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.56246, 0.998691, 0)
-pixel_size = 0.0075
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.37097, 1.23879, 0)
+pixel_size = 0.015
 text = "A"
 
 [node name="Z" type="Label3D" parent="KeyboardKeys/StringLetters"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.56246, 0.598688, 0)
-pixel_size = 0.0075
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.37097, 0.411096, 0)
+pixel_size = 0.015
 text = "Z"
 
 [node name="QPointer" parent="KeyboardKeys/StringLetters" instance=ExtResource("14_jlthu")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.119, 0.810714, 0.0196444)
-start_padding = 0.237
+start_padding = 0.316
 end_padding = 0.0
 color = Color(0, 0, 0, 0.808)
 start_position = NodePath("../Q")
 end_position = NodePath("../QStringPos")
 
 [node name="MeshContainer" parent="KeyboardKeys/StringLetters/QPointer" index="0"]
-transform = Transform3D(-0.0986441, -0.388565, -0.916126, 0, 0.920615, -0.390469, 0.995123, -0.0385174, -0.0908133, -0.838169, 0.947402, 0.063949)
+transform = Transform3D(-0.0086233, 0.450529, -0.89272, 0, 0.892753, 0.450546, 0.999963, 0.00388519, -0.00769848, -1.20994, 0.503647, -0.00860584)
 
 [node name="MeshNode" parent="KeyboardKeys/StringLetters/QPointer/MeshContainer" index="0"]
 material_override = SubResource("StandardMaterial3D_ft4ao")
@@ -72,7 +73,7 @@ mesh = SubResource("CylinderMesh_6kqs0")
 
 [node name="APointer" parent="KeyboardKeys/StringLetters" instance=ExtResource("14_jlthu")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.119, 0.567857, 0.0600433)
-start_padding = 0.237
+start_padding = 0.316
 end_padding = 0.0
 color = Color(0, 0, 0, 0.808)
 start_position = NodePath("../A")
@@ -80,20 +81,23 @@ end_position = NodePath("../AStringPos")
 
 [node name="ZPointer" parent="KeyboardKeys/StringLetters" instance=ExtResource("14_jlthu")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.119, 0.325, 0.114602)
-start_padding = 0.237
+start_padding = 0.316
 end_padding = 0.0
 color = Color(0, 0, 0, 0.808)
 start_position = NodePath("../Z")
 end_position = NodePath("../ZStringPos")
 
 [node name="QStringPos" type="Node3D" parent="KeyboardKeys/StringLetters"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.093, 2.025, 0.145664)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.093, 0.810714, 0.0196444)
 
 [node name="AStringPos" type="Node3D" parent="KeyboardKeys/StringLetters"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.093, 1.78214, 0.0868621)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.093, 0.567857, 0.0600433)
 
 [node name="ZStringPos" type="Node3D" parent="KeyboardKeys/StringLetters"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.093, 1.53929, 0.0381742)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.093, 0.325, 0.114602)
+
+[node name="KeyboardVFX" type="Node3D" parent="."]
+script = ExtResource("5_71l21")
 
 [node name="Strings" type="Node3D" parent="."]
 unique_name_in_owner = true
@@ -129,8 +133,14 @@ marker_positions = Array[Vector2i]([Vector2i(2, 1), Vector2i(4, 1), Vector2i(6, 
 [node name="Notes" type="Node3D" parent="."]
 unique_name_in_owner = true
 script = ExtResource("4_t2mvm")
+string_colors = null
+string_y_offset = null
+has_slide = null
 note_scene = ExtResource("11_1tu5n")
 chord_scene = ExtResource("12_p46nm")
+spawn_distance = null
+note_speed = null
+error_margin = null
 
 [connection signal="changed" from="Frets" to="Strings" method="_on_frets_changed"]
 

@@ -20,6 +20,10 @@ var gameplay_instrument_data: InstrumentData :
 	set = set_gameplay_instrument_data,
 	get = get_gameplay_instrument_data
 
+
+# saved settings based on input device name
+var microphone_input_profiles := {}
+
 var config = ConfigFile.new()
 
 
@@ -39,6 +43,7 @@ func _ready():
 		selected_input_device = config.get_value("hardware", "selected_input_device", selected_input_device)
 		selected_hw_instrument = config.get_value("hardware", "selected_instrument", selected_hw_instrument)
 		gameplay_instrument_name = config.get_value("gameplay", "selected_instrument_name", gameplay_instrument_name)
+		microphone_input_profiles = config.get_value("hardware", "microphone_input_profiles", {})
 		print("finished loading config")
 	
 	if AudioServer.get_input_device_list().has(selected_input_device):
@@ -54,6 +59,7 @@ func save():
 	config.set_value("hardware", "selected_input_device", selected_input_device)
 	config.set_value("hardware", "selected_instrument", selected_hw_instrument)
 	config.set_value("gameplay", "selected_instrument_name", gameplay_instrument_name)
+	config.set_value("hardware", "microphone_input_profiles", microphone_input_profiles)
 	
 	# Save it to a file (overwrite if already exists).
 	config.save(CFG_FILENAME)

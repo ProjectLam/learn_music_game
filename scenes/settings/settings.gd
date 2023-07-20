@@ -40,6 +40,4 @@ func _init_audio_devices():
 
 func _on_audio_device_item_selected(index):
 	var dev_name: String = audio_device.get_item_text(index)
-	AudioServer.input_device = dev_name
-	PlayerVariables.selected_input_device = dev_name
-	PlayerVariables.save()
+	GAudioServerManager.set_input_device(dev_name)
