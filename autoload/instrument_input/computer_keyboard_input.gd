@@ -109,9 +109,11 @@ func _process_keyboard_event(event):
 func _process_fret_event(event):
 	match(event.physical_keycode):
 		KEY_MINUS:
-			string_index -= 1
+			if event.pressed:
+				string_index -= 1
 		KEY_EQUAL:
-			string_index += 1
+			if event.pressed:
+				string_index += 1
 		KEY_Q:
 			toggle_fret(string_index + 2, 0, event.pressed)
 		KEY_W:
@@ -212,7 +214,7 @@ func set_string_count(value: int) -> void:
 
 
 func set_string_index(value: int) -> void:
-	value = clamp(value, 1, string_count - 1)
+	value = clamp(value, 0, string_count - 3)
 	if string_index != value:
 		string_index = value
 		octave_changed.emit()

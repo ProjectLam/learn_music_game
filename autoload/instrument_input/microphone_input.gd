@@ -54,12 +54,17 @@ var note_transition_trigger := 0.05
 var current_peaks: Dictionary = {}
 var old_peaks: Dictionary = {}
 var old_peaks_2: Dictionary = {}
+var last_volume: float = 0.0
 
 func _ready():
 	super._ready()
 	
 	deactivated.connect(_on_deactivated)
 	GAudioServerManager.new_frame_processed.connect(_on_new_frame_processed)
+	
+	var mic_profile = PlayerVariables.microphone_input_profiles.get(PlayerVariables.selected_input_device)
+	if mic_profile:
+		load_input_profile(mic_profile)
 
 
 # the current algorithm does not support note trails or chords.
@@ -78,9 +83,10 @@ func _on_new_frame_processed(delta, last_pure_raw_peaks):
 	time_passed += delta
 	if not is_active:
 		return
-	var total_magnitude: float = GAudioServerManager.get_volume(20.0, 22000.0)
-	var total_energy: float = clamp((60.0 + linear_to_db(total_magnitude)) / 60.0, 0, 1)
-
+	var total_magnitude: float = GAudioServerManager.get_total_record_volume()#GAudioServerManager.get_volume(0.0, 22000.0)
+#	var total_energy: float = clamp((60.0 + linear_to_db(total_magnitude)) / 60.0, 0, 1)
+	var total_energy: float = clamp((60.0 + total_magnitude) / 60.0, 0, 1)
+	last_volume = total_energy
 	var min_frequency: float
 	var max_frequency: float
 	var volume: float
@@ -99,11 +105,15 @@ func _on_new_frame_processed(delta, last_pure_raw_peaks):
 	
 	var cp_keys = current_peaks.keys()
 	
+	var current_ended_notes: PackedInt32Array = []
+	var current_started_notes: PackedInt32Array = []
+	
 	for peak_chr in cp_keys:
 		var peak = current_peaks[peak_chr]
 		if not (peak_chr in peak_chromatics):
 			current_peaks.erase(peak_chr)
-			end_note(peak_chr)
+			current_ended_notes.append(peak_chr)
+#			end_note(peak_chr)
 	
 	for peak in peaks:
 		var chromatic := int(peak.z)
@@ -120,6 +130,7 @@ func _on_new_frame_processed(delta, last_pure_raw_peaks):
 			prev_volume = current_peaks[chromatic]["volume"]
 			prev_duration = current_peaks[chromatic]["duration"]
 			current_duration = prev_duration + delta
+			trigger = false
 		
 		if old_peaks_2.has(chromatic):
 			prev_volume_2 = old_peaks_2[chromatic]["volume"]
@@ -138,7 +149,14 @@ func _on_new_frame_processed(delta, last_pure_raw_peaks):
 		}
 		
 		if trigger:
-			start_note(chromatic)
+			current_started_notes.append(chromatic)
+#			start_note(chromatic)
+	# signal emissions are done at the end so that the updated states are accessible to connected methods.
+	for enote in current_ended_notes:
+		end_note(enote)
+	
+	for snote in current_started_notes:
+		start_note(snote)
 
 
 func weight_volume(frequency, volume) -> float:
@@ -150,23 +168,23 @@ func get_volume(freq) -> float:
 
 
 func end_note(chromatic) -> void:
-	match(mode):
-		Modes.KEYBOARD:
-			note_ended.emit(NoteFrequency.CHROMATIC[chromatic])
-		Modes.FRET:
-			var string_fret = chromatic_index_to_fret(chromatic)
-			fret_ended.emit(string_fret.x, string_fret.y)
+	note_ended.emit(NoteFrequency.CHROMATIC[chromatic])
+#	match(mode):
+#		Modes.KEYBOARD:
+#		Modes.FRET:
+#			var string_fret = chromatic_index_to_fret(chromatic)
+#			fret_ended.emit(string_fret.x, string_fret.y)
 
 
 func start_note(chromatic) -> void:
 	last_started_note_chromatic = chromatic
 	last_started_note_timstamp = time_passed
-	match(mode):
-		Modes.KEYBOARD:
-			note_started.emit(NoteFrequency.CHROMATIC[chromatic])
-		Modes.FRET:
-			var string_fret = chromatic_index_to_fret(chromatic)
-			fret_started.emit(string_fret.x, string_fret.y)
+	note_started.emit(NoteFrequency.CHROMATIC[chromatic])
+#	match(mode):
+#		Modes.KEYBOARD:
+#		Modes.FRET:
+#			var string_fret = chromatic_index_to_fret(chromatic)
+#			fret_started.emit(string_fret.x, string_fret.y)
 
 
 func adjust_and_filter_peaks(peaks) -> PackedVector3Array:
@@ -175,7 +193,6 @@ func adjust_and_filter_peaks(peaks) -> PackedVector3Array:
 	# TODO : make these calculations independent of audio server.
 	var total_magnitude: float = GAudioServerManager.get_volume(0.0, 22000.0)
 	var total_energy: float = clamp((60.0 + linear_to_db(total_magnitude)) / 60.0, 0, 1)
-	
 	var filter_peak := volume_end_threshold
 	var ret: PackedVector3Array = []
 	var chromatic_index := NoteFrequency.CHROMATIC.size() - 1
@@ -186,6 +203,7 @@ func adjust_and_filter_peaks(peaks) -> PackedVector3Array:
 		else:
 			break
 	var chromatic_end = max(0, chromatic_index - chromatic_filter_depth)
+	
 	# peaks are ordered. highest frequency comes first.
 	# chromatics are ordered in the opposite way.
 	# TODO : optimize this loop.
@@ -236,3 +254,38 @@ func get_device_names() -> PackedStringArray:
 	return [
 		AudioServer.input_device
 	]
+
+
+func generate_input_profile() -> Dictionary:
+	return {
+		"volume_end_threshold": volume_end_threshold,
+		"volume_start_threshold": volume_start_threshold,
+	}
+
+
+func load_input_profile(prof: Dictionary) -> void:
+	reset_input_profile()
+	
+	var vet = prof.get("volume_end_threshold")
+	var vst = prof.get("volume_start_threshold")
+	
+	if vet is float:
+		volume_end_threshold = vet
+	
+	if vst is float:
+		volume_start_threshold = vst
+
+
+func reset_input_profile() -> void:
+	volume_start_threshold = 0.15
+	volume_end_threshold = 0.05
+
+
+func save_volume_profile():
+	PlayerVariables.microphone_input_profiles[PlayerVariables.selected_input_device] = generate_input_profile()
+	PlayerVariables.save()
+
+
+func reload_volume_profile():
+	var prof = PlayerVariables.microphone_input_profiles.get(PlayerVariables.selected_input_device)
+	

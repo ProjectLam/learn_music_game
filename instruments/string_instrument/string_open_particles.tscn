@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://cp51npecugyj8"]
+[gd_scene load_steps=10 format=3 uid="uid://cp51npecugyj8"]
 
 [ext_resource type="Texture2D" uid="uid://dp6bcgiorl707" path="res://assets/vfx/string_emission.png" id="1_230gf"]
+[ext_resource type="Script" path="res://instruments/string_instrument/string_particles.gd" id="2_k8lpb"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u6e73"]
 resource_local_to_scene = true
@@ -33,13 +34,14 @@ scale_curve = SubResource("CurveTexture_8pa0g")
 color_ramp = SubResource("GradientTexture1D_dqgit")
 
 [sub_resource type="QuadMesh" id="QuadMesh_d3fqv"]
-size = Vector2(50, 2)
+size = Vector2(59.8, 1.15)
 orientation = 1
 
 [node name="OpenStringParticles" type="GPUParticles3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.6157, 1.99006, 0)
 material_override = SubResource("StandardMaterial3D_u6e73")
-emitting = false
 amount = 6
 process_material = SubResource("ParticleProcessMaterial_js4jy")
 draw_pass_1 = SubResource("QuadMesh_d3fqv")
+script = ExtResource("2_k8lpb")
+mesh_size = Vector2(52, 1)

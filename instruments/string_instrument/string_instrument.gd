@@ -36,6 +36,8 @@ func refresh():
 	for c in get_children():
 		if c.has_method("refresh"):
 			c.refresh()
+	
+	InstrumentInput.computer_keyboard_input.string_count = strings.string_count
 
 
 func set_instrument_data(value: InstrumentData) -> void:

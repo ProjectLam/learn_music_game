@@ -57,9 +57,32 @@ func get_record_peaks() -> PackedVector2Array:
 	return arr
 
 
-func get_volume(start_frequency, end_frequency):
+func get_volume(start_frequency, end_frequency) -> float:
 	var spectrum = get_spectrum_analyzer()
 	return spectrum.get_magnitude_for_frequency_range(start_frequency, end_frequency).length()
+
+
+func get_total_record_volume() -> float:
+#	var spectrum = get_spectrum_analyzer()
+#	var ranges: Array[Vector2i] = [
+#		Vector2i(31.5,63),
+#		Vector2i(63,125),
+#		Vector2i(250,500),
+#		Vector2i(500,1000),
+#		Vector2i(1000,2000),
+#		Vector2i(2000,4000),
+#		Vector2i(8000,16000)
+#	]
+#
+#	var sum := 0.0
+#
+#	for range in ranges:
+#		sum += spectrum.get_magnitude_for_frequency_range(range.x, range.y).length()
+#
+#	return sum
+#	var f1 = 
+#
+	return 0.5*((AudioServer.get_bus_peak_volume_left_db(2,0)) + AudioServer.get_bus_peak_volume_right_db(2,0))
 
 
 func set_record_peaks_clarity(clarity : float = 0.05):
@@ -98,3 +121,10 @@ func _set_volumes(input_peaks: PackedVector2Array) -> PackedVector2Array:
 
 func _on_new_pa_frame_processed(data):
 	new_frame_processed.emit(pitch_analyzer_delta, _set_volumes(data))
+
+
+func set_input_device(dev_name: String) -> void:
+	if AudioServer.get_input_device_list().has(dev_name):
+		AudioServer.input_device = dev_name
+		PlayerVariables.selected_input_device = dev_name
+		PlayerVariables.save()

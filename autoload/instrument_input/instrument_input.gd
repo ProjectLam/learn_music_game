@@ -116,9 +116,9 @@ func set_current_instrument(value) -> void:
 func set_mode(value: InputInstrument.Modes) -> void:
 	if mode != value:
 		mode = value
-		var inst = get_child(current_instrument)
-		if inst:
-			inst.mode = value
+	var inst = get_child(current_instrument)
+	if inst:
+		inst.mode = value
 
 
 func select_instrument_name(iname: String) -> void:
@@ -128,3 +128,7 @@ func select_instrument_name(iname: String) -> void:
 	else:
 		PlayerVariables.selected_hw_instrument = get_child(current_instrument).name
 		PlayerVariables.save()
+
+
+func is_input_direct_fret() -> bool:
+	return current_instrument == 2

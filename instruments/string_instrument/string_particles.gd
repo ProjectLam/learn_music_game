@@ -8,8 +8,19 @@ extends GPUParticles3D
 	set = set_mesh_size
 
 
+const MESH_FADE_RATIO := 1.15
+
+
 func _ready():
 	refresh()
+
+
+var despawn_timer := 0.0
+func _process(delta):
+	if not emitting:
+		despawn_timer += delta
+		if despawn_timer > lifetime:
+			queue_free()
 
 
 func refresh():
@@ -17,7 +28,7 @@ func refresh():
 		return
 	
 	material_override["albedo_color"] = color
-	draw_pass_1["size"] = mesh_size
+	draw_pass_1["size"] = mesh_size*MESH_FADE_RATIO
 
 
 func set_color(value: Color) -> void:

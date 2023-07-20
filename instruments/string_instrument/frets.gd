@@ -44,8 +44,8 @@ func refresh():
 	var nut = nut_scene.instantiate()
 	add_child(nut)
 	
-	var offset = fret_space/(fret_count + 1)
-	for fret_index in range(0, fret_count):
+	var offset = fret_space/(fret_count)
+	for fret_index in range(-1, fret_count - 1):
 		var fret_node = fret_scene.instantiate()
 		if not (fret_node is Node3D):
 			push_error("Invalid fret scene")
@@ -78,12 +78,12 @@ func set_fret_margins(value: float) -> void:
 
 
 func get_note_local_x(fret_index: float) -> float:
-	var offset := fret_space/(fret_count + 1)
+	var offset := fret_space/float(fret_count)
 	return offset*fret_index + offset*0.5
 
 
 func get_note_global_x(fret_index: int) -> float:
-	return global_position.x + get_note_local_x(fret_index)
+	return global_position.x + get_note_local_x(fret_index - 1)
 
 
 func get_fret_x_spacing() -> float:

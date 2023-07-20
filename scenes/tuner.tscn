@@ -1,7 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://64cctwn56wwb"]
+[gd_scene load_steps=7 format=3 uid="uid://64cctwn56wwb"]
 
 [ext_resource type="PackedScene" uid="uid://ccobg18fs2u6d" path="res://scenes/tuner/tuner_meter.tscn" id="1_rboo5"]
 [ext_resource type="PackedScene" uid="uid://s1hxsjsfg7mc" path="res://scenes/tuner/tuner_strings.tscn" id="2_47ggn"]
+[ext_resource type="PackedScene" uid="uid://yiegf72umti4" path="res://scenes/tuner/tuner_volume.tscn" id="4_7fs2y"]
+[ext_resource type="Script" path="res://scenes/tuner_volume_slider.gd" id="5_pvu06"]
 [ext_resource type="PackedScene" uid="uid://bpsr6id66vxk2" path="res://scenes/left_bar/left_bar.tscn" id="8_85bco"]
 
 [sub_resource type="AudioStreamGenerator" id="AudioStreamGenerator_obkhd"]
@@ -56,17 +58,42 @@ theme_override_constants/margin_bottom = 25
 [node name="LeftBar" parent="HBoxContainer/MarginContainer" instance=ExtResource("8_85bco")]
 layout_mode = 2
 
-[node name="Elements" type="HBoxContainer" parent="HBoxContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_bottom = 40
+
+[node name="Elements" type="HBoxContainer" parent="HBoxContainer/MarginContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
 alignment = 2
 
-[node name="TunerStrings" parent="HBoxContainer/Elements" instance=ExtResource("2_47ggn")]
+[node name="TunerStrings" parent="HBoxContainer/MarginContainer2/Elements" instance=ExtResource("2_47ggn")]
 layout_mode = 2
 
-[node name="TunerMeter" parent="HBoxContainer/Elements" instance=ExtResource("1_rboo5")]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/MarginContainer2/Elements"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/MarginContainer2/Elements/VBoxContainer"]
+layout_mode = 2
+
+[node name="TunerMeter" parent="HBoxContainer/MarginContainer2/Elements/VBoxContainer/MarginContainer" instance=ExtResource("1_rboo5")]
 custom_minimum_size = Vector2(800, 400)
 layout_mode = 2
 size_flags_vertical = 6
+
+[node name="tuner_volume" parent="HBoxContainer/MarginContainer2/Elements/VBoxContainer" instance=ExtResource("4_7fs2y")]
+layout_mode = 2
+size_flags_vertical = 1
+
+[node name="tuner_volume_slider" type="HSlider" parent="HBoxContainer/MarginContainer2/Elements/VBoxContainer"]
+layout_mode = 2
+max_value = 1.0
+step = 0.0
+value = 0.704
+script = ExtResource("5_pvu06")
 
 [connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]

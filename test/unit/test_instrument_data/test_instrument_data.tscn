@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://bs32h8tpvnah"]
+
+[ext_resource type="Script" path="res://test/unit/test_instrument_data/test_instrument_data.gd" id="1_xa8tk"]
+[ext_resource type="Resource" uid="uid://dq6038chq41ke" path="res://instruments/phin.tres" id="2_5wdt8"]
+
+[node name="test_instrument_data" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xa8tk")
+idata = ExtResource("2_5wdt8")
+map_from = Vector2i(5, 0)

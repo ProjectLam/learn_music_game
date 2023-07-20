@@ -8,11 +8,10 @@ extends InstrumentNotes
 
 @onready var strings = %Strings
 @onready var frets = %Frets
-@onready var instrument_data: InstrumentData
 
 
 func _ready():
-	InstrumentInput.mode = InputInstrument.Modes.KEYBOARD
+	InstrumentInput.mode = InputInstrument.Modes.FRET
 	
 	super._ready()
 	refresh()

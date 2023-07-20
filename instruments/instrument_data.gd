@@ -146,6 +146,11 @@ func get_default_tune(string: int, fret: int) -> Chromatic:
 	return base + fret
 
 
+func get_tune(string: int, fret: int) -> Chromatic:
+	assert(string >= 0 and string < tuning_pitches.size())
+	var base = tuning_pitches[string]
+	return base + fret
+
 # TODO: add string mapping that correspond to guitar strings for other instruments.
 func map_string_note(string,fret) -> Vector2i:
 	if (
@@ -157,12 +162,21 @@ func map_string_note(string,fret) -> Vector2i:
 	# Add more fingering logic here if neede.
 	
 	# Current algortihm will just find the lowest fret possible.
-	var mstring = 0
-	while(tuning_pitches.size() - 1 > mstring and tuning_pitches[mstring + 1] < tune):
-		mstring += 1
+	var mstring = tuning_pitches.size() - 1
+	while true:
+		if mstring == 0:
+			if tuning_pitches[mstring] > tune:
+				push_error("Instrument cnanot handle note.")
+			break
+		if tuning_pitches[mstring] <= tune:
+			break
+		
+		mstring -= 1
+		
 	var mfret = tune - tuning_pitches[mstring]
-	
+	# TODO : limit mfret when instrument cannot reach the high note and generate an error.
 	return Vector2(mstring, mfret)
+
 
 func get_string_count() -> int:
 	return tuning_pitches.size()

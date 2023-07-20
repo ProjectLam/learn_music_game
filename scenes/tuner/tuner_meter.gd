@@ -105,7 +105,7 @@ func _process(delta):
 		var chromatic_end := chromatic_start + 11
 		var start_freq := NoteFrequency.CHROMATIC[chromatic_start]
 		var sub_freq = freq - start_freq
-		var sub_freq_range: float = NoteFrequency.CHROMATIC[chromatic_end] - start_freq
+		var sub_freq_range: float = (NoteFrequency.CHROMATIC[chromatic_end] if chromatic_end < NoteFrequency.CHROMATIC.size() else NoteFrequency.CHROMATIC[chromatic_end - 12]*2.0) - start_freq
 		var sub_freq_ratio: float = sub_freq / sub_freq_range
 		
 		var note = mnemonics[note_i]
@@ -126,7 +126,7 @@ func _process(delta):
 				continue
 			var nItem = note_items.get_child(i)
 			var label_settings = nItem.find_child("MnemonicLabel").label_settings
-			tween.tween_property(note_items.get_child(note_i).find_child("MnemonicLabel").label_settings, "font_color", Color.GRAY, 0.25)
+			tween.tween_property(label_settings, "font_color", Color.GRAY, 0.25)
 
 		tween.tween_property(note_items.get_child(note_i).find_child("MnemonicLabel").label_settings, "font_color", Color.WHITE, 0.25)
 #		sub_freq_ratio = 1.0

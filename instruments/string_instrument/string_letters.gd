@@ -25,7 +25,13 @@ extends Node3D
 
 
 func _ready():
+	string_index = 0
 	refresh()
+
+
+func _process(delta):
+	if not Engine.is_editor_hint():
+		string_index = InstrumentInput.computer_keyboard_input.string_index
 
 
 func refresh():
@@ -34,6 +40,7 @@ func refresh():
 	
 	if not is_instance_valid(strings):
 		return
+	
 	
 	var z_pos: Vector3 = strings.get_string_global_position(string_index) + Vector3(x_offset, 0, 0)
 	var a_pos: Vector3 = strings.get_string_global_position(string_index + 1) + Vector3(x_offset, 0, 0)
