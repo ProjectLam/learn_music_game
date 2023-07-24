@@ -2,12 +2,10 @@
 
 [sub_resource type="AudioEffectPitchAnalyzer" id="AudioEffectPitchAnalyzer_vc1tg"]
 resource_name = "PitchAnalyzer"
-fft_size = 3
 clarity_threshold = 0.0
 
 [sub_resource type="AudioEffectSpectrumAnalyzer" id="AudioEffectSpectrumAnalyzer_fxya2"]
 resource_name = "SpectrumAnalyzer"
-fft_size = 3
 
 [sub_resource type="AudioEffectRecord" id="AudioEffectRecord_8b1q0"]
 resource_name = "Record"

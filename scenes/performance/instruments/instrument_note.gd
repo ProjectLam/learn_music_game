@@ -15,10 +15,11 @@ var end_point: Vector3:
 
 func end(successful: bool):
 	# The player played and ended this note. Do something pretty, destroy.
-	if successful:
-		positive_feedback()
-	else:
-		negative_feedback()
+	if is_instance_valid(note_visuals):
+		if successful:
+			positive_feedback()
+		else:
+			negative_feedback()
 	queue_free()
 
 

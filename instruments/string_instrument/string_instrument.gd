@@ -8,6 +8,7 @@ class_name StringInstrument
 @onready var frets = %Frets
 @onready var lanes = %Lanes
 @onready var markers = %Markers
+@onready var string_container = %StringContainer
 
 func _ready():
 	super._ready()
@@ -36,6 +37,11 @@ func refresh():
 	for c in get_children():
 		if c.has_method("refresh"):
 			c.refresh()
+	
+	for c in string_container.get_children():
+		if c.has_method("refresh"):
+			c.refresh()
+		
 	
 	InstrumentInput.computer_keyboard_input.string_count = strings.string_count
 

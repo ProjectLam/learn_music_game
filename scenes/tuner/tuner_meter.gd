@@ -40,7 +40,7 @@ func _ready():
 		item_node.find_child("MnemonicLabel").text = note
 		note_items.add_child(item_node)
 	
-	GAudioServerManager.set_record_peaks_clarity(0.4)
+#	GAudioServerManager.set_record_peaks_clarity(0.4)
 	refresh()
 	
 	resized.connect(refresh)

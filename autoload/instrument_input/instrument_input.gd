@@ -132,3 +132,7 @@ func select_instrument_name(iname: String) -> void:
 
 func is_input_direct_fret() -> bool:
 	return current_instrument == 2
+
+
+func get_detection_delay() -> float:
+	return get_child(current_instrument).detection_delay

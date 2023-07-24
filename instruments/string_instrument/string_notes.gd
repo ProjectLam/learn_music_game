@@ -8,6 +8,8 @@ extends InstrumentNotes
 
 @onready var strings = %Strings
 @onready var frets = %Frets
+@onready var keyboard_keys = %KeyboardKeys
+@onready var string_container = %StringContainer
 
 
 func _ready():
@@ -15,7 +17,7 @@ func _ready():
 	
 	super._ready()
 	refresh()
-	position.z += get_press_area_spacing()
+#	string_container.position.z = -get_press_area_spacing()*0.5
 
 
 # TODO : utilize map_string_note for slide.
@@ -26,9 +28,11 @@ func spawn_note(note_index: int):
 	var string = mappedsfret.x
 	var fret = mappedsfret.y
 	var note = note_scene.instantiate()
+	note.note_visuals = note_visuals
+	note.open_width = frets.fret_space
 	add_child(note)
 	note.position = Vector3(
-		_get_fret_x(fret),
+		_get_fret_x(fret),# if fret != 0 else 0.0,
 		_get_string_y(string),
 		-get_note_offset(note_data.time)
 	)
@@ -73,6 +77,7 @@ func spawn_chord(note_index: int):
 	chord.position = Vector3(0, 0, -get_note_offset(chord_data.time))
 	chord.instrument_notes = self
 	chord.end_point = Vector3(chord.position.x, chord.position.y, -get_note_offset(chord_data.time + chord_data.sustain) - position.z)
+#	chord.note_visuals
 	var frets := chord_data.get_frets()
 	for string in frets.size():
 		if frets[string] == -1:
@@ -101,6 +106,10 @@ func refresh():
 	if not is_inside_tree():
 		return
 	
+	var idelay := InstrumentInput.get_detection_delay()
+	var idelay_distance := note_speed*idelay
+	
+	position.z = get_press_area_spacing()*0.5 + idelay_distance
 	string_colors = strings.string_colors
 	
 	instrument_data = owner.instrument_data
