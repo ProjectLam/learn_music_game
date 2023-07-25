@@ -26,7 +26,7 @@ func _ready():
 	pitch_analyzer_delta = float(pitch_analyzer_fft_size) / mix_rate
 	AudioServer.unlock()
 	
-	set_record_peaks_clarity(0.40)
+	set_record_peaks_clarity(0.60)
 	get_pitch_analyzer().connect("new_frame_processed", _on_new_pa_frame_processed)
 
 

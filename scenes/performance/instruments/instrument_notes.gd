@@ -463,7 +463,7 @@ func _on_input_note_started(pitch: float, p_string: int = 0, p_fret: int = 0):
 			var st_time = cpitch["start_time"]
 	
 	if difficulty == DIFFICULTY.BASIC_TRIGGER:
-		call_deferred("_on_note_ended", pitch, false)
+		call_deferred("_on_note_ended", pitch)
 
 
 func _on_input_fret_started(p_string: int, p_fret: int) -> void:
@@ -772,3 +772,8 @@ func translate_chromatic_to_fret(chromatic: int) -> Vector2i:
 		return Vector2i(min_sring, min_fret)
 	else:
 		return Vector2i(0,0)
+
+
+func end_all_notes() -> void:
+	_current_pitches.clear()
+	_active_input_pitches.clear()

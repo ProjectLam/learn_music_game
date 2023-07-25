@@ -31,6 +31,7 @@ func refresh():
 		var xloc = -global_position.x + frets.get_note_global_x(fret_index + 1)
 		lane_node.position.x = xloc
 		lane_node.set("fret_spacing", fret_spacing)
+		lane_node.set("text", str(fret_index + 1))
 		add_child(lane_node)
 
 func set_lane_length(value: float) -> void:

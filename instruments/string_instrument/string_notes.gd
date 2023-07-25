@@ -8,14 +8,17 @@ extends InstrumentNotes
 
 @onready var strings = %Strings
 @onready var frets = %Frets
+@onready var keyboard_keys = %KeyboardKeys
+@onready var string_container = %StringContainer
 
 
 func _ready():
+	InstrumentInput.current_instrument_changed.connect(end_all_notes)
 	InstrumentInput.mode = InputInstrument.Modes.FRET
 	
 	super._ready()
 	refresh()
-	position.z += get_press_area_spacing()
+#	string_container.position.z = -get_press_area_spacing()*0.5
 
 
 # TODO : utilize map_string_note for slide.
@@ -26,16 +29,19 @@ func spawn_note(note_index: int):
 	var string = mappedsfret.x
 	var fret = mappedsfret.y
 	var note = note_scene.instantiate()
-	add_child(note)
+	note.note_visuals = note_visuals
+	note.open_width = frets.fret_space
+	note.color = string_colors[string]
+	note.set("text", str(fret+1))
 	note.position = Vector3(
-		_get_fret_x(fret),
+		_get_fret_x(fret),# if fret != 0 else 0.0,
 		_get_string_y(string),
 		-get_note_offset(note_data.time)
 	)
-	note.color = string_colors[string]
-	note.end_point = Vector3(note.position.x, note.position.y, -get_note_offset(note_data.time) - position.z)
 	note.index = note_index
 	note.instrument_notes = self
+	add_child(note)
+	note.end_point = Vector3(note.position.x, note.position.y, -get_note_offset(note_data.time) - position.z)
 	
 	if fret == 0:
 		# Open string
@@ -73,6 +79,7 @@ func spawn_chord(note_index: int):
 	chord.position = Vector3(0, 0, -get_note_offset(chord_data.time))
 	chord.instrument_notes = self
 	chord.end_point = Vector3(chord.position.x, chord.position.y, -get_note_offset(chord_data.time + chord_data.sustain) - position.z)
+#	chord.note_visuals
 	var frets := chord_data.get_frets()
 	for string in frets.size():
 		if frets[string] == -1:
@@ -101,6 +108,10 @@ func refresh():
 	if not is_inside_tree():
 		return
 	
+	var idelay := InstrumentInput.get_detection_delay()
+	var idelay_distance := note_speed*idelay
+	
+	position.z = get_press_area_spacing()*0.4 + idelay_distance
 	string_colors = strings.string_colors
 	
 	instrument_data = owner.instrument_data

@@ -20,6 +20,8 @@ var mode: Modes = Modes.KEYBOARD
 
 var is_active: bool = false
 
+var detection_delay := 0.0
+
 func _ready():
 	pass
 
