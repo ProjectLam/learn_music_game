@@ -11,6 +11,7 @@ class_name StringInstrument
 @onready var string_container = %StringContainer
 
 func _ready():
+	InstrumentInput.current_instrument_changed.connect(refresh)
 	super._ready()
 	if not instrument_data:
 		push_error("Invalid Instrument Data")

@@ -13,6 +13,7 @@ extends InstrumentNotes
 
 
 func _ready():
+	InstrumentInput.current_instrument_changed.connect(end_all_notes)
 	InstrumentInput.mode = InputInstrument.Modes.FRET
 	
 	super._ready()
@@ -30,16 +31,17 @@ func spawn_note(note_index: int):
 	var note = note_scene.instantiate()
 	note.note_visuals = note_visuals
 	note.open_width = frets.fret_space
-	add_child(note)
+	note.color = string_colors[string]
+	note.set("text", str(fret+1))
 	note.position = Vector3(
 		_get_fret_x(fret),# if fret != 0 else 0.0,
 		_get_string_y(string),
 		-get_note_offset(note_data.time)
 	)
-	note.color = string_colors[string]
-	note.end_point = Vector3(note.position.x, note.position.y, -get_note_offset(note_data.time) - position.z)
 	note.index = note_index
 	note.instrument_notes = self
+	add_child(note)
+	note.end_point = Vector3(note.position.x, note.position.y, -get_note_offset(note_data.time) - position.z)
 	
 	if fret == 0:
 		# Open string
@@ -109,7 +111,7 @@ func refresh():
 	var idelay := InstrumentInput.get_detection_delay()
 	var idelay_distance := note_speed*idelay
 	
-	position.z = get_press_area_spacing()*0.5 + idelay_distance
+	position.z = get_press_area_spacing()*0.4 + idelay_distance
 	string_colors = strings.string_colors
 	
 	instrument_data = owner.instrument_data

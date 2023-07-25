@@ -772,3 +772,8 @@ func translate_chromatic_to_fret(chromatic: int) -> Vector2i:
 		return Vector2i(min_sring, min_fret)
 	else:
 		return Vector2i(0,0)
+
+
+func end_all_notes() -> void:
+	_current_pitches.clear()
+	_active_input_pitches.clear()

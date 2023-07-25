@@ -6,10 +6,13 @@ const POSITIVE_FEEDBACK_SCENE := preload("res://scenes/performance/instruments/p
 @onready var note_tail = $NoteTail
 var is_open := false
 var open_width := 52.0
+@onready var label_3d = %Label3D
+@onready var ground_mesh = %GroundMesh
+
+var text: String
 
 func set_color(value):
-	$MeshInstance3D.material_override.albedo_color = value
-	note_tail.material_override.set_shader_parameter("albedo", Color(value.r, value.g, value.b, 0.5))
+	color = value
 
 
 func set_end_point(value):
@@ -22,13 +25,20 @@ func set_end_point(value):
 
 
 func _ready():
+	$MeshInstance3D.material_override.albedo_color = color
+	ground_mesh.material_override.albedo_color = Color(0.5,0.5,0.5,0.5)*color
+	note_tail.material_override.set_shader_parameter("albedo", Color(color.r, color.g, color.b, 0.5))
 	$MeshInstance3D.material_override = $MeshInstance3D.material_override.duplicate()
 	$OpenString.material_override = $MeshInstance3D.material_override
+	label_3d.text = text
+	ground_mesh.mesh.size.y = position.y
+	ground_mesh.mesh.center_offset.y = -position.y*0.5
 #	note_tail.material_override = note_tail.material_override.duplicate()
 #	$DurationTail/OpenStringTail.material_override = note_tail.material_override
 
 
 func switch_to_open():
+	label_3d.visible = false
 	is_open = true
 	$MeshInstance3D.hide()
 	note_tail.hide()

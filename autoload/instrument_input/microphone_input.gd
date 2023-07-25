@@ -59,6 +59,7 @@ var last_volume: float = 0.0
 func _ready():
 	super._ready()
 	
+	
 	deactivated.connect(_on_deactivated)
 	GAudioServerManager.new_frame_processed.connect(_on_new_frame_processed)
 	
@@ -66,6 +67,7 @@ func _ready():
 	if mic_profile:
 		load_input_profile(mic_profile)
 
+	detection_delay = 1.0/44.0
 
 # the current algorithm does not support note trails or chords.
 # this means multiple notes at the same time cannot be triggered.
