@@ -32,7 +32,7 @@ func spawn_note(note_index: int):
 	note.note_visuals = note_visuals
 	note.open_width = frets.fret_space
 	note.color = string_colors[string]
-	note.set("text", str(fret+1))
+	note.set("text", str(fret))
 	note.position = Vector3(
 		_get_fret_x(fret),# if fret != 0 else 0.0,
 		_get_string_y(string),
