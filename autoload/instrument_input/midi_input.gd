@@ -53,7 +53,7 @@ func get_inputs()->Array:
 func _input(event):
 	if event is InputEventMIDI and (event.message == MIDI_MESSAGE_NOTE_ON or event.message == MIDI_MESSAGE_NOTE_OFF):
 		if Debug.print_note:
-			print("MIDI Event (index, pressed): (%s, %s)" % [event.pitch, event.message == MIDI_MESSAGE_NOTE_ON])
+			print("MIDI Event (time, index, pressed): (%s, %s, %s)" % [time, event.pitch, event.message == MIDI_MESSAGE_NOTE_ON])
 		var pressed: bool = event.message == MIDI_MESSAGE_NOTE_ON
 		var chromatic_index = event.pitch + MIDI_OFFSET
 		if chromatic_index < 0 or chromatic_index >= NoteFrequency.CHROMATIC.size():
