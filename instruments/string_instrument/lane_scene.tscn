@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://instruments/string_instrument/lane_scene.gd" id="2_o8kwr"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_b3027"]
-size = Vector2(2.5, 48)
+size = Vector2(1.5, 48)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_aurw6"]
 render_priority = 0
@@ -24,6 +24,5 @@ surface_material_override/0 = SubResource("ShaderMaterial_aurw6")
 
 [node name="Label3D" type="Label3D" parent="."]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, -24)
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, -2.4)
 pixel_size = 0.03
-text = "1"
