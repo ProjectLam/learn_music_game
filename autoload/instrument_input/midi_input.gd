@@ -56,13 +56,12 @@ func _input(event):
 			print("MIDI Event (index, pressed): (%s, %s)" % [event.pitch, event.message == MIDI_MESSAGE_NOTE_ON])
 		var pressed: bool = event.message == MIDI_MESSAGE_NOTE_ON
 		var chromatic_index = event.pitch + MIDI_OFFSET
+		if chromatic_index < 0 or chromatic_index >= NoteFrequency.CHROMATIC.size():
+			return
 		if pressed:
 			_on_note_started(chromatic_index)
 		elif not midi_auto_release:
 			_on_note_ended(chromatic_index)
-		
-		if chromatic_index < 0 or chromatic_index >= NoteFrequency.CHROMATIC.size():
-			return
 				
 
 

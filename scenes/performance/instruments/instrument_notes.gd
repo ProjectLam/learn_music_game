@@ -163,7 +163,7 @@ func _process_frets(delta: float) -> void:
 	var cf := _current_frets.duplicate()
 	_current_frets.clear()
 	
-	if instrument_data:
+	if instrument_data and instrument_data.tuning_pitches.size() > 0:
 		for chromatic in _active_input_pitches.keys():
 			var fret := translate_chromatic_to_fret(chromatic)
 			var direct_fret = _active_input_pitches[chromatic]
@@ -469,7 +469,7 @@ func _on_input_note_started(pitch: float, p_string: int = 0, p_fret: int = 0):
 func _on_input_fret_started(p_string: int, p_fret: int) -> void:
 	if not is_processing():
 		return
-	if instrument_data:
+	if instrument_data and instrument_data.tuning_pitches.size() > 0:
 		var pitch = NoteFrequency.CHROMATIC[instrument_data.get_tune(p_string, p_fret)]
 		_on_input_note_started(pitch, p_string, p_fret)
 		
@@ -531,7 +531,7 @@ func _on_note_ended(pitch: float):
 
 
 func _on_input_fret_ended(p_string: int, p_fret: int) -> void:
-	if instrument_data:
+	if instrument_data and instrument_data.tuning_pitches.size() > 0:
 		var pitch = NoteFrequency.CHROMATIC[instrument_data.get_tune(p_string, p_fret)]
 		_on_input_note_ended(pitch)
 #	input_fret_ended.emit(p_string, p_fret)
