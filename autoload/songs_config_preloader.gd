@@ -45,6 +45,8 @@ func load_remote_songs():
 		var lead_xml_url = song_info.get("lead_xml_url")
 		var song_file_url = song_info.get("song_file_url")
 		var audio_offset = song_info.get("audio_offset", 0.0)
+#		var p_tags = song_info.get("tags", 0.0)
+		
 		if not (lead_xml_url is String):
 			push_error("Invalid remote song xml url. Skipping %s" % key)
 			continue

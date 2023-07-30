@@ -166,6 +166,9 @@ func _process_frets(delta: float) -> void:
 	if instrument_data and instrument_data.tuning_pitches.size() > 0:
 		for chromatic in _active_input_pitches.keys():
 			var fret := translate_chromatic_to_fret(chromatic)
+			if fret.x < 0 or fret.y < 0:
+				_active_input_pitches.erase(chromatic)
+				continue
 			var direct_fret = _active_input_pitches[chromatic]
 			var pitch := NoteFrequency.CHROMATIC[chromatic]
 			if not _prev_active_input_pitches.has(chromatic):
@@ -771,7 +774,7 @@ func translate_chromatic_to_fret(chromatic: int) -> Vector2i:
 		assert(instrument_data.get_tune(min_sring, min_fret) == chromatic)
 		return Vector2i(min_sring, min_fret)
 	else:
-		return Vector2i(0,0)
+		return Vector2i(-1,0)
 
 
 func end_all_notes() -> void:
