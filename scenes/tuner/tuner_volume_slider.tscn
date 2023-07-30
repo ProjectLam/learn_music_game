@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://bgjxlf2q7828x"]
+
+[ext_resource type="Script" path="res://scenes/tuner_volume_slider.gd" id="1_dalev"]
+
+[node name="tuner_volume_slider" type="HSlider"]
+max_value = 1.0
+step = 0.0
+value = 0.704
+script = ExtResource("1_dalev")

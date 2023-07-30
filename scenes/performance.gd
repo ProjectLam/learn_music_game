@@ -625,10 +625,22 @@ func set_awaiting_game_start(value: bool) -> void:
 func _on_performance_song_started() -> void:
 	if match_ended:
 		return
+	_refresh_audio_stream()
+
+
+func _refresh_audio_stream():
+	if audio_stream.stream == null:
+		return
+	
 	if current_song:
+		if performance_instrument.get_audio_time() < 0:
+			return
+		
 		if performance_instrument.get_audio_time() > audio_stream.stream.get_length():
 			audio_stream.stream_paused = true
 		else:
+			if audio_stream.playing and audio_stream.get_playback_position() == performance_instrument.get_audio_time():
+				return 
 			audio_stream.play(performance_instrument.get_audio_time())
 
 
@@ -699,3 +711,7 @@ func restart_match():
 
 func _on_restart_match_button_pressed():
 	restart_match()
+
+
+func _on_audio_offset_slider_changed():
+	pass # Replace with function body.
