@@ -120,7 +120,7 @@ func _set_volumes(input_peaks: PackedVector2Array) -> PackedVector2Array:
 
 
 func _on_new_pa_frame_processed(data):
-	new_frame_processed.emit(pitch_analyzer_delta, _set_volumes(data))
+	new_frame_processed.emit(pitch_analyzer_delta, data)# _set_volumes(data))
 
 
 func set_input_device(dev_name: String) -> void:

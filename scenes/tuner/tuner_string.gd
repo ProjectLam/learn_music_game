@@ -24,6 +24,9 @@ func refresh():
 	
 	string_panel["theme_override_styles/panel"]["bg_color"] = string_color
 	string_label.text = string_text
+	if Engine.is_editor_hint():
+		return
+	
 	note_containter.time_length = time_length
 
 

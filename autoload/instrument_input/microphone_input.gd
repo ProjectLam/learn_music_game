@@ -5,9 +5,10 @@ var started_notes: Array [int]
 
 var threshold := -40.0
 var volume_range: float = 0.5
-var pitch_accuracy = 0.025
+var pitch_accuracy = 0.035
 var last_peak: Vector3
 var last_raw_peaks: PackedVector2Array = []
+var last_adjusted_peaks: PackedVector3Array = []
 var last_pure_raw_peaks: PackedVector2Array = []
 # if the volume of the same note changes by this much in a single frame
 # it means that the note was triggered again.
@@ -18,6 +19,8 @@ var volume_spike_ratio := 1.02
 # Currently we have only 1 note at a time.
 var volume_start_threshold := 0.15
 var volume_end_threshold := 0.05
+var clarity_threshold := -1.0:
+	set = set_clarity_threshold
 
 # real instruments will produce noise as well.
 # so we search amongst peaks to find the right frequency.
@@ -59,7 +62,6 @@ var last_volume: float = 0.0
 func _ready():
 	super._ready()
 	
-	
 	deactivated.connect(_on_deactivated)
 	GAudioServerManager.new_frame_processed.connect(_on_new_frame_processed)
 	
@@ -68,6 +70,8 @@ func _ready():
 		load_input_profile(mic_profile)
 
 	detection_delay = 1.0/44.0
+	
+	
 
 # the current algorithm does not support note trails or chords.
 # this means multiple notes at the same time cannot be triggered.
@@ -98,6 +102,7 @@ func _on_new_frame_processed(delta, last_pure_raw_peaks):
 	var prev_last_raw_peak := last_raw_peaks
 	last_raw_peaks = last_pure_raw_peaks
 	var peaks := adjust_and_filter_peaks(last_raw_peaks)
+	last_adjusted_peaks = peaks
 	old_peaks_2 = old_peaks
 	old_peaks = current_peaks.duplicate(true)
 	
@@ -211,7 +216,9 @@ func adjust_and_filter_peaks(peaks) -> PackedVector3Array:
 	# TODO : optimize this loop.
 	var last_added_chromatic := -1
 	for peak in peaks:
-		if peak.y < filter_peak:
+		var volume : float = peak.y#;GAudioServerManager.get_volume(peak.x*0.975, peak.x*1.025)
+#		volume = (60.0 + linear_to_db(volume)) / 60.0
+		if volume < filter_peak:
 			continue
 		# adjust the frequency
 		peak.x *= 0.99
@@ -237,11 +244,12 @@ func adjust_and_filter_peaks(peaks) -> PackedVector3Array:
 		else:
 			chromatic = chromatic_index
 		if chromatic == last_added_chromatic:
-			ret[ret.size() - 1].y += peak.y
-		ret.push_back(Vector3(peak.x, peak.y, chromatic))
+			ret[ret.size() - 1].y += volume
+		ret.push_back(Vector3(peak.x, volume, chromatic))
 		last_added_chromatic = chromatic
-
-	return ret
+	
+	return remove_lower_harmonics(ret)
+#	return ret
 
 
 func get_inputs()->Array:
@@ -262,6 +270,7 @@ func generate_input_profile() -> Dictionary:
 	return {
 		"volume_end_threshold": volume_end_threshold,
 		"volume_start_threshold": volume_start_threshold,
+		"clarity_threshold": clarity_threshold,
 	}
 
 
@@ -270,17 +279,22 @@ func load_input_profile(prof: Dictionary) -> void:
 	
 	var vet = prof.get("volume_end_threshold")
 	var vst = prof.get("volume_start_threshold")
+	var vct = prof.get("clarity_threshold")
 	
 	if vet is float:
 		volume_end_threshold = vet
 	
 	if vst is float:
 		volume_start_threshold = vst
+	
+	if vct:
+		clarity_threshold = vct
 
 
 func reset_input_profile() -> void:
 	volume_start_threshold = 0.15
 	volume_end_threshold = 0.05
+	clarity_threshold = 0.76
 
 
 func save_volume_profile():
@@ -290,4 +304,20 @@ func save_volume_profile():
 
 func reload_volume_profile():
 	var prof = PlayerVariables.microphone_input_profiles.get(PlayerVariables.selected_input_device)
+
+
+func set_clarity_threshold(value: float) -> void:
+	if clarity_threshold != value:
+		clarity_threshold = value
+		GAudioServerManager.set_record_peaks_clarity(value)
+
+
+func remove_lower_harmonics(peaks: PackedVector3Array) -> PackedVector3Array:
+	var chromatics: PackedInt32Array = []
+	var ret: PackedVector3Array = []
+	for peak in peaks:
+		if not chromatics.has(int(peak.z) + 12):
+			chromatics.append(int(peak.z))
+			ret.append(peak)
 	
+	return ret

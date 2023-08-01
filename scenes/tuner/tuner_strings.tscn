@@ -16,6 +16,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_ker34")
 script = ExtResource("1_vrtgo")
+time_length = 10.208
 
 [node name="StringsContainter" type="HBoxContainer" parent="."]
 unique_name_in_owner = true
