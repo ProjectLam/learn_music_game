@@ -1,4 +1,4 @@
-[gd_resource type="AudioBusLayout" load_steps=4 format=3 uid="uid://byqfbnf20d4ap"]
+[gd_resource type="AudioBusLayout" load_steps=5 format=3 uid="uid://byqfbnf20d4ap"]
 
 [sub_resource type="AudioEffectPitchAnalyzer" id="AudioEffectPitchAnalyzer_vc1tg"]
 resource_name = "PitchAnalyzer"
@@ -9,6 +9,9 @@ resource_name = "SpectrumAnalyzer"
 
 [sub_resource type="AudioEffectRecord" id="AudioEffectRecord_8b1q0"]
 resource_name = "Record"
+
+[sub_resource type="AudioEffectAmplify" id="AudioEffectAmplify_hxwdq"]
+resource_name = "Amplify"
 
 [resource]
 bus/1/name = &"NoteDetection"
@@ -29,3 +32,5 @@ bus/2/volume_db = 0.0
 bus/2/send = &"NoteDetection"
 bus/2/effect/0/effect = SubResource("AudioEffectRecord_8b1q0")
 bus/2/effect/0/enabled = true
+bus/2/effect/1/effect = SubResource("AudioEffectAmplify_hxwdq")
+bus/2/effect/1/enabled = true

@@ -1,0 +1,78 @@
+[gd_scene load_steps=7 format=3 uid="uid://br6ntbucssada"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_yw8mh"]
+
+[sub_resource type="Gradient" id="Gradient_6u7a2"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.25, 0.5, 0.768421, 0.863158, 1)
+colors = PackedColorArray(0.929412, 0.129412, 0.835294, 1, 1, 1, 1, 0.760784, 1, 0.631373, 0.937255, 1, 1, 0.152941, 0.858824, 0, 1, 0.109804, 0.85098, 0.933333, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_n2h2w"]
+gradient = SubResource("Gradient_6u7a2")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="Animation" id="Animation_b15mp"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0.701961)]
+}
+
+[sub_resource type="Animation" id="Animation_atcrt"]
+resource_name = "twinkle"
+length = 0.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0.701961), Color(1, 1, 1, 0.219608)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_e2bhc"]
+_data = {
+"RESET": SubResource("Animation_b15mp"),
+"twinkle": SubResource("Animation_atcrt")
+}
+
+[node name="tuner_strings_cursor" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="TextureRect" type="TextureRect" parent="."]
+modulate = Color(1, 1, 1, 0.701961)
+material = SubResource("CanvasItemMaterial_yw8mh")
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_n2h2w")
+expand_mode = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_e2bhc")
+}
