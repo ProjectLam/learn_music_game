@@ -125,8 +125,10 @@ func _process(delta):
 			if i == note_i:
 				continue
 			var nItem = note_items.get_child(i)
-			var label_settings = nItem.find_child("MnemonicLabel").label_settings
-			tween.tween_property(label_settings, "font_color", Color.GRAY, 0.25)
+			var nItemLabel = nItem.find_child("MnemonicLabel")
+			if is_instance_valid(nItemLabel):
+				var label_settings = nItemLabel.label_settings
+				tween.tween_property(label_settings, "font_color", Color.GRAY, 0.25)
 
 		tween.tween_property(note_items.get_child(note_i).find_child("MnemonicLabel").label_settings, "font_color", Color.WHITE, 0.25)
 #		sub_freq_ratio = 1.0

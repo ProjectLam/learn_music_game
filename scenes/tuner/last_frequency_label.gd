@@ -5,4 +5,4 @@ func _ready():
 
 
 func _on_new_peak(peak: Vector2) -> void:
-	text = "%.1f Hz %.1f Volume" % [peak.x, peak.y]
+	text = "%.1f Hz %.2f Volume" % [peak.x, peak.y]

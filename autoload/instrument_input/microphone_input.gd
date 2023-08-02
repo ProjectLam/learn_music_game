@@ -150,7 +150,7 @@ func _on_new_frame_processed(delta, last_pure_raw_peaks):
 			prev_volume_2 = old_peaks_2[chromatic]["volume"]
 			prev_duration_2 = old_peaks_2[chromatic]["volume"]
 		
-		current_volume = 0.5*(prev_volume + current_volume)
+#		current_volume = 0.5*(prev_volume + current_volume)
 		
 #		if current_volume < prev_volume and prev_volume_2 < prev_volume and prev_duration > min_retrigger_interval:
 #			current_duration = delta
@@ -171,6 +171,10 @@ func _on_new_frame_processed(delta, last_pure_raw_peaks):
 	
 	for snote in current_started_notes:
 		start_note(snote)
+	
+	
+	if current_started_notes:
+		print_debug(volume_start_threshold, ", ", last_raw_peaks)
 	
 	
 	if dominant_peak.y > volume_start_threshold:
@@ -339,8 +343,13 @@ func find_dominant_peak(peaks: PackedVector2Array) -> Vector2:
 	var mindex := -1
 	var ret: Vector2
 	
+	var min_freq := 80.0#0.0 if peaks.size() == 0 else peaks[0].x*0.45
+	
 	for index in peaks.size():
 		var peak := peaks[index]
+		if peak.x < min_freq:
+			return ret
+		
 		if peak.y < volume_start_threshold:
 			continue
 		if peak.y > ret.y:
