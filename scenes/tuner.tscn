@@ -100,7 +100,6 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="LastFrequencyLabel" type="Label" parent="HBoxContainer/MarginContainer2/Elements/VBoxContainer"]
-visible = false
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "356 Hz"

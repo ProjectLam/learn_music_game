@@ -1,5 +1,7 @@
 extends InputInstrument
 
+signal new_dominant_peak_detected(peak: Vector2)
+
 var inputs: Array[int]
 var started_notes: Array [int]
 
@@ -106,6 +108,8 @@ func _on_new_frame_processed(delta, last_pure_raw_peaks):
 	old_peaks_2 = old_peaks
 	old_peaks = current_peaks.duplicate(true)
 	
+	var dominant_peak = find_dominant_peak(last_raw_peaks)
+	
 	var peak_chromatics: PackedInt32Array = []
 	for peak in peaks:
 		peak_chromatics.append(int(peak.z))
@@ -114,6 +118,9 @@ func _on_new_frame_processed(delta, last_pure_raw_peaks):
 	
 	var current_ended_notes: PackedInt32Array = []
 	var current_started_notes: PackedInt32Array = []
+	
+#	if last_raw_peaks.size() > 0:
+#		print_debug(last_raw_peaks)
 	
 	for peak_chr in cp_keys:
 		var peak = current_peaks[peak_chr]
@@ -164,6 +171,11 @@ func _on_new_frame_processed(delta, last_pure_raw_peaks):
 	
 	for snote in current_started_notes:
 		start_note(snote)
+	
+	
+	if dominant_peak.y > volume_start_threshold:
+		print("Dominant peak with raw peaks :", dominant_peak, ":   ", last_raw_peaks)
+		new_dominant_peak_detected.emit(dominant_peak)
 
 
 func weight_volume(frequency, volume) -> float:
@@ -319,5 +331,22 @@ func remove_lower_harmonics(peaks: PackedVector3Array) -> PackedVector3Array:
 		if not chromatics.has(int(peak.z) + 12):
 			chromatics.append(int(peak.z))
 			ret.append(peak)
+	
+	return ret
+
+
+func find_dominant_peak(peaks: PackedVector2Array) -> Vector2:
+	var mindex := -1
+	var ret: Vector2
+	
+	for index in peaks.size():
+		var peak := peaks[index]
+		if peak.y < volume_start_threshold:
+			continue
+		if peak.y > ret.y:
+			ret = peak
+			mindex = index
+		else:
+			return ret
 	
 	return ret
