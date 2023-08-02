@@ -63,10 +63,14 @@ func disconnect_instrument(index: int):
 
 
 func connect_instrument(index: int):
-	get_child(index).note_started.connect(on_note_started)
-	get_child(index).note_ended.connect(on_note_ended)
-	get_child(index).fret_started.connect(_on_fret_started)
-	get_child(index).fret_ended.connect(_on_fret_ended)
+	if not get_child(index).note_started.is_connected(on_note_started):
+		get_child(index).note_started.connect(on_note_started)
+	if not get_child(index).note_ended.is_connected(on_note_ended):
+		get_child(index).note_ended.connect(on_note_ended)
+	if not get_child(index).fret_started.is_connected(_on_fret_started):
+		get_child(index).fret_started.connect(_on_fret_started)
+	if not get_child(index).fret_ended.is_connected(_on_fret_ended):
+		get_child(index).fret_ended.connect(_on_fret_ended)
 	get_child(index).mode = mode
 	get_child(index).activate()
 	current_instrument = index
