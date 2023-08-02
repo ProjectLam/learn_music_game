@@ -1,9 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://64cctwn56wwb"]
+[gd_scene load_steps=9 format=3 uid="uid://64cctwn56wwb"]
 
 [ext_resource type="PackedScene" uid="uid://ccobg18fs2u6d" path="res://scenes/tuner/tuner_meter.tscn" id="1_rboo5"]
 [ext_resource type="PackedScene" uid="uid://s1hxsjsfg7mc" path="res://scenes/tuner/tuner_strings.tscn" id="2_47ggn"]
 [ext_resource type="PackedScene" uid="uid://yiegf72umti4" path="res://scenes/tuner/tuner_volume.tscn" id="4_7fs2y"]
 [ext_resource type="PackedScene" uid="uid://bgjxlf2q7828x" path="res://scenes/tuner/tuner_volume_slider.tscn" id="5_uwv3y"]
+[ext_resource type="PackedScene" uid="uid://dugmf1aw8e15" path="res://scenes/tuner/clarity_threshold.tscn" id="6_1pq1h"]
+[ext_resource type="Script" path="res://scenes/tuner/last_frequency_label.gd" id="7_jfms3"]
 [ext_resource type="PackedScene" uid="uid://bpsr6id66vxk2" path="res://scenes/left_bar/left_bar.tscn" id="8_85bco"]
 
 [sub_resource type="AudioStreamGenerator" id="AudioStreamGenerator_obkhd"]
@@ -61,7 +63,9 @@ layout_mode = 2
 [node name="MarginContainer2" type="MarginContainer" parent="HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 40
 
 [node name="Elements" type="HBoxContainer" parent="HBoxContainer/MarginContainer2"]
@@ -91,5 +95,15 @@ size_flags_vertical = 1
 
 [node name="tuner_volume_slider" parent="HBoxContainer/MarginContainer2/Elements/VBoxContainer" instance=ExtResource("5_uwv3y")]
 layout_mode = 2
+
+[node name="ClarityThreshold" parent="HBoxContainer/MarginContainer2/Elements/VBoxContainer" instance=ExtResource("6_1pq1h")]
+layout_mode = 2
+
+[node name="LastFrequencyLabel" type="Label" parent="HBoxContainer/MarginContainer2/Elements/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "356 Hz"
+horizontal_alignment = 1
+script = ExtResource("7_jfms3")
 
 [connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]
