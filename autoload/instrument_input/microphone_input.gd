@@ -1,6 +1,13 @@
 extends InputInstrument
 
-signal new_dominant_peak_detected(peak: Vector2)
+signal new_dominant_peak_detected(peak: Vector3)
+
+enum DetectionMode {
+	CLUSTER,
+	DOMINANT_PEAK,
+}
+
+var detection_mode := DetectionMode.DOMINANT_PEAK
 
 var inputs: Array[int]
 var started_notes: Array [int]
@@ -12,6 +19,7 @@ var last_peak: Vector3
 var last_raw_peaks: PackedVector2Array = []
 var last_adjusted_peaks: PackedVector3Array = []
 var last_pure_raw_peaks: PackedVector2Array = []
+var dominant_peak_trigger_duration := 0.075
 # if the volume of the same note changes by this much in a single frame
 # it means that the note was triggered again.
 var volume_spike_ratio := 1.02
@@ -108,7 +116,7 @@ func _on_new_frame_processed(delta, last_pure_raw_peaks):
 	old_peaks_2 = old_peaks
 	old_peaks = current_peaks.duplicate(true)
 	
-	var dominant_peak = find_dominant_peak(last_raw_peaks)
+	var dominant_peak: Vector3 = find_dominant_peak(last_raw_peaks)
 	
 	var peak_chromatics: PackedInt32Array = []
 	for peak in peaks:
@@ -119,66 +127,98 @@ func _on_new_frame_processed(delta, last_pure_raw_peaks):
 	var current_ended_notes: PackedInt32Array = []
 	var current_started_notes: PackedInt32Array = []
 	
-#	if last_raw_peaks.size() > 0:
-#		print_debug(last_raw_peaks)
-	
-	for peak_chr in cp_keys:
-		var peak = current_peaks[peak_chr]
-		if not (peak_chr in peak_chromatics):
-			current_peaks.erase(peak_chr)
-			current_ended_notes.append(peak_chr)
-#			end_note(peak_chr)
-	
-	for peak in peaks:
-		var chromatic := int(peak.z)
-		var current_frequency: float = peak.x
-		var current_volume := peak.y
-		var current_duration := 0.0
-		var prev_volume := 0.0
-		var prev_duration := 0.0
-		var prev_volume_2 := 0.0
-		var prev_duration_2 := 0.0
-		var trigger := true
-		
-		if current_peaks.has(chromatic):
-			prev_volume = current_peaks[chromatic]["volume"]
-			prev_duration = current_peaks[chromatic]["duration"]
-			current_duration = prev_duration + delta
-			trigger = false
-		
-		if old_peaks_2.has(chromatic):
-			prev_volume_2 = old_peaks_2[chromatic]["volume"]
-			prev_duration_2 = old_peaks_2[chromatic]["volume"]
-		
-#		current_volume = 0.5*(prev_volume + current_volume)
-		
-#		if current_volume < prev_volume and prev_volume_2 < prev_volume and prev_duration > min_retrigger_interval:
-#			current_duration = delta
-#			trigger = true
+	match(detection_mode):
+		DetectionMode.CLUSTER:
+			for peak_chr in cp_keys:
+				var peak = current_peaks[peak_chr]
+				if not (peak_chr in peak_chromatics):
+					current_peaks.erase(peak_chr)
+					current_ended_notes.append(peak_chr)
 			
-		current_peaks[chromatic] = {
-			"volume": current_volume,
-			"duration": current_duration,
-			"frequency": current_frequency
-		}
-		
-		if trigger:
-			current_started_notes.append(chromatic)
+			for peak in peaks:
+				var chromatic := int(peak.z)
+				var current_frequency: float = peak.x
+				var current_volume := peak.y
+				var current_duration := 0.0
+				var prev_volume := 0.0
+				var prev_duration := 0.0
+				var prev_volume_2 := 0.0
+				var prev_duration_2 := 0.0
+				var trigger := true
+				
+				if current_peaks.has(chromatic):
+					prev_volume = current_peaks[chromatic]["volume"]
+					prev_duration = current_peaks[chromatic]["duration"]
+					current_duration = prev_duration + delta
+					trigger = false
+				
+				if old_peaks_2.has(chromatic):
+					prev_volume_2 = old_peaks_2[chromatic]["volume"]
+					prev_duration_2 = old_peaks_2[chromatic]["volume"]
+				
+		#		current_volume = 0.5*(prev_volume + current_volume)
+				
+		#		if current_volume < prev_volume and prev_volume_2 < prev_volume and prev_duration > min_retrigger_interval:
+		#			current_duration = delta
+		#			trigger = true
+					
+				current_peaks[chromatic] = {
+					"volume": current_volume,
+					"duration": current_duration,
+					"frequency": current_frequency
+				}
+				
+				if trigger:
+					current_started_notes.append(chromatic)
+		DetectionMode.DOMINANT_PEAK:
+			var chromatic := int(dominant_peak.z)
+			var current_volume := dominant_peak.y
+			var current_duration: float = delta
+			var current_frequency := dominant_peak.x
+			var prev_duration: float = 0.0
+			var trigger := true
+			if current_peaks.has(chromatic):
+				if current_volume > volume_end_threshold:
+					prev_duration = current_peaks[chromatic]["duration"]
+					current_duration = prev_duration + delta
+					current_peaks[chromatic] = {
+						"volume": current_volume,
+						"duration": current_duration,
+						"frequency": current_frequency,
+						"started": current_peaks[chromatic]["started"]
+					}
+			else:
+				for chormatic in current_peaks:
+					current_ended_notes.append(chromatic)
+				current_peaks.clear()
+				
+				
+				if current_volume > volume_start_threshold:
+					current_peaks[chromatic] = {
+						"volume": current_volume,
+						"duration": current_duration,
+						"frequency": current_frequency,
+						"started": false,
+					}
+				else:
+					trigger = false
+			
+			if prev_duration < dominant_peak_trigger_duration and current_duration > dominant_peak_trigger_duration:
+				if trigger:
+					current_started_notes.append(chromatic)
+				
 #			start_note(chromatic)
 	# signal emissions are done at the end so that the updated states are accessible to connected methods.
 	for enote in current_ended_notes:
 		end_note(enote)
 	
 	for snote in current_started_notes:
-		start_note(snote)
-	
-	
-	if current_started_notes:
-		print_debug(volume_start_threshold, ", ", last_raw_peaks)
+		current_peaks[snote]["started"] = true
+		start_note(snote) 
 	
 	
 	if dominant_peak.y > volume_start_threshold:
-		print("Dominant peak with raw peaks :", dominant_peak, ":   ", last_raw_peaks)
+		print("Dominant peak with raw peaks :", dominant_peak, ":   ", current_peaks)
 		new_dominant_peak_detected.emit(dominant_peak)
 
 
@@ -191,6 +231,8 @@ func get_volume(freq) -> float:
 
 
 func end_note(chromatic) -> void:
+	if chromatic > NoteFrequency.CHROMATIC.size() - 1:
+		return
 	note_ended.emit(NoteFrequency.CHROMATIC[chromatic])
 #	match(mode):
 #		Modes.KEYBOARD:
@@ -339,23 +381,40 @@ func remove_lower_harmonics(peaks: PackedVector3Array) -> PackedVector3Array:
 	return ret
 
 
-func find_dominant_peak(peaks: PackedVector2Array) -> Vector2:
+func find_dominant_peak(peaks: PackedVector2Array) -> Vector3:
 	var mindex := -1
-	var ret: Vector2
+	var dp: Vector2
+	var chromatic := -1
 	
 	var min_freq := 80.0#0.0 if peaks.size() == 0 else peaks[0].x*0.45
 	
 	for index in peaks.size():
 		var peak := peaks[index]
 		if peak.x < min_freq:
-			return ret
+			break
 		
 		if peak.y < volume_start_threshold:
 			continue
-		if peak.y > ret.y:
-			ret = peak
+		if peak.y > dp.y:
+			dp = peak
 			mindex = index
 		else:
-			return ret
+			break
 	
-	return ret
+	var index = NoteFrequency.CHROMATIC.bsearch(dp.x, false)
+	if index == 0:
+		pass
+	elif index < NoteFrequency.CHROMATIC.size() - 2:
+		var before = NoteFrequency.CHROMATIC[index]
+		var after = NoteFrequency.CHROMATIC[index+1]
+		var before_dis = abs(before-dp.x)
+		var after_dis = abs(after-dp.x)
+		
+		if before_dis < after_dis:
+			chromatic = index
+		else:
+			chromatic = index + 1
+	else:
+		chromatic = NoteFrequency.CHROMATIC[NoteFrequency.CHROMATIC.size() - 1]
+	
+	return Vector3(dp.x, dp.y, chromatic)
