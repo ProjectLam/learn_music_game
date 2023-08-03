@@ -1,5 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://64cctwn56wwb"]
+[gd_scene load_steps=17 format=3 uid="uid://64cctwn56wwb"]
 
+[ext_resource type="Script" path="res://scenes/tuner_scene.gd" id="1_6507e"]
 [ext_resource type="PackedScene" uid="uid://ccobg18fs2u6d" path="res://scenes/tuner/tuner_meter.tscn" id="1_rboo5"]
 [ext_resource type="PackedScene" uid="uid://s1hxsjsfg7mc" path="res://scenes/tuner/tuner_strings.tscn" id="2_47ggn"]
 [ext_resource type="PackedScene" uid="uid://yiegf72umti4" path="res://scenes/tuner/tuner_volume.tscn" id="4_7fs2y"]
@@ -7,9 +8,67 @@
 [ext_resource type="PackedScene" uid="uid://dugmf1aw8e15" path="res://scenes/tuner/clarity_threshold.tscn" id="6_1pq1h"]
 [ext_resource type="Script" path="res://scenes/tuner/last_frequency_label.gd" id="7_jfms3"]
 [ext_resource type="PackedScene" uid="uid://bpsr6id66vxk2" path="res://scenes/left_bar/left_bar.tscn" id="8_85bco"]
+[ext_resource type="PackedScene" uid="uid://dl4nx74f03pxd" path="res://scenes/ui_elements/glass_panel.tscn" id="8_chv4w"]
+[ext_resource type="PackedScene" uid="uid://cwr5sfnmp7808" path="res://scenes/ui_elements/square_button_01/square_button_01.tscn" id="9_ly5vk"]
+[ext_resource type="Texture2D" uid="uid://be3ioc0v3w1yd" path="res://assets/gui/icons/close.svg" id="10_uwwtb"]
 
 [sub_resource type="AudioStreamGenerator" id="AudioStreamGenerator_obkhd"]
 mix_rate = 22050.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d1uy0"]
+bg_color = Color(0.152941, 0, 0.662745, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.8, 0.8, 0.8, 0.494118)
+border_blend = true
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7wp3t"]
+bg_color = Color(0.329412, 0.364706, 1, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.8, 0.8, 0.8, 0.494118)
+border_blend = true
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xu48s"]
+bg_color = Color(0.329412, 0.364706, 1, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.8, 0.8, 0.8, 0.494118)
+border_blend = true
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n7qtx"]
+content_margin_left = 25.0
+content_margin_top = 25.0
+content_margin_right = 25.0
+content_margin_bottom = 10.0
+bg_color = Color(0.737255, 0.00392157, 0.917647, 0.133333)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 0.364706)
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
 
 [node name="Tuner" type="Control"]
 layout_mode = 3
@@ -18,6 +77,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_6507e")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 0
@@ -30,17 +90,6 @@ color = Color(0.12549, 0.0666667, 0.211765, 1)
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = SubResource("AudioStreamGenerator_obkhd")
 autoplay = true
-
-[node name="BackButton" type="Button" parent="."]
-layout_mode = 0
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = 152.0
-offset_top = -77.0
-offset_right = 252.0
-offset_bottom = -27.0
-grow_vertical = 0
-text = "Back"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 1
@@ -89,21 +138,107 @@ custom_minimum_size = Vector2(800, 400)
 layout_mode = 2
 size_flags_vertical = 6
 
+[node name="Spacer" type="Control" parent="HBoxContainer/MarginContainer2/Elements/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
 [node name="tuner_volume" parent="HBoxContainer/MarginContainer2/Elements/VBoxContainer" instance=ExtResource("4_7fs2y")]
 layout_mode = 2
 size_flags_vertical = 1
 
+[node name="Volume threshold" type="Label" parent="HBoxContainer/MarginContainer2/Elements/VBoxContainer"]
+layout_mode = 2
+text = "volume threshold."
+horizontal_alignment = 1
+
 [node name="tuner_volume_slider" parent="HBoxContainer/MarginContainer2/Elements/VBoxContainer" instance=ExtResource("5_uwv3y")]
+layout_mode = 2
+
+[node name="Spacer2" type="Control" parent="HBoxContainer/MarginContainer2/Elements/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 
 [node name="ClarityThreshold" parent="HBoxContainer/MarginContainer2/Elements/VBoxContainer" instance=ExtResource("6_1pq1h")]
 layout_mode = 2
 
+[node name="Spacer3" type="Control" parent="HBoxContainer/MarginContainer2/Elements/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
 [node name="LastFrequencyLabel" type="Label" parent="HBoxContainer/MarginContainer2/Elements/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
-text = "356 Hz"
+text = "Dominant peak
+356 Hz 0.2 Volume"
 horizontal_alignment = 1
 script = ExtResource("7_jfms3")
 
-[connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]
+[node name="HelpButton" type="Button" parent="HBoxContainer/MarginContainer2"]
+custom_minimum_size = Vector2(46, 46)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+focus_mode = 0
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_d1uy0")
+theme_override_styles/hover = SubResource("StyleBoxFlat_7wp3t")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_xu48s")
+text = "?"
+
+[node name="HelpPanel" type="MarginContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="HelpPanel"]
+layout_mode = 2
+color = Color(0, 0, 0, 0.32549)
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="HelpPanel"]
+copy_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HelpPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 100
+theme_override_constants/margin_bottom = 100
+
+[node name="glass_panel" parent="HelpPanel/MarginContainer" instance=ExtResource("8_chv4w")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_n7qtx")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HelpPanel/MarginContainer/glass_panel"]
+layout_mode = 2
+
+[node name="CloseButton" parent="HelpPanel/MarginContainer/glass_panel/VBoxContainer" instance=ExtResource("9_ly5vk")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(27, 27)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+icon = ExtResource("10_uwwtb")
+expand_icon = true
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HelpPanel/MarginContainer/glass_panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HelpPanel/MarginContainer/glass_panel/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RichTextLabel" type="RichTextLabel" parent="HelpPanel/MarginContainer/glass_panel/VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+bbcode_enabled = true
+text = "1- Volume thershold : set the loudness threshold which allows your notes to be triggered. use this to filter noise.
+2- Clarity threshold : the higher the bettter. put it at a high value like 0.9 and keep lowering it till you see your notes triggered."
+fit_content = true
+
+[connection signal="pressed" from="HBoxContainer/MarginContainer2/HelpButton" to="." method="_on_help_button_pressed"]
+[connection signal="pressed" from="HelpPanel/MarginContainer/glass_panel/VBoxContainer/CloseButton" to="." method="_on_close_button_pressed"]

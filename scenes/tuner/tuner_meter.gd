@@ -103,6 +103,8 @@ func _process(delta):
 			chr_add = -chr_rem - 12 + 3
 		var chromatic_start := chromatic + chr_add
 		var chromatic_end := chromatic_start + 11
+		if chromatic_end > NoteFrequency.CHROMATIC.size() - 1:
+			return
 		var start_freq := NoteFrequency.CHROMATIC[chromatic_start]
 		var sub_freq = freq - start_freq
 		var sub_freq_range: float = (NoteFrequency.CHROMATIC[chromatic_end] if chromatic_end < NoteFrequency.CHROMATIC.size() else NoteFrequency.CHROMATIC[chromatic_end - 12]*2.0) - start_freq
@@ -121,16 +123,17 @@ func _process(delta):
 		if prev_i != note_i:
 			prev_i = note_i
 		
-		for i in note_items.get_child_count():
-			if i == note_i:
-				continue
-			var nItem = note_items.get_child(i)
-			var nItemLabel = nItem.find_child("MnemonicLabel")
-			if is_instance_valid(nItemLabel):
-				var label_settings = nItemLabel.label_settings
-				tween.tween_property(label_settings, "font_color", Color.GRAY, 0.25)
+#		for i in note_items.get_child_count():
+#			if i == note_i:
+#				continue
+#			var nItem = note_items.get_child(i)
+#			var nItemLabel = nItem.find_child("MnemonicLabel")
+#			if is_instance_valid(nItemLabel):
+#				var label_settings = nItemLabel.label_settings
+#				if label_settings:
+#					tween.tween_property(label_settings, "font_color", Color.GRAY, 0.25)
 
-		tween.tween_property(note_items.get_child(note_i).find_child("MnemonicLabel").label_settings, "font_color", Color.WHITE, 0.25)
+#		tween.tween_property(note_items.get_child(note_i).find_child("MnemonicLabel").label_settings, "font_color", Color.WHITE, 0.25)
 #		sub_freq_ratio = 1.0
 		var stick_angle = stick_start + (stick_range * sub_freq_ratio)
 		var stick_radians = deg_to_rad(stick_angle)

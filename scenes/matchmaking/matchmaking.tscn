@@ -5,7 +5,7 @@
 [ext_resource type="Shader" path="res://shaders/LightingBackground.gdshader" id="3_11mtd"]
 [ext_resource type="PackedScene" uid="uid://bh1htbm1t4nlb" path="res://scenes/ui_elements/light_layer/light_layer.tscn" id="3_esan8"]
 [ext_resource type="PackedScene" uid="uid://bpsr6id66vxk2" path="res://scenes/left_bar/left_bar.tscn" id="4_cayno"]
-[ext_resource type="PackedScene" path="res://scenes/song_selection/song_selection_bg.tscn" id="5_pav4p"]
+[ext_resource type="PackedScene" uid="uid://kgpxv8yxnjo0" path="res://scenes/song_selection/song_selection_bg.tscn" id="5_pav4p"]
 [ext_resource type="FontFile" uid="uid://bd4vhm6dvnuue" path="res://fonts/Games.ttf" id="5_pdkhr"]
 [ext_resource type="PackedScene" uid="uid://ba0n1dg0yxtpj" path="res://scenes/matches/matches.tscn" id="10_o03mo"]
 [ext_resource type="PackedScene" uid="uid://dl4nx74f03pxd" path="res://scenes/ui_elements/glass_panel.tscn" id="10_t33hw"]
@@ -18,7 +18,7 @@
 [ext_resource type="Script" path="res://scenes/matchmaking/join_failed_popup.gd" id="16_jjopf"]
 [ext_resource type="FontFile" uid="uid://cl8syiom7jxno" path="res://fonts/Montserrat-Regular.ttf" id="17_qaosw"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_g2lmo"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sypdd"]
 resource_local_to_scene = true
 shader = ExtResource("3_11mtd")
 shader_parameter/indicate = true
@@ -58,7 +58,7 @@ texture = ExtResource("2_i2m6c")
 stretch_mode = 6
 
 [node name="LightLayer" parent="Background" instance=ExtResource("3_esan8")]
-material = SubResource("ShaderMaterial_g2lmo")
+material = SubResource("ShaderMaterial_sypdd")
 layout_mode = 1
 
 [node name="SongSelectionBG" parent="." instance=ExtResource("5_pav4p")]
