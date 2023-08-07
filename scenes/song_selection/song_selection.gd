@@ -3,6 +3,7 @@ class_name SongSelection
 
 signal song_selected(song)
 signal go_back
+signal items_reloaded()
 #signal item_played
 
 var cSongSelectionItem = preload("res://scenes/song_selection/song_selection_item.tscn")
@@ -12,6 +13,9 @@ var cSongSelectionItem = preload("res://scenes/song_selection/song_selection_ite
 @export var items_number = 7
 @export var middle_i = 3
 @export var animation_duration = 0.15
+
+@export var instrument_data: InstrumentData:
+	set = set_instrument_data
 
 enum SELECTION_MODE {
 	PLAY,
@@ -48,15 +52,7 @@ func _ready():
 		print("Song configurations loaded")
 		set_process(true)
 	
-	load_items()
-	
-	index = 3
-	offset = index - middle_i
-	
-	_process_items_vertically()
-	_process_items()
-	if song_items_container.get_child_count() != 0:
-		selected_item = song_items_container.get_child(index)
+	reload_items()
 	
 	if FocusManager.is_in_focus_tree():
 		grab_focus()
@@ -90,17 +86,50 @@ func _unhandled_input(event):
 		get_viewport().set_input_as_handled()
 		_on_Item_selected(selected_item)
 
+
+func reload_items():
+	items_count = 0
+	index = 3
+	offset = index - middle_i
+	
+	if tween_x:
+		tween_x.kill()
+		tween_x = null
+	
+	if tween_y:
+		tween_y.kill()
+		tween_y = null
+	
+#	for child in song_items_container.get_chil
+	
+	load_items()
+#
+	_process_items_vertically()
+	_process_items()
+	if song_items_container.get_child_count() != 0:
+		selected_item = song_items_container.get_child(index)
+
+	items_reloaded.emit()
+	
+
+
 func load_items():
 	items_count = 0
 	
 	for n in song_items_container.get_children():
-		n.queue_free()
+		song_items_container.remove_child(n)
+		n.free()
+#		n.queue_free()
 	
 	if PlayerVariables.songs.size():
 		while items_count < items_number:
 			for songid in PlayerVariables.songs:
 				var song : Song = PlayerVariables.songs[songid]
-				print("Added song: ", song.title)
+				if not song.can_play_instrument(instrument_data):
+					print("Ignoring song(%s,%s) for instrument tags %s" % [song.get_identifier(), song.tags, instrument_data.get_family_tags() if instrument_data else []])
+					continue
+				
+				print("Added song: ", song.get_identifier())
 				var nItem: SongSelectionItem = cSongSelectionItem.instantiate()
 				nItem.radius = radius
 				song_items_container.add_child(nItem)
@@ -108,6 +137,8 @@ func load_items():
 				nItem.find_child("NameLabel").text = song.title
 				nItem.song = song
 				items_count += 1
+			
+			assert(items_count != 0)
 
 
 func select_item(p_index: int, p_is_internal: bool = false) -> void:
@@ -336,3 +367,9 @@ func _on_visibility_changed():
 	if visible:
 		if FocusManager.is_in_focus_tree():
 			grab_focus()
+
+
+func set_instrument_data(value: InstrumentData) -> void:
+	if instrument_data != value:
+		instrument_data = value
+		reload_items()

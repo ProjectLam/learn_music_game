@@ -173,7 +173,13 @@ text = "Dominant peak
 horizontal_alignment = 1
 script = ExtResource("7_jfms3")
 
-[node name="HelpButton" type="Button" parent="HBoxContainer/MarginContainer2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/MarginContainer2"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 30
+alignment = 2
+
+[node name="HelpButton" type="Button" parent="HBoxContainer/MarginContainer2/HBoxContainer"]
 custom_minimum_size = Vector2(46, 46)
 layout_mode = 2
 size_flags_horizontal = 8
@@ -240,5 +246,5 @@ text = "1- Volume thershold : set the loudness threshold which allows your notes
 2- Clarity threshold : the higher the bettter. put it at a high value like 0.9 and keep lowering it till you see your notes triggered."
 fit_content = true
 
-[connection signal="pressed" from="HBoxContainer/MarginContainer2/HelpButton" to="." method="_on_help_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/MarginContainer2/HBoxContainer/HelpButton" to="." method="_on_help_button_pressed"]
 [connection signal="pressed" from="HelpPanel/MarginContainer/glass_panel/VBoxContainer/CloseButton" to="." method="_on_close_button_pressed"]

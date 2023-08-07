@@ -3,7 +3,8 @@ class_name InstrumentSelectionItem
 
 signal pressed
 
-var instrument_data: InstrumentData: set = set_instrument_data
+var instrument_data: InstrumentData: 
+	set = set_instrument_data
 
 @onready var icon := %Icon
 @onready var name_label := %NameLabel
