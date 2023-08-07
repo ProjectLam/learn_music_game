@@ -45,6 +45,14 @@ func load_remote_songs():
 		var lead_xml_url = song_info.get("lead_xml_url")
 		var song_file_url = song_info.get("song_file_url")
 		var audio_offset = song_info.get("audio_offset", 0.0)
+		var p_tags = song_info.get("tags", [])
+		var tags: PackedStringArray = []
+		if not (p_tags is Array):
+			p_tags = []
+		
+		for tag in p_tags:
+			if tag is String:
+				tags.append(tag)
 #		var p_tags = song_info.get("tags", 0.0)
 		
 		if not (lead_xml_url is String):
@@ -59,7 +67,7 @@ func load_remote_songs():
 			continue
 		
 		var new_xml_request = FILE_REQUEST_SCENE.instantiate()
-		new_xml_request.request_completed.connect(func(buffer) : _on_lead_xml_received(song_file_url, buffer, audio_offset))
+		new_xml_request.request_completed.connect(func(buffer) : _on_lead_xml_received(song_file_url, buffer, audio_offset, tags))
 		new_xml_request.target_url = GBackend.remote_songs_json_url.get_base_dir().path_join(lead_xml_url)
 		remote_file_requests.add_child(new_xml_request)
 	
@@ -110,10 +118,11 @@ func load_local_songs():
 			_handle_local_song_zip(sfile_path)
 
 
-func _on_lead_xml_received(song_file_path, xml_buffer, audio_offset: float):
+func _on_lead_xml_received(song_file_path, xml_buffer, audio_offset: float, tags: PackedStringArray = []):
 	var sp := SongParser.new()
 	var song = sp.parse_xml_from_buffer(xml_buffer)
 	song.audio_offset = audio_offset
+	song.tags = tags
 	if(song):
 		song.song_music_file = song_file_path
 		song.song_music_file_access = GBackend.song_remote_access

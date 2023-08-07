@@ -7,7 +7,7 @@
 [resource]
 script = ExtResource("1_anhq8")
 instrument_label = "Piano"
-family = 4
+family = 6
 tuning_pitches = Array[int]([])
 transposition = 0
 icon = ExtResource("1_gmase")

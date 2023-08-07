@@ -47,6 +47,7 @@ var events: Array[SongEvent]
 var transcription_track: SongTranscriptionTrack
 var levels: Array[SongLevel]
 var audio_offset: float = 0.0
+var tags: PackedStringArray = []
 
 
 func get_notes_and_chords_for_difficulty(difficulty: int = -1) -> Array[NoteBase]:
@@ -137,7 +138,36 @@ func get_notes_and_chords_for_difficulty(difficulty: int = -1) -> Array[NoteBase
 	return notes_and_chords
 
 func get_identifier() -> String:
-	return title
+	return title + "_" + get_instrument_type()
+
+
+func get_instrument_type() -> String:
+	if tags.has("piano"):
+		return "piano"
+	elif tags.has("guitar"):
+		return "string"
+	elif tags.has("string"):
+		return "string"
+	
+	return "all"
+
+
+func can_play_instrument(p_idata: InstrumentData) -> bool:
+	if p_idata == null or get_instrument_type() == "all":
+		return true
+	
+	
+	var itags := p_idata.get_family_tags()
+	
+	if itags.has("all"):
+		return true
+	
+	for tag in itags:
+		if tags.has(tag):
+			return true
+	
+	return false
+
 
 class SongPhrase:
 	var disparity: bool

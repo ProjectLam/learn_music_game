@@ -10,6 +10,13 @@ enum Family {
 	BRASS,
 	PERCUSSION,
 	HARPS,
+	KEYBOARDS,
+}
+
+const FAMILY_NAMES := {
+	Family.GUITARS: ["string"],
+	Family.STRINGS: ["string"],
+	Family.KEYBOARDS: ["piano"]
 }
 
 enum Chromatic {
@@ -144,6 +151,10 @@ func get_default_tune(string: int, fret: int) -> Chromatic:
 	assert(string >= 0 and string < default_string_pitches.size())
 	var base = default_string_pitches[string]
 	return base + fret
+
+
+func get_family_tags() -> PackedStringArray:
+	return FAMILY_NAMES.get(family, ["all"])
 
 
 func get_tune(string: int, fret: int) -> Chromatic:

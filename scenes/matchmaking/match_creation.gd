@@ -49,10 +49,18 @@ func _ready():
 	
 	refresh_match_creation_mode()
 	refresh_matchmaking_status()
+	refresh_instrument()
 
 
 func _process(delta):
 	pass
+
+
+func refresh_instrument():
+	if not is_inside_tree():
+		return
+	
+	song_selection.instrument_data = instrument_data
 
 
 func _parse_scene_stack_vars():
@@ -101,6 +109,7 @@ func set_instrument_data(value: InstrumentData) -> void:
 		instrument_data = value
 		instrument_selection_item.instrument_data = instrument_data
 		PlayerVariables.gameplay_instrument_data = instrument_data
+		refresh_instrument()
 
 
 func _on_create_match_button_pressed():
@@ -229,3 +238,9 @@ func set_mode(value: Modes):
 	if mode != value:
 		mode = value
 		refresh_match_creation_mode()
+
+
+func _on_song_selection_items_reloaded():
+	pass
+#	song = null
+#	compact_song_preview.song = song
