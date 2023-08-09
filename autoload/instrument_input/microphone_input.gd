@@ -124,8 +124,8 @@ func _on_new_frame_processed(delta, last_pure_raw_peaks):
 	
 	var cp_keys = current_peaks.keys()
 	
-	var current_ended_notes: PackedInt32Array = []
-	var current_started_notes: PackedInt32Array = []
+	var current_ended_notes: PackedVector3Array = []
+	var current_started_notes: PackedVector3Array = []
 	
 	match(detection_mode):
 		DetectionMode.CLUSTER:
@@ -169,7 +169,7 @@ func _on_new_frame_processed(delta, last_pure_raw_peaks):
 				}
 				
 				if trigger:
-					current_started_notes.append(chromatic)
+					current_started_notes.append(Vector3(current_frequency, current_volume, chromatic))
 		DetectionMode.DOMINANT_PEAK:
 			var chromatic := int(dominant_peak.z)
 			var current_volume := dominant_peak.y
@@ -188,8 +188,10 @@ func _on_new_frame_processed(delta, last_pure_raw_peaks):
 						"started": current_peaks[chromatic]["started"]
 					}
 			else:
-				for chormatic in current_peaks:
-					current_ended_notes.append(chromatic)
+				for chromatic_i in current_peaks:
+					var cp = current_peaks[chromatic_i]
+					var i_note := Vector3(cp["frequency"], cp["volume"], chromatic_i)
+					current_ended_notes.append(i_note)
 				current_peaks.clear()
 				
 				
@@ -205,7 +207,7 @@ func _on_new_frame_processed(delta, last_pure_raw_peaks):
 			
 			if prev_duration < dominant_peak_trigger_duration and current_duration > dominant_peak_trigger_duration:
 				if trigger:
-					current_started_notes.append(chromatic)
+					current_started_notes.append(Vector3(current_frequency, current_volume, chromatic))
 				
 #			start_note(chromatic)
 	# signal emissions are done at the end so that the updated states are accessible to connected methods.
@@ -213,12 +215,12 @@ func _on_new_frame_processed(delta, last_pure_raw_peaks):
 		end_note(enote)
 	
 	for snote in current_started_notes:
-		current_peaks[snote]["started"] = true
+		current_peaks[int(snote.z)]["started"] = true
 		start_note(snote) 
 	
 	
 	if dominant_peak.y > volume_start_threshold:
-		print("Dominant peak with raw peaks :", dominant_peak, ":   ", current_peaks)
+		print("Dominant peak with raw peaks :", dominant_peak, ":   ", last_raw_peaks)
 		new_dominant_peak_detected.emit(dominant_peak)
 
 
@@ -230,10 +232,12 @@ func get_volume(freq) -> float:
 	return GAudioServerManager.spectrum.get_magnitude_for_frequency_range(100, 100000).length()
 
 
-func end_note(chromatic) -> void:
-	if chromatic > NoteFrequency.CHROMATIC.size() - 1:
+func end_note(note: Vector3) -> void:
+	var chromatic := int(note.z)
+	if chromatic <= 0 or chromatic >= NoteFrequency.CHROMATIC.size() - 1:
 		return
 	note_ended.emit(NoteFrequency.CHROMATIC[chromatic])
+	print("Microphone input end note ", NoteFrequency.CHROMATIC_NAMES[chromatic], ", ", note)
 #	match(mode):
 #		Modes.KEYBOARD:
 #		Modes.FRET:
@@ -241,7 +245,18 @@ func end_note(chromatic) -> void:
 #			fret_ended.emit(string_fret.x, string_fret.y)
 
 
-func start_note(chromatic) -> void:
+func start_note(note: Vector3) -> void:
+	var chromatic := int(note.z)
+	if chromatic <= 0 or chromatic >= NoteFrequency.CHROMATIC.size() - 1:
+		return
+	
+	var lchrome = NoteFrequency.CHROMATIC[chromatic -1]
+	var rchrome = NoteFrequency.CHROMATIC[chromatic]
+
+	var ldis = abs(lchrome - note.x)/lchrome
+	var rdis = abs(rchrome - note.x)/rchrome
+	
+	print("Microphone input start note ", NoteFrequency.CHROMATIC_NAMES[chromatic], ", ", note, ", ", ldis, ", ", rdis)
 	last_started_note_chromatic = chromatic
 	last_started_note_timstamp = time_passed
 	note_started.emit(NoteFrequency.CHROMATIC[chromatic])
@@ -401,8 +416,8 @@ func find_dominant_peak(peaks: PackedVector2Array) -> Vector3:
 		else:
 			break
 	
-	var index = NoteFrequency.CHROMATIC.bsearch(dp.x, false)
-	if index == 0:
+	var index = NoteFrequency.CHROMATIC.bsearch(dp.x, false) - 1
+	if index <= 0:
 		pass
 	elif index < NoteFrequency.CHROMATIC.size() - 2:
 		var before = NoteFrequency.CHROMATIC[index]
