@@ -15,7 +15,7 @@ var current_midi_inputs := {
 func _ready():
 	super._ready()
 	OS.open_midi_inputs()
-	
+	print(OS.get_connected_midi_inputs())
 	notes.resize(NoteFrequency.CHROMATIC.size())
 	notes.fill(0)
 
@@ -53,8 +53,8 @@ func get_inputs()->Array:
 func _input(event):
 	if event is InputEventMIDI and (event.message == MIDI_MESSAGE_NOTE_ON or event.message == MIDI_MESSAGE_NOTE_OFF):
 		if Debug.print_note:
-			print("MIDI Event (time, index, pressed): (%s, %s, %s)" % [time, event.pitch, event.message == MIDI_MESSAGE_NOTE_ON])
-		var pressed: bool = event.message == MIDI_MESSAGE_NOTE_ON
+			print("MIDI Event (time, index, pressed, velocity): (%s, %s, %s, %s)" % [time, event.pitch, event.message == MIDI_MESSAGE_NOTE_ON, event.velocity], )
+		var pressed: bool = event.message == MIDI_MESSAGE_NOTE_ON and event.velocity != 0
 		var chromatic_index = event.pitch + MIDI_OFFSET
 		if chromatic_index < 0 or chromatic_index >= NoteFrequency.CHROMATIC.size():
 			return
@@ -83,12 +83,14 @@ func _on_note_started(chromatic_index: int) -> void:
 
 
 func _on_note_ended(chromatic_index: int) -> void:
-	current_midi_inputs.erase[chromatic_index]
+	if not current_midi_inputs.has(chromatic_index):
+		return
+	current_midi_inputs.erase(chromatic_index)
 	var string_fret = chromatic_index_to_fret(chromatic_index)
 	match(mode):
 		Modes.KEYBOARD:
 			notes[chromatic_index] = 1
-			note_started.emit(NoteFrequency.CHROMATIC[chromatic_index])
+			note_ended.emit(NoteFrequency.CHROMATIC[chromatic_index])
 		Modes.FRET:
 			notes[chromatic_index] = 1
-			fret_started.emit(string_fret.x, string_fret.y)
+			fret_ended.emit(string_fret.x, string_fret.y)
