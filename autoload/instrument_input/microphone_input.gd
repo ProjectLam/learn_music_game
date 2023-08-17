@@ -7,19 +7,21 @@ enum DetectionMode {
 	DOMINANT_PEAK,
 }
 
-var detection_mode := DetectionMode.DOMINANT_PEAK
+var detection_mode := DetectionMode.CLUSTER
 
 var inputs: Array[int]
 var started_notes: Array [int]
 
 var threshold := -40.0
 var volume_range: float = 0.5
-var pitch_accuracy = 0.035
+var pitch_accuracy = 0.025
 var last_peak: Vector3
 var last_raw_peaks: PackedVector2Array = []
 var last_adjusted_peaks: PackedVector3Array = []
 var last_pure_raw_peaks: PackedVector2Array = []
 var dominant_peak_trigger_duration := 0.075
+var cluster_trigger_duration := 0.04
+var cluster_retrigger_ratio := 1.4
 # if the volume of the same note changes by this much in a single frame
 # it means that the note was triggered again.
 var volume_spike_ratio := 1.02
@@ -73,7 +75,8 @@ func _ready():
 	super._ready()
 	
 	deactivated.connect(_on_deactivated)
-	GAudioServerManager.new_frame_processed.connect(_on_new_frame_processed)
+	GAudioServerManager.new_note_frame_processed.connect(_on_new_note_frame_processed)
+	GAudioServerManager.new_chroma_frame_processed.connect(_on_new_chroma_frame_processed)
 	
 	var mic_profile = PlayerVariables.microphone_input_profiles.get(PlayerVariables.selected_input_device)
 	if mic_profile:
@@ -94,8 +97,16 @@ var last_started_note_chromatic := -1
 var last_started_note_timstamp := 0.0
 var min_retrigger_interval := 0.07
 
+#
+func _on_new_chroma_frame_processed(delta, data):
+	if data.size() > 0:
+#		pass
+#		print_debug(GAudioServerManager.get_volume(320.0, 340.0))
+#		print_debug(data)
+		pass
 
-func _on_new_frame_processed(delta, last_pure_raw_peaks):
+
+func _on_new_note_frame_processed(delta, data):
 	time_passed += delta
 	if not is_active:
 		return
@@ -110,7 +121,7 @@ func _on_new_frame_processed(delta, last_pure_raw_peaks):
 	var previous_inputs = inputs.duplicate()
 	inputs = []
 	var prev_last_raw_peak := last_raw_peaks
-	last_raw_peaks = last_pure_raw_peaks
+	last_raw_peaks = data
 	var peaks := adjust_and_filter_peaks(last_raw_peaks)
 	last_adjusted_peaks = peaks
 	old_peaks_2 = old_peaks
@@ -133,7 +144,7 @@ func _on_new_frame_processed(delta, last_pure_raw_peaks):
 				var peak = current_peaks[peak_chr]
 				if not (peak_chr in peak_chromatics):
 					current_peaks.erase(peak_chr)
-					current_ended_notes.append(peak_chr)
+					current_ended_notes.append(Vector3(peak["frequency"], peak["volume"], peak_chr))
 			
 			for peak in peaks:
 				var chromatic := int(peak.z)
@@ -144,14 +155,18 @@ func _on_new_frame_processed(delta, last_pure_raw_peaks):
 				var prev_duration := 0.0
 				var prev_volume_2 := 0.0
 				var prev_duration_2 := 0.0
-				var trigger := true
+				var trigger := false
+				var retrigger := false
 				
 				if current_peaks.has(chromatic):
 					prev_volume = current_peaks[chromatic]["volume"]
 					prev_duration = current_peaks[chromatic]["duration"]
 					current_duration = prev_duration + delta
-					trigger = false
-				
+					if prev_duration < cluster_trigger_duration and current_duration >= cluster_trigger_duration:
+						trigger = true
+					elif current_peaks[chromatic]["started"] and current_volume > prev_volume*cluster_retrigger_ratio:
+						retrigger = true
+					
 				if old_peaks_2.has(chromatic):
 					prev_volume_2 = old_peaks_2[chromatic]["volume"]
 					prev_duration_2 = old_peaks_2[chromatic]["volume"]
@@ -165,11 +180,17 @@ func _on_new_frame_processed(delta, last_pure_raw_peaks):
 				current_peaks[chromatic] = {
 					"volume": current_volume,
 					"duration": current_duration,
-					"frequency": current_frequency
+					"frequency": current_frequency,
+					"started": false
 				}
 				
+				var peak_vec := Vector3(current_frequency, current_volume, chromatic)
+				
+				if retrigger:
+					current_ended_notes.append(peak_vec)
 				if trigger:
-					current_started_notes.append(Vector3(current_frequency, current_volume, chromatic))
+#					print_debug(current_peaks, ", ", peaks)
+					current_started_notes.append(peak_vec)
 		DetectionMode.DOMINANT_PEAK:
 			var chromatic := int(dominant_peak.z)
 			var current_volume := dominant_peak.y
@@ -218,9 +239,12 @@ func _on_new_frame_processed(delta, last_pure_raw_peaks):
 		current_peaks[int(snote.z)]["started"] = true
 		start_note(snote) 
 	
+#	if peaks.size() > 0:
+#		print_debug(peaks)
+#		print_debug(last_raw_peaks)
 	
 	if dominant_peak.y > volume_start_threshold:
-		print("Dominant peak with raw peaks :", dominant_peak, ":   ", last_raw_peaks)
+#		print("Dominant peak with raw peaks :", dominant_peak, ":   ", peaks)
 		new_dominant_peak_detected.emit(dominant_peak)
 
 
@@ -237,7 +261,7 @@ func end_note(note: Vector3) -> void:
 	if chromatic <= 0 or chromatic >= NoteFrequency.CHROMATIC.size() - 1:
 		return
 	note_ended.emit(NoteFrequency.CHROMATIC[chromatic])
-	print("Microphone input end note ", NoteFrequency.CHROMATIC_NAMES[chromatic], ", ", note)
+#	print("Microphone input end note ", NoteFrequency.CHROMATIC_NAMES[chromatic], ", ", note)
 #	match(mode):
 #		Modes.KEYBOARD:
 #		Modes.FRET:
@@ -256,7 +280,7 @@ func start_note(note: Vector3) -> void:
 	var ldis = abs(lchrome - note.x)/lchrome
 	var rdis = abs(rchrome - note.x)/rchrome
 	
-	print("Microphone input start note ", NoteFrequency.CHROMATIC_NAMES[chromatic], ", ", note, ", ", ldis, ", ", rdis)
+#	print("Microphone input start note ", NoteFrequency.CHROMATIC_NAMES[chromatic], ", ", note, ", ", ldis, ", ", rdis)
 	last_started_note_chromatic = chromatic
 	last_started_note_timstamp = time_passed
 	note_started.emit(NoteFrequency.CHROMATIC[chromatic])

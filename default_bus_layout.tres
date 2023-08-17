@@ -1,4 +1,4 @@
-[gd_resource type="AudioBusLayout" load_steps=6 format=3 uid="uid://byqfbnf20d4ap"]
+[gd_resource type="AudioBusLayout" load_steps=7 format=3 uid="uid://byqfbnf20d4ap"]
 
 [sub_resource type="AudioEffectPitchAnalyzer" id="AudioEffectPitchAnalyzer_vc1tg"]
 resource_name = "PitchAnalyzer"
@@ -6,6 +6,7 @@ clarity_threshold = 0.0
 
 [sub_resource type="AudioEffectSpectrumAnalyzer" id="AudioEffectSpectrumAnalyzer_fxya2"]
 resource_name = "SpectrumAnalyzer"
+fft_size = 4
 
 [sub_resource type="AudioEffectRecord" id="AudioEffectRecord_8b1q0"]
 resource_name = "Record"
@@ -18,6 +19,9 @@ volume_db = 6.0
 resource_name = "HighPassFilter"
 cutoff_hz = 80.0
 db = 1
+
+[sub_resource type="AudioEffectEQ" id="AudioEffectEQ_jwiua"]
+resource_name = "EQ"
 
 [resource]
 bus/1/name = &"NoteDetection"
@@ -41,4 +45,6 @@ bus/2/effect/0/enabled = true
 bus/2/effect/1/effect = SubResource("AudioEffectAmplify_hxwdq")
 bus/2/effect/1/enabled = true
 bus/2/effect/2/effect = SubResource("AudioEffectHighPassFilter_3ncwd")
-bus/2/effect/2/enabled = true
+bus/2/effect/2/enabled = false
+bus/2/effect/3/effect = SubResource("AudioEffectEQ_jwiua")
+bus/2/effect/3/enabled = true
