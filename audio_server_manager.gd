@@ -1,7 +1,7 @@
 extends Node
 
 signal new_note_frame_processed(delta: float, data)
-signal new_chroma_frame_processed(delta: float, deta)
+signal new_chroma_frame_processed(delta: float, deta, max_volume)
 
 const MIN_DB = 60
 
@@ -128,6 +128,7 @@ func _on_new_pa_frame_processed(data):
 
 
 func _on_new_chroma_frame_processed(data):
+	const handle_strength := 0.5
 #	var cdata := {}
 #	var bf2: Vector2
 #	var bf: Vector2
@@ -166,24 +167,19 @@ func _on_new_chroma_frame_processed(data):
 				var dfreq := (index + 1)*fstep
 				var dvol := volumes[index+1]
 				
-				var control1 := 2*bvol - avol
-				var control2 := 2*cvol - dvol
+				var control1 := bvol + handle_strength*(bvol - avol)
+				var control2 := cvol + handle_strength*(cvol - dvol)
 				
 				var t = (next_chroma_freq - bfreq)*invfstep
 #				t = 0
 				var intvalue := bezier_interpolate(bvol, control1, control2, cvol, t)
-				# adjust for frequency effect :
-#				if next_chroma_index < 60:
-#					print_debug(next_chroma_index, ", ", pow(freq_factor_base, next_chroma_freq/freq_factor))
 				intvalue *= next_chroma_freq/freq_factor
 				
 				
 				total_vol += max(intvalue, 0)
-#				intvalue = ( linear_to_db(intvalue) - MIN_DB)/MIN_DB
 				if intvalue > maxvol:
 					maxvol = max(intvalue, 0)
-#				intvalue = bvol
-#				print_debug(t, ", ", next_chroma_freq, ", ", bfreq, ", ", cfreq, ", ", fstep, ", ", invfstep)
+				
 				chroma_volumes[next_chroma_index] = intvalue
 				
 				next_chroma_index += 1
@@ -194,38 +190,39 @@ func _on_new_chroma_frame_processed(data):
 			else:
 				break
 	
-	var vol_norm := 1.0/maxvol
 	total_vol = total_vol/chroma_volumes.size()
+	var vol_norm := 1.0/total_vol
 	for index in chroma_volumes.size():
 		chroma_volumes[index] *= vol_norm
 	
 	# octave filtering.
 	var cvdup: PackedFloat32Array = chroma_volumes.duplicate()
+#	for index in chroma_volumes.size() - 7:
+#		chroma_volumes[index] += -cvdup[index + 7]*0.9# - cvdup[index + 1]*0.9
+			
+	cvdup = chroma_volumes.duplicate()
+	
 	var additions: PackedFloat32Array = []
 	additions.resize(chroma_volumes.size())
-	for index in range(24, chroma_volumes.size() - 19):
-		additions[index] += cvdup[index+12] + cvdup[index+19]
-	for index in range(24, chroma_volumes.size()):
-#		# rule out 2x overtune.
-		additions[index] += -cvdup[index-12]*2.0 - cvdup[index-19]*2.0
-	
-	for index in chroma_volumes.size() - 7:
-		additions[index] += -cvdup[index + 7]*0.9# - cvdup[index + 1]*0.9
-#	var cvdup2: PackedFloat32Array = chroma_volumes.duplicate()
-#	for index in chroma_volumes.size() - 19:
-##		# rule out 3x overtune.
-#		chroma_volumes[index + 19] = max(cvdup2[index + 19] - cvdup[index]*2.0, 0)
-	
-#		if cvdup[index] > 2.0:
-#			print_debug(index+19)
-#			chroma_volumes[index + 19] = 0.0
+
+	for index in chroma_volumes.size():
+		for index2 in range(index+12, chroma_volumes.size(), 12):
+			additions[index2] += -cvdup[index]*3.0
+
+	for index in chroma_volumes.size():
+		for index2 in range(index+19, chroma_volumes.size(), 12):
+			additions[index2] += -cvdup[index]*3.0
+
+	for index in range(19, chroma_volumes.size()):
 		# rule out 3x overtune.
-#		chroma_volumes[index + 19] = max(cvdup[index + 19] - cvdup[index]*10.0, 0)
-#		while index+12 < chroma_volumes.size():
-#			chroma_volumes[index+12] -= chroma_volumes[index]*0.9
-#			index += 12
-#	chroma_volumes[57] = 0.0
-	var mchroma := 1.0
+		additions[index] += -cvdup[index-19]*3.0
+
+
+	for index in range(28, chroma_volumes.size()):
+		# rule out 5x overtune.
+		additions[index] += -cvdup[index-28]*1.0
+	
+	var mchroma := 0.5
 	for index in additions.size():
 		var value := max(chroma_volumes[index] + additions[index], 0)
 		chroma_volumes[index] = value
@@ -235,17 +232,7 @@ func _on_new_chroma_frame_processed(data):
 	var mchroma_norm := 1.0 / mchroma
 	for index in chroma_volumes.size():
 		chroma_volumes[index] *= mchroma_norm
-#	var nvec = Vector2(329.63, bezier_interpolate(bf.y, bfcontrol, afcontrol, af.y, (329.63 - bf.x)/(af.x - bf.x)))
-#
-#	var points := []
-#
-#	for index in 10:
-##		var x = bf.x + index*22000/1024.0
-#		points.append(bezier_interpolate(bf.y, bfcontrol, afcontrol, af.y, index*0.1))
-#
-#	print_debug(nvec, ": ", [bf2, bf, af, af2])
-##	print_debug(bfd*(329.63-bf.x))
-#	print_debug(points)
+	
 	var tv := []
 	var chroma_volume_derivatives: PackedFloat32Array = []
 	chroma_volume_derivatives.resize(chroma_volumes.size())
@@ -256,19 +243,8 @@ func _on_new_chroma_frame_processed(data):
 		var maxv := max(before,after)
 		chroma_volume_derivatives[index] = at - maxv
 	
-	for index in 60:
-		var volume = chroma_volumes[index]
-#		var volume = chroma_volume_derivatives[index]
-		if volume > 0.1:
-			tv.append(Vector3(index, NoteFrequency.CHROMATIC[index], volume))
 	
-	if tv.size() > 0 and total_vol > 10.0:
-#		print_debug(chroma_volumes.slice(35,45), " : ", volumes.slice(9,20))
-#		print_debug(chroma_volumes)
-		print_debug(maxvol, ", ", tv)
-	
-	
-	new_chroma_frame_processed.emit(pitch_analyzer_delta, chroma_volumes)
+	new_chroma_frame_processed.emit(pitch_analyzer_delta, chroma_volumes, clamp(linear_to_db(mchroma*total_vol)/MIN_DB, 0, 2.0))
 
 
 func set_input_device(dev_name: String) -> void:

@@ -7,7 +7,8 @@ enum DetectionMode {
 	DOMINANT_PEAK,
 }
 
-var detection_mode := DetectionMode.CLUSTER
+# TODO : fix cluster mode.
+var detection_mode := DetectionMode.DOMINANT_PEAK
 
 var inputs: Array[int]
 var started_notes: Array [int]
@@ -50,11 +51,9 @@ enum DETECTION_METHOD {
 	STRING,
 }
 
-enum START_STATE {
-	NONE,
-	STARTING,
-	STARTED,
-	STOPPING,
+enum TRIGGER_MODULE {
+	AUTOCORRELATION,
+	CHROMA,
 }
 
 const fadj_lfactor := 1.0/22000.0
@@ -98,11 +97,79 @@ var last_started_note_timstamp := 0.0
 var min_retrigger_interval := 0.07
 
 #
-func _on_new_chroma_frame_processed(delta, data):
+func _on_new_chroma_frame_processed(delta, data, max_volume):
 	if data.size() > 0:
-#		pass
-#		print_debug(GAudioServerManager.get_volume(320.0, 340.0))
-#		print_debug(data)
+		var tv := []
+		var mvolume: float = 0.0
+		var volcap = max_volume*0.1
+		var notes: PackedInt32Array = []
+		var new_added_notes := []
+		var ended_notes := []
+		for index in data.size():
+			var volume: float = data[index]*max_volume
+#			volume = volume*volume*volume
+			var frequency: = NoteFrequency.CHROMATIC[index]
+#			volume = clamp((60.0 + linear_to_db(volume)) / 60.0, 0, 1)
+			if volume > mvolume:
+				mvolume = volume
+			
+			if volume > 0.5:
+				tv.append(Vector2(frequency, volume))
+				notes.append(index)
+				
+		
+#		tv = GAudioServerManager._set_volumes(tv)
+		
+#		tv = GAudioServerManager._set_volumes(tv)
+		
+#		if tv.size() > 0 and max_volume > 0.5:
+#			print_debug(max_volume, ": ", tv)
+		
+		
+		for index in notes.size():
+			var note := notes[index]
+			if not current_peaks.has(note):
+				current_peaks[note] = {
+					"frequency": tv[index].x,
+					"volume": tv[index].y,
+					"started": false,
+				}
+			else:
+				if not current_peaks[note]["started"]:
+					new_added_notes.append(index)
+				elif (tv[index].y - current_peaks[note]["volume"]) > 0.03:
+					ended_notes.append(note)
+					new_added_notes.append(index)
+				current_peaks[note] = {
+					"frequency": tv[index].x,
+					"volume": tv[index].y,
+					"started": true,
+				}
+		
+		for note in current_peaks:
+			if not notes.has(note):
+				ended_notes.append(note)
+		
+		
+		for note in ended_notes:
+			var ndict: Dictionary = current_peaks[note]
+			current_peaks.erase(note)
+			if not ndict["started"]:
+				continue
+			
+			var vec := Vector3(ndict["frequency"], ndict["volume"], note)
+			end_note(vec)
+		
+		
+		for index in new_added_notes:
+			var note := notes[index]
+			var note_vec: Vector2 = tv[index]
+			var frequency := note_vec.x
+			var note_volume := note_vec.y
+			start_note(Vector3(frequency, note_volume, note))
+		
+			
+#		
 		pass
 
 
@@ -128,118 +195,130 @@ func _on_new_note_frame_processed(delta, data):
 	old_peaks = current_peaks.duplicate(true)
 	
 	var dominant_peak: Vector3 = find_dominant_peak(last_raw_peaks)
-	
-	var peak_chromatics: PackedInt32Array = []
-	for peak in peaks:
-		peak_chromatics.append(int(peak.z))
-	
-	var cp_keys = current_peaks.keys()
-	
-	var current_ended_notes: PackedVector3Array = []
-	var current_started_notes: PackedVector3Array = []
-	
-	match(detection_mode):
-		DetectionMode.CLUSTER:
-			for peak_chr in cp_keys:
-				var peak = current_peaks[peak_chr]
-				if not (peak_chr in peak_chromatics):
-					current_peaks.erase(peak_chr)
-					current_ended_notes.append(Vector3(peak["frequency"], peak["volume"], peak_chr))
-			
-			for peak in peaks:
-				var chromatic := int(peak.z)
-				var current_frequency: float = peak.x
-				var current_volume := peak.y
-				var current_duration := 0.0
-				var prev_volume := 0.0
-				var prev_duration := 0.0
-				var prev_volume_2 := 0.0
-				var prev_duration_2 := 0.0
-				var trigger := false
-				var retrigger := false
-				
-				if current_peaks.has(chromatic):
-					prev_volume = current_peaks[chromatic]["volume"]
-					prev_duration = current_peaks[chromatic]["duration"]
-					current_duration = prev_duration + delta
-					if prev_duration < cluster_trigger_duration and current_duration >= cluster_trigger_duration:
-						trigger = true
-					elif current_peaks[chromatic]["started"] and current_volume > prev_volume*cluster_retrigger_ratio:
-						retrigger = true
-					
-				if old_peaks_2.has(chromatic):
-					prev_volume_2 = old_peaks_2[chromatic]["volume"]
-					prev_duration_2 = old_peaks_2[chromatic]["volume"]
-				
-		#		current_volume = 0.5*(prev_volume + current_volume)
-				
-		#		if current_volume < prev_volume and prev_volume_2 < prev_volume and prev_duration > min_retrigger_interval:
-		#			current_duration = delta
-		#			trigger = true
-					
-				current_peaks[chromatic] = {
-					"volume": current_volume,
-					"duration": current_duration,
-					"frequency": current_frequency,
-					"started": false
-				}
-				
-				var peak_vec := Vector3(current_frequency, current_volume, chromatic)
-				
-				if retrigger:
-					current_ended_notes.append(peak_vec)
-				if trigger:
-#					print_debug(current_peaks, ", ", peaks)
-					current_started_notes.append(peak_vec)
-		DetectionMode.DOMINANT_PEAK:
-			var chromatic := int(dominant_peak.z)
-			var current_volume := dominant_peak.y
-			var current_duration: float = delta
-			var current_frequency := dominant_peak.x
-			var prev_duration: float = 0.0
-			var trigger := true
-			if current_peaks.has(chromatic):
-				if current_volume > volume_end_threshold:
-					prev_duration = current_peaks[chromatic]["duration"]
-					current_duration = prev_duration + delta
-					current_peaks[chromatic] = {
-						"volume": current_volume,
-						"duration": current_duration,
-						"frequency": current_frequency,
-						"started": current_peaks[chromatic]["started"]
-					}
-			else:
-				for chromatic_i in current_peaks:
-					var cp = current_peaks[chromatic_i]
-					var i_note := Vector3(cp["frequency"], cp["volume"], chromatic_i)
-					current_ended_notes.append(i_note)
-				current_peaks.clear()
-				
-				
-				if current_volume > volume_start_threshold:
-					current_peaks[chromatic] = {
-						"volume": current_volume,
-						"duration": current_duration,
-						"frequency": current_frequency,
-						"started": false,
-					}
-				else:
-					trigger = false
-			
-			if prev_duration < dominant_peak_trigger_duration and current_duration > dominant_peak_trigger_duration:
-				if trigger:
-					current_started_notes.append(Vector3(current_frequency, current_volume, chromatic))
+#
+#	var peak_chromatics: PackedInt32Array = []
+#	for peak in peaks:
+#		peak_chromatics.append(int(peak.z))
+#
+#	var cp_keys = current_peaks.keys()
+#
+#	var current_ended_notes: PackedVector3Array = []
+#	var current_started_notes: PackedVector3Array = []
+#
+#	match(detection_mode):
+#		DetectionMode.CLUSTER:
+#			for peak_chr in cp_keys:
+#				var peak = current_peaks[peak_chr]
+#				if not (peak_chr in peak_chromatics):
+#					current_peaks.erase(peak_chr)
+#					current_ended_notes.append(Vector3(peak["frequency"], peak["volume"], peak_chr))
+#
+#			for peak in peaks:
+#				var chromatic := int(peak.z)
+#				var current_frequency: float = peak.x
+#				var current_volume := peak.y
+#				var current_duration := 0.0
+#				var prev_volume := 0.0
+#				var prev_duration := 0.0
+#				var prev_volume_2 := 0.0
+#				var prev_duration_2 := 0.0
+#				var trigger := false
+#				var retrigger := false
+#
+#				if current_peaks.has(chromatic):
+#					prev_volume = current_peaks[chromatic]["volume"]
+#					prev_duration = current_peaks[chromatic]["duration"]
+#					current_duration = prev_duration + delta
+#					if prev_duration < cluster_trigger_duration and current_duration >= cluster_trigger_duration:
+#						trigger = true
+#					elif current_peaks[chromatic]["started"] and current_volume > prev_volume*cluster_retrigger_ratio:
+#						retrigger = true
+#
+#				if old_peaks_2.has(chromatic):
+#					prev_volume_2 = old_peaks_2[chromatic]["volume"]
+#					prev_duration_2 = old_peaks_2[chromatic]["volume"]
+#
+#		#		current_volume = 0.5*(prev_volume + current_volume)
+#
+#		#		if current_volume < prev_volume and prev_volume_2 < prev_volume and prev_duration > min_retrigger_interval:
+#		#			current_duration = delta
+#		#			trigger = true
+#
+#				current_peaks[chromatic] = {
+#					"volume": current_volume,
+#					"duration": current_duration,
+#					"frequency": current_frequency,
+#					"started": false,
+#					"trigger_module": TRIGGER_MODULE.AUTOCORRELATION
+#				}
+#
+#				var peak_vec := Vector3(current_frequency, current_volume, chromatic)
+#
+#				if retrigger:
+#					current_ended_notes.append(peak_vec)
+#				if trigger:
+##					print_debug(current_peaks, ", ", peaks)
+#					current_started_notes.append(peak_vec)
+#		DetectionMode.DOMINANT_PEAK:
+#			var chromatic := int(dominant_peak.z)
+#			var current_volume := dominant_peak.y
+#			var current_duration: float = delta
+#			var current_frequency := dominant_peak.x
+#			var prev_duration: float = 0.0
+#			var trigger := true
+#
+#			if current_peaks.has(chromatic):
+#				if current_peaks[chromatic]["trigger_module"] != TRIGGER_MODULE.AUTOCORRELATION:
+#					# do nothing
+#					trigger = false
+#					pass
+#				elif current_volume > volume_end_threshold:
+#					prev_duration = current_peaks[chromatic]["duration"]
+#					current_duration = prev_duration + delta
+#					current_peaks[chromatic] = {
+#						"volume": current_volume,
+#						"duration": current_duration,
+#						"frequency": current_frequency,
+#						"started": current_peaks[chromatic]["started"],
+#						"trigger_module": TRIGGER_MODULE.AUTOCORRELATION
+#					}
+#			else:
+#				for chromatic_i in current_peaks:
+#					var cp = current_peaks[chromatic_i]
+#					if cp["trigger_module"] != TRIGGER_MODULE.AUTOCORRELATION:
+#						continue
+#					if cp["started"] == true:
+#						var i_note := Vector3(cp["frequency"], cp["volume"], chromatic_i)
+#						current_ended_notes.append(i_note)
+#					current_peaks.erase(chromatic_i)
+#
+#
+#				if current_volume > volume_start_threshold:
+#					current_peaks[chromatic] = {
+#						"volume": current_volume,
+#						"duration": current_duration,
+#						"frequency": current_frequency,
+#						"started": false,
+#						"trigger_module": TRIGGER_MODULE.AUTOCORRELATION
+#					}
+#				else:
+#					trigger = false
+#
+#			if prev_duration < dominant_peak_trigger_duration and current_duration > dominant_peak_trigger_duration:
+#				if trigger:
+#					current_started_notes.append(Vector3(current_frequency, current_volume, chromatic))
 				
 #			start_note(chromatic)
 	# signal emissions are done at the end so that the updated states are accessible to connected methods.
-	for enote in current_ended_notes:
-		end_note(enote)
+#	for enote in current_ended_notes:
+#		end_note(enote)
 	
-	for snote in current_started_notes:
-		current_peaks[int(snote.z)]["started"] = true
-		start_note(snote) 
+#	for snote in current_started_notes:
+#		current_peaks[int(snote.z)]["started"] = true
+#		start_note(snote) 
 	
-#	if peaks.size() > 0:
+#	if current_peaks.size() > 0:
+#		print_debug(current_peaks)
 #		print_debug(peaks)
 #		print_debug(last_raw_peaks)
 	
@@ -261,7 +340,7 @@ func end_note(note: Vector3) -> void:
 	if chromatic <= 0 or chromatic >= NoteFrequency.CHROMATIC.size() - 1:
 		return
 	note_ended.emit(NoteFrequency.CHROMATIC[chromatic])
-#	print("Microphone input end note ", NoteFrequency.CHROMATIC_NAMES[chromatic], ", ", note)
+	print("Microphone input end note ", NoteFrequency.CHROMATIC_NAMES[chromatic], ", ", note)
 #	match(mode):
 #		Modes.KEYBOARD:
 #		Modes.FRET:
@@ -280,7 +359,7 @@ func start_note(note: Vector3) -> void:
 	var ldis = abs(lchrome - note.x)/lchrome
 	var rdis = abs(rchrome - note.x)/rchrome
 	
-#	print("Microphone input start note ", NoteFrequency.CHROMATIC_NAMES[chromatic], ", ", note, ", ", ldis, ", ", rdis)
+	print("Microphone input start note ", NoteFrequency.CHROMATIC_NAMES[chromatic], ", ", note, ", ", ldis, ", ", rdis)
 	last_started_note_chromatic = chromatic
 	last_started_note_timstamp = time_passed
 	note_started.emit(NoteFrequency.CHROMATIC[chromatic])
